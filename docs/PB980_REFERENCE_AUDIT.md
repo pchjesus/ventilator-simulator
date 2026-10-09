@@ -25,3 +25,19 @@ Do not assume that a separate classroom lecture photo shows PB980; its model was
 Medtronic. (2022). *Puritan Bennett™ 980 ventilator: Patient setup quick reference guide*. https://asiapac.medtronic.com/content/dam/covidien/library/us/en/product/acute-care-ventilation/puritan-bennett-980-ventilator-patient-setup-quick-reference-guide.pdf
 
 Medtronic. (n.d.). *Puritan Bennett™ 980 ventilator: Operator's manual*. https://asiapac.medtronic.com/content/dam/covidien/library/us/en/product/acute-care-ventilation/PuritanBennett980Ventilator_OperatorsManual_en_US_PT00101843A00.pdf
+
+## v0.3.3 device-reference facts (2026-10-10)
+Medtronic operator manual PT00101843A00, Table 11-9, printed pages 11-10–11-13:
+| Parameter | Adult / PC reference range | Manufacturer resolution |
+|---|---|---|
+| O₂ | 21–100% | 1% |
+| PEEP | 0–45 cmH₂O | 0.5 below 20, 1 at/above 20 |
+| f | 1–100/min | 0.1 below 10, 1 at/above 10 |
+| Pᵢ | 5–90 cmH₂O | 1 |
+| Tᵢ (PC) | 0.2–8 s | 0.01 s |
+| PS | 0–70 cmH₂O | 1 |
+| V-TRIG (adult V-SENS) | 0.2–20 L/min | 0.1 |
+
+These values are **manufacturer-reported reference data**, not the range/step implementation of the simulator's original teaching buttons. Dependent or conditional soft/hard limits are not represented. No matched firmware identification is available.
+
+Medtronic. (n.d.). *Puritan Bennett™ 980 ventilator: Operator's manual* (PT00101843A00), Table 11-9. https://asiapac.medtronic.com/content/dam/covidien/library/us/en/product/acute-care-ventilation/PuritanBennett980Ventilator_OperatorsManual_en_US_PT00101843A00.pdf
