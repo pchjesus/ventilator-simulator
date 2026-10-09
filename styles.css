@@ -154,4 +154,5 @@ body{max-width:1680px;background:#e9f0f4}
  .prompt-area{padding:3px 5px;font-size:8px}.prompt-area>span:first-child{font-size:7px}#status{font-size:9px}
  .settings-heading h2 small{font-size:8px;margin-left:3px}
  .device-top .state-sample{font-size:7px}
+ .settings-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
