@@ -44,6 +44,34 @@ try {
   await desktop.getByRole("button",{name:"설정 초기화"}).click();
   assert.equal(await desktop.locator(".setting-value").first().innerText(),"40");
   pass("reset restores initial settings");
+  // v0.3: the three phase-colored waveform panels are interactive teaching previews.
+  assert.equal(await desktop.locator(".waveform-svg").count(),3);
+  const pPath=desktop.locator('#graph-pressure [data-phase="mandatory"]');
+  const flowPath=desktop.locator('#graph-flow [data-phase="expiration"]');
+  const volPath=desktop.locator('#graph-volume [data-phase="mandatory"]');
+  assert.ok((await pPath.getAttribute("d")).length>20);
+  assert.ok((await flowPath.getAttribute("d")).length>20);
+  assert.ok((await volPath.getAttribute("d")).length>20);
+  await desktop.getByRole("button",{name:"파형 일시정지"}).click();
+  const pausedPath=await pPath.getAttribute("d");
+  await desktop.waitForTimeout(260);
+  assert.equal(await pPath.getAttribute("d"),pausedPath,"paused waveform should not scroll");
+  await desktop.getByRole("button",{name:"Pᵢ 증가 1"}).click();
+  const higherPi=await pPath.getAttribute("d");
+  assert.notEqual(higherPi,pausedPath,"Pi should update mandatory waveform");
+  const beforePS=await desktop.locator('#graph-pressure [data-phase="spontaneous"]').getAttribute("d");
+  await desktop.getByRole("button",{name:"PS 증가 1"}).click();
+  assert.notEqual(await desktop.locator('#graph-pressure [data-phase="spontaneous"]').getAttribute("d"),beforePS);
+  await desktop.getByRole("button",{name:"PEEP 증가 1"}).click();
+  assert.notEqual(await pPath.getAttribute("d"),higherPi);
+  await desktop.getByRole("button",{name:"파형 재생"}).click();
+  const playingBefore=await pPath.getAttribute("d");
+  await desktop.waitForTimeout(280);
+  assert.notEqual(await pPath.getAttribute("d"),playingBefore,"waveform should scroll while playing");
+  pass("three phase-colored graphs, Pi/PS/PEEP response, pause and resume");
+  await desktop.getByRole("button",{name:"설정 초기화"}).click();
+  assert.equal(await desktop.locator(".setting-value").first().innerText(),"40");
+  pass("v0.3 controls reset without disrupting waveforms");
   await desktop.screenshot({path:"artifacts/browser/desktop.png",fullPage:true});
 
   const mobile=await browser.newPage({viewport:{width:360,height:780},deviceScaleFactor:1,isMobile:true,hasTouch:true});
@@ -61,6 +89,7 @@ try {
   await mobile.getByRole("tab",{name:"? 설명"}).click();
   assert.equal(await mobile.locator("#panel-help").isVisible(),true);
   pass("360px mobile layout, step control and help tab");
+  assert.equal(await mobile.locator(".waveform-svg").count(),3);
   await mobile.screenshot({path:"artifacts/browser/mobile.png",fullPage:true});
 
   const narrow=await browser.newPage({viewport:{width:320,height:680},isMobile:true,hasTouch:true});

@@ -1,4 +1,5 @@
 import {VERSION, PARAMETERS, MONITOR_REFERENCE, initialSettings, adjustSetting, formatSetting} from "./sim-model.js";
+import {generateWaveform, previewScales} from "./waveform-model.js";
 const settingsContainer = document.getElementById("settings");
 const monitor = document.getElementById("monitor");
 const status = document.getElementById("status");
@@ -55,6 +56,7 @@ function renderSettings() {
         state=next;
         status.textContent=changed ? param.label+": "+formatSetting(param.id,state[param.id])+param.unit+" (학습용 설정만 변경)" : "설정 범위 끝이야.";
         refreshSettings();
+        paintWaveforms();
       });
       buttons.append(button);
     }
@@ -113,6 +115,62 @@ function renderCircuit() {
 circuitTab.addEventListener("click",()=>showSideTab("circuit"));
 helpTab.addEventListener("click",()=>showSideTab("help"));
 document.getElementById("modeHelp").addEventListener("click",()=>explain("SIMV (PC) + PS","SIMV는 강제호흡과 자발호흡을 조합하는 모드야. 이 예시에서는 강제호흡은 압력제어(PC), 자발호흡은 압력보조(PS)로 표시했어. 정확한 설정 화면과 사용 범위는 PB980 매뉴얼을 확인해야 해."));
-document.getElementById("reset").addEventListener("click",()=>{state=initialSettings();refreshSettings();status.textContent="기본 예시 설정으로 초기화했어.";});
+document.getElementById("reset").addEventListener("click",()=>{state=initialSettings();refreshSettings();paintWaveforms();status.textContent="기본 예시 설정으로 초기화했어.";});
 document.querySelectorAll("[data-view]").forEach(button=>button.addEventListener("click",()=>{circuitView=button.dataset.view;assemblyStep=0;renderCircuit();}));
-renderMonitor();renderSettings();renderCircuit();
+// Single educational waveform preview state, independent of patient readouts.
+const plotPhases=["mandatory","spontaneous","expiration"];
+const plotNames=["pressure","flow","volume"];
+const WAVE_WINDOW_SECONDS=16;
+let waveformTime=0;
+let waveformPaused=false;
+let previousFrameTime=null;
+let previousPaintTime=-1000;
+function paintWaveforms(){
+  const samples=generateWaveform(state,waveformTime,WAVE_WINDOW_SECONDS,320);
+  const scale=previewScales(state,samples);
+  document.getElementById("scale-pressure").textContent="0–"+scale.pressureMax+" cmH₂O";
+  document.getElementById("scale-flow").textContent="±"+scale.flowMax+" L/min";
+  document.getElementById("scale-volume").textContent="0–"+scale.volumeMax+" mL";
+  for(const name of plotNames){
+    const group=document.getElementById("graph-"+name);
+    for(const phase of plotPhases){
+      let path="";
+      let active=false;
+      for(let i=0;i<samples.length;i++){
+        const sample=samples[i];
+        const x=(760*i/(samples.length-1)).toFixed(1);
+        const raw=sample[name];
+        const y=(name==="flow" ? 64-raw/scale.flowMax*49 :
+          116-raw/(name==="pressure"?scale.pressureMax:scale.volumeMax)*104).toFixed(1);
+        if(sample.phase===phase){
+          path+=(active?"L":"M")+x+" "+y+" ";
+          active=true;
+        }else if(active){
+          path+="L"+x+" "+y+" ";
+          active=false;
+        }
+      }
+      group.querySelector('[data-phase="'+phase+'"]').setAttribute("d",path);
+    }
+  }
+}
+const pauseButton=document.getElementById("waveform-pause");
+pauseButton.addEventListener("click",()=>{
+  waveformPaused=!waveformPaused;
+  pauseButton.setAttribute("aria-pressed",String(waveformPaused));
+  pauseButton.setAttribute("aria-label",waveformPaused?"파형 재생":"파형 일시정지");
+  pauseButton.textContent=waveformPaused?"▶ Resume":"Ⅱ Pause";
+});
+function animationFrame(now){
+  if(previousFrameTime!==null&&!waveformPaused&&!document.hidden){
+    waveformTime+=Math.min((now-previousFrameTime)/1000,0.12);
+  }
+  previousFrameTime=now;
+  if(!document.hidden && now-previousPaintTime>=85){
+    paintWaveforms();
+    previousPaintTime=now;
+  }
+  requestAnimationFrame(animationFrame);
+}
+renderMonitor();renderSettings();renderCircuit();paintWaveforms();
+requestAnimationFrame(animationFrame);

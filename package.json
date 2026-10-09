@@ -1,10 +1,10 @@
 {
   "name": "pb980-ventilator-education",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "private": true,
   "type": "module",
   "scripts": {
-    "check": "node --check src/sim-model.js && node --check src/app.js",
+    "check": "node --check src/sim-model.js && node --check src/waveform-model.js && node --check src/app.js",
     "test": "node --test tests/*.test.mjs"
   }
 }
