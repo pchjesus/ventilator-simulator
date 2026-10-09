@@ -1,49 +1,42 @@
-# Roadmap
+# Development Roadmap (checked against GitHub 2026-10-09)
 
-## Phase 0 — Reference analysis
-- [x] 교수님 수업 사진 확보
-- [ ] 정확한 ventilator 기종 확인
-- [ ] 현행 화면/매뉴얼 자료 확보
-- [ ] 화면 요소 mapping
+## Phase 0 — Verify reference and baseline
+- [x] Inspect repository, README/AGENTS/SPEC and initial commit
+- [x] Identify MICU webapp patterns to reuse (separation, regression, reporting)
+- [x] Choose PB980 as primary device reference from user context
+- [ ] Validate exact GUI and supported increments against PB980 operator manual / confirmed screenshots
 
-## Phase 1 — UI reproduction
-- [ ] 실제 화면 layout
-- [ ] monitoring area
-- [ ] waveform area
-- [ ] settings area
-- [ ] +/- controls
-- [ ] ? help
+## Phase 1 — First web MVP (v0.2.0)
+- [x] Add runnable `index.html` + dependency-free modules
+- [x] Create monitor / example waveform / setting sections
+- [x] Add parameter step controls + `?` explanations + reset
+- [x] Add right-side CIRCUIT *concept* views (not real assembly)
+- [x] Basic pure-function automated tests
+- [ ] Full visual/interaction check in browser and real device
+- [ ] Deploy a publicly usable URL after repository visibility decision
 
-## Phase 2 — Basic simulation
-- [ ] SIMV(PC)+PS
-- [ ] Pi/PS/PEEP/RR/FiO2/Ti/trigger
-- [ ] monitoring value calculation
-- [ ] dynamic waveform
+## Phase 2 — Reference-consistent controls / dynamic waveform
+- [ ] Exact PB980 mode settings, valid ranges, increments and tooltips from manuals
+- [ ] Separate normal breath state/events from visual curves
+- [ ] Pressure, flow and volume waveform generated from a documented simplified model
+- [ ] Mandatory/spontaneous breath distinction and clock/pause/reset
 
-## Phase 3 — Circuit
-- [ ] component library
-- [ ] assembly sequence
-- [ ] completed circuit
-- [ ] gas-flow animation
+## Phase 3 — Circuit learning
+- [ ] Confirm specific circuit profile and component connections
+- [ ] Illustrated/animated parts and assembly guidance
+- [ ] Clear flow direction and optional fault demos
 
 ## Phase 4 — Patient & ABGA
-- [ ] compliance
-- [ ] resistance
-- [ ] respiratory drive
-- [ ] SpO2
-- [ ] ABGA
-- [ ] response to settings
+- [ ] Simplified respiratory mechanics (compliance/resistance/drive)
+- [ ] Educator-reviewed relationships for oxygenation/ventilation
+- [ ] ABGA demonstration with explicit assumptions
 
-## Phase 5 — Alarm & Cases
-- [ ] alarm engine
-- [ ] obstruction/leak/disconnection
-- [ ] COPD case
-- [ ] ARDS case
-- [ ] weaning case
-- [ ] quiz/assessment
+## Phase 5 — Alarms and evidence-based learning cases
+- [ ] Alarm logic tied to state
+- [ ] Small branching nursing-student scenarios (e.g., COPD, ARDS, weaning)
+- [ ] Per-case source, applicability and clinical review checklist
 
-## Phase 6 — Validation
-- [ ] clinical review
-- [ ] numerical consistency
-- [ ] usability testing
-- [ ] educational scenario validation
+## Continuous validation
+- Per patch: unit + affected feature + regression verification
+- Before release: live browser, mobile, clinical content and deployment checks
+- Do not label unverified behavior as validated

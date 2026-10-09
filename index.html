@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#14252d">
+  <title>PB980 Ventilator Simulator | Educational Preview</title>
+  <link rel="stylesheet" href="./styles.css">
+  <script src="./src/app.js" type="module"></script>
+</head>
+<body>
+  <header class="site-header">
+    <div><p class="eyebrow">VENTILATOR SIMULATOR <span id="version"></span></p>
+      <h1>Puritan Bennett 980 <small>교육용 화면</small></h1></div>
+    <button id="reset" type="button" class="reset">설정 초기화</button>
+  </header>
+  <p class="warning" role="note">실제 환자 치료에 사용 불가 · PB980을 참고한 초기 UI 목업 · 상단 모니터링과 파형은 고정 예시이며 설정값과 연동되지 않음</p>
+  <main class="workspace">
+    <section class="ventilator" aria-label="인공호흡기 모니터">
+      <div class="device-top">
+        <span>PB980 UI STUDY</span><strong>SIMV <span class="subtle">(PC) + PS</span></strong>
+        <span class="reference-flag">REFERENCE DISPLAY</span>
+      </div>
+      <div class="monitor" id="monitor" aria-label="참고용 모니터링 수치"></div>
+      <div class="graph-area">
+        <div class="graph-row"><div class="graph-head"><span>Pressure / Time</span><span>cmH₂O · 예시 파형</span></div>
+          <svg viewBox="0 0 760 130" preserveAspectRatio="none" role="img" aria-label="압력-시간 참고용 파형, 설정 미연동">
+            <path class="base-line" d="M0 110H760 M0 65H760 M0 20H760"></path>
+            <path class="pressure-line" d="M0 104H45 Q50 104 55 65 L65 43 H123 L137 104 H175 Q180 104 186 65 L196 43 H255 L267 104 H309 Q315 104 321 65 L332 43 H388 L401 104 H446 Q453 104 459 65 L469 43 H529 L541 104 H584 Q591 104 597 65 L607 43 H666 L678 104 H760"></path>
+          </svg></div>
+        <div class="graph-row"><div class="graph-head"><span>Flow / Time</span><span>L/min · 예시 파형</span></div>
+          <svg viewBox="0 0 760 130" preserveAspectRatio="none" role="img" aria-label="유량-시간 참고용 파형, 설정 미연동">
+            <path class="base-line" d="M0 65H760 M0 24H760 M0 108H760"></path>
+            <path class="flow-line" d="M0 65H45 L55 17 Q93 31 120 65 Q142 102 175 65 L186 17 Q224 31 252 65 Q275 102 309 65 L321 17 Q360 31 386 65 Q415 102 446 65 L459 17 Q495 31 526 65 Q555 102 584 65 L597 17 Q634 31 663 65 Q692 102 720 65 H760"></path>
+          </svg></div>
+      </div>
+      <div class="settings-heading"><h2>Current settings</h2><span>작은 증감 버튼으로 설정 연습 · 실제 PB980 조작법과 다름</span></div>
+      <div class="settings-grid" id="settings" aria-label="조절 가능한 설정"></div>
+      <div class="settings-footer"><span>Mode: <strong>SIMV (PC) + PS</strong> <button type="button" id="modeHelp" class="help" aria-label="SIMV 모드 설명">?</button></span>
+        <span id="status" aria-live="polite">설정값을 조절해 봐.</span></div>
+    </section>
+    <aside class="study-panel" aria-label="학습 보조 영역">
+      <div class="side-tabs" role="tablist" aria-label="학습 탭">
+        <button type="button" id="tab-circuit" class="active" role="tab" aria-selected="true" aria-controls="panel-circuit">CIRCUIT</button>
+        <button type="button" id="tab-help" role="tab" aria-selected="false" aria-controls="panel-help">? 설명</button>
+      </div>
+      <section id="panel-circuit" role="tabpanel" aria-labelledby="tab-circuit">
+        <p class="panel-caption">호흡회로 개념도 · 실제 연결 순서/부품은 기관과 구성에 따라 달라짐</p>
+        <div class="subtabs" aria-label="회로 보기 방식">
+          <button type="button" data-view="parts" class="active">부품</button>
+          <button type="button" data-view="assembly">조립 개요</button>
+          <button type="button" data-view="complete">완성 개념도</button>
+        </div>
+        <div id="circuit-content" aria-live="polite"></div>
+      </section>
+      <section id="panel-help" role="tabpanel" aria-labelledby="tab-help" hidden>
+        <h2 id="help-title">설정값 설명</h2>
+        <p id="help-body">아래 설정 항목의 ? 버튼을 누르면 여기에 설명이 표시돼.</p>
+        <p class="fine-print">교육용 기본 설명이므로 세부 조작 및 실제 적용은 해당 장비 매뉴얼과 담당 의료진의 지침을 따라야 해.</p>
+      </section>
+    </aside>
+  </main>
+  <footer class="footer">MVP v0.2.0 · 브라우저에서 동작하는 교육용 프런트엔드 · 임상/장비 동작 검증 전</footer>
+</body>
+</html>
