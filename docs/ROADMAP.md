@@ -76,3 +76,12 @@
 - [ ] Pixel-based comparison against a known PB980 software version and mode
 - [ ] Verify manufacturer hard/soft bounds and mode-dependent controls
 - [ ] Evaluate user demand before emulating additional OEM dialogs/icons
+
+## v0.3.3 — GUI and sourced PB980 reference
+- [x] Align data banner / example phase / waveform / educational prompt / setting region to documented GUI geography.
+- [x] Move axis labels to left and explicitly separate study actions from OEM-looking icons.
+- [x] Display verified adult PB980 Table 11-9 reference ranges/resolutions in all seven parameter help panels.
+- [x] Preserve independent educational step controls; no silent manufacturer range enforcement.
+- [ ] Confirm passing v0.3.3 CI + screenshot review and record real run in TEST_REPORT.
+- [ ] Obtain version-identified normal-ventilation SIMV PC+PS photograph and exact geometry measurements.
+- [ ] Only later consider separate verified OEM-style input mode with dependency-based constraints.
