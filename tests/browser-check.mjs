@@ -21,10 +21,14 @@ try {
   pass("desktop loads all 7 settings and 7 reference readouts");
 
   const monitorBefore=await desktop.locator("#monitor").innerText();
-  await desktop.getByRole("button",{name:"O₂ 증가 10"}).click();
+  const oxygenUp=desktop.getByRole("button",{name:"O₂ 증가 10"});
+  await oxygenUp.click();
   assert.equal(await desktop.locator(".setting-value").first().innerText(),"50");
+  assert.equal(await oxygenUp.evaluate(el=>document.activeElement===el),true,"keyboard focus lost");
+  await oxygenUp.press("Enter");
+  assert.equal(await desktop.locator(".setting-value").first().innerText(),"60");
   assert.equal(await desktop.locator("#monitor").innerText(),monitorBefore);
-  pass("FiO₂ changes; sample monitoring remains clearly independent");
+  pass("FiO₂ mouse/keyboard adjustment preserves focus and does not change example monitor");
   await desktop.getByRole("button",{name:"O₂ 설명 보기"}).click();
   assert.equal(await desktop.locator("#panel-help").isVisible(),true);
   assert.equal(await desktop.locator("#help-title").innerText(),"O₂");
@@ -58,6 +62,18 @@ try {
   assert.equal(await mobile.locator("#panel-help").isVisible(),true);
   pass("360px mobile layout, step control and help tab");
   await mobile.screenshot({path:"artifacts/browser/mobile.png",fullPage:true});
+
+  const narrow=await browser.newPage({viewport:{width:320,height:680},isMobile:true,hasTouch:true});
+  narrow.on("pageerror",e=>errors.push("320px page error: "+e.message));
+  const narrowResponse=await narrow.goto(ROOT,{waitUntil:"networkidle",timeout:30000});
+  assert.equal(narrowResponse.status(),200);
+  await narrow.locator(".setting").first().waitFor({state:"visible"});
+  const narrowSize=await narrow.evaluate(()=>({scroll:document.documentElement.scrollWidth,client:document.documentElement.clientWidth}));
+  assert.ok(narrowSize.scroll<=narrowSize.client+2,"320px horizontal overflow "+JSON.stringify(narrowSize));
+  await narrow.getByRole("button",{name:"O₂ 증가 10"}).click();
+  assert.equal(await narrow.locator(".setting-value").first().innerText(),"50");
+  pass("320px mobile width: no horizontal overflow, settings interactive");
+  await narrow.screenshot({path:"artifacts/browser/narrow-320.png",fullPage:true});
   assert.deepEqual(errors,[]);
   pass("no captured JS page errors or console errors");
 } finally {

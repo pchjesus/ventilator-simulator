@@ -39,13 +39,13 @@ function renderMonitor() {
 function renderSettings() {
   settingsContainer.replaceChildren();
   for (const param of PARAMETERS) {
-    const card=document.createElement("div");card.className="setting";
+    const card=document.createElement("div");card.className="setting";card.dataset.settingId=param.id;
     const label=document.createElement("div");label.className="setting-name";label.textContent=param.label;
     const value=document.createElement("div");value.className="setting-value";value.textContent=formatSetting(param.id,state[param.id]);
     const unit=document.createElement("div");unit.className="setting-unit";unit.textContent=param.unit;
     const buttons=document.createElement("div");buttons.className="step-buttons";
     for (const delta of param.steps) {
-      const button=document.createElement("button");button.type="button";
+      const button=document.createElement("button");button.type="button";button.dataset.step=String(delta);
       button.textContent=delta>0?"+"+delta:String(delta);
       button.setAttribute("aria-label",param.label+" "+(delta>0?"증가 ":"감소 ")+Math.abs(delta));
       button.disabled = (delta<0 && state[param.id]<=param.min) || (delta>0 && state[param.id]>=param.max);
@@ -54,7 +54,7 @@ function renderSettings() {
         const changed=next[param.id]!==state[param.id];
         state=next;
         status.textContent=changed ? param.label+": "+formatSetting(param.id,state[param.id])+param.unit+" (학습용 설정만 변경)" : "설정 범위 끝이야.";
-        renderSettings();
+        refreshSettings();
       });
       buttons.append(button);
     }
@@ -63,6 +63,20 @@ function renderSettings() {
     help.addEventListener("click",()=>explain(param.label,param.help));
     buttons.append(help);
     card.append(label,value,unit,buttons);settingsContainer.append(card);
+  }
+}
+// Update existing nodes to preserve keyboard focus after a setting change.
+function refreshSettings() {
+  for (const card of settingsContainer.querySelectorAll(".setting")) {
+    const id=card.dataset.settingId;
+    const param=PARAMETERS.find(p=>p.id===id);
+    if (!param) continue;
+    const current=state[id];
+    card.querySelector(".setting-value").textContent=formatSetting(id,current);
+    for (const button of card.querySelectorAll("button[data-step]")) {
+      const delta=Number(button.dataset.step);
+      button.disabled=(delta<0 && current<=param.min)||(delta>0 && current>=param.max);
+    }
   }
 }
 function circuitDiagram() {
@@ -99,6 +113,6 @@ function renderCircuit() {
 circuitTab.addEventListener("click",()=>showSideTab("circuit"));
 helpTab.addEventListener("click",()=>showSideTab("help"));
 document.getElementById("modeHelp").addEventListener("click",()=>explain("SIMV (PC) + PS","SIMV는 강제호흡과 자발호흡을 조합하는 모드야. 이 예시에서는 강제호흡은 압력제어(PC), 자발호흡은 압력보조(PS)로 표시했어. 정확한 설정 화면과 사용 범위는 PB980 매뉴얼을 확인해야 해."));
-document.getElementById("reset").addEventListener("click",()=>{state=initialSettings();renderSettings();status.textContent="기본 예시 설정으로 초기화했어.";});
+document.getElementById("reset").addEventListener("click",()=>{state=initialSettings();refreshSettings();status.textContent="기본 예시 설정으로 초기화했어.";});
 document.querySelectorAll("[data-view]").forEach(button=>button.addEventListener("click",()=>{circuitView=button.dataset.view;assemblyStep=0;renderCircuit();}));
 renderMonitor();renderSettings();renderCircuit();
