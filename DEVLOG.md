@@ -95,3 +95,16 @@
 - Not pixel-calibrated to one particular PB980 firmware screenshot.
 - Bezel keys and Configure/Logs/O2 displays are deliberately not interactive and do not replicate clinical device functions.
 - Educational study UI only, not validated medical equipment emulator.
+
+## v0.3.3 — PB980 GUI geography and parameter evidence (2026-10-10)
+### Changed
+- Move patient-data banner before illustrative status header; place educational prompt under waveforms; left-align chart labels/scales.
+- Clarify educational Study/Help navigation and mode notation.
+- Add source-backed adult PB980 settings range and resolutions to ? reference explanations with clear distinction from study controls.
+### Preserved
+- Seven adjustable teaching parameters with existing steps/bounds, waveform engine, play/pause, Help/Circuit, keyboard focus, reset and responsive CSS.
+### Risk decision
+- Do not map OEM 1-unit precision onto existing +0.1 educational buttons without an explicit new UX mode and clinical interlock validation.
+- OEM bezel keys remain noninteractive visuals. Breath 'C' is static and clearly labelled, not a live phase flag.
+### Verification
+- Actual browser/CI test evidence must be recorded in TEST_REPORT; do not infer PASS from writing tests alone.
