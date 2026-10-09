@@ -1,4 +1,4 @@
-# Ventilator Simulator — v0.3.2 Preview
+# Ventilator Simulator — v0.3.3 Preview
 
 간호학생을 위한 **PB980(Puritan Bennett 980) 참고형 웹 시뮬레이터** 초기 실행본.
 실제 장비의 화면 구성 학습을 목표로 하지만, 임상 사용이나 기계 조작 훈련을 대체하지 않는다.
@@ -9,7 +9,7 @@
 - 테스트: Node.js 18 이상에서 `npm test`, `npm run check`
 - npm 의존성 없음. 브라우저 ES modules 사용. `file://` 직접 실행은 권장하지 않음.
 
-## 현재 구현 (v0.3.1)
+## 현재 구현 (v0.3.3)
 - PB980 스타일의 화면 구획: 상단 monitoring, 중앙 pressure/flow/volume 파형, 하단 SIMV(PC)+PS 설정 영역
 - 화면 안에서 FiO₂, PEEP, f, Pi, Ti, PS, V-TRIG 값 증감 및 기본값 초기화
 - 각 설정 옆 `?` 도움말, 오른쪽 CIRCUIT 개념 학습 탭(부품/조립 개요/완성 개념도)
@@ -66,3 +66,10 @@ v0.2.2 improves keyboard-focus continuity when adjusting settings and adds a 320
 - Home/Circuit 및 Help 교육용 단축키 2개를 기존 학습 패널과 연동했어.
 - 기존 증감, 도움말, 초기화, 파형, reduced-motion, 반응형 배치를 유지했어.
 - [PB980 UI 비교·남은 차이](docs/PB980_UI_COMPARISON_v0.3.2.md) 참조. 실물과 완전 동일한 외형이나 임상 동작이라고 주장하지 않아.
+
+## v0.3.3 — PB980 GUI geography and manufacturer reference
+- The example Vital Patient Data band leads the display; clearly static breath-type label, left-side waveform legends/scales, and a below-waveform educational prompt resemble the documented GUI layout more closely.
+- Current-settings mode grouping and explicit 'Study / EDU' and 'Edu Help' labels distinguish web learning shortcuts from clinical PB980 operation.
+- Each settings `?` tab shows official adult PC/PS reference range and resolution (Operator's Manual Table 11-9) **separately from the unchanged educational step button range/precision**.
+- All existing model behavior, circuit learning, reset, keyboard, reduced-motion and responsive controls are preserved.
+- OEM firmware-identical pixel layout, real conditional parameter limits and real patient measurement models are **not validated**. See [v0.3.3 comparison](docs/PB980_UI_COMPARISON_v0.3.3.md).
