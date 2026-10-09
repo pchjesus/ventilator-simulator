@@ -78,6 +78,15 @@ try {
   await desktop.getByRole("button",{name:"설정 초기화"}).click();
   assert.equal(await desktop.locator(".setting-value").first().innerText(),"40");
   pass("v0.3 controls reset without disrupting waveforms");
+  // PB980-referenced shell: source and controls must still work.
+  assert.equal(await desktop.locator(".bezel-brand").count(),1);
+  assert.equal(await desktop.locator(".menu-ribbon").count(),1);
+  assert.equal(await desktop.locator(".access-icons").count(),1);
+  await desktop.getByRole("button",{name:"항목 설명 패널 열기"}).click();
+  assert.equal(await desktop.locator("#panel-help").isVisible(),true);
+  await desktop.getByRole("button",{name:"회로 학습 패널 열기"}).click();
+  assert.equal(await desktop.locator("#panel-circuit").isVisible(),true);
+  pass("PB980-like chrome and educational navigation shortcuts");
   await desktop.screenshot({path:"artifacts/browser/desktop.png",fullPage:true});
 
   const mobile=await browser.newPage({viewport:{width:360,height:780},deviceScaleFactor:1,isMobile:true,hasTouch:true});
@@ -96,6 +105,9 @@ try {
   assert.equal(await mobile.locator("#panel-help").isVisible(),true);
   pass("360px mobile layout, step control and help tab");
   assert.equal(await mobile.locator(".waveform-svg").count(),3);
+  assert.equal(await mobile.locator(".bezel-controls").count(),1);
+  await mobile.getByRole("button",{name:"회로 학습 패널 열기"}).click();
+  assert.equal(await mobile.locator("#panel-circuit").isVisible(),true);
   await mobile.screenshot({path:"artifacts/browser/mobile.png",fullPage:true});
 
   const narrow=await browser.newPage({viewport:{width:320,height:680},isMobile:true,hasTouch:true});

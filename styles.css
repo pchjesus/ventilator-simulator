@@ -73,3 +73,50 @@ h1{font-size:clamp(19px,2.5vw,27px);line-height:1.2;margin:0}h1 small{font-size:
 @media(prefers-reduced-motion:reduce){
  .waveform-svg path{transition:none}
 }
+
+
+/* v0.3.2 PB980 visual study. Reference-inspired, not manufacturer UI. */
+body{max-width:1680px;background:#e9f0f4}
+.workspace{grid-template-columns:minmax(0,1fr) minmax(275px,315px);gap:15px}
+.ventilator{background:linear-gradient(145deg,#0a528f,#0b2d60 40%,#08254b);border:4px solid #164874;border-bottom:8px solid #12385d;border-radius:48px 48px 36px 36px;box-shadow:inset 0 2px 0 #478ac0,0 6px 22px #18374b44;color:#f4fcff;padding:13px 17px 9px}
+.bezel-brand{display:flex;align-items:center;justify-content:center;gap:9px;padding:0 5px 10px;font-size:11px;color:#d5ecff;white-space:nowrap}
+.bezel-brand strong{font-size:12px}.bezel-logo{font-size:19px;color:white}.bezel-led{position:absolute;margin-top:-46px;width:62px;height:7px;border-radius:50%;background:radial-gradient(ellipse,#60efb3,#138e8f 45%,#1a5178 83%);box-shadow:0 -6px 13px #1af8bd3b}
+.device-display{background:#01080e;border:4px solid #031c37;box-shadow:inset 0 0 0 1px #4383af;min-width:0;overflow:hidden}
+.device-top{background:linear-gradient(180deg,#07539a,#083565);padding:3px 9px;min-height:28px;letter-spacing:0;font-size:10px}
+.device-top strong{font-size:12px}.device-state{display:flex;align-items:center;gap:7px;font-size:10px}.state-dot{display:inline-grid;place-items:center;border:2px solid #8be04b;border-radius:50%;height:22px;width:22px;color:#dcffb8;font-size:14px;font-weight:900}
+.reference-flag{font-size:9px;color:#d5ebff}
+.monitor-wrap{background:linear-gradient(#126cc2,#044b91);padding:0 5px 4px;border-bottom:2px solid #5f9dcc}
+.monitor{grid-template-columns:repeat(7,minmax(0,1fr));gap:1px;border:0;background:transparent}
+.readout{background:transparent;border-right:1px solid #ffffff27;min-height:59px;padding:5px 2px 3px}.readout:last-child{border-right:0}
+.readout .label{font-size:10px;color:#e4f3ff}.readout strong{font-size:clamp(17px,1.8vw,27px);margin:0;color:white;text-shadow:0 1px 2px #003661}.readout .unit{font-size:9px;color:#cde7ff}
+.display-main{display:grid;grid-template-columns:22px minmax(0,1fr) 13px;background:#010509}
+.menu-ribbon{display:grid;place-items:center;background:linear-gradient(90deg,#054078,#0d68b9);border-right:1px solid #59a0d0;color:#d7f0ff}
+.menu-ribbon span{writing-mode:vertical-rl;transform:rotate(180deg);font-size:10px;letter-spacing:.13em;font-weight:750}
+.waveform-stage{min-width:0;padding:2px 5px;background:#01070c}
+.display-edge{display:flex;flex-direction:column;align-items:center;justify-content:space-between;background:#081b30;border-left:1px solid #35608e;padding:7px 0;color:#82b6df}
+.inactive-alarm{writing-mode:vertical-rl;font-size:7px;letter-spacing:.05em}.edge-pause{font-size:10px}
+.waveform-toolbar{min-height:24px;margin:0 3px;font-size:10px;color:#d0e6f5}.waveform-toolbar strong{font-size:10px}.waveform-tag{font-size:9px}
+#waveform-pause{min-height:26px;min-width:73px;font-size:10px;padding:2px 6px;background:#0b3c6c;border:1px solid #4c88b0}
+.waveform-legend{font-size:9px;padding:2px 6px;gap:9px}
+.graph-area{padding:2px 5px}.graph-row{margin-bottom:3px}.graph-head{margin:2px 0 1px;font-size:10px;color:#bcd5eb}
+.graph-row svg.waveform-svg{height:95px;border:0;border-bottom:1px solid #305671;background-color:#01070d;background-image:linear-gradient(#11314a 1px,transparent 1px),linear-gradient(90deg,#102b43 1px,transparent 1px);background-size:12.5% 25%}
+.waveform-svg path.phase-mandatory{stroke:#65df9b;stroke-width:2.6}.waveform-svg path.phase-spontaneous{stroke:#a7f287;stroke-width:2.6}.waveform-svg path.phase-expiration{stroke:#ecc668;stroke-width:2.3}
+.graph-disclaimer{font-size:9px;margin:4px 0;line-height:1.4;color:#83aaca}
+.vent-bottom{display:grid;grid-template-columns:105px minmax(0,1fr) 88px;background:linear-gradient(160deg,#115aa6,#0874be 48%,#07539a);border-top:3px solid #4686c1}
+.setup-panel{display:flex;flex-direction:column;gap:6px;padding:9px 5px;background:linear-gradient(#146aaf,#12518e);border-right:1px solid #c5e8ff66;font-size:11px}
+.setup-panel strong{font-size:17px}.setup-panel small{font-size:9px;line-height:1.25;color:#c4e5ff}
+.settings-area{padding:4px;min-width:0}.settings-heading{margin:0 3px 4px}.settings-heading h2{font-size:10px}.settings-heading span{font-size:8px;color:#c8e6f5}
+.settings-grid{grid-template-columns:repeat(4,minmax(0,1fr));padding:0;gap:3px}
+.setting{padding:4px 3px;min-height:64px;background:linear-gradient(#147bc4,#0b5797);border:1px solid #6bb7e5;border-radius:1px}
+.setting-name{font-size:10px;color:#e6f6ff}.setting-value{font-size:clamp(17px,1.7vw,23px);line-height:1.08;color:white}.setting-unit{font-size:9px;color:#c7e7ff}
+.step-buttons{gap:2px;margin-top:4px}.step-buttons button,.help{min-height:25px;min-width:22px;padding:2px;border-radius:2px;font-size:9px;background:#0a4e80;border:1px solid #6eb3df}.step-buttons .help{min-width:23px;font-size:11px}
+.settings-footer{background:transparent;padding:4px 2px 0;font-size:10px;gap:5px}.settings-footer #status{font-size:9px}
+.access-icons{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-rows:minmax(41px,auto);gap:1px;padding:4px;background:linear-gradient(#135b96,#10447b);border-left:1px solid #dcf3ff45}
+.access-icons button,.access-icons .inert-control{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;min-width:0;padding:1px;border:1px solid transparent;background:transparent;color:white;font-size:18px}
+.access-icons button:hover{background:#287eb1;border-color:#82c9f4}.access-icons small{font-size:7px;line-height:1.1}.access-icons .inert-control{opacity:.58}
+.bezel-controls{display:flex;align-items:center;justify-content:space-around;gap:5px;margin:0 auto;padding:10px 7px 0;max-width:690px}
+.bezel-controls>span{display:flex;flex-direction:column;justify-content:center;align-items:center;width:44px;height:39px;border:1px solid #3672a4;border-radius:7px;background:#0a2954;color:#d8edff;font-size:19px}
+.bezel-controls small{font-size:7px;line-height:1.1}.rotary-knob{display:block;flex-shrink:0;width:56px;height:56px;border:4px solid #0a3464;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fffefa,#c1d1df 46%,#8499b3 74%,#224771 85%);box-shadow:0 4px 4px #001b398a}
+@media(max-width:1200px){.vent-bottom{grid-template-columns:87px minmax(0,1fr) 71px}}
+@media(max-width:960px){.workspace{grid-template-columns:1fr}.vent-bottom{grid-template-columns:100px minmax(0,1fr) 88px}}
+@media(max-width:550px){body{padding:9px}.ventilator{padding:7px 6px 5px;border-width:3px;border-radius:27px 27px 22px 22px}.bezel-brand{gap:4px;font-size:8px;padding-bottom:7px}.bezel-brand strong{font-size:9px}.bezel-logo{font-size:13px}.bezel-led{width:34px;margin-top:-35px}.device-top{padding:2px 4px;font-size:9px;gap:3px}.device-state{font-size:8px;gap:2px}.device-top strong{font-size:9px}.state-dot{width:17px;height:17px;font-size:10px}.reference-flag{font-size:7px}.monitor{grid-template-columns:repeat(4,minmax(0,1fr))}.readout{min-height:49px;padding:3px 1px}.readout strong{font-size:18px}.display-main{grid-template-columns:15px minmax(0,1fr) 9px}.menu-ribbon span{font-size:8px}.inactive-alarm{font-size:6px}.graph-row svg.waveform-svg{height:75px}.waveform-tag{display:none}.waveform-legend{font-size:8px;gap:5px;padding:2px}.graph-area{padding:1px}.graph-head{font-size:9px}.vent-bottom{grid-template-columns:52px minmax(0,1fr)}.setup-panel{padding:5px 2px;font-size:9px}.setup-panel strong{font-size:11px}.setup-panel small{font-size:7px}.settings-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.settings-heading span{display:none}.setting{min-height:56px;padding:3px 2px}.setting-value{font-size:18px}.access-icons{grid-column:1/-1;display:flex;justify-content:space-around;align-items:center;border-left:0;border-top:1px solid #ffffff45;min-height:37px}.access-icons button,.access-icons .inert-control{font-size:15px;min-height:33px;padding:1px 6px}.settings-footer{flex-direction:column;align-items:flex-start}.bezel-controls{gap:3px;padding:7px 2px 0}.bezel-controls>span{width:27px;height:27px;font-size:13px}.bezel-controls small{font-size:5px}.rotary-knob{width:40px;height:40px;border-width:2px}.graph-disclaimer{font-size:8px}}

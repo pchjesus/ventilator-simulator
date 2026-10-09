@@ -113,6 +113,8 @@ function renderCircuit() {
   }
 }
 circuitTab.addEventListener("click",()=>showSideTab("circuit"));
+document.getElementById("shortcut-circuit").addEventListener("click",()=>showSideTab("circuit"));
+document.getElementById("shortcut-help").addEventListener("click",()=>showSideTab("help"));
 helpTab.addEventListener("click",()=>showSideTab("help"));
 document.getElementById("modeHelp").addEventListener("click",()=>explain("SIMV (PC) + PS","SIMV는 강제호흡과 자발호흡을 조합하는 모드야. 이 예시에서는 강제호흡은 압력제어(PC), 자발호흡은 압력보조(PS)로 표시했어. 정확한 설정 화면과 사용 범위는 PB980 매뉴얼을 확인해야 해."));
 document.getElementById("reset").addEventListener("click",()=>{state=initialSettings();refreshSettings();paintWaveforms();status.textContent="기본 예시 설정으로 초기화했어.";});

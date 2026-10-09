@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="theme-color" content="#14252d">
+  <meta name="theme-color" content="#06396f">
   <title>PB980 Ventilator Simulator | Educational Preview</title>
   <link rel="stylesheet" href="./styles.css">
   <script src="./src/app.js" type="module"></script>
@@ -14,14 +14,16 @@
       <h1>Puritan Bennett 980 <small>교육용 화면</small></h1></div>
     <button id="reset" type="button" class="reset">설정 초기화</button>
   </header>
-  <p class="warning" role="note">실제 환자 치료에 사용 불가 · PB980 참고형 교육용 UI · 상단 monitoring 값은 고정 예시, 아래 움직이는 파형은 단순화된 설명용 모델로 실제 환자 측정값이 아님</p>
+  <p class="warning" role="note">실제 환자 치료에 사용 불가 · PB980 외형 참고형 교육용 UI(실물과 동작 다름) · 상단 monitoring 값은 고정 예시, 아래 움직이는 파형은 단순화된 설명용 모델로 실제 환자 측정값이 아님</p>
   <main class="workspace">
-    <section class="ventilator" aria-label="인공호흡기 모니터">
-      <div class="device-top">
-        <span class="device-menu">MENU (학습용)</span><span>PB980 UI STUDY</span><strong>SIMV <span class="subtle">(PC) + PS</span></strong>
-        <span class="reference-flag">SIMULATION PREVIEW</span>
-      </div>
-      <div class="monitor" id="monitor" aria-label="참고용 모니터링 수치"></div>
+    <section class="ventilator" aria-label="PB980 스타일 교육용 인공호흡기 디스플레이">
+      <div class="bezel-brand" aria-hidden="true"><span class="bezel-logo">▣</span><strong>COVIDIEN</strong><span>Puritan Bennett</span><span>980 Series Ventilator</span><i class="bezel-led"></i></div>
+      <div class="device-display">
+        <div class="device-top"><span class="device-state"><span class="state-dot" aria-hidden="true">C</span> ADULT · INVASIVE</span><strong>SIMV <span class="subtle">(PC) + PS</span></strong><span class="reference-flag">EDUCATIONAL DEMO</span></div>
+        <div class="monitor-wrap"><div class="monitor" id="monitor" aria-label="고정 예시 환자 데이터 — 설정과 연동되지 않음"></div></div>
+        <div class="display-main">
+          <div class="menu-ribbon" aria-hidden="true"><span>MENU</span></div>
+          <div class="waveform-stage">
       <div class="waveform-toolbar">
         <div><strong>WAVEFORMS</strong><span class="waveform-tag"> SIMV PC+PS · 교육용 동적 파형</span></div>
         <button type="button" id="waveform-pause" aria-pressed="false" aria-label="파형 일시정지">Ⅱ Pause</button>
@@ -45,10 +47,27 @@
           </svg></div>
         <p class="graph-disclaimer">설정 연동: PEEP·Pi·PS·f·Tᵢ / 예시 자발호흡은 임의 생성 · FiO₂·V-TRIG, 실제 환자반응 및 상단 monitoring 값과는 미연동</p>
       </div>
+          </div>
+          <div class="display-edge" aria-hidden="true"><span class="inactive-alarm">ALARM AREA</span><span class="edge-pause">Ⅱ</span></div>
+        </div>
+        <div class="vent-bottom">
+          <div class="setup-panel" aria-label="현재 환자 예시 정보"><span>Adult</span><strong>SIMV</strong><span>PC · PS</span><small>IBW 60 kg<br/>EXAMPLE</small></div>
+          <div class="settings-area">
       <div class="settings-heading"><h2>Current settings</h2><span>작은 증감 버튼으로 설정 연습 · 실제 PB980 조작법과 다름</span></div>
       <div class="settings-grid" id="settings" aria-label="조절 가능한 설정"></div>
       <div class="settings-footer"><span>Mode: <strong>SIMV (PC) + PS</strong> <button type="button" id="modeHelp" class="help" aria-label="SIMV 모드 설명">?</button></span>
         <span id="status" aria-live="polite">설정값을 조절해 봐.</span></div>
+          </div>
+          <div class="access-icons" aria-label="학습용 바로가기">
+            <button id="shortcut-circuit" type="button" aria-label="회로 학습 패널 열기"><span aria-hidden="true">⌂</span><small>Home</small></button>
+            <span class="inert-control" aria-hidden="true"><span>⚒</span><small>Configure</small></span>
+            <span class="inert-control" aria-hidden="true"><span>◫</span><small>Logs</small></span>
+            <span class="inert-control" aria-hidden="true"><span>O₂</span><small>O₂</small></span>
+            <button id="shortcut-help" type="button" aria-label="항목 설명 패널 열기"><span aria-hidden="true">?</span><small>Help</small></button>
+          </div>
+        </div>
+      </div>
+      <div class="bezel-controls" aria-hidden="true"><span>☼<small>Display</small></span><span>▣<small>Lock</small></span><span>◈<small>Alarm</small></span><span>◖<small>Manual</small></span><i class="rotary-knob"></i><span>◖<small>Insp</small></span><span>◗<small>Exp</small></span><span>↻<small>Reset</small></span></div>
     </section>
     <aside class="study-panel" aria-label="학습 보조 영역">
       <div class="side-tabs" role="tablist" aria-label="학습 탭">
@@ -71,6 +90,6 @@
       </section>
     </aside>
   </main>
-  <footer class="footer">MVP v0.3.1 · 브라우저에서 동작하는 교육용 프런트엔드 · 임상/장비 동작 검증 전</footer>
+  <footer class="footer">MVP v0.3.2 · 브라우저에서 동작하는 교육용 프런트엔드 · 임상/장비 동작 검증 전</footer>
 </body>
 </html>
