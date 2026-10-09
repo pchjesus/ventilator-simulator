@@ -56,3 +56,12 @@
 - [x] Pause/resume scrolling and define a pure waveform generator with unit tests
 - [ ] Calibrate exact PB980 screen coordinates/colors and setting limits against local hardware/official operator manual
 - [ ] Add breath-level model and patient-specific mechanics (separate from current demonstration)
+
+## v0.3.1 — Math consistency and accessibility patch
+- [x] Replace exponential-expiration cutoff with exp × squared-end-taper waveform
+- [x] Analytical expiratory flow derivative with end-of-expiration smooth return to zero
+- [x] External input guard on rate/pressure/inspiratory duration for illustration engine
+- [x] Respect reduced-motion preference on initial load and allow opt-in playback
+- [x] Retain paused redraw on parameter changes while skipping repeated inactive paints
+- [x] Regression coverage for the new model and mobile/UI controls
+- [ ] Obtain validated PB980-specific setting bounds and real patient-waveform evidence before suggesting clinical equivalence

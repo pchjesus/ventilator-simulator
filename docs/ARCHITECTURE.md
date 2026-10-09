@@ -34,3 +34,8 @@ See [WAVEFORM_MODEL_v0.3.md](WAVEFORM_MODEL_v0.3.md) and [PB980_REFERENCE_AUDIT.
 
 ## Next safe milestone
 Verify actual PB980 screen geometry and documented operating ranges against model-specific manufacturer manual/screenshots; only then consider correcting mode-specific controls.
+
+## v0.3.1 numerical/accessibility boundaries
+- Illustrative model expiry: `V(v)=V_peak * exp(-3.2*v)*(1-v)^2` and corresponding analytic `dV/dt` for flow. This guarantees a zero-volume and zero-flow endpoint by construction, **not** patient physiological accuracy.
+- Waveform sampling rejects invalid caller input independently of the screen control bounds. The UI and numerical layer still remain separate.
+- The display checks `prefers-reduced-motion` on load, initially pauses movement when requested, and allows the viewer to explicitly resume. A paused display is not repainted every ~85 ms.

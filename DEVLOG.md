@@ -65,3 +65,16 @@
 - Oxygenation, ABGA, alarm, triggering mechanics, validated pulmonary compliance, patient-specific physiology, clinical PB980 emulation
 ### Deployment
 - Existing private repository retained; public website publishing deferred.
+
+## v0.3.1 — Numerical integrity and reduced-motion accessibility (2026-10-09)
+### Verified prepatch
+- v0.3.0 baseline: 13 model/parameter unit tests and browser/test/package GitHub Actions success (run 37933214408).
+### Changed
+- End-of-expiration volume and flow converge to zero using an exponential-times-squared-tail volume profile and its analytic derivative.
+- Reject invalid externally supplied study waveform rate and timing/pressure parameters before event generation.
+- Honor reduced-motion preference for initial paused state; allow explicit Resume and avoid redraws while paused.
+- Added end-of-expiration numerical derivative and safety tests; browser regression for playback preference and mandatory breath timing.
+### Limitations
+- No real PB980 parameter-range certification, physiological measurement validation, patient data or official deployment.
+### CI
+- Outcome recorded separately in TEST_REPORT for the current version.

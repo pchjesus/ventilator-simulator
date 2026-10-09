@@ -56,3 +56,11 @@ GitHub Actions run: https://github.com/pchjesus/ventilator-simulator/actions/run
 - Visual evidence: `browser-screenshots` artifact with desktop/mobile/narrow captures; inspected for layout readability. Not pixel-level OEM fidelity or physical-device test.
 - First browser run had ambiguous +1 vs +10 selector. Second surfaced an actual freeze-frame repaint race. Both were fixed and CI rerun successfully.
 - Clinical validation, parameter bounds and OEM waveform equivalence **not tested**.
+
+## v0.3.1 — Actual GitHub Actions verification (2026-10-09)
+- Run [37942300189](https://github.com/pchjesus/ventilator-simulator/actions/runs/37942300189): **SUCCESS** (`test`, `browser`, `package`).
+- Node unit tests: **16 passed, 0 failed**. Includes previous 13 and three additional numerical/safety cases.
+- Browser: desktop 1440px; mobile 360px/320px; settings, help, CIRCUIT, reset, keyboard focus, waveform response, pause/resume and reduced-motion preference passed.
+- Console/page script error capture: no errors observed in tested flows.
+- Initial run [37942154751](https://github.com/pchjesus/ventilator-simulator/actions/runs/37942154751) failed **only** because a new test requested 2,001 samples when the implementation allows at most 2,000. Corrected the test input, reran successfully.
+- Physical Android/iOS hardware, OEM GUI/pixel fidelity, manufacturer parameter bounds and clinical validity remain **unverified**.

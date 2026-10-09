@@ -1,4 +1,4 @@
-# Ventilator Simulator — v0.3.0 Preview
+# Ventilator Simulator — v0.3.1 Preview
 
 간호학생을 위한 **PB980(Puritan Bennett 980) 참고형 웹 시뮬레이터** 초기 실행본.
 실제 장비의 화면 구성 학습을 목표로 하지만, 임상 사용이나 기계 조작 훈련을 대체하지 않는다.
@@ -9,8 +9,8 @@
 - 테스트: Node.js 18 이상에서 `npm test`, `npm run check`
 - npm 의존성 없음. 브라우저 ES modules 사용. `file://` 직접 실행은 권장하지 않음.
 
-## 현재 구현 (v0.2.0)
-- PB980 스타일의 화면 구획: 상단 monitoring, 중앙 pressure/flow 파형, 하단 SIMV(PC)+PS 설정 영역
+## 현재 구현 (v0.3.1)
+- PB980 스타일의 화면 구획: 상단 monitoring, 중앙 pressure/flow/volume 파형, 하단 SIMV(PC)+PS 설정 영역
 - 화면 안에서 FiO₂, PEEP, f, Pi, Ti, PS, V-TRIG 값 증감 및 기본값 초기화
 - 각 설정 옆 `?` 도움말, 오른쪽 CIRCUIT 개념 학습 탭(부품/조립 개요/완성 개념도)
 - 화면이 작은 기기에서 우측 패널이 아래로 이동하는 반응형 레이아웃
@@ -51,3 +51,10 @@ v0.2.2 improves keyboard-focus continuity when adjusting settings and adds a 320
 - 파형의 용적·유량은 서로 도함수 관계를 갖도록 구성했지만 가상 순응도와 자발호흡 이벤트는 **설명용으로 임의 설정**한 것이다.
 - PB980의 실제 파형 동작·임상 적용을 재현한다는 의미는 아니다.
 - [파형 모델 가정](docs/WAVEFORM_MODEL_v0.3.md) 문서를 참고해.
+
+## v0.3.1 — 파형 무결성·접근성 보완
+- 호기말 Volume과 Flow가 함께 0으로 수렴하도록 교육용 파형 계산을 수정하고 유량-용적 미분 관계를 단위 테스트로 확인한다.
+- 기기 접근성 설정의 **동작 줄이기 (prefers-reduced-motion)** 가 켜져 있으면 파형을 멈춘 채 시작한다. 학생이 Resume으로 재생을 직접 선택할 수 있다.
+- Pause 중 화면 재그리기를 줄여 불필요한 연산을 피하며, 설정값을 바꾸면 해당 파형은 여전히 갱신된다.
+- 외부 호출에서 비정상 호흡수/흡기시간 등 입력을 전달해도 과도한 반복이나 유효하지 않은 파형 생성을 피하도록 기본 검증을 추가한다.
+- 위 변경은 **교육용 모델의 수학적 일관성 개선**일 뿐 환자 생리모델을 임상적으로 검증했다는 의미는 아니다.
