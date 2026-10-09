@@ -1,6 +1,8 @@
-# Web deployment — separate public repo, private development source
+# Future web deployment option — private development source
 
-## Decision
+## Historical optional plan (not enabled)
+**Current decision: keep the original repository private and DO NOT deploy a public website.** GitHub-only source/test review is documented in [PRIVATE_GITHUB_WORKFLOW.md](PRIVATE_GITHUB_WORKFLOW.md). The steps below are an optional future deployment plan, not a required task.
+
 Keep `pchjesus/ventilator-simulator` **private**.
 Deploy only four runnable code files and `.nojekyll` to a separate public repository.
 Do **not** publish the lecture reference image, internal notes, or other assets by default.

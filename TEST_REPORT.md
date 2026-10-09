@@ -37,3 +37,13 @@ GitHub Actions run: https://github.com/pchjesus/ventilator-simulator/actions/run
 - Browser screenshot artifacts: `desktop.png` and `mobile.png` attached to the run.
 - Screenshot visual inspection: two-column desktop composition and stacked mobile controls are legible; this is **not** a pixel-match test against PB980.
 - Real phone, touch comfort and manufacturer clinical parameter confirmation: **not verified**.
+
+## v0.2.2 — CI result (2026-10-09)
+- [GitHub Actions 37885689471](https://github.com/pchjesus/ventilator-simulator/actions/runs/37885689471): **SUCCESS** across `test`, `browser`, and `package`.
+- Syntax verification and the five existing unit tests: passed.
+- Chromium desktop: 1440px main screen, help, circuit steps, reset, example monitor isolation: passed.
+- Chromium mobile: 360px + PEEP 0.1 and help: passed.
+- Chromium narrow mobile: 320px no horizontal page overflow, setting interaction: passed.
+- Keyboard: FiO₂ increment button retains focus after click; Enter increments again: passed.
+- Screenshot artifacts uploaded, including 320px output.
+- Not covered: actual Android/iOS hardware, PB980 manufacturer setting bounds, clinical model fidelity, a public website URL.

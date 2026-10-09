@@ -36,3 +36,18 @@
 - Separate public GitHub repository creation/connection
 - Pages publishing and public URL smoke tests
 - Real smartphone testing, PB980 fidelity and clinical model validation
+
+## v0.2.2 — Private GitHub inspection and usability (2026-10-09)
+### Added
+- GitHub Actions `workflow_dispatch` (manual run on main).
+- Headless Chromium 320px responsive check and keyboard-repeat test.
+- `docs/PRIVATE_GITHUB_WORKFLOW.md` and partial official PB980 reference audit.
+### Fixed
+- Parameter step buttons are no longer re-created on every click, preserving focus during keyboard repeat.
+- Reset updates settings in place.
+### Verified
+- GitHub Actions run [37885689471](https://github.com/pchjesus/ventilator-simulator/actions/runs/37885689471): test, browser and package jobs succeeded.
+### Limitations
+- Real hardware/physical smartphone/manual clinical validation not performed.
+- Monitoring and waveform remain explicitly static reference examples.
+- Public GitHub Pages release deferred; original repository remains private.

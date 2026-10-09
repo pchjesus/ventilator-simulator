@@ -12,8 +12,9 @@
 - [x] Add parameter step controls + `?` explanations + reset
 - [x] Add right-side CIRCUIT *concept* views (not real assembly)
 - [x] Basic pure-function automated tests
-- [ ] Full visual/interaction check in browser and real device
-- [ ] Deploy a publicly usable URL after repository visibility decision
+- [x] Automated Chromium desktop, 360px and 320px acceptance checks
+- [ ] Manual review on physical PC and smartphone
+- [x] Private GitHub code/Actions review selected; public URL release deferred
 
 ## Phase 2 — Reference-consistent controls / dynamic waveform
 - [ ] Exact PB980 mode settings, valid ranges, increments and tooltips from manuals
@@ -40,3 +41,9 @@
 - Per patch: unit + affected feature + regression verification
 - Before release: live browser, mobile, clinical content and deployment checks
 - Do not label unverified behavior as validated
+
+## v0.2.2 reliability improvements
+- [x] Preserve keyboard focus during repeated parameter adjustment
+- [x] Enable manual workflow trigger in GitHub Actions
+- [x] Document how to inspect and run the private project
+- [x] Manufacturer reference audit (partial only, limits not yet verified)

@@ -1,4 +1,4 @@
-# Ventilator Simulator — v0.2.0 Preview
+# Ventilator Simulator — v0.2.2 Preview
 
 간호학생을 위한 **PB980(Puritan Bennett 980) 참고형 웹 시뮬레이터** 초기 실행본.
 실제 장비의 화면 구성 학습을 목표로 하지만, 임상 사용이나 기계 조작 훈련을 대체하지 않는다.
@@ -29,11 +29,17 @@
 - [DEVLOG.md](DEVLOG.md)
 - [TEST_REPORT.md](TEST_REPORT.md)
 
-## GitHub Pages 공개 결정
+## GitHub Pages (optional, currently deferred)
 정적 파일이므로 별도 API/DB 없이 GitHub Pages로 배포할 수 있다.
 현재 저장소가 **private**이므로 공개 전환 또는 유료 플랜/비공개 Pages 지원 여부 확인은 사용자 결정 사항이다.
 저장소를 임의로 public으로 전환하지 않는다. Pages를 활성화하더라도 배포 URL과 접속 권한을 별도 확인해야 한다.
 
-## Public website preparation
+## Optional future public website preparation
 GitHub Actions now checks Chromium desktop/mobile behavior and uploads screenshots. After all checks pass, a separate `pb980-web-only` artifact contains only the browser-runnable site files. No lecture image or project working notes are shipped in that bundle.
 See [Deployment guide](docs/DEPLOYMENT.md) for the public-repo setup and acceptance steps. The current private repository is **not** itself a verified publicly deployed URL.
+
+## Private GitHub review — current workflow
+No public website is being published. Browse the **Code** tab and use **Actions → Ventilator simulator checks** to run tests manually and download desktop/mobile screenshot artifacts.
+Read [Private GitHub review](docs/PRIVATE_GITHUB_WORKFLOW.md) for step-by-step instructions and local execution.
+See [PB980 reference audit](docs/PB980_REFERENCE_AUDIT.md) for what is and is not manufacturer-verified.
+v0.2.2 improves keyboard-focus continuity when adjusting settings and adds a 320px narrow-screen regression check.
