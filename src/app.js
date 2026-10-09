@@ -1,4 +1,4 @@
-import {VERSION, PARAMETERS, MONITOR_REFERENCE, initialSettings, adjustSetting, formatSetting} from "./sim-model.js";
+import {VERSION, PARAMETERS, DEVICE_REFERENCE, MONITOR_REFERENCE, initialSettings, adjustSetting, formatSetting} from "./sim-model.js";
 import {generateWaveform, previewScales} from "./waveform-model.js";
 const settingsContainer = document.getElementById("settings");
 const monitor = document.getElementById("monitor");
@@ -22,9 +22,15 @@ function showSideTab(tab) {
   helpTab.setAttribute("aria-selected",String(help));
   circuitTab.setAttribute("aria-selected",String(!help));
 }
-function explain(title, description) {
+function explain(title, description, reference = null) {
   document.getElementById("help-title").textContent = title;
   document.getElementById("help-body").textContent = description;
+  const info=document.getElementById("reference-info");
+  info.hidden=!reference;
+  info.textContent=reference
+    ? "PB980 매뉴얼 기준 (성인·해당 설정): "+reference.detail+
+      " · 화면의 ± 버튼/설정 범위는 별도의 교육용 예시이며, 실제 장비의 조작·제약조건을 완전히 재현하지 않아."
+    : "";
   showSideTab("help");
 }
 function renderMonitor() {
@@ -62,7 +68,7 @@ function renderSettings() {
     }
     const help=document.createElement("button");help.type="button";help.className="help";help.textContent="?";
     help.setAttribute("aria-label",param.label+" 설명 보기");
-    help.addEventListener("click",()=>explain(param.label,param.help));
+    help.addEventListener("click",()=>explain(param.label,param.help,DEVICE_REFERENCE[param.id]));
     buttons.append(help);
     card.append(label,value,unit,buttons);settingsContainer.append(card);
   }

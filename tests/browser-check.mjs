@@ -19,6 +19,16 @@ try {
   assert.equal(await desktop.locator(".readout").count(),7);
   assert.equal(await desktop.locator("#panel-circuit").isVisible(),true);
   pass("desktop loads all 7 settings and 7 reference readouts");
+  const geography=await desktop.evaluate(()=>{
+    const rect=selector=>document.querySelector(selector).getBoundingClientRect();
+    return {monitor:rect(".monitor-wrap"),state:rect(".device-top"),waves:rect(".graph-area"),prompt:rect(".prompt-area"),settings:rect(".vent-bottom"),axis:rect(".graph-head"),plot:rect("#graph-pressure")};
+  });
+  assert.ok(geography.monitor.bottom<=geography.state.top+2,"patient data should lead screen");
+  assert.ok(geography.state.bottom<=geography.waves.top+40,"waveforms follow reference state");
+  assert.ok(geography.waves.bottom<=geography.prompt.top+2,"prompt below waveforms");
+  assert.ok(geography.prompt.bottom<=geography.settings.top+2,"settings below prompt");
+  assert.ok(geography.axis.right<=geography.plot.left+2,"axis labels at plot left");
+  pass("manufacturer-inspired panel geography and graph axes");
 
   const monitorBefore=await desktop.locator("#monitor").innerText();
   const oxygenUp=desktop.getByRole("button",{name:"O₂ 증가 10"});
@@ -32,7 +42,13 @@ try {
   await desktop.getByRole("button",{name:"O₂ 설명 보기"}).click();
   assert.equal(await desktop.locator("#panel-help").isVisible(),true);
   assert.equal(await desktop.locator("#help-title").innerText(),"O₂");
+  assert.match(await desktop.locator("#reference-info").innerText(),/21–100%/);
+  assert.match(await desktop.locator("#reference-info").innerText(),/교육용/);
   pass("setting help opens on right");
+  await desktop.getByRole("tab",{name:"CIRCUIT"}).click();
+  await desktop.getByRole("button",{name:"Pᵢ 설명 보기"}).click();
+  assert.match(await desktop.locator("#reference-info").innerText(),/5–90 cmH₂O/);
+  pass("device reference separated from educational step controls");
   await desktop.getByRole("tab",{name:"CIRCUIT"}).click();
   await desktop.getByRole("button",{name:"조립 개요"}).click();
   assert.match(await desktop.locator("#circuit-content").innerText(),/1\/4/);
@@ -96,6 +112,8 @@ try {
   assert.equal(mobileResponse.status(),200);
   await mobile.locator(".setting").first().waitFor({state:"visible"});
   assert.equal(await mobile.locator(".setting").count(),7);
+  assert.equal(await mobile.locator(".prompt-area").count(),1);
+  assert.equal(await mobile.locator(".settings-grid").evaluate(el=>getComputedStyle(el).gridTemplateColumns.split(" ").length),2,"mobile study settings must use two columns");
   const width=await mobile.evaluate(()=>({scroll:document.documentElement.scrollWidth,client:document.documentElement.clientWidth}));
   assert.ok(width.scroll<=width.client+2,"mobile horizontal overflow "+JSON.stringify(width));
   await mobile.getByRole("button",{name:"PEEP 증가 0.1"}).click();
@@ -117,6 +135,7 @@ try {
   await narrow.locator(".setting").first().waitFor({state:"visible"});
   const narrowSize=await narrow.evaluate(()=>({scroll:document.documentElement.scrollWidth,client:document.documentElement.clientWidth}));
   assert.ok(narrowSize.scroll<=narrowSize.client+2,"320px horizontal overflow "+JSON.stringify(narrowSize));
+  assert.equal(await narrow.locator(".settings-grid").evaluate(el=>getComputedStyle(el).gridTemplateColumns.split(" ").length),2,"320px study controls must retain readable two-column layout");
   await narrow.getByRole("button",{name:"O₂ 증가 10"}).click();
   assert.equal(await narrow.locator(".setting-value").first().innerText(),"50");
   pass("320px mobile width: no horizontal overflow, settings interactive");
