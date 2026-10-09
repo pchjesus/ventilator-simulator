@@ -113,6 +113,7 @@ try {
   await mobile.locator(".setting").first().waitFor({state:"visible"});
   assert.equal(await mobile.locator(".setting").count(),7);
   assert.equal(await mobile.locator(".prompt-area").count(),1);
+  assert.equal(await mobile.locator(".settings-grid").evaluate(el=>getComputedStyle(el).gridTemplateColumns.split(" ").length),2,"mobile study settings must use two columns");
   const width=await mobile.evaluate(()=>({scroll:document.documentElement.scrollWidth,client:document.documentElement.clientWidth}));
   assert.ok(width.scroll<=width.client+2,"mobile horizontal overflow "+JSON.stringify(width));
   await mobile.getByRole("button",{name:"PEEP 증가 0.1"}).click();
@@ -134,6 +135,7 @@ try {
   await narrow.locator(".setting").first().waitFor({state:"visible"});
   const narrowSize=await narrow.evaluate(()=>({scroll:document.documentElement.scrollWidth,client:document.documentElement.clientWidth}));
   assert.ok(narrowSize.scroll<=narrowSize.client+2,"320px horizontal overflow "+JSON.stringify(narrowSize));
+  assert.equal(await narrow.locator(".settings-grid").evaluate(el=>getComputedStyle(el).gridTemplateColumns.split(" ").length),2,"320px study controls must retain readable two-column layout");
   await narrow.getByRole("button",{name:"O₂ 증가 10"}).click();
   assert.equal(await narrow.locator(".setting-value").first().innerText(),"50");
   pass("320px mobile width: no horizontal overflow, settings interactive");
