@@ -56,13 +56,13 @@ try {
   const pausedPath=await pPath.getAttribute("d");
   await desktop.waitForTimeout(260);
   assert.equal(await pPath.getAttribute("d"),pausedPath,"paused waveform should not scroll");
-  await desktop.getByRole("button",{name:"Pᵢ 증가 1"}).click();
+  await desktop.getByRole("button",{name:"Pᵢ 증가 1",exact:true}).click();
   const higherPi=await pPath.getAttribute("d");
   assert.notEqual(higherPi,pausedPath,"Pi should update mandatory waveform");
   const beforePS=await desktop.locator('#graph-pressure [data-phase="spontaneous"]').getAttribute("d");
-  await desktop.getByRole("button",{name:"PS 증가 1"}).click();
+  await desktop.getByRole("button",{name:"PS 증가 1",exact:true}).click();
   assert.notEqual(await desktop.locator('#graph-pressure [data-phase="spontaneous"]').getAttribute("d"),beforePS);
-  await desktop.getByRole("button",{name:"PEEP 증가 1"}).click();
+  await desktop.getByRole("button",{name:"PEEP 증가 1",exact:true}).click();
   assert.notEqual(await pPath.getAttribute("d"),higherPi);
   await desktop.getByRole("button",{name:"파형 재생"}).click();
   const playingBefore=await pPath.getAttribute("d");
