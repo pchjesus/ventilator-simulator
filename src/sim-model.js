@@ -1,6 +1,18 @@
 // Educational UI demonstration; not verified PB980 operating ranges.
-export const VERSION = "0.3.2";
+export const VERSION = "0.3.3";
 export const DEVICE = "Puritan Bennett 980 (reference-inspired)";
+// Adult invasive SIMV/PC/PS manufacturer's Table 11-9 reference data.
+// These DO NOT replace the separate educational control ranges or steps.
+// Mode-dependent and conditional soft/hard bounds are not implemented.
+export const DEVICE_REFERENCE = Object.freeze({
+  fio2:{min:21,max:100,resolution:"1%",detail:"21–100%; 설정 해상도 1%"},
+  peep:{min:0,max:45,resolution:"0.5 cmH₂O (<20), 1 cmH₂O (≥20)",detail:"0–45 cmH₂O; 20 미만 0.5, 20 이상 1"},
+  rate:{min:1,max:100,resolution:"0.1/min (<10), 1/min (≥10)",detail:"성인 1–100/min; 10 미만 0.1, 10 이상 1"},
+  pi:{min:5,max:90,resolution:"1 cmH₂O",detail:"5–90 cmH₂O; 1 cmH₂O"},
+  ti:{min:0.2,max:8,resolution:"0.01 s",detail:"PC 강제호흡 0.2–8 s; 0.01 s"},
+  ps:{min:0,max:70,resolution:"1 cmH₂O",detail:"0–70 cmH₂O; 1 cmH₂O"},
+  trigger:{min:0.2,max:20,resolution:"0.1 L/min",detail:"성인 유량 트리거 0.2–20 L/min; 0.1 L/min"}
+});
 export const PARAMETERS = Object.freeze([
   {id:"fio2", label:"O₂", unit:"%", initial:40, min:21, max:100, precision:0, steps:[-10,-1,1,10], help:"FiO₂: 흡입 산소 농도. 산소화와 관련되며 SpO₂/ABGA를 함께 평가해야 해."},
   {id:"peep", label:"PEEP", unit:"cmH₂O", initial:5, min:0, max:20, precision:1, steps:[-10,-1,-0.1,0.1,1,10], help:"호기말 양압. 호기 말 기도압이 0으로 떨어지지 않도록 하는 설정이야. 실제 산소화·혈역학 반응은 환자에 따라 달라."},
