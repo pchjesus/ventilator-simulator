@@ -120,3 +120,38 @@ body{max-width:1680px;background:#e9f0f4}
 @media(max-width:1200px){.vent-bottom{grid-template-columns:87px minmax(0,1fr) 71px}}
 @media(max-width:960px){.workspace{grid-template-columns:1fr}.vent-bottom{grid-template-columns:100px minmax(0,1fr) 88px}}
 @media(max-width:550px){body{padding:9px}.ventilator{padding:7px 6px 5px;border-width:3px;border-radius:27px 27px 22px 22px}.bezel-brand{gap:4px;font-size:8px;padding-bottom:7px}.bezel-brand strong{font-size:9px}.bezel-logo{font-size:13px}.bezel-led{width:34px;margin-top:-35px}.device-top{padding:2px 4px;font-size:9px;gap:3px}.device-state{font-size:8px;gap:2px}.device-top strong{font-size:9px}.state-dot{width:17px;height:17px;font-size:10px}.reference-flag{font-size:7px}.monitor{grid-template-columns:repeat(4,minmax(0,1fr))}.readout{min-height:49px;padding:3px 1px}.readout strong{font-size:18px}.display-main{grid-template-columns:15px minmax(0,1fr) 9px}.menu-ribbon span{font-size:8px}.inactive-alarm{font-size:6px}.graph-row svg.waveform-svg{height:75px}.waveform-tag{display:none}.waveform-legend{font-size:8px;gap:5px;padding:2px}.graph-area{padding:1px}.graph-head{font-size:9px}.vent-bottom{grid-template-columns:52px minmax(0,1fr)}.setup-panel{padding:5px 2px;font-size:9px}.setup-panel strong{font-size:11px}.setup-panel small{font-size:7px}.settings-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.settings-heading span{display:none}.setting{min-height:56px;padding:3px 2px}.setting-value{font-size:18px}.access-icons{grid-column:1/-1;display:flex;justify-content:space-around;align-items:center;border-left:0;border-top:1px solid #ffffff45;min-height:37px}.access-icons button,.access-icons .inert-control{font-size:15px;min-height:33px;padding:1px 6px}.settings-footer{flex-direction:column;align-items:flex-start}.bezel-controls{gap:3px;padding:7px 2px 0}.bezel-controls>span{width:27px;height:27px;font-size:13px}.bezel-controls small{font-size:5px}.rotary-knob{width:40px;height:40px;border-width:2px}.graph-disclaimer{font-size:8px}}
+
+
+/* v0.3.3 reference-geography refinement; educational controls are preserved. */
+.monitor-caption{display:flex;align-items:center;justify-content:space-between;gap:7px;padding:3px 6px 1px;color:#e5f5ff;font-size:9px;font-weight:750;letter-spacing:.06em}
+.monitor-caption span{font-size:9px;font-weight:500;letter-spacing:0;color:#dbeeff}
+.monitor-wrap{padding:0 6px 5px}.monitor{gap:0}
+.readout{min-height:65px;border-right:1px solid #ffffff34;padding:5px 2px}
+.readout .label{font-size:11px}.readout strong{font-variant-numeric:tabular-nums;font-size:clamp(19px,1.9vw,28px)}
+.device-top{background:#061d34;border-bottom:1px solid #214764;min-height:27px}
+.device-top .state-sample{font-size:9px;color:#a9c7d6;font-weight:400}
+.waveform-stage{display:flex;flex-direction:column}.graph-area{padding:2px 5px 3px}
+.graph-row{display:grid;grid-template-columns:86px minmax(0,1fr);align-items:stretch;column-gap:3px;margin-bottom:2px}
+.graph-head{display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:7px;min-width:0;margin:0;padding:5px 4px;background:#061526;border-right:1px solid #29536f;color:#e2f4fa;font-size:10px;overflow-wrap:anywhere}
+.graph-head span:last-child{font-size:9px;color:#8fc8e6}
+.graph-row svg.waveform-svg{min-width:0;height:106px;border-bottom:1px solid #2b486a;background-size:12.5% 25%}
+.graph-disclaimer{padding-left:90px}
+.prompt-area{display:flex;flex-wrap:wrap;align-items:center;gap:8px;background:#082843;border-top:1px solid #27628f;min-height:23px;padding:4px 8px;color:#cfeaff;font-size:9px;line-height:1.3}
+.prompt-area>span:first-child{color:#8db7d0;font-weight:750;white-space:nowrap}
+.settings-heading h2 small{font-weight:500;color:#e0f5ff;margin-left:8px;font-size:9px}
+.settings-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+.setting{background:linear-gradient(180deg,#147abc,#07529b);border-color:#5ca3da}
+.setting-name{font-size:11px}.setting-value{font-variant-numeric:tabular-nums}
+.reference-info{padding:11px 12px;background:#e8f2fb;border-left:3px solid #2c6e9f;color:#194564;font-size:12px!important;line-height:1.6!important}
+#status{color:#e8f7ff;font-size:10px}
+@media(max-width:700px){.graph-row{grid-template-columns:64px minmax(0,1fr)}.graph-head{font-size:9px;padding:3px}.graph-head span:last-child{font-size:8px}.graph-disclaimer{padding-left:68px}.readout strong{font-size:19px}}
+@media(max-width:550px){
+ .monitor-caption{font-size:8px;letter-spacing:0;padding:2px 4px}.monitor-caption span{font-size:8px}
+ .readout{min-height:49px}.readout .label{font-size:9px}.readout strong{font-size:17px}
+ .graph-row{grid-template-columns:51px minmax(0,1fr);column-gap:2px}
+ .graph-row svg.waveform-svg{height:78px}.graph-head{font-size:8px;gap:4px;padding:2px}.graph-head span:last-child{font-size:7px}
+ .graph-disclaimer{padding-left:0;font-size:8px}
+ .prompt-area{padding:3px 5px;font-size:8px}.prompt-area>span:first-child{font-size:7px}#status{font-size:9px}
+ .settings-heading h2 small{font-size:8px;margin-left:3px}
+ .device-top .state-sample{font-size:7px}
+}
