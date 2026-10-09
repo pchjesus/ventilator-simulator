@@ -75,3 +75,9 @@ GitHub Actions run: https://github.com/pchjesus/ventilator-simulator/actions/run
 - Reduced-motion preference and playback remain functional; no JS page/console errors captured in tested flows.
 - Screenshots retained in Actions browser-screenshots artifact; desktop/320px visually inspected.
 - Manufacturer limits, pixel-perfect matching, physical phone touch experience and clinical accuracy: NOT validated.
+
+## v0.3.3 — PB980 reference GUI patch (2026-10-10)
+- Starting remote main head: `69aff76fd34cc2424acc35d410f7fb1a9cbc20de` (v0.3.2).
+- Added three new manufacturer-reference consistency tests alongside 16 existing pure tests; extended browser checks for visual region geography, left graph labels, reference help and original controls.
+- **Execution pending**: Do not report a CI success until the actual workflow run and screenshot evidence have been checked.
+- Outside scope / still unverified: device-specific firmware pixel comparison, physical smartphone, true clinical parameter interlocks, actual ventilator waveform or clinical use.
