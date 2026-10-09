@@ -68,7 +68,7 @@ test("expiratory flow is the time derivative of expiratory volume",()=>{
 });
 test("expiratory flow smoothly returns to zero at breath boundary",()=>{
   const settings={...defaults,rate:30,ps:0};
-  const samples=generateWaveform(settings,0,2,2001);
+  const samples=generateWaveform(settings,0,2,2000);
   const lastExpiration=samples.filter(s=>s.phase==="expiration").at(-1);
   assert.ok(lastExpiration.volume<0.01,"residual volume too high");
   assert.ok(Math.abs(lastExpiration.flow)<0.1,"expiratory flow should approach zero");
