@@ -33,3 +33,7 @@
 정적 파일이므로 별도 API/DB 없이 GitHub Pages로 배포할 수 있다.
 현재 저장소가 **private**이므로 공개 전환 또는 유료 플랜/비공개 Pages 지원 여부 확인은 사용자 결정 사항이다.
 저장소를 임의로 public으로 전환하지 않는다. Pages를 활성화하더라도 배포 URL과 접속 권한을 별도 확인해야 한다.
+
+## Public website preparation
+GitHub Actions now checks Chromium desktop/mobile behavior and uploads screenshots. After all checks pass, a separate `pb980-web-only` artifact contains only the browser-runnable site files. No lecture image or project working notes are shipped in that bundle.
+See [Deployment guide](docs/DEPLOYMENT.md) for the public-repo setup and acceptance steps. The current private repository is **not** itself a verified publicly deployed URL.

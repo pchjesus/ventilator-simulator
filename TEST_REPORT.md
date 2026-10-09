@@ -27,3 +27,13 @@ Do not interpret source-code presence as browser acceptance evidence.
 - Node model tests: **5 passed / 0 failed** (initial state, bounds, decimal arithmetic, invalid operations, immutability)
 - Actual browser execution, manual screen/interaction review and real-device checks: **not yet verified**
 - CI proves the tested source paths, not PB980 clinical fidelity or public URL deployment.
+
+## Browser acceptance and screenshot review (2026-10-09)
+GitHub Actions run: https://github.com/pchjesus/ventilator-simulator/actions/runs/37883088395
+
+- Chromium headless desktop (1440×900 viewport): PASS; initial UI, seven settings, seven static monitor values, increment, help, circuit tabs and assembly steps, reset.
+- Chromium headless mobile (360×780 viewport): PASS; no horizontal overflow, PEEP +0.1, help tab interaction.
+- Script/page console errors observed: none.
+- Browser screenshot artifacts: `desktop.png` and `mobile.png` attached to the run.
+- Screenshot visual inspection: two-column desktop composition and stacked mobile controls are legible; this is **not** a pixel-match test against PB980.
+- Real phone, touch comfort and manufacturer clinical parameter confirmation: **not verified**.

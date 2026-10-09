@@ -41,3 +41,25 @@ jobs:
           name: browser-screenshots
           path: artifacts/browser/
           if-no-files-found: ignore
+
+  package:
+    needs: [test, browser]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Stage public-safe static web files only
+        run: |
+          mkdir -p dist/src
+          cp index.html styles.css dist/
+          cp src/app.js src/sim-model.js dist/src/
+          touch dist/.nojekyll
+          test -s dist/index.html
+          test -s dist/styles.css
+          test -s dist/src/app.js
+          test -s dist/src/sim-model.js
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pb980-web-only
+          path: dist/
+          include-hidden-files: true
+          if-no-files-found: error
