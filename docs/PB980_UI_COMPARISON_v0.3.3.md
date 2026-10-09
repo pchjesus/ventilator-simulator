@@ -22,7 +22,7 @@ Educational adult invasive SIMV with PC mandatory and PS spontaneous breaths. Th
 - **Unverified:** one firmware-identified GUI screenshot, exact OEM axis values, real touchscreen workflows/knob, clinical accuracy, true conditional hard/soft bounds or compatible hardware controls.
 
 ## Version-specific verification
-CI unit tests, real browser tests, screenshot visual review and their exact results must be recorded in TEST_REPORT after actual execution. Implementation is not verification.
+GitHub Actions run [37962366798](https://github.com/pchjesus/ventilator-simulator/actions/runs/37962366798) passed 19/19 Node tests, Chromium checks and packaging on the patched application code. Three generated 1440/360/320px screenshots were visually inspected. The initial v0.3.3 artifact exposed a mobile four-column regression that was repaired to two columns and checked in fresh screenshots. The subsequent test-only 2-column assertion has its own CI run (37962394683); do not infer its outcome without checking it. See TEST_REPORT for details. There is no version-matched OEM pixel comparison.
 
 ## Explicit UX decision and risk
 The originally available +0.1/-0.1 buttons conflict with actual OEM resolutions (e.g. PC Pᵢ and PS use 1 cmH₂O). The educational state updater and its teaching bounds remain unchanged by design. Manufacturer data are sourced reference material in the ? panel, not asserted active clinical limits. Introducing manufacturer-correct interlocks requires a separate UX mode and tests, not silent rounding under familiar controls.
