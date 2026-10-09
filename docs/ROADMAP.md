@@ -19,8 +19,8 @@
 ## Phase 2 — Reference-consistent controls / dynamic waveform
 - [ ] Exact PB980 mode settings, valid ranges, increments and tooltips from manuals
 - [ ] Separate normal breath state/events from visual curves
-- [ ] Pressure, flow and volume waveform generated from a documented simplified model
-- [ ] Mandatory/spontaneous breath distinction and clock/pause/reset
+- [x] Pressure, flow and volume waveform generated from a documented **illustrative** model (not a validated patient model)
+- [x] Illustrative mandatory/spontaneous distinction and scroll/pause/reset; **true breath synchronization remains pending**
 
 ## Phase 3 — Circuit learning
 - [ ] Confirm specific circuit profile and component connections
@@ -47,3 +47,12 @@
 - [x] Enable manual workflow trigger in GitHub Actions
 - [x] Document how to inspect and run the private project
 - [x] Manufacturer reference audit (partial only, limits not yet verified)
+
+## v0.3.0 — Completed educational preview
+- [x] Add 3 time-based preview plots (pressure, flow, volume) with phase legend
+- [x] Add optional simulated spontaneous breaths for teaching differences
+- [x] Use UI inputs PEEP, Pi, PS, f and Ti to redraw preview
+- [x] Retain FiO2/V-TRIG as unmodeled controls; preserve monitoring readouts as static examples
+- [x] Pause/resume scrolling and define a pure waveform generator with unit tests
+- [ ] Calibrate exact PB980 screen coordinates/colors and setting limits against local hardware/official operator manual
+- [ ] Add breath-level model and patient-specific mechanics (separate from current demonstration)

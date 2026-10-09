@@ -1,11 +1,11 @@
-# Private GitHub review / execution workflow (v0.2.2)
+# Private GitHub review / execution workflow (v0.3.0)
 
 ## Scope
 Keep `pchjesus/ventilator-simulator` **private**. Public Pages deployment is explicitly deferred.
 The GitHub **Code** tab shows source files, not a running app.
 
 ## Review without publishing
-1. Open [repository Code](https://github.com/pchjesus/ventilator-simulator) and inspect `index.html`, `src/app.js`, `src/sim-model.js`, `README.md` and `DEVLOG.md`.
+1. Open [repository Code](https://github.com/pchjesus/ventilator-simulator) and inspect `index.html`, `src/app.js`, `src/sim-model.js`, `src/waveform-model.js`, `README.md` and `DEVLOG.md`.
 2. Open [Actions](https://github.com/pchjesus/ventilator-simulator/actions) → **Ventilator simulator checks**.
 3. To run tests again without editing code, select **Run workflow**, branch `main`.
 4. Open the completed workflow run. Verify three jobs: `test`, `browser`, `package`.
@@ -20,7 +20,7 @@ In either case, serve the extracted folder via a static server (for example Pyth
 python -m http.server 8077
 ```
 
-Open http://127.0.0.1:8077/ in the same computer's browser. Keep `index.html`, `styles.css`, `src/app.js`, `src/sim-model.js` in their respective paths. Opening `index.html` as `file://` may fail due to browser ES module rules.
+Open http://127.0.0.1:8077/ in the same computer's browser. Keep `index.html`, `styles.css`, `src/app.js`, `src/sim-model.js`, `src/waveform-model.js` in their respective paths. Opening `index.html` as `file://` may fail due to browser ES module rules.
 
 ## When a hosted link is desired
 Private GitHub repository does **not** imply a private Pages website.

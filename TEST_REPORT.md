@@ -47,3 +47,12 @@ GitHub Actions run: https://github.com/pchjesus/ventilator-simulator/actions/run
 - Keyboard: FiO₂ increment button retains focus after click; Enter increments again: passed.
 - Screenshot artifacts uploaded, including 320px output.
 - Not covered: actual Android/iOS hardware, PB980 manufacturer setting bounds, clinical model fidelity, a public website URL.
+
+## v0.3.0 GitHub Actions verified
+- Run: https://github.com/pchjesus/ventilator-simulator/actions/runs/37932826738
+- Outcome: `test`, `browser`, and `package` **success**.
+- Numerical waveform tests: **8**; preexisting setting tests: **5**; syntax checks passed.
+- Browser: all three traces, Pi/PS/PEEP changes, pause/resume, focus, reset, CIRCUIT, help, 1440/360/320px layouts, JS error capture.
+- Visual evidence: `browser-screenshots` artifact with desktop/mobile/narrow captures; inspected for layout readability. Not pixel-level OEM fidelity or physical-device test.
+- First browser run had ambiguous +1 vs +10 selector. Second surfaced an actual freeze-frame repaint race. Both were fixed and CI rerun successfully.
+- Clinical validation, parameter bounds and OEM waveform equivalence **not tested**.

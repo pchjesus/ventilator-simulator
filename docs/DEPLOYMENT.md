@@ -4,7 +4,7 @@
 **Current decision: keep the original repository private and DO NOT deploy a public website.** GitHub-only source/test review is documented in [PRIVATE_GITHUB_WORKFLOW.md](PRIVATE_GITHUB_WORKFLOW.md). The steps below are an optional future deployment plan, not a required task.
 
 Keep `pchjesus/ventilator-simulator` **private**.
-Deploy only four runnable code files and `.nojekyll` to a separate public repository.
+Deploy only five runnable code files and `.nojekyll` to a separate public repository.
 Do **not** publish the lecture reference image, internal notes, or other assets by default.
 
 ## Before deployment
@@ -16,12 +16,13 @@ Do **not** publish the lecture reference image, internal notes, or other assets 
    - `styles.css`
    - `src/app.js`
    - `src/sim-model.js`
+   - `src/waveform-model.js`
    - `.nojekyll`
 
 ## One-time manual setup
 Create an **empty public repository**, suggested name `ventilator-simulator-web`, under the same GitHub account.
 Do not switch the original source repository to public.
-Once created and connected to the GitHub app, upload **only** the five site files to its main branch, preserving `src/` paths.
+Once created and connected to the GitHub app, upload **only** the six site files to its main branch, preserving `src/` paths.
 
 In the public deploy repository:
 - Settings → Pages → Build and deployment

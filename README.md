@@ -1,4 +1,4 @@
-# Ventilator Simulator — v0.2.2 Preview
+# Ventilator Simulator — v0.3.0 Preview
 
 간호학생을 위한 **PB980(Puritan Bennett 980) 참고형 웹 시뮬레이터** 초기 실행본.
 실제 장비의 화면 구성 학습을 목표로 하지만, 임상 사용이나 기계 조작 훈련을 대체하지 않는다.
@@ -16,7 +16,7 @@
 - 화면이 작은 기기에서 우측 패널이 아래로 이동하는 반응형 레이아웃
 
 ## 구현하지 않은 것 (중요)
-- monitoring 7종은 **사진을 참고한 고정 예시값**, waveforms 역시 **고정 데모 파형**이다. 조작한 설정값을 실제 환자 반응이나 측정값으로 계산하지 않는다.
+- monitoring 7종은 **사진을 참고한 고정 예시값**이고, waveform은 **독립된 교육용 시간 모델**로 움직인다. 파형은 환자 측정값이 아니며 실제 생리 반응을 예측하지 않는다.
 - 설정 범위/증감 단위는 **UI 검증용 예시**이며 PB980 공식 장비 사양으로 검증된 값이 아니다.
 - 완성 회로는 **개념도**이며 PB980의 실제 연결 절차나 부품 구성도 아니다.
 - 임상 정확도, 실제 장비의 경보 동작, 모바일 실기기·시각적 일치 검증은 미완료.
@@ -43,3 +43,11 @@ No public website is being published. Browse the **Code** tab and use **Actions 
 Read [Private GitHub review](docs/PRIVATE_GITHUB_WORKFLOW.md) for step-by-step instructions and local execution.
 See [PB980 reference audit](docs/PB980_REFERENCE_AUDIT.md) for what is and is not manufacturer-verified.
 v0.2.2 improves keyboard-focus continuity when adjusting settings and adds a 320px narrow-screen regression check.
+
+## v0.3.0 — 움직이는 교육용 파형
+- Pressure/Flow/Volume vs Time 파형을 자동으로 이동시키며 일시정지·재생할 수 있다.
+- 강제 흡기/예시 자발 흡기/호기 구간의 색상을 구분한다.
+- PEEP, Pi, PS, f, Ti를 바꾸면 파형을 다시 계산한다. FiO2와 V-TRIG는 숫자만 바뀌고 파형에는 연결되지 않는다.
+- 파형의 용적·유량은 서로 도함수 관계를 갖도록 구성했지만 가상 순응도와 자발호흡 이벤트는 **설명용으로 임의 설정**한 것이다.
+- PB980의 실제 파형 동작·임상 적용을 재현한다는 의미는 아니다.
+- [파형 모델 가정](docs/WAVEFORM_MODEL_v0.3.md) 문서를 참고해.

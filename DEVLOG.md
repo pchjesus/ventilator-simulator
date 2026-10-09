@@ -51,3 +51,17 @@
 - Real hardware/physical smartphone/manual clinical validation not performed.
 - Monitoring and waveform remain explicitly static reference examples.
 - Public GitHub Pages release deferred; original repository remains private.
+
+## v0.3.0 — Dynamic educational waveform preview (2026-10-09)
+### Added
+- `src/waveform-model.js` pure deterministic illustration of mandatory/spontaneous cycles, pressure, flow and volume
+- 3 scrolling phase-colored SVG traces and playback pause/resume; model explanation and reference caveats
+- `tests/waveform.test.mjs` numerical consistency/unit checks; new browser interaction regression checks
+- Separate documentation of assumptions, limits and manufacturer vs. educational UI (docs/WAVEFORM_MODEL_v0.3.md)
+### Fixed during CI
+- Test selector accidentally matched both +1 and +10; switched to exact accessible labels.
+- Pause previously painted one last frame after pressing Pause; frozen frame now drawn synchronously.
+### Deliberately not implemented
+- Oxygenation, ABGA, alarm, triggering mechanics, validated pulmonary compliance, patient-specific physiology, clinical PB980 emulation
+### Deployment
+- Existing private repository retained; public website publishing deferred.
