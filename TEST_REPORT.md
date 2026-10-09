@@ -81,3 +81,11 @@ GitHub Actions run: https://github.com/pchjesus/ventilator-simulator/actions/run
 - Added three new manufacturer-reference consistency tests alongside 16 existing pure tests; extended browser checks for visual region geography, left graph labels, reference help and original controls.
 - **Execution pending**: Do not report a CI success until the actual workflow run and screenshot evidence have been checked.
 - Outside scope / still unverified: device-specific firmware pixel comparison, physical smartphone, true clinical parameter interlocks, actual ventilator waveform or clinical use.
+
+### Actual implementation verification and visual regression (2026-10-10)
+- First GUI implementation run [37962118564](https://github.com/pchjesus/ventilator-simulator/actions/runs/37962118564): SUCCESS test/browser/package; 19/19 Node tests.
+- Visual inspection of the three screenshot artifacts exposed a **real regression not caught by the then-current test**: mobile settings fell into four thin columns because late global CSS overrode the existing narrow breakpoint.
+- Patched CSS to restore two-column settings at widths ≤550px. Added explicit 320/360px computed grid-column assertions to browser regression checks.
+- Patched **application code** was verified in [37962366798](https://github.com/pchjesus/ventilator-simulator/actions/runs/37962366798): SUCCESS test/browser/package; 19/19 units. Inspected desktop (1440), mobile (360), narrow (320) screenshots, confirmed readable two-column controls and no obvious overlap.
+- The later test-only commit introducing explicit two-column assertions is covered by separate CI run [37962394683](https://github.com/pchjesus/ventilator-simulator/actions/runs/37962394683); final outcome should be checked before main merge. Latest report should not treat an in-progress run as passed.
+- Browser tests cover focus, settings, waveform/pause/reduced motion, circuit/help, layout, reset and JS errors. No actual PB980 pixel overlay or physical phone verified.
