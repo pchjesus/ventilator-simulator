@@ -160,6 +160,8 @@ pauseButton.addEventListener("click",()=>{
   pauseButton.setAttribute("aria-pressed",String(waveformPaused));
   pauseButton.setAttribute("aria-label",waveformPaused?"파형 재생":"파형 일시정지");
   pauseButton.textContent=waveformPaused?"▶ Resume":"Ⅱ Pause";
+  // Commit the frozen frame synchronously, preventing one later repaint jump.
+  if(waveformPaused) paintWaveforms();
 });
 function animationFrame(now){
   if(previousFrameTime!==null&&!waveformPaused&&!document.hidden){
