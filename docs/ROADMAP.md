@@ -65,3 +65,14 @@
 - [x] Retain paused redraw on parameter changes while skipping repeated inactive paints
 - [x] Regression coverage for the new model and mobile/UI controls
 - [ ] Obtain validated PB980-specific setting bounds and real patient-waveform evidence before suggesting clinical equivalence
+
+
+## v0.3.2 — Visual similarity patch
+- [x] Compare baseline screen with manufacturer GUI geography and PB980 monitoring photos
+- [x] Blue patient data / black central waveforms / vertical MENU / lower settings strip
+- [x] Deep blue case and non-interactive hardware key/encoder representation
+- [x] Educational Home/Circuit and Help shortcuts
+- [x] Functional/browser/mobile/screenshot regression
+- [ ] Pixel-based comparison against a known PB980 software version and mode
+- [ ] Verify manufacturer hard/soft bounds and mode-dependent controls
+- [ ] Evaluate user demand before emulating additional OEM dialogs/icons

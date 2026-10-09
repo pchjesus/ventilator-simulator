@@ -64,3 +64,14 @@ GitHub Actions run: https://github.com/pchjesus/ventilator-simulator/actions/run
 - Console/page script error capture: no errors observed in tested flows.
 - Initial run [37942154751](https://github.com/pchjesus/ventilator-simulator/actions/runs/37942154751) failed **only** because a new test requested 2,001 samples when the implementation allows at most 2,000. Corrected the test input, reran successfully.
 - Physical Android/iOS hardware, OEM GUI/pixel fidelity, manufacturer parameter bounds and clinical validity remain **unverified**.
+
+
+## v0.3.2 — Visual patch CI acceptance
+- Run: https://github.com/pchjesus/ventilator-simulator/actions/runs/37944924891 — SUCCESS for test, browser and package.
+- Unit tests: 16 passed, 0 failed.
+- Desktop Chromium 1440px: seven readouts, three waveforms, seven controls; focus, reset, help, circuit, pause and setting-driven trace changes work.
+- Additional UI: curved bezel, left MENU strip, new Home/Help shortcuts work.
+- Mobile Chromium 360/320px: settings and Circuit controls work; no page-wide horizontal overflow.
+- Reduced-motion preference and playback remain functional; no JS page/console errors captured in tested flows.
+- Screenshots retained in Actions browser-screenshots artifact; desktop/320px visually inspected.
+- Manufacturer limits, pixel-perfect matching, physical phone touch experience and clinical accuracy: NOT validated.

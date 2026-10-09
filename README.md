@@ -1,4 +1,4 @@
-# Ventilator Simulator — v0.3.1 Preview
+# Ventilator Simulator — v0.3.2 Preview
 
 간호학생을 위한 **PB980(Puritan Bennett 980) 참고형 웹 시뮬레이터** 초기 실행본.
 실제 장비의 화면 구성 학습을 목표로 하지만, 임상 사용이나 기계 조작 훈련을 대체하지 않는다.
@@ -58,3 +58,11 @@ v0.2.2 improves keyboard-focus continuity when adjusting settings and adds a 320
 - Pause 중 화면 재그리기를 줄여 불필요한 연산을 피하며, 설정값을 바꾸면 해당 파형은 여전히 갱신된다.
 - 외부 호출에서 비정상 호흡수/흡기시간 등 입력을 전달해도 과도한 반복이나 유효하지 않은 파형 생성을 피하도록 기본 검증을 추가한다.
 - 위 변경은 **교육용 모델의 수학적 일관성 개선**일 뿐 환자 생리모델을 임상적으로 검증했다는 의미는 아니다.
+
+
+## v0.3.2 — PB980 GUI 외형 정밀화
+- 공식 매뉴얼의 GUI 영역 구분과 PB980 실물 사진을 참고하여 상단 청색 Vital Patient Data banner, 중앙 검은 waveform area, 좌측 MENU, 하단 청색 settings area, 우하단 고정 메뉴 아이콘을 재배치했어.
+- 짙은 청색 베젤, 중앙 회전 조작부와 물리 키를 외형 참고용으로 추가했어(기계 조작 기능은 없음).
+- Home/Circuit 및 Help 교육용 단축키 2개를 기존 학습 패널과 연동했어.
+- 기존 증감, 도움말, 초기화, 파형, reduced-motion, 반응형 배치를 유지했어.
+- [PB980 UI 비교·남은 차이](docs/PB980_UI_COMPARISON_v0.3.2.md) 참조. 실물과 완전 동일한 외형이나 임상 동작이라고 주장하지 않아.

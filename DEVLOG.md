@@ -78,3 +78,20 @@
 - No real PB980 parameter-range certification, physiological measurement validation, patient data or official deployment.
 ### CI
 - Outcome recorded separately in TEST_REPORT for the current version.
+
+
+## v0.3.2 — PB980 visual reference patch (2026-10-09)
+### Compared
+- PB980 official operator manual GUI geography and publicly available monitoring photographs.
+- v0.3.1 screenshot: dark metric cards, separate wide charts, large settings cards, rectangular housing.
+### Changed
+- Deep blue bezel/rotary visual, saturated blue metrics, black waveforms, left vertical MENU, lower blue settings, constant-access icons.
+- Preserved all seven setting controls, waveform engine and Circuit/Help learning panel; linked two shortcut buttons.
+### Regression
+- GitHub Actions run 37944924891: test/browser/package all success.
+- 16 unit tests passed; 1440/360/320px browser checks passed.
+- Screenshot desktop and narrow mobile visually reviewed; no page-wide horizontal overflow observed in CI.
+### Limitations
+- Not pixel-calibrated to one particular PB980 firmware screenshot.
+- Bezel keys and Configure/Logs/O2 displays are deliberately not interactive and do not replicate clinical device functions.
+- Educational study UI only, not validated medical equipment emulator.
