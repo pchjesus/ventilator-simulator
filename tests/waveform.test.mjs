@@ -52,3 +52,30 @@ test("scales are positive and invalid sample arguments throw",()=>{
   assert.throws(()=>generateWaveform(defaults,0,0,100),RangeError);
   assert.throws(()=>generateWaveform(defaults,0,12,0),RangeError);
 });
+
+test("expiratory flow is the time derivative of expiratory volume",()=>{
+  const settings={...defaults,rate:30,ps:0};
+  const samples=generateWaveform(settings,0,2,1001);
+  let verified=0;
+  for(let i=1;i<samples.length-1;i++){
+    const a=samples[i-1],b=samples[i],c=samples[i+1];
+    if(a.phase!=="expiration"||b.phase!=="expiration"||c.phase!=="expiration")continue;
+    const derivative=(c.volume-a.volume)/(c.time-a.time)*0.06;
+    assert.ok(Math.abs(derivative-b.flow)<0.08, "inconsistent expiry flow at t="+b.time);
+    verified++;
+  }
+  assert.ok(verified>150,"not enough expiratory samples");
+});
+test("expiratory flow smoothly returns to zero at breath boundary",()=>{
+  const settings={...defaults,rate:30,ps:0};
+  const samples=generateWaveform(settings,0,2,2001);
+  const lastExpiration=samples.filter(s=>s.phase==="expiration").at(-1);
+  assert.ok(lastExpiration.volume<0.01,"residual volume too high");
+  assert.ok(Math.abs(lastExpiration.flow)<0.1,"expiratory flow should approach zero");
+});
+test("invalid external rates and settings reject safely",()=>{
+  assert.throws(()=>breathEvents({...defaults,rate:0},0,16),RangeError);
+  assert.throws(()=>breathEvents({...defaults,rate:1000},0,16),RangeError);
+  assert.throws(()=>generateWaveform({...defaults,ti:0},0,16,200),RangeError);
+  assert.throws(()=>generateWaveform({...defaults,pi:Infinity},0,16,200),RangeError);
+});

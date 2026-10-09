@@ -64,6 +64,12 @@ try {
   assert.notEqual(await desktop.locator('#graph-pressure [data-phase="spontaneous"]').getAttribute("d"),beforePS);
   await desktop.getByRole("button",{name:"PEEP 증가 1",exact:true}).click();
   assert.notEqual(await pPath.getAttribute("d"),higherPi);
+  const flowBeforeRate=await desktop.locator('#graph-flow [data-phase="mandatory"]').getAttribute("d");
+  await desktop.getByRole("button",{name:"f 증가 1",exact:true}).click();
+  assert.notEqual(await desktop.locator('#graph-flow [data-phase="mandatory"]').getAttribute("d"),flowBeforeRate,"rate should change preview");
+  const flowBeforeTi=await desktop.locator('#graph-flow [data-phase="mandatory"]').getAttribute("d");
+  await desktop.getByRole("button",{name:"Tᵢ 증가 0.1",exact:true}).click();
+  assert.notEqual(await desktop.locator('#graph-flow [data-phase="mandatory"]').getAttribute("d"),flowBeforeTi,"Ti should change preview");
   await desktop.getByRole("button",{name:"파형 재생"}).click();
   const playingBefore=await pPath.getAttribute("d");
   await desktop.waitForTimeout(280);
@@ -103,6 +109,22 @@ try {
   assert.equal(await narrow.locator(".setting-value").first().innerText(),"50");
   pass("320px mobile width: no horizontal overflow, settings interactive");
   await narrow.screenshot({path:"artifacts/browser/narrow-320.png",fullPage:true});
+  const reduced=await browser.newPage({viewport:{width:1000,height:700}});
+  reduced.on("pageerror",e=>errors.push("Reduced motion pageerror: "+e.message));
+  await reduced.emulateMedia({reducedMotion:"reduce"});
+  await reduced.goto(ROOT,{waitUntil:"networkidle",timeout:30000});
+  const frozen=reduced.locator('#graph-pressure [data-phase="mandatory"]');
+  const frozenStart=await frozen.getAttribute("d");
+  await reduced.waitForTimeout(300);
+  assert.equal(await frozen.getAttribute("d"),frozenStart,"reduced-motion preference must freeze playback");
+  assert.equal(await reduced.getByRole("button",{name:"파형 재생"}).getAttribute("aria-pressed"),"true");
+  await reduced.getByRole("button",{name:"파형 재생"}).click();
+  const resumedStart=await frozen.getAttribute("d");
+  await reduced.waitForTimeout(300);
+  assert.notEqual(await frozen.getAttribute("d"),resumedStart,"user must be able to opt in to motion");
+  await reduced.getByRole("button",{name:"파형 일시정지"}).click();
+  pass("reduced motion preference freezes preview until explicit resume");
+  await reduced.close();
   assert.deepEqual(errors,[]);
   pass("no captured JS page errors or console errors");
 } finally {

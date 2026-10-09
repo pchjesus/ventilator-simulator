@@ -7,12 +7,21 @@
  * Volume: normalized half-cosine inspiration + exponential expiration.
  * Flow: derivative of volume (mL/s to L/min). Phase timing is illustrative.
  */
-export const WAVEFORM_MODEL = "illustrative-v1";
+export const WAVEFORM_MODEL = "illustrative-v1.1";
 const COMPLIANCE_DEMO_ML_PER_CMH2O = 35;
 const EXP_TAU_SHAPE = 3.2;
-const TWO_PI = Math.PI * 2;
+// This guard prevents pathological event allocations if a caller bypasses the UI bounds.
+function validateRate(settings){
+  if (!settings || !Number.isFinite(settings.rate) || settings.rate < 0.5 || settings.rate > 60) {
+    throw new RangeError("Invalid illustrative breathing rate");
+  }
+}
 
 export function breathEvents(settings, from, to) {
+  validateRate(settings);
+  if (!Number.isFinite(from)||!Number.isFinite(to)||to<from||to-from>7200) {
+    throw new RangeError("Invalid waveform event window");
+  }
   const period=60/settings.rate;
   const events=[];
   const first=Math.floor(from/period)-2;
@@ -44,10 +53,12 @@ function stateAt(settings,event,nextAt,t) {
     return {pressure:peep+support*ramp,flow,volume,phase:event.type};
   }
   const v=Math.max(0,Math.min(1,(phaseTime-ti)/te));
+  // Exponential attenuation with a squared end taper. Both volume and
+  // its derivative (flow) reach zero at the next breath boundary.
+  const tail=1-v;
   const ex=Math.exp(-EXP_TAU_SHAPE*v);
-  const norm=1-Math.exp(-EXP_TAU_SHAPE);
-  const volume=vt*(ex-Math.exp(-EXP_TAU_SHAPE))/norm;
-  const flow=-vt*EXP_TAU_SHAPE*ex/(te*norm)*0.06;
+  const volume=vt*ex*tail*tail;
+  const flow=-0.06*vt*ex*(EXP_TAU_SHAPE*tail*tail+2*tail)/te;
   return {pressure:peep,flow,volume:Math.max(0,volume),phase:"expiration"};
 }
 /**
@@ -57,6 +68,11 @@ function stateAt(settings,event,nextAt,t) {
 export function generateWaveform(settings,start=0,duration=16,count=240){
   if(!Number.isFinite(start)||!Number.isFinite(duration)||duration<=0||!Number.isInteger(count)||count<2||count>2000){
     throw new RangeError("Invalid waveform sampling arguments");
+  }
+  validateRate(settings);
+  if (["peep","pi","ps","ti"].some(key => !Number.isFinite(settings[key]))
+      || settings.peep<0 || settings.pi<0 || settings.ps<0 || settings.ti<=0 || settings.ti>10) {
+    throw new RangeError("Invalid waveform study settings");
   }
   const events=breathEvents(settings,start-60, start+duration+60);
   let index=0;

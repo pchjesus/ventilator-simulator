@@ -122,7 +122,9 @@ const plotPhases=["mandatory","spontaneous","expiration"];
 const plotNames=["pressure","flow","volume"];
 const WAVE_WINDOW_SECONDS=16;
 let waveformTime=0;
-let waveformPaused=false;
+// Keep animations still by default when the device requests reduced motion.
+// Students may explicitly choose Resume; the setting values remain interactive.
+let waveformPaused=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 let previousFrameTime=null;
 let previousPaintTime=-1000;
 function paintWaveforms(){
@@ -155,11 +157,15 @@ function paintWaveforms(){
   }
 }
 const pauseButton=document.getElementById("waveform-pause");
-pauseButton.addEventListener("click",()=>{
-  waveformPaused=!waveformPaused;
+function refreshPauseControl(){
   pauseButton.setAttribute("aria-pressed",String(waveformPaused));
   pauseButton.setAttribute("aria-label",waveformPaused?"파형 재생":"파형 일시정지");
   pauseButton.textContent=waveformPaused?"▶ Resume":"Ⅱ Pause";
+}
+refreshPauseControl();
+pauseButton.addEventListener("click",()=>{
+  waveformPaused=!waveformPaused;
+  refreshPauseControl();
   // Commit the frozen frame synchronously, preventing one later repaint jump.
   if(waveformPaused) paintWaveforms();
 });
@@ -168,7 +174,7 @@ function animationFrame(now){
     waveformTime+=Math.min((now-previousFrameTime)/1000,0.12);
   }
   previousFrameTime=now;
-  if(!document.hidden && now-previousPaintTime>=85){
+  if(!document.hidden && !waveformPaused && now-previousPaintTime>=85){
     paintWaveforms();
     previousPaintTime=now;
   }

@@ -1,5 +1,5 @@
 // Educational UI demonstration; not verified PB980 operating ranges.
-export const VERSION = "0.3.0";
+export const VERSION = "0.3.1";
 export const DEVICE = "Puritan Bennett 980 (reference-inspired)";
 export const PARAMETERS = Object.freeze([
   {id:"fio2", label:"O₂", unit:"%", initial:40, min:21, max:100, precision:0, steps:[-10,-1,1,10], help:"FiO₂: 흡입 산소 농도. 산소화와 관련되며 SpO₂/ABGA를 함께 평가해야 해."},
