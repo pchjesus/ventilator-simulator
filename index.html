@@ -19,11 +19,11 @@
     <section class="ventilator" aria-label="PB980 스타일 교육용 인공호흡기 디스플레이">
       <div class="bezel-brand" aria-hidden="true"><span class="bezel-logo">▣</span><strong>COVIDIEN</strong><span>Puritan Bennett</span><span>980 Series Ventilator</span><i class="bezel-led"></i></div>
       <div class="device-display">
-        <div class="device-top"><span class="device-state"><span class="state-dot" aria-hidden="true">C</span> ADULT · INVASIVE</span><strong>SIMV <span class="subtle">(PC) + PS</span></strong><span class="reference-flag">EDUCATIONAL DEMO</span></div>
-        <div class="monitor-wrap"><div class="monitor" id="monitor" aria-label="고정 예시 환자 데이터 — 설정과 연동되지 않음"></div></div>
+        <div class="monitor-wrap"><div class="monitor-caption">VITAL PATIENT DATA <span>고정 예시값 · 실제 측정값 아님</span></div><div class="monitor" id="monitor" aria-label="고정 예시 환자 데이터 — 설정과 연동되지 않음"></div></div>
         <div class="display-main">
           <div class="menu-ribbon" aria-hidden="true"><span>MENU</span></div>
           <div class="waveform-stage">
+            <div class="device-top"><span class="device-state"><span class="state-dot" aria-hidden="true">C</span><span>ADULT · INVASIVE <small class="state-sample">(고정 예시)</small></span></span><strong>SIMV <span class="subtle">(PC) + PS</span></strong><span class="reference-flag">EDUCATIONAL DEMO</span></div>
       <div class="waveform-toolbar">
         <div><strong>WAVEFORMS</strong><span class="waveform-tag"> SIMV PC+PS · 교육용 동적 파형</span></div>
         <button type="button" id="waveform-pause" aria-pressed="false" aria-label="파형 일시정지">Ⅱ Pause</button>
@@ -47,23 +47,24 @@
           </svg></div>
         <p class="graph-disclaimer">설정 연동: PEEP·Pi·PS·f·Tᵢ / 예시 자발호흡은 임의 생성 · FiO₂·V-TRIG, 실제 환자반응 및 상단 monitoring 값과는 미연동</p>
       </div>
+        <div class="prompt-area" role="status"><span>PROMPT · EDUCATIONAL</span><span id="status" aria-live="polite">설정값을 조절해 봐.</span></div>
           </div>
           <div class="display-edge" aria-hidden="true"><span class="inactive-alarm">ALARM AREA</span><span class="edge-pause">Ⅱ</span></div>
         </div>
         <div class="vent-bottom">
           <div class="setup-panel" aria-label="현재 환자 예시 정보"><span>Adult</span><strong>SIMV</strong><span>PC · PS</span><small>IBW 60 kg<br/>EXAMPLE</small></div>
           <div class="settings-area">
-      <div class="settings-heading"><h2>Current settings</h2><span>작은 증감 버튼으로 설정 연습 · 실제 PB980 조작법과 다름</span></div>
+      <div class="settings-heading"><h2>Current settings <small>SIMV / PC / PS · V-TRIG</small></h2><span>EDU ± 버튼 · 실제 PB980 설정은 터치·노브 조작</span></div>
       <div class="settings-grid" id="settings" aria-label="조절 가능한 설정"></div>
       <div class="settings-footer"><span>Mode: <strong>SIMV (PC) + PS</strong> <button type="button" id="modeHelp" class="help" aria-label="SIMV 모드 설명">?</button></span>
-        <span id="status" aria-live="polite">설정값을 조절해 봐.</span></div>
+        </div>
           </div>
           <div class="access-icons" aria-label="학습용 바로가기">
-            <button id="shortcut-circuit" type="button" aria-label="회로 학습 패널 열기"><span aria-hidden="true">⌂</span><small>Home</small></button>
+            <button id="shortcut-circuit" type="button" aria-label="회로 학습 패널 열기"><span aria-hidden="true">⌂</span><small>Study / EDU</small></button>
             <span class="inert-control" aria-hidden="true"><span>⚒</span><small>Configure</small></span>
             <span class="inert-control" aria-hidden="true"><span>◫</span><small>Logs</small></span>
             <span class="inert-control" aria-hidden="true"><span>O₂</span><small>O₂</small></span>
-            <button id="shortcut-help" type="button" aria-label="항목 설명 패널 열기"><span aria-hidden="true">?</span><small>Help</small></button>
+            <button id="shortcut-help" type="button" aria-label="항목 설명 패널 열기"><span aria-hidden="true">?</span><small>Edu Help</small></button>
           </div>
         </div>
       </div>
@@ -86,10 +87,11 @@
       <section id="panel-help" role="tabpanel" aria-labelledby="tab-help" hidden>
         <h2 id="help-title">설정값 설명</h2>
         <p id="help-body">아래 설정 항목의 ? 버튼을 누르면 여기에 설명이 표시돼.</p>
+        <p id="reference-info" class="reference-info" hidden></p>
         <p class="fine-print">교육용 기본 설명이므로 세부 조작 및 실제 적용은 해당 장비 매뉴얼과 담당 의료진의 지침을 따라야 해.</p>
       </section>
     </aside>
   </main>
-  <footer class="footer">MVP v0.3.2 · 브라우저에서 동작하는 교육용 프런트엔드 · 임상/장비 동작 검증 전</footer>
+  <footer class="footer">MVP v0.3.3 · 브라우저에서 동작하는 교육용 프런트엔드 · 임상/장비 동작 검증 전</footer>
 </body>
 </html>
