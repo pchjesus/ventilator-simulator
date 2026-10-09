@@ -20,3 +20,10 @@ Implementation introduces first web entrypoint, educational settings and CIRCUIT
 Actual PB980 fidelity and range correctness, physiologic model (not implemented), clinical use, actual Android/iOS hardware, GitHub Pages URL availability.
 
 Do not interpret source-code presence as browser acceptance evidence.
+
+## GitHub Actions verification (2026-10-09)
+- Workflow: [Ventilator simulator checks](https://github.com/pchjesus/ventilator-simulator/actions/runs/37880435097)
+- JavaScript syntax check: **passed**
+- Node model tests: **5 passed / 0 failed** (initial state, bounds, decimal arithmetic, invalid operations, immutability)
+- Actual browser execution, manual screen/interaction review and real-device checks: **not yet verified**
+- CI proves the tested source paths, not PB980 clinical fidelity or public URL deployment.
