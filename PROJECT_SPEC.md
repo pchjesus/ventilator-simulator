@@ -79,3 +79,9 @@ Vent settings
 
 ## 5. First milestone
 사진의 SIMV(PC)+PS 화면을 최대한 정확하게 재현하고, parameter controls와 help popup을 동작시키는 것.
+
+## v0.3.5 study-control UX
+- Default PB980-inspired one-parameter adjustment: user selects tile, edits pending study value, commits with Accept or discards with Cancel/Escape. The modal shows original/modified values separately.
+- Optional Quick Study mode restores immediate plus/minus controls and original study increments exactly.
+- Switching modes does not change values. The only waveform input is the confirmed setting state; Help, CIRCUIT, reset and keyboard access remain.
+- No assertion of manufacturer-certified dial resolution, interlocking limits or real ventilation changes. The top monitored data are still fixed instructional references.

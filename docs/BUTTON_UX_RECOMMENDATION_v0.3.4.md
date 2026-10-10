@@ -25,3 +25,6 @@ Select **C**. The choice between default device-inspired layout and default Quic
 
 ## Source
 Medtronic. (n.d.). *Puritan Bennett™ 980 ventilator: Operator's manual* (PT00101843A00), chapter 4. https://asiapac.medtronic.com/content/dam/covidien/library/us/en/product/acute-care-ventilation/PuritanBennett980Ventilator_OperatorsManual_en_US_PT00101843A00.pdf
+
+## Decision accepted and implemented in v0.3.5 (2026-10-10)
+User selected option C. Implemented a default PB980-*inspired* educational one-setting modal plus opt-in immediate Quick Study controls, preserving the original model limits. Unlike a true OEM knob or multi-setting Accept ALL, the teaching modal edits only one variable with selected valid educational steps. See `DUAL_CONTROL_IMPLEMENTATION_v0.3.5.md` and actual CI results in `../TEST_REPORT.md`.
