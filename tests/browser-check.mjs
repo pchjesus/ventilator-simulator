@@ -42,6 +42,50 @@ try {
   assert.ok(geography.axis.right<=geography.plot.left+2,"axis labels at plot left");
   pass("manufacturer-inspired panel geography and graph axes");
 
+  // Device-inspired staged interaction is the default, not quick controls.
+  assert.equal(await desktop.getByRole("button",{name:"PB980 참고형 모드"}).getAttribute("aria-pressed"),"true");
+  assert.equal(await desktop.locator('.setting-select').first().isEnabled(),true);
+  assert.equal(await desktop.getByRole("button",{name:"O₂ 증가 10"}).isVisible(),false);
+  const initialPi=await desktop.locator('.setting[data-setting-id="pi"] .setting-value').innerText();
+  const stagedWave=desktop.locator('#graph-pressure [data-phase="mandatory"]');
+  await desktop.getByRole("button",{name:"파형 일시정지"}).click();
+  const beforeEditWave=await stagedWave.getAttribute("d");
+  await desktop.getByRole("button",{name:"Pᵢ 설정 선택"}).click();
+  const editor=desktop.locator("#setting-editor");
+  assert.equal(await editor.isVisible(),true);
+  assert.match(await desktop.locator("#editor-original").innerText(),/10.0/);
+  await desktop.getByRole("button",{name:"선택한 설정값 증가"}).click();
+  assert.match(await desktop.locator("#editor-pending").innerText(),/11.0/);
+  assert.equal(await desktop.locator('.setting[data-setting-id="pi"] .setting-value').innerText(),initialPi);
+  assert.equal(await stagedWave.getAttribute("d"),beforeEditWave,"pending value must not redraw committed simulation");
+  await desktop.getByRole("button",{name:"Cancel"}).click();
+  assert.equal(await editor.isVisible(),false);
+  assert.equal(await desktop.locator('.setting[data-setting-id="pi"] .setting-value').innerText(),initialPi);
+  assert.equal(await desktop.getByRole("button",{name:"Pᵢ 설정 선택"}).evaluate(el=>document.activeElement===el),true,"focus must restore after Cancel");
+  await desktop.getByRole("button",{name:"Pᵢ 설정 선택"}).click();
+  await desktop.getByRole("button",{name:"Accept"}).press("ArrowUp");
+  assert.match(await desktop.locator("#editor-pending").innerText(),/11.0/);
+  await desktop.getByRole("button",{name:"Accept"}).press("Enter");
+  assert.equal(await editor.isVisible(),false);
+  assert.equal(await desktop.locator('.setting[data-setting-id="pi"] .setting-value').innerText(),"11.0");
+  assert.notEqual(await stagedWave.getAttribute("d"),beforeEditWave,"Accept should redraw on committed value");
+  await desktop.getByRole("button",{name:"Pᵢ 설정 선택"}).click();
+  await desktop.getByRole("button",{name:"선택한 설정값 증가"}).click();
+  await desktop.getByRole("button",{name:"Accept"}).press("Escape");
+  assert.equal(await editor.isVisible(),false);
+  assert.equal(await desktop.locator('.setting[data-setting-id="pi"] .setting-value').innerText(),"11.0","Escape must discard changes");
+  // In-modal reset can explicitly discard a pending value and restore full defaults.
+  await desktop.getByRole("button",{name:"Pᵢ 설정 선택"}).click();
+  await desktop.getByRole("button",{name:"선택한 설정값 증가"}).click();
+  await desktop.getByRole("button",{name:"전체 초기화"}).click();
+  assert.equal(await editor.isVisible(),false);
+  assert.equal(await desktop.locator('.setting[data-setting-id="pi"] .setting-value').innerText(),initialPi);
+  await desktop.getByRole("button",{name:"파형 재생"}).click();
+  // User opt-in to legacy immediate study buttons: no conversion of state is allowed.
+  await desktop.getByRole("button",{name:"빠른 학습 모드"}).click();
+  assert.equal(await desktop.getByRole("button",{name:"빠른 학습 모드"}).getAttribute("aria-pressed"),"true");
+  assert.equal(await desktop.getByRole("button",{name:"O₂ 증가 10"}).isVisible(),true);
+  assert.equal(await desktop.locator('.setting-select').first().isDisabled(),true);
   const monitorBefore=await desktop.locator("#monitor").innerText();
   const oxygenUp=desktop.getByRole("button",{name:"O₂ 증가 10"});
   await oxygenUp.click();
@@ -115,6 +159,9 @@ try {
   await desktop.getByRole("button",{name:"회로 학습 패널 열기"}).click();
   assert.equal(await desktop.locator("#panel-circuit").isVisible(),true);
   pass("PB980-like chrome and educational navigation shortcuts");
+  // The default PB980-inspired layout is the screenshot baseline.
+  await desktop.getByRole("button",{name:"PB980 참고형 모드"}).click();
+  assert.equal(await desktop.locator(".step-buttons").first().isVisible(),false);
   await desktop.screenshot({path:"artifacts/browser/desktop.png",fullPage:true});
 
   const mobile=await browser.newPage({viewport:{width:360,height:780},deviceScaleFactor:1,isMobile:true,hasTouch:true});
@@ -126,6 +173,17 @@ try {
   assert.equal(await mobile.locator(".setting").count(),7);
   assert.equal(await mobile.locator(".prompt-area").count(),1);
   assert.equal(await mobile.locator(".settings-grid").evaluate(el=>getComputedStyle(el).gridTemplateColumns.split(" ").length),2,"mobile study settings must use two columns");
+  assert.equal(await mobile.getByRole("button",{name:"PB980 참고형 모드"}).getAttribute("aria-pressed"),"true");
+  await mobile.getByRole("button",{name:"PEEP 설정 선택"}).click();
+  assert.equal(await mobile.locator("#setting-editor").isVisible(),true);
+  const dialogGeometry=await mobile.locator("#setting-editor").boundingBox();
+  assert.ok(dialogGeometry.x>=-1 && dialogGeometry.x+dialogGeometry.width<=361,"mobile editor sheet should fit viewport");
+  await mobile.getByRole("button",{name:"선택한 설정값 증가"}).click();
+  assert.match(await mobile.locator("#editor-pending").innerText(),/5.1/);
+  await mobile.getByRole("button",{name:"Accept"}).click();
+  assert.equal(await mobile.locator('.setting[data-setting-id="peep"] .setting-value').innerText(),"5.1");
+  await mobile.getByRole("button",{name:"설정 초기화"}).click();
+  await mobile.getByRole("button",{name:"빠른 학습 모드"}).click();
   const width=await mobile.evaluate(()=>({scroll:document.documentElement.scrollWidth,client:document.documentElement.clientWidth}));
   assert.ok(width.scroll<=width.client+2,"mobile horizontal overflow "+JSON.stringify(width));
   await mobile.getByRole("button",{name:"PEEP 증가 0.1"}).click();
@@ -138,6 +196,7 @@ try {
   assert.equal(await mobile.locator(".bezel-controls").count(),1);
   await mobile.getByRole("button",{name:"회로 학습 패널 열기"}).click();
   assert.equal(await mobile.locator("#panel-circuit").isVisible(),true);
+  await mobile.getByRole("button",{name:"PB980 참고형 모드"}).click();
   await mobile.screenshot({path:"artifacts/browser/mobile.png",fullPage:true});
 
   const narrow=await browser.newPage({viewport:{width:320,height:680},isMobile:true,hasTouch:true});
@@ -148,11 +207,18 @@ try {
   const narrowSize=await narrow.evaluate(()=>({scroll:document.documentElement.scrollWidth,client:document.documentElement.clientWidth}));
   assert.ok(narrowSize.scroll<=narrowSize.client+2,"320px horizontal overflow "+JSON.stringify(narrowSize));
   assert.equal(await narrow.locator(".settings-grid").evaluate(el=>getComputedStyle(el).gridTemplateColumns.split(" ").length),2,"320px study controls must retain readable two-column layout");
+  await narrow.getByRole("button",{name:"O₂ 설정 선택"}).click();
+  assert.equal(await narrow.locator("#setting-editor").isVisible(),true);
+  const geometry320=await narrow.locator("#setting-editor").boundingBox();
+  assert.ok(geometry320.x>=-1 && geometry320.x+geometry320.width<=321,"320px sheet must not overflow");
+  await narrow.getByRole("button",{name:"Cancel"}).click();
+  await narrow.getByRole("button",{name:"빠른 학습 모드"}).click();
   await narrow.getByRole("button",{name:"O₂ 증가 10"}).click();
   assert.equal(await narrow.locator(".setting-value").first().innerText(),"50");
   assert.equal(await narrow.locator(".bezel-controls > span").count(),8);
   assert.equal(await narrow.locator(".monitor-data .breath-example").isVisible(),true);
   pass("320px mobile width: no horizontal overflow, settings interactive");
+  await narrow.getByRole("button",{name:"PB980 참고형 모드"}).click();
   await narrow.screenshot({path:"artifacts/browser/narrow-320.png",fullPage:true});
   const reduced=await browser.newPage({viewport:{width:1000,height:700}});
   reduced.on("pageerror",e=>errors.push("Reduced motion pageerror: "+e.message));
