@@ -29,7 +29,7 @@ test("bounds, decimal increments and invalid directions follow study model",()=>
  assert.strictEqual(stepSettingEdit(edit,3),edit);
  assert.strictEqual(stepSettingEdit(edit,NaN),edit);
  assert.equal(preferredEditStep("peep"),0.1);
- assert.equal(preferredEditStep("pi"),0.1); // existing teaching increments, not OEM precision
+ assert.equal(preferredEditStep("pi"),1); // PC pressure knob uses an existing +1 teaching step
 });
 test("stale edit cannot overwrite changed quick-mode or reset values",()=>{
  const base=initialSettings();
