@@ -1,4 +1,4 @@
-# Ventilator Simulator — v0.3.3 Preview
+# Ventilator Simulator — v0.3.4 Preview
 
 간호학생을 위한 **PB980(Puritan Bennett 980) 참고형 웹 시뮬레이터** 초기 실행본.
 실제 장비의 화면 구성 학습을 목표로 하지만, 임상 사용이나 기계 조작 훈련을 대체하지 않는다.
@@ -73,3 +73,9 @@ v0.2.2 improves keyboard-focus continuity when adjusting settings and adds a 320
 - Each settings `?` tab shows official adult PC/PS reference range and resolution (Operator's Manual Table 11-9) **separately from the unchanged educational step button range/precision**.
 - All existing model behavior, circuit learning, reset, keyboard, reduced-motion and responsive controls are preserved.
 - OEM firmware-identical pixel layout, real conditional parameter limits and real patient measurement models are **not validated**. See [v0.3.3 comparison](docs/PB980_UI_COMPARISON_v0.3.3.md).
+
+## v0.3.4 — Public PB980 reference cross-check
+- Based on an openly accessible manufacturer touchscreen quick reference (©2015), move the *fixed example* breath-type C marker to the left side of the patient-data strip, as shown in normal-ventilation public photos. This marker is NOT linked to breath events.
+- Add the missing ninth physical control legend, Alarm Silence, as a purely non-interactive illustrative bezel key. None of the bezel keys have clinical actions.
+- The public Korean SIMV/PC/PS/V-TRIG photograph is useful for future **lower settings area** geometry, but its firmware version is unconfirmed; no pixel-exact claim is made, no externally copyrighted screenshot is copied into this repository.
+- Keep all original teaching setting steps, waveform, Help, CIRCUIT, pause, reset, mobile responsiveness unchanged. Future PB980-like `select → turn → accept` editor should be an optional explicitly authorized UX feature; no button logic was altered in this patch.
