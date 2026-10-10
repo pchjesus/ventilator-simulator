@@ -19,6 +19,18 @@ try {
   assert.equal(await desktop.locator(".readout").count(),7);
   assert.equal(await desktop.locator("#panel-circuit").isVisible(),true);
   pass("desktop loads all 7 settings and 7 reference readouts");
+  assert.equal(await desktop.locator(".monitor-data .breath-example").innerText(),"C");
+  assert.equal(await desktop.locator(".bezel-controls > span").count(),8,"eight physical keys plus one rotary = nine");
+  assert.equal(await desktop.locator(".bezel-controls .rotary-knob").count(),1);
+  const breathPlacement=await desktop.evaluate(()=>{
+    const banner=document.querySelector(".monitor-data").getBoundingClientRect();
+    const mark=document.querySelector(".breath-example").getBoundingClientRect();
+    const first=document.querySelector(".readout").getBoundingClientRect();
+    return {banner,mark,first};
+  });
+  assert.ok(breathPlacement.mark.left>=breathPlacement.banner.left-1);
+  assert.ok(breathPlacement.mark.right<=breathPlacement.first.left+1,"C indicator should precede monitoring values");
+  pass("PB980 C indicator position and all nine physical control representations");
   const geography=await desktop.evaluate(()=>{
     const rect=selector=>document.querySelector(selector).getBoundingClientRect();
     return {monitor:rect(".monitor-wrap"),state:rect(".device-top"),waves:rect(".graph-area"),prompt:rect(".prompt-area"),settings:rect(".vent-bottom"),axis:rect(".graph-head"),plot:rect("#graph-pressure")};
@@ -138,6 +150,8 @@ try {
   assert.equal(await narrow.locator(".settings-grid").evaluate(el=>getComputedStyle(el).gridTemplateColumns.split(" ").length),2,"320px study controls must retain readable two-column layout");
   await narrow.getByRole("button",{name:"O₂ 증가 10"}).click();
   assert.equal(await narrow.locator(".setting-value").first().innerText(),"50");
+  assert.equal(await narrow.locator(".bezel-controls > span").count(),8);
+  assert.equal(await narrow.locator(".monitor-data .breath-example").isVisible(),true);
   pass("320px mobile width: no horizontal overflow, settings interactive");
   await narrow.screenshot({path:"artifacts/browser/narrow-320.png",fullPage:true});
   const reduced=await browser.newPage({viewport:{width:1000,height:700}});
