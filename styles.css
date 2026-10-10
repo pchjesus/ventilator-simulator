@@ -156,3 +156,17 @@ body{max-width:1680px;background:#e9f0f4}
  .device-top .state-sample{font-size:7px}
  .settings-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
+
+/* v0.3.4 public-reference: C/A/S indicator sits at left of patient banner,
+   not in a separate mode/status toolbar (see Quick Reference photo).
+   Both this indicator and numeric patient readouts are fixed study examples. */
+.monitor-data{display:grid;grid-template-columns:31px minmax(0,1fr);align-items:stretch;min-width:0}
+.breath-example{display:flex;align-items:flex-start;justify-content:center;padding-top:2px;background:#072c59;border-right:1px solid #ffffff44;color:#a1f65b;font:900 29px/1.05 ui-monospace,monospace}
+.monitor-data .monitor{min-width:0}
+@media(max-width:550px){
+ .monitor-data{grid-template-columns:21px minmax(0,1fr)}
+ .breath-example{font-size:21px;padding-top:4px}
+ .bezel-controls{gap:2px}
+ .bezel-controls>span{flex:1 1 0;min-width:0;width:auto}
+ .rotary-knob{flex:0 0 40px}
+}
