@@ -130,3 +130,17 @@
 ### Verification
 - GitHub Actions [38052371541](https://github.com/pchjesus/ventilator-simulator/actions/runs/38052371541) SUCCESS: syntax, 19/19 unit checks, desktop/360/320 Chromium, static site package.
 - Visually inspected actual desktop and 320px PNGs: C badge left of fixed patient values, 8 noninteractive button drawings plus encoder (9 physical control representations), settings remain legible. Physical equipment/phone and matched-firmware OEM pixel equivalence are unverified.
+
+## v0.3.5 — PB980-inspired staged control + optional Quick Study (2026-10-10)
+### Added
+- Accessible native modal adjustment for the default device-inspired workflow: select → edit pending → Accept or Cancel (Esc), keyboard arrows, original-value/pending-value distinction and in-dialog full reset.
+- Explicit toggle restoring original per-parameter ± buttons in Quick Study mode, without changing the committed state when switching.
+- Pure testable staged-control module `src/setting-editor.js`, five additional unit tests and desktop/mobile browser regression for the two workflows.
+### Preserved
+- Original `sim-model.js` study parameter metadata and immediate step controls, `waveform-model.js`, dynamic pressure/flow/volume, pause/reduced motion, help/CIRCUIT, focus, settings reset and private static package.
+### Risk analysis
+- Pending values NEVER feed the waveform engine; only `acceptSettingEdit` updates committed state. Stale original-value guard prevents unintended commit after an external change.
+- Modal editing and Quick Study are mutually exclusive. Quick Study is clearly labeled so non-OEM adjustments are not mistaken for actual PB980 controls.
+- No manufacturer-dependent soft/hard limits, Accept All multi-setting batching, alarm simulation or new physiology are introduced.
+### Verification
+- Preliminary branch CI [38054608709](https://github.com/pchjesus/ventilator-simulator/actions/runs/38054608709) succeeded: 24/24 unit tests, browser and package. Editor-open screenshots added in subsequent test change; latest-run verification and screenshot review recorded separately.

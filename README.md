@@ -1,4 +1,4 @@
-# Ventilator Simulator — v0.3.4 Preview
+# Ventilator Simulator — v0.3.5 Preview
 
 간호학생을 위한 **PB980(Puritan Bennett 980) 참고형 웹 시뮬레이터** 초기 실행본.
 실제 장비의 화면 구성 학습을 목표로 하지만, 임상 사용이나 기계 조작 훈련을 대체하지 않는다.
@@ -9,7 +9,7 @@
 - 테스트: Node.js 18 이상에서 `npm test`, `npm run check`
 - npm 의존성 없음. 브라우저 ES modules 사용. `file://` 직접 실행은 권장하지 않음.
 
-## 현재 구현 (v0.3.3)
+## 현재 구현 (v0.3.5)
 - PB980 스타일의 화면 구획: 상단 monitoring, 중앙 pressure/flow/volume 파형, 하단 SIMV(PC)+PS 설정 영역
 - 화면 안에서 FiO₂, PEEP, f, Pi, Ti, PS, V-TRIG 값 증감 및 기본값 초기화
 - 각 설정 옆 `?` 도움말, 오른쪽 CIRCUIT 개념 학습 탭(부품/조립 개요/완성 개념도)
@@ -79,3 +79,11 @@ v0.2.2 improves keyboard-focus continuity when adjusting settings and adds a 320
 - Add the missing ninth physical control legend, Alarm Silence, as a purely non-interactive illustrative bezel key. None of the bezel keys have clinical actions.
 - The public Korean SIMV/PC/PS/V-TRIG photograph is useful for future **lower settings area** geometry, but its firmware version is unconfirmed; no pixel-exact claim is made, no externally copyrighted screenshot is copied into this repository.
 - Keep all original teaching setting steps, waveform, Help, CIRCUIT, pause, reset, mobile responsiveness unchanged. Future PB980-like `select → turn → accept` editor should be an optional explicitly authorized UX feature; no button logic was altered in this patch.
+
+## v0.3.5 — Two educational parameter-control workflows
+- Default **PB980 참고형**: select a setting field, adjust a **pending** educational value using +/− (or arrow keys), then **Accept** to commit or **Cancel / Esc** to discard. Press Enter when Accept is focused. Focus returns to the selected field.
+- Optional **빠른 학습 ±**: restores all original small quick-study increments, immediate waveform updates and keyboard-repeat behavior. Switching modes preserves committed settings. No pending edit can leak into quick study.
+- The new native dialog contains a distinct committed vs pending readout, device-inspired dial illustration, and a whole-settings reset action; on narrow screens it appears as a bottom sheet. It is **not** a PB980 firmware or manufacturer-control emulator.
+- While a pending value is being edited the waveform continues on *committed* settings; after Accept the teaching graph is recomputed once. The static top patient-monitoring examples remain disconnected.
+- Manufacturer-reported limits/resolutions in ? help remain **separate** from the existing safe classroom UI bounds. A real PB980 has conditional limits, Accept All, alarms, and other interlocks that this app does not simulate.
+- See [dual controls and validation](docs/DUAL_CONTROL_IMPLEMENTATION_v0.3.5.md).

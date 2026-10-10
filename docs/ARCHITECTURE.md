@@ -39,3 +39,20 @@ Verify actual PB980 screen geometry and documented operating ranges against mode
 - Illustrative model expiry: `V(v)=V_peak * exp(-3.2*v)*(1-v)^2` and corresponding analytic `dV/dt` for flow. This guarantees a zero-volume and zero-flow endpoint by construction, **not** patient physiological accuracy.
 - Waveform sampling rejects invalid caller input independently of the screen control bounds. The UI and numerical layer still remain separate.
 - The display checks `prefers-reduced-motion` on load, initially pauses movement when requested, and allows the viewer to explicitly resume. A paused display is not repainted every ~85 ms.
+
+## v0.3.5 staged vs immediate state architecture
+```text
+Control mode: device (default) or quick (UI-only)
+  device tile selection → setting-editor.beginSettingEdit(committed, id)
+     → local {id, original, pending} + modal
+     → stepSettingEdit(pending, valid classroom increment)
+     → Accept → acceptSettingEdit(committed, edit) → new committed state → refreshSettings + paintWaveforms
+     → Cancel / Esc → discard pending + return focus (no waveform state change)
+  quick ± button → existing sim-model.adjustSetting(committed, id, delta)
+     → committed state → refreshSettings + paintWaveforms
+
+Only committed state → waveform-model.generateWaveform.
+Fixed sample monitor remains wholly independent from all the above.
+```
+No new database, native browser storage, backend or dependencies. UI-only control mode always starts in device mode after reload; switching never changes a setting itself.
+The staged editor performs an original-value match on Accept to prevent a stale dialog from overwriting a more recent state value. Modals are single-setting only; original study bounds remain authoritative because the actual PB980 conditional limits have not been modeled. `tests/setting-editor.test.mjs` protects these invariants and Chromium checks verify browser states, focus and responsive bottom sheet.

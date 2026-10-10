@@ -96,3 +96,11 @@ GitHub Actions run: https://github.com/pchjesus/ventilator-simulator/actions/run
 - Added expected browser checks: green fixed C badge inside top patient data, nine physical visual key representations, narrow-screen element visibility, previous keyboard/settings/waveform/help/circuit/reset/motion/overflow checks.
 - **Branch CI PASS**: [GitHub Actions 38052371541](https://github.com/pchjesus/ventilator-simulator/actions/runs/38052371541) — syntax OK, 19 unit tests passed, 0 failed; Chromium desktop/360/320, button, pause, keyboard, help, CIRCUIT, reset and no-overflow checks passed; package succeeded. Desktop and narrow 320px images inspected, source markers/9 keys as expected. Separate post-merge main checks remain to be observed; no actual PB980 fidelity or physical phone test.
 - Unverified: device firmware/patient parameter parity and true clinical functions.
+
+## v0.3.5 — Dual-control verification (2026-10-10)
+- Base `main` v0.3.4: `54d21a404e743955d06f1e0adbf2ffddfbf643ba`.
+- Initial branch run [38054608709](https://github.com/pchjesus/ventilator-simulator/actions/runs/38054608709): **SUCCESS** across syntax, 24/24 Node tests, Chromium browser and static package. No failures reported.
+- Pure tests cover separate pending/committed values, bounds, decimal steps, immutable Accept, unchanged Cancel, unknown setting and stale-edit protection.
+- Browser checks cover device mode default, independent pending value, Cancel/Esc, ArrowUp+Enter Accept, modal reset, restored focus, Quick Study control parity, keyboard and responsive 1440/360/320, original waveform/Pi/PS/PEEP/rate/Ti behavior, reduced motion, help, CIRCUIT, reset, browser JS errors and package.
+- Separate dialog-open screenshots were added to browser CI *after the initial successful run*. Inspect the latest run and screenshots before claiming final visual verification.
+- Real device/physical smartphone, true PB980 knob/menu/conditional limits, firmware-identical UI and physiological validity remain UNVERIFIED.

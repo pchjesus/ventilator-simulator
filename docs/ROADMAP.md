@@ -94,3 +94,14 @@
 - [ ] User decision: dual-mode study control scheme vs existing step buttons vs pure staged OEM-inspired workflow.
 - [ ] Later: verify grouping and exact labels via public SIMV PC PS photo, distinguish visible Esens data from future actual Esens control.
 - [ ] Do not block future GUI work solely due to missing private unit photograph. Retain no claim of firmware-exact pixel alignment.
+
+## v0.3.5 — Dual parameter-control workflow
+- [x] Approve UX C: default PB980-inspired select → adjust → Accept with optional legacy Quick Study.
+- [x] Separate pending edit state from committed simulation data and guard stale editing.
+- [x] Use model-valid educational increments, not unverified OEM parameter interlocks.
+- [x] Preserve all 7 legacy quick controls and original waveform/CIRCUIT/help/reset behaviors.
+- [x] Add dialog focus, Escape/Cancel, Enter Accept, keyboard arrows, mobile bottom sheet and in-dialog reset.
+- [x] Expand pure unit tests (19 → 24); preliminary branch CI 38054608709 succeeded.
+- [ ] Verify new dialog-open screenshots and final CI after updated browser coverage.
+- [ ] Verify final merged main branch CI, physical device/browser remains unverified.
+- [ ] Later consideration only: clinically reviewed conditional OEM settings, multi-param Accept All or truly interactive encoder; not within v0.3.5.
