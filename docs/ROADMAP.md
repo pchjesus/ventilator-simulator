@@ -85,3 +85,12 @@
 - [x] Confirm passing v0.3.3 application CI + screenshot review and record real run in TEST_REPORT (37962366798; test-only assertion rerun separately monitored).
 - [ ] Obtain version-identified normal-ventilation SIMV PC+PS photograph and exact geometry measurements.
 - [ ] Only later consider separate verified OEM-style input mode with dependency-based constraints.
+
+## v0.3.4 — Public evidence only (no local-device screenshot required)
+- [x] Replace unobtainable real MICU hardware screenshot prerequisite with a public-evidence matrix (manufacturer first, public-photo observation second, inference clearly marked).
+- [x] Correct static C badge placement and ninth decorative bezel key from manufacturer guide.
+- [x] Prepare but **do not implement** the clinically consequential adjustment UX choice; recommendation in BUTTON_UX_RECOMMENDATION_v0.3.4.md.
+- [ ] Check CI passing desktop/360/320 and rendered screenshots for v0.3.4.
+- [ ] User decision: dual-mode study control scheme vs existing step buttons vs pure staged OEM-inspired workflow.
+- [ ] Later: verify grouping and exact labels via public SIMV PC PS photo, distinguish visible Esens data from future actual Esens control.
+- [ ] Do not block future GUI work solely due to missing private unit photograph. Retain no claim of firmware-exact pixel alignment.
