@@ -53,6 +53,7 @@ try {
   await desktop.getByRole("button",{name:"Pᵢ 설정 선택"}).click();
   const editor=desktop.locator("#setting-editor");
   assert.equal(await editor.isVisible(),true);
+  await desktop.screenshot({path:"artifacts/browser/desktop-editor.png",fullPage:false});
   assert.match(await desktop.locator("#editor-original").innerText(),/10.0/);
   await desktop.getByRole("button",{name:"선택한 설정값 증가"}).click();
   assert.match(await desktop.locator("#editor-pending").innerText(),/11.0/);
@@ -93,6 +94,9 @@ try {
   assert.equal(await oxygenUp.evaluate(el=>document.activeElement===el),true,"keyboard focus lost");
   await oxygenUp.press("Enter");
   assert.equal(await desktop.locator(".setting-value").first().innerText(),"60");
+  await desktop.getByRole("button",{name:"PB980 참고형 모드"}).click();
+  assert.equal(await desktop.locator(".setting-value").first().innerText(),"60","mode switch must preserve committed values");
+  await desktop.getByRole("button",{name:"빠른 학습 모드"}).click();
   assert.equal(await desktop.locator("#monitor").innerText(),monitorBefore);
   pass("FiO₂ mouse/keyboard adjustment preserves focus and does not change example monitor");
   await desktop.getByRole("button",{name:"O₂ 설명 보기"}).click();
@@ -176,6 +180,7 @@ try {
   assert.equal(await mobile.getByRole("button",{name:"PB980 참고형 모드"}).getAttribute("aria-pressed"),"true");
   await mobile.getByRole("button",{name:"PEEP 설정 선택"}).click();
   assert.equal(await mobile.locator("#setting-editor").isVisible(),true);
+  await mobile.screenshot({path:"artifacts/browser/mobile-editor.png",fullPage:false});
   const dialogGeometry=await mobile.locator("#setting-editor").boundingBox();
   assert.ok(dialogGeometry.x>=-1 && dialogGeometry.x+dialogGeometry.width<=361,"mobile editor sheet should fit viewport");
   await mobile.getByRole("button",{name:"선택한 설정값 증가"}).click();
@@ -209,6 +214,7 @@ try {
   assert.equal(await narrow.locator(".settings-grid").evaluate(el=>getComputedStyle(el).gridTemplateColumns.split(" ").length),2,"320px study controls must retain readable two-column layout");
   await narrow.getByRole("button",{name:"O₂ 설정 선택"}).click();
   assert.equal(await narrow.locator("#setting-editor").isVisible(),true);
+  await narrow.screenshot({path:"artifacts/browser/narrow-editor-320.png",fullPage:false});
   const geometry320=await narrow.locator("#setting-editor").boundingBox();
   assert.ok(geometry320.x>=-1 && geometry320.x+geometry320.width<=321,"320px sheet must not overflow");
   await narrow.getByRole("button",{name:"Cancel"}).click();
