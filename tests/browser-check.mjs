@@ -164,6 +164,7 @@ try {
   assert.equal(await desktop.locator("#panel-circuit").isVisible(),true);
   pass("PB980-like chrome and educational navigation shortcuts");
   // The default PB980-inspired layout is the screenshot baseline.
+  await desktop.screenshot({path:"artifacts/browser/desktop-quick.png",fullPage:true});
   await desktop.getByRole("button",{name:"PB980 참고형 모드"}).click();
   assert.equal(await desktop.locator(".step-buttons").first().isVisible(),false);
   await desktop.screenshot({path:"artifacts/browser/desktop.png",fullPage:true});
@@ -201,6 +202,7 @@ try {
   assert.equal(await mobile.locator(".bezel-controls").count(),1);
   await mobile.getByRole("button",{name:"회로 학습 패널 열기"}).click();
   assert.equal(await mobile.locator("#panel-circuit").isVisible(),true);
+  await mobile.screenshot({path:"artifacts/browser/mobile-quick.png",fullPage:true});
   await mobile.getByRole("button",{name:"PB980 참고형 모드"}).click();
   await mobile.screenshot({path:"artifacts/browser/mobile.png",fullPage:true});
 
@@ -224,6 +226,7 @@ try {
   assert.equal(await narrow.locator(".bezel-controls > span").count(),8);
   assert.equal(await narrow.locator(".monitor-data .breath-example").isVisible(),true);
   pass("320px mobile width: no horizontal overflow, settings interactive");
+  await narrow.screenshot({path:"artifacts/browser/narrow-quick-320.png",fullPage:true});
   await narrow.getByRole("button",{name:"PB980 참고형 모드"}).click();
   await narrow.screenshot({path:"artifacts/browser/narrow-320.png",fullPage:true});
   const reduced=await browser.newPage({viewport:{width:1000,height:700}});
