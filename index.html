@@ -54,7 +54,12 @@
         <div class="vent-bottom">
           <div class="setup-panel" aria-label="현재 환자 예시 정보"><span>Adult</span><strong>SIMV</strong><span>PC · PS</span><small>IBW 60 kg<br/>EXAMPLE</small></div>
           <div class="settings-area">
-      <div class="settings-heading"><h2>Current settings <small>SIMV / PC / PS · V-TRIG</small></h2><span>EDU ± 버튼 · 실제 PB980 설정은 터치·노브 조작</span></div>
+      <div class="settings-heading"><h2>Current settings <small>SIMV / PC / PS · V-TRIG</small></h2><span>PB980 조작 참고형 · 임상 조작과 다름</span></div>
+      <div class="control-switch" role="group" aria-label="설정 조작 방식">
+        <button type="button" id="mode-device" aria-label="PB980 참고형 모드" aria-pressed="true">PB980 참고형</button>
+        <button type="button" id="mode-quick" aria-label="빠른 학습 모드" aria-pressed="false">빠른 학습 ±</button>
+      </div>
+      <p id="control-instructions" class="control-instructions">설정 항목을 선택 → 값을 조절 → Accept를 눌러 반영해.</p>
       <div class="settings-grid" id="settings" aria-label="조절 가능한 설정"></div>
       <div class="settings-footer"><span>Mode: <strong>SIMV (PC) + PS</strong> <button type="button" id="modeHelp" class="help" aria-label="SIMV 모드 설명">?</button></span>
         </div>
@@ -92,6 +97,28 @@
       </section>
     </aside>
   </main>
-  <footer class="footer">MVP v0.3.4 · 브라우저에서 동작하는 교육용 프런트엔드 · 임상/장비 동작 검증 전</footer>
+  <dialog id="setting-editor" class="setting-editor" aria-labelledby="editor-title" aria-describedby="editor-note">
+    <form id="editor-form">
+      <div class="editor-topline"><span>PB980-INSPIRED · EDUCATIONAL</span><span>SIMV (PC) + PS</span></div>
+      <h2 id="editor-title">설정값 조절</h2>
+      <div class="editor-values">
+        <div><span>확정값</span><strong id="editor-original">—</strong></div>
+        <div class="pending-number"><span>미확정값 · Pending</span><strong id="editor-pending" aria-live="polite">—</strong></div>
+      </div>
+      <div class="editor-adjuster" role="group" aria-label="교육용 모의 회전 노브">
+        <button type="button" id="editor-decrease" aria-label="선택한 설정값 감소">−</button>
+        <div class="editor-dial" aria-hidden="true"><span>⟳</span><small>TURN</small></div>
+        <button type="button" id="editor-increase" aria-label="선택한 설정값 증가">+</button>
+      </div>
+      <p id="editor-step-description" class="editor-step-description"></p>
+      <p id="editor-note" class="editor-note">교육용 PB980 조작 참고 화면이야. 실제 장비의 설정 범위·제약·확인 절차를 완전히 재현하지 않아.</p>
+      <div class="editor-actions">
+        <button type="button" id="editor-reset" class="editor-secondary">전체 초기화</button>
+        <button type="button" id="editor-cancel" class="editor-secondary">Cancel</button>
+        <button type="submit" id="editor-accept" class="editor-primary">Accept</button>
+      </div>
+    </form>
+  </dialog>
+  <footer class="footer">MVP v0.3.5 · 브라우저에서 동작하는 교육용 프런트엔드 · 임상/장비 동작 검증 전</footer>
 </body>
 </html>
