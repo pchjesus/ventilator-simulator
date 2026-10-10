@@ -114,3 +114,19 @@
 - Manual artifact inspection revealed 320px setting-tile layout regression (four columns) missed by an overflow-only browser check.
 - Restored two columns at the mobile breakpoint and added computed-grid regression assertions.
 - Fixed-application CI [37962366798](https://github.com/pchjesus/ventilator-simulator/actions/runs/37962366798): test/browser/package passed, 19 units. Inspected new desktop/mobile/320 screenshots; layout readable; still not physical hardware or OEM pixel-match validation.
+
+## v0.3.4 — Public PB980 visual reference follow-up (2026-10-10)
+### Source review
+- Examined Medtronic 2022 touchscreen Quick Reference Guide (nine physical keys, patient banner), operator manual touch-turn-accept workflow, actual published ventilator images incl. Korean 2022 nursing blog.
+- Kept strict categories manufacturer confirmed / public image observed / unverified firmware-specific appearance.
+### Changed
+- Move **fixed example** C marker to patient-data banner left, instead of separate status row.
+- Add visually simulated 9th hardware key, 'Audio Pause' (non-functional).
+- Add regression assertions and manufacturer/public-photo audit; no copyrighted remote images embedded.
+### Preserved
+- Existing 7 setting buttons and model limits, Waveform Engine, pause, keyboard, CIRCUIT/Help, reset, mobile responsive behavior, Private repository.
+### Decision pending
+- Recommend two-workflow UX, manufacturer-inspired staged adjustment plus optional Quick Study controls; do not implement until user chooses. See docs/BUTTON_UX_RECOMMENDATION_v0.3.4.md.
+### Verification
+- GitHub Actions [38052371541](https://github.com/pchjesus/ventilator-simulator/actions/runs/38052371541) SUCCESS: syntax, 19/19 unit checks, desktop/360/320 Chromium, static site package.
+- Visually inspected actual desktop and 320px PNGs: C badge left of fixed patient values, 8 noninteractive button drawings plus encoder (9 physical control representations), settings remain legible. Physical equipment/phone and matched-firmware OEM pixel equivalence are unverified.

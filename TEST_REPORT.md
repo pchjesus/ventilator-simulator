@@ -89,3 +89,10 @@ GitHub Actions run: https://github.com/pchjesus/ventilator-simulator/actions/run
 - Patched **application code** was verified in [37962366798](https://github.com/pchjesus/ventilator-simulator/actions/runs/37962366798): SUCCESS test/browser/package; 19/19 units. Inspected desktop (1440), mobile (360), narrow (320) screenshots, confirmed readable two-column controls and no obvious overlap.
 - The later test-only commit introducing explicit two-column assertions is covered by separate CI run [37962394683](https://github.com/pchjesus/ventilator-simulator/actions/runs/37962394683); final outcome should be checked before main merge. Latest report should not treat an in-progress run as passed.
 - Browser tests cover focus, settings, waveform/pause/reduced motion, circuit/help, layout, reset and JS errors. No actual PB980 pixel overlay or physical phone verified.
+
+## v0.3.4 — Public reference GUI checks (2026-10-10)
+- Base: v0.3.3 main e9a2ed4ca3ffb03b24781110a3c8841a6ee780a5 (private).
+- No change to simulation domain, value adjustment or waveform computation.
+- Added expected browser checks: green fixed C badge inside top patient data, nine physical visual key representations, narrow-screen element visibility, previous keyboard/settings/waveform/help/circuit/reset/motion/overflow checks.
+- **Branch CI PASS**: [GitHub Actions 38052371541](https://github.com/pchjesus/ventilator-simulator/actions/runs/38052371541) — syntax OK, 19 unit tests passed, 0 failed; Chromium desktop/360/320, button, pause, keyboard, help, CIRCUIT, reset and no-overflow checks passed; package succeeded. Desktop and narrow 320px images inspected, source markers/9 keys as expected. Separate post-merge main checks remain to be observed; no actual PB980 fidelity or physical phone test.
+- Unverified: device firmware/patient parameter parity and true clinical functions.
