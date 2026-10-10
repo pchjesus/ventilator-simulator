@@ -41,3 +41,8 @@ Medtronic operator manual PT00101843A00, Table 11-9, printed pages 11-10–11-13
 These values are **manufacturer-reported reference data**, not the range/step implementation of the simulator's original teaching buttons. Dependent or conditional soft/hard limits are not represented. No matched firmware identification is available.
 
 Medtronic. (n.d.). *Puritan Bennett™ 980 ventilator: Operator's manual* (PT00101843A00), Table 11-9. https://asiapac.medtronic.com/content/dam/covidien/library/us/en/product/acute-care-ventilation/PuritanBennett980Ventilator_OperatorsManual_en_US_PT00101843A00.pdf
+
+## Public device screenshot policy — v0.3.4
+Direct access to real PB980 hardware is unavailable and **not required** to continue approximate GUI development. Prioritize publicly released Medtronic PDF/video references, then openly available normal-ventilation device photographs and appropriately qualify screen-mode/firmware uncertainty. Do not reproduce photos in the app. See `PB980_PUBLIC_REFERENCE_AUDIT_v0.3.4.md`.
+
+Recommended future UX is a dual-flow approach with optional manufacturer-inspired staged adjustment, but requires explicit user approval; see `BUTTON_UX_RECOMMENDATION_v0.3.4.md`.
