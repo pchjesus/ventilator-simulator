@@ -104,3 +104,9 @@ GitHub Actions run: https://github.com/pchjesus/ventilator-simulator/actions/run
 - Browser checks cover device mode default, independent pending value, Cancel/Esc, ArrowUp+Enter Accept, modal reset, restored focus, Quick Study control parity, keyboard and responsive 1440/360/320, original waveform/Pi/PS/PEEP/rate/Ti behavior, reduced motion, help, CIRCUIT, reset, browser JS errors and package.
 - Separate dialog-open screenshots were added to browser CI *after the initial successful run*. Inspect the latest run and screenshots before claiming final visual verification.
 - Real device/physical smartphone, true PB980 knob/menu/conditional limits, firmware-identical UI and physiological validity remain UNVERIFIED.
+
+### Final expanded visual verification — v0.3.5 branch (2026-10-10)
+- [GitHub Actions 38054960790](https://github.com/pchjesus/ventilator-simulator/actions/runs/38054960790): SUCCESS; unit, Chromium browser and static package all passed with additional screenshots.
+- Chromium screenshots generated for each layout and workflow: `desktop.png`, `desktop-quick.png`, `desktop-editor.png`, `mobile.png`, `mobile-quick.png`, `mobile-editor.png`, `narrow-320.png`, `narrow-quick-320.png`, `narrow-editor-320.png`.
+- Examined desktop editor, 320px device view, 320px open sheet and 320px quick view. Pending highlighted in yellow; Accept/Cancel and reset visible; no obvious clipping, Quick Study buttons remain independently shown in two-column settings tiles.
+- No capture is a pixel comparison to verified PB980 firmware. Post-merge main CI remains a separate gate.

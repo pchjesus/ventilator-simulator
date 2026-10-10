@@ -39,3 +39,8 @@ PB980 conditional constraints, patient physiology/ABGA/alarm logic, firmware pix
 
 ## References (APA 7th)
 Medtronic. (n.d.). *Puritan Bennett™ 980 ventilator: Operator's manual* (PT00101843A00), section 4.5.5. https://asiapac.medtronic.com/content/dam/covidien/library/us/en/product/acute-care-ventilation/PuritanBennett980Ventilator_OperatorsManual_en_US_PT00101843A00.pdf
+
+## Actual CI and screenshot results
+- GitHub Actions branch run [38054960790](https://github.com/pchjesus/ventilator-simulator/actions/runs/38054960790): **PASS**, 24/24 Node tests, Chromium 1440/360/320, interactive dialog behavior and static package.
+- Nine images include each device-inspired/quick view plus native edit dialog at each viewport. Desktop + 320px sheets and narrow Quick were directly reviewed. Buttons remained visible, and the former two-column mobile regression did not recur.
+- Deployment or clinical-equivalence testing was not performed. A separate main-branch push workflow must succeed after merge.

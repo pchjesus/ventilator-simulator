@@ -144,3 +144,8 @@
 - No manufacturer-dependent soft/hard limits, Accept All multi-setting batching, alarm simulation or new physiology are introduced.
 ### Verification
 - Preliminary branch CI [38054608709](https://github.com/pchjesus/ventilator-simulator/actions/runs/38054608709) succeeded: 24/24 unit tests, browser and package. Editor-open screenshots added in subsequent test change; latest-run verification and screenshot review recorded separately.
+
+### Follow-up browser and visual proof
+- [GitHub Actions 38054960790](https://github.com/pchjesus/ventilator-simulator/actions/runs/38054960790): SUCCESS with 24/24 unit tests and extended browser screenshot coverage for both modes.
+- Reviewed actual 1440px editor and 320px editor, device and quick screenshots; verified staging/accept buttons visible and no narrow clipping. The long Quick Study mobile screen intentionally retains all original per-tile step controls.
+- No change to device limits/physiological computation, no new dependencies or public website.
