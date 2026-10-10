@@ -12,7 +12,7 @@ export function preferredEditStep(id){
   const param=PARAMETERS.find(p=>p.id===id);
   if(!param)return null;
   // Keep each existing increment valid, not a manufacturer dial emulator.
-  return param.steps.includes(0.1)?0.1:1;
+  return ["peep","ti","trigger"].includes(id)?0.1:1;
 }
 export function stepSettingEdit(edit,delta){
   if(!edit)return null;
