@@ -128,4 +128,5 @@
 ### Decision pending
 - Recommend two-workflow UX, manufacturer-inspired staged adjustment plus optional Quick Study controls; do not implement until user chooses. See docs/BUTTON_UX_RECOMMENDATION_v0.3.4.md.
 ### Verification
-- Actual run status recorded after GitHub CI; physical device and exact firmware match remain unverified.
+- GitHub Actions [38052371541](https://github.com/pchjesus/ventilator-simulator/actions/runs/38052371541) SUCCESS: syntax, 19/19 unit checks, desktop/360/320 Chromium, static site package.
+- Visually inspected actual desktop and 320px PNGs: C badge left of fixed patient values, 8 noninteractive button drawings plus encoder (9 physical control representations), settings remain legible. Physical equipment/phone and matched-firmware OEM pixel equivalence are unverified.

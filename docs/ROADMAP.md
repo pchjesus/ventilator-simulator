@@ -90,7 +90,7 @@
 - [x] Replace unobtainable real MICU hardware screenshot prerequisite with a public-evidence matrix (manufacturer first, public-photo observation second, inference clearly marked).
 - [x] Correct static C badge placement and ninth decorative bezel key from manufacturer guide.
 - [x] Prepare but **do not implement** the clinically consequential adjustment UX choice; recommendation in BUTTON_UX_RECOMMENDATION_v0.3.4.md.
-- [ ] Check CI passing desktop/360/320 and rendered screenshots for v0.3.4.
+- [x] Check CI passing desktop/360/320 and rendered screenshots for v0.3.4 (branch run 38052371541; main post-merge validation separately required).
 - [ ] User decision: dual-mode study control scheme vs existing step buttons vs pure staged OEM-inspired workflow.
 - [ ] Later: verify grouping and exact labels via public SIMV PC PS photo, distinguish visible Esens data from future actual Esens control.
 - [ ] Do not block future GUI work solely due to missing private unit photograph. Retain no claim of firmware-exact pixel alignment.
