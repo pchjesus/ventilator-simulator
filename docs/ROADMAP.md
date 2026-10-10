@@ -103,5 +103,5 @@
 - [x] Add dialog focus, Escape/Cancel, Enter Accept, keyboard arrows, mobile bottom sheet and in-dialog reset.
 - [x] Expand pure unit tests (19 → 24); preliminary branch CI 38054608709 succeeded.
 - [x] Verify editor-open/device/quick screenshots on 1440/360/320 and branch CI (38054960790).
-- [ ] Verify final merged main branch CI, physical device/browser remains unverified.
+- [x] Verify merged application commit CI on main (38055192585: SUCCESS); physical PB980 and actual handset remain unverified.
 - [ ] Later consideration only: clinically reviewed conditional OEM settings, multi-param Accept All or truly interactive encoder; not within v0.3.5.

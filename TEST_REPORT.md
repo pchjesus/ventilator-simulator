@@ -110,3 +110,8 @@ GitHub Actions run: https://github.com/pchjesus/ventilator-simulator/actions/run
 - Chromium screenshots generated for each layout and workflow: `desktop.png`, `desktop-quick.png`, `desktop-editor.png`, `mobile.png`, `mobile-quick.png`, `mobile-editor.png`, `narrow-320.png`, `narrow-quick-320.png`, `narrow-editor-320.png`.
 - Examined desktop editor, 320px device view, 320px open sheet and 320px quick view. Pending highlighted in yellow; Accept/Cancel and reset visible; no obvious clipping, Quick Study buttons remain independently shown in two-column settings tiles.
 - No capture is a pixel comparison to verified PB980 firmware. Post-merge main CI remains a separate gate.
+
+### Merged-main integration verification (v0.3.5)
+- Merge PR [#3](https://github.com/pchjesus/ventilator-simulator/pull/3), squash SHA `762fea2cb03c747f6a6e1c9e94676436b8b4b71e`.
+- Actual main-branch Actions [38055192585](https://github.com/pchjesus/ventilator-simulator/actions/runs/38055192585): **SUCCESS**, all `test`, `browser` and `package` jobs green; verified remote `main` and repository Private visibility.
+- This subsequent report-only commit does not modify application code; CI should still be checked against its final commit before closing the patch.

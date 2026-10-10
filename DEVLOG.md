@@ -149,3 +149,8 @@
 - [GitHub Actions 38054960790](https://github.com/pchjesus/ventilator-simulator/actions/runs/38054960790): SUCCESS with 24/24 unit tests and extended browser screenshot coverage for both modes.
 - Reviewed actual 1440px editor and 320px editor, device and quick screenshots; verified staging/accept buttons visible and no narrow clipping. The long Quick Study mobile screen intentionally retains all original per-tile step controls.
 - No change to device limits/physiological computation, no new dependencies or public website.
+
+### v0.3.5 merged-main results
+- PR [#3](https://github.com/pchjesus/ventilator-simulator/pull/3) squash merged successfully; code integration commit `762fea2cb03c747f6a6e1c9e94676436b8b4b71e`.
+- Post-merge main Actions [38055192585](https://github.com/pchjesus/ventilator-simulator/actions/runs/38055192585): test/browser/package SUCCESS. 24 original+new model tests and mobile/desktop browser workflow checks passed.
+- Original repository remains Private; no GitHub Pages/public release.
