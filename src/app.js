@@ -1,5 +1,6 @@
 import {VERSION, PARAMETERS, DEVICE_REFERENCE, MONITOR_REFERENCE, initialSettings, adjustSetting, formatSetting} from "./sim-model.js";
 import {generateWaveform, previewScales} from "./waveform-model.js";
+import {beginSettingEdit, preferredEditStep, stepSettingEdit, acceptSettingEdit} from "./setting-editor.js";
 const settingsContainer = document.getElementById("settings");
 const monitor = document.getElementById("monitor");
 const status = document.getElementById("status");
@@ -8,7 +9,11 @@ const panelCircuit = document.getElementById("panel-circuit");
 const helpTab = document.getElementById("tab-help");
 const circuitTab = document.getElementById("tab-circuit");
 const circuitContent = document.getElementById("circuit-content");
-let state = initialSettings();
+let state = initialSettings(); // committed state only: sole input to waveform model
+let controlMode = "device"; // explicit opt-in for legacy quick study controls
+let editState = null; // {id, original, pending}, never feeds waveform engine
+let editorFocusTarget = null;
+document.body.dataset.controlMode = controlMode;
 let circuitView = "parts";
 let assemblyStep = 0;
 document.getElementById("version").textContent = "v" + VERSION;
@@ -47,6 +52,9 @@ function renderSettings() {
   settingsContainer.replaceChildren();
   for (const param of PARAMETERS) {
     const card=document.createElement("div");card.className="setting";card.dataset.settingId=param.id;
+    const select=document.createElement("button");select.type="button";select.className="setting-select";
+    select.setAttribute("aria-label",param.label+" 설정 선택");
+    select.addEventListener("click",()=>openSettingEditor(param.id,select));
     const label=document.createElement("div");label.className="setting-name";label.textContent=param.label;
     const value=document.createElement("div");value.className="setting-value";value.textContent=formatSetting(param.id,state[param.id]);
     const unit=document.createElement("div");unit.className="setting-unit";unit.textContent=param.unit;
@@ -70,7 +78,12 @@ function renderSettings() {
     help.setAttribute("aria-label",param.label+" 설명 보기");
     help.addEventListener("click",()=>explain(param.label,param.help,DEVICE_REFERENCE[param.id]));
     buttons.append(help);
-    card.append(label,value,unit,buttons);settingsContainer.append(card);
+    select.append(label,value,unit);
+    const deviceHelp=document.createElement("button");deviceHelp.type="button";deviceHelp.className="device-help";deviceHelp.textContent="?";
+    deviceHelp.setAttribute("aria-label",param.label+" 설명 보기");
+    deviceHelp.addEventListener("click",()=>explain(param.label,param.help,DEVICE_REFERENCE[param.id]));
+    select.disabled=controlMode==="quick";
+    card.append(select,buttons,deviceHelp);settingsContainer.append(card);
   }
 }
 // Update existing nodes to preserve keyboard focus after a setting change.
@@ -81,12 +94,101 @@ function refreshSettings() {
     if (!param) continue;
     const current=state[id];
     card.querySelector(".setting-value").textContent=formatSetting(id,current);
+    card.querySelector(".setting-select").disabled=controlMode==="quick";
     for (const button of card.querySelectorAll("button[data-step]")) {
       const delta=Number(button.dataset.step);
       button.disabled=(delta<0 && current<=param.min)||(delta>0 && current>=param.max);
     }
   }
 }
+
+const editorDialog=document.getElementById("setting-editor");
+const editorForm=document.getElementById("editor-form");
+const incButton=document.getElementById("editor-increase");
+const decButton=document.getElementById("editor-decrease");
+
+function setControlMode(next){
+  if(next!=="device"&&next!=="quick")return;
+  // A pending edit is never allowed to flow silently into quick study.
+  if(editorDialog.open) closeSettingEditor();
+  controlMode=next;
+  document.body.dataset.controlMode=next;
+  document.getElementById("mode-device").setAttribute("aria-pressed",String(next==="device"));
+  document.getElementById("mode-quick").setAttribute("aria-pressed",String(next==="quick"));
+  document.getElementById("control-instructions").textContent=next==="device"
+    ?"설정 항목을 선택 → 값을 조절 → Accept를 눌러 반영해."
+    :"빠른 학습: 기존 ± 버튼을 누르면 교육용 설정과 파형이 즉시 변경돼.";
+  refreshSettings(); // update existing nodes; do not replace focused quick controls
+}
+function updateEditorDisplay(){
+  if(!editState)return;
+  const param=PARAMETERS.find(p=>p.id===editState.id);
+  const step=preferredEditStep(editState.id);
+  document.getElementById("editor-title").textContent=param.label+" · 설정값 조절";
+  document.getElementById("editor-original").textContent=formatSetting(param.id,editState.original)+" "+param.unit;
+  document.getElementById("editor-pending").textContent=formatSetting(param.id,editState.pending)+" "+param.unit;
+  document.getElementById("editor-step-description").textContent=
+    "모의 노브 증감: "+step+" "+param.unit+"씩 · 학습용 설정 범위 "+param.min+"–"+param.max;
+  decButton.disabled=editState.pending<=param.min;
+  incButton.disabled=editState.pending>=param.max;
+}
+function openSettingEditor(id,trigger){
+  if(controlMode!=="device"||editorDialog.open)return;
+  const next=beginSettingEdit(state,id);
+  if(!next)return;
+  editState=next;
+  editorFocusTarget=trigger;
+  updateEditorDisplay();
+  editorDialog.showModal();
+  document.getElementById("editor-accept").focus();
+}
+function movePending(direction){
+  if(!editState)return;
+  const increment=preferredEditStep(editState.id);
+  editState=stepSettingEdit(editState,direction*increment);
+  updateEditorDisplay();
+}
+function closeSettingEditor(){
+  const focus=editorFocusTarget;
+  editState=null;
+  editorFocusTarget=null;
+  if(editorDialog.open)editorDialog.close();
+  if(focus&&focus.isConnected&&!focus.disabled)focus.focus();
+}
+function acceptEditor(){
+  if(!editState)return;
+  const id=editState.id;
+  const before=state;
+  state=acceptSettingEdit(state,editState);
+  const changed=state!==before;
+  closeSettingEditor();
+  if(changed){refreshSettings();paintWaveforms();}
+  const param=PARAMETERS.find(p=>p.id===id);
+  status.textContent=changed
+    ? param.label+": "+formatSetting(id,state[id])+param.unit+" (Accept · 학습용 설정 확정)"
+    : "설정값 변화 없이 닫았어.";
+}
+document.getElementById("mode-device").addEventListener("click",()=>setControlMode("device"));
+document.getElementById("mode-quick").addEventListener("click",()=>setControlMode("quick"));
+incButton.addEventListener("click",()=>movePending(1));
+decButton.addEventListener("click",()=>movePending(-1));
+document.getElementById("editor-cancel").addEventListener("click",closeSettingEditor);
+document.getElementById("editor-reset").addEventListener("click",()=>{
+  closeSettingEditor();
+  state=initialSettings();
+  refreshSettings();paintWaveforms();
+  status.textContent="전체 설정을 초기화했어.";
+});
+editorForm.addEventListener("submit",event=>{event.preventDefault();acceptEditor();});
+editorDialog.addEventListener("cancel",event=>{event.preventDefault();closeSettingEditor();});
+editorDialog.addEventListener("keydown",event=>{
+  if(event.key==="ArrowUp"||event.key==="ArrowRight"){
+    event.preventDefault();movePending(1);
+  }else if(event.key==="ArrowDown"||event.key==="ArrowLeft"){
+    event.preventDefault();movePending(-1);
+  }
+});
+
 function circuitDiagram() {
   return `<svg viewBox="0 0 280 224" role="img" aria-label="기계와 환자를 연결하는 회로의 개념도">
     <rect x="7" y="76" width="69" height="60" rx="9" fill="#dae5eb" stroke="#567989"/><text x="41" y="100" font-size="11" text-anchor="middle">VENT</text><text x="41" y="116" font-size="10" text-anchor="middle">PB980</text>
@@ -123,7 +225,7 @@ document.getElementById("shortcut-circuit").addEventListener("click",()=>showSid
 document.getElementById("shortcut-help").addEventListener("click",()=>showSideTab("help"));
 helpTab.addEventListener("click",()=>showSideTab("help"));
 document.getElementById("modeHelp").addEventListener("click",()=>explain("SIMV (PC) + PS","SIMV는 강제호흡과 자발호흡을 조합하는 모드야. 이 예시에서는 강제호흡은 압력제어(PC), 자발호흡은 압력보조(PS)로 표시했어. 정확한 설정 화면과 사용 범위는 PB980 매뉴얼을 확인해야 해."));
-document.getElementById("reset").addEventListener("click",()=>{state=initialSettings();refreshSettings();paintWaveforms();status.textContent="기본 예시 설정으로 초기화했어.";});
+document.getElementById("reset").addEventListener("click",()=>{if(editorDialog.open)closeSettingEditor();state=initialSettings();refreshSettings();paintWaveforms();status.textContent="기본 예시 설정으로 초기화했어.";});
 document.querySelectorAll("[data-view]").forEach(button=>button.addEventListener("click",()=>{circuitView=button.dataset.view;assemblyStep=0;renderCircuit();}));
 // Single educational waveform preview state, independent of patient readouts.
 const plotPhases=["mandatory","spontaneous","expiration"];
