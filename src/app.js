@@ -7,7 +7,8 @@ import {clampRatio, ratioFromClientX, inspectAt} from "./waveform-inspector.js";
 import {PRECLINICAL_CASES,CASE_SOURCES,findCase} from "./preclinical-cases.js";
 import {startCase,chooseCaseAnswer,advanceCase,caseScore} from "./case-engine.js";
 import {auditCaseBank,evidenceKindLabel} from "./case-quality.js";
-import {ALARM_LESSONS,DISPLAY_CATEGORIES,DEVICE_EDUCATION_SOURCES,termsForCategory,findAlarmLesson,evaluateAlarmChoice,auditDeviceEducation} from "./device-learning.js";
+import {ALARM_LESSONS,DISPLAY_CATEGORIES,DEVICE_EDUCATION_SOURCES,DEVICE_VERSION_REVIEW,termsForCategory,findAlarmLesson,evaluateAlarmChoice,auditDeviceEducation} from "./device-learning.js";
+import {CORE_LESSONS,CORE_SOURCES,ESSENTIAL_SETTING_IDS,auditCoreLearning} from "./student-learning.js";
 const settingsContainer = document.getElementById("settings");
 const monitor = document.getElementById("monitor");
 const status = document.getElementById("status");
@@ -15,6 +16,9 @@ const panelHelp = document.getElementById("panel-help");
 const panelCircuit = document.getElementById("panel-circuit");
 const panelCase = document.getElementById("panel-case");
 const panelAlarm = document.getElementById("panel-alarm");
+const panelCore = document.getElementById("panel-core");
+const coreTab = document.getElementById("tab-core");
+const extraLearning = document.getElementById("extra-learning");
 const helpTab = document.getElementById("tab-help");
 const circuitTab = document.getElementById("tab-circuit");
 const caseTab = document.getElementById("tab-case");
@@ -59,6 +63,8 @@ function renderClinicalTopic(id){
     button.setAttribute("aria-pressed",String(button.dataset.topic===selectedTopicId));
   }
   if(!topic)return;
+  const supplementary=document.getElementById("more-clinical-topics");
+  if(supplementary&&["pi","ti","ps","trigger","mode","waveforms","circuit","abga"].includes(id))supplementary.open=true;
   root.append(makeElement("p","clinical-intro",topic.summary));
   for(const section of topic.sections){
     const region=makeElement("section","clinical-block");
@@ -73,8 +79,10 @@ function renderTopicNavigation(){
   const root=document.getElementById("topic-buttons");
   root.replaceChildren();
   for(const group of TOPIC_GROUPS){
-    const wrapper=makeElement("div","topic-group");
-    wrapper.append(makeElement("div","topic-group-title",group.title));
+    const supplementary=group.level==="additional";
+    const wrapper=makeElement(supplementary?"details":"div","topic-group"+(supplementary?" clinical-extra":""));
+    if(supplementary)wrapper.id="more-clinical-topics";
+    wrapper.append(makeElement(supplementary?"summary":"div","topic-group-title",group.title));
     const row=makeElement("div","topic-buttons");
     for(const id of group.ids){
       const param=PARAMETERS.find(p=>p.id===id);
@@ -172,8 +180,9 @@ function initEducationUI(){
 }
 
 function showSideTab(tab) {
+  if(tab==="circuit"||tab==="alarm")extraLearning.open=true;
   for (const [id,button,panel] of [
-    ["help",helpTab,panelHelp],["circuit",circuitTab,panelCircuit],["case",caseTab,panelCase],["alarm",alarmTab,panelAlarm]
+    ["core",coreTab,panelCore],["help",helpTab,panelHelp],["circuit",circuitTab,panelCircuit],["case",caseTab,panelCase],["alarm",alarmTab,panelAlarm]
   ]) {
     const active=id===tab;
     panel.hidden=!active;
@@ -209,10 +218,13 @@ function renderSettings() {
   settingsContainer.replaceChildren();
   for (const param of PARAMETERS) {
     const card=document.createElement("div");card.className="setting";card.dataset.settingId=param.id;
+    const core=ESSENTIAL_SETTING_IDS.includes(param.id);
+    card.dataset.learningTier=core?"core":"additional";
     const select=document.createElement("button");select.type="button";select.className="setting-select";
     select.setAttribute("aria-label",param.label+" 설정 선택");
     select.addEventListener("click",()=>openSettingEditor(param.id,select));
     const label=document.createElement("div");label.className="setting-name";label.textContent=param.label;
+    const tier=makeElement("span","setting-tier",core?"핵심":"추가");label.append(tier);
     const value=document.createElement("div");value.className="setting-value";value.textContent=formatSetting(param.id,state[param.id]);
     const unit=document.createElement("div");unit.className="setting-unit";unit.textContent=param.unit;
     const buttons=document.createElement("div");buttons.className="step-buttons";
@@ -577,6 +589,56 @@ function renderCase(){
   }
   caseSources(root,scenario.sources);
 }
+
+/* v0.4.1: student-first learning is a read-only explanation layer.
+ * Never mutates device settings, synthetic graph or reference monitor data. */
+const coreAudit=auditCoreLearning();
+function renderCoreLearning(){
+  const root=document.getElementById("core-learning-content");
+  root.replaceChildren();
+  if(coreAudit.problems.length){
+    root.append(makeElement("p","core-audit-error","학습 콘텐츠 검사 실패: "+coreAudit.problems.join(", ")));
+    return;
+  }
+  for(const item of CORE_LESSONS){
+    const card=makeElement("details","core-concept");
+    card.dataset.conceptId=item.id;
+    const header=makeElement("summary","core-concept-header");
+    const title=makeElement("span","core-concept-title");
+    title.append(makeElement("strong",null,item.title),makeElement("span",null,item.label));
+    header.append(title,makeElement("span","core-concept-short",item.key));
+    card.append(header);
+    const body=makeElement("div","core-concept-body");
+    const content=[
+      ["한 줄 이해",item.meaning],
+      ["간호학생 관찰",item.observe],
+      ["주의할 점",item.caution],
+      ["이 앱의 한계",item.simulator]
+    ];
+    for(const [label,text] of content){
+      const p=makeElement("p",null,null);
+      p.append(makeElement("strong",null,label+" · "),document.createTextNode(text));
+      body.append(p);
+    }
+    const source=makeElement("div","core-concept-sources");
+    source.append(makeElement("strong",null,"참고"));
+    for(const key of item.reference){
+      const ref=CORE_SOURCES[key];
+      const a=makeElement("a",null,ref.label);
+      a.href=ref.url;a.target="_blank";a.rel="noopener noreferrer";
+      source.append(a);
+    }
+    body.append(source);
+    card.append(body);
+    root.append(card);
+  }
+}
+coreTab.addEventListener("click",()=>showSideTab("core"));
+extraLearning.addEventListener("toggle",()=>{
+  // When learners collapse advanced navigation, never strand them in a hidden-tab view.
+  if(!extraLearning.open&&( !panelCircuit.hidden||!panelAlarm.hidden))showSideTab("core");
+});
+
 caseTab.addEventListener("click",()=>{renderCase();showSideTab("case");});
 
 /* PB980 alarm vocabulary and device-readout literacy, independent of real or simulated
@@ -631,11 +693,15 @@ function renderAlarmLesson(root,lesson){
   root.append(makeAlarmButton("← 알람 목록",()=>{selectedAlarmLesson=null;renderAlarmLearning();alarmTab.focus();},"alarm-return"));
   root.append(makeElement("h3","alarm-detail-title",lesson.title));
   root.append(makeElement("p","alarm-detail-subtitle",lesson.subtitle));
-  root.append(makeElement("p","alarm-source-tag",lesson.manualSection));
+  const technical=makeElement("details","alarm-technical-details");
+  technical.append(makeElement("summary",null,"추가 학습 · PB980 매뉴얼 용어와 적용 버전"));
+  technical.append(makeElement("p","alarm-source-tag",lesson.manualSection));
   const meaning=makeElement("section","alarm-learning-section");
   meaning.append(makeElement("h4",null,"제조사 매뉴얼의 용어·의미"));
   meaning.append(makeElement("p",null,lesson.manufacturerMeaning));
-  root.append(meaning);
+  technical.append(meaning);
+  technical.append(makeElement("p","alarm-version-note",DEVICE_VERSION_REVIEW.summary));
+  root.append(technical);
   const context=makeElement("section","alarm-learning-section");
   context.append(makeElement("h4",null,"가상 학습 상황"));
   context.append(makeElement("p",null,lesson.observation));
@@ -698,7 +764,20 @@ function renderAlarmLearning(){
     if(lesson){renderAlarmLesson(root,lesson);return;}
     selectedAlarmLesson=null;
   }
-  root.append(makeElement("p","alarm-context","제조사 매뉴얼에 등장하는 명칭 4종을 학습해. 실제 경보의 발생 우선순위, 횟수 기준, 센서 알고리즘, 음향 알림을 구현하지는 않았어."));
+  root.append(makeElement("p","alarm-context","제조사 문서에 등장하는 4가지 알람의 의미와 학생의 관찰·보고 원칙을 학습해. 세부 알람 알고리즘·우선순위·경보음은 구현하지 않았어."));
+  const variant=makeElement("details","alarm-version-details");
+  variant.append(makeElement("summary",null,"추가 학습 · PB980 소프트웨어 버전별 차이"));
+  variant.append(makeElement("p",null,DEVICE_VERSION_REVIEW.summary));
+  variant.append(makeElement("p",null,DEVICE_VERSION_REVIEW.versionSpecificExample));
+  const versions=makeElement("ul",null);
+  for(const label of DEVICE_VERSION_REVIEW.examples)versions.append(makeElement("li",null,label));
+  variant.append(versions);
+  for(const link of DEVICE_VERSION_REVIEW.sourceLinks){
+    const anchor=makeElement("a",null,link.label);
+    anchor.href=link.url;anchor.target="_blank";anchor.rel="noopener noreferrer";
+    variant.append(anchor);
+  }
+  root.append(variant);
   for(const lesson of ALARM_LESSONS){
     const card=makeElement("section","alarm-lesson-card");
     card.append(makeElement("h3",null,lesson.title));
@@ -866,5 +945,5 @@ function animationFrame(now){
   }
   requestAnimationFrame(animationFrame);
 }
-initEducationUI();renderMonitor();renderSettings();renderCircuit();paintWaveforms();
+initEducationUI();renderMonitor();renderSettings();renderCircuit();renderCoreLearning();showSideTab("core");paintWaveforms();
 requestAnimationFrame(animationFrame);

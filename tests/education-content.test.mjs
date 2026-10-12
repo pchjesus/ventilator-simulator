@@ -15,7 +15,8 @@ test("each of the seven settings has substantial evidence-linked education",()=>
 test("every clinical topic is discoverable and sources are grounded HTTPS links",()=>{
  const ids=TOPIC_GROUPS.flatMap(g=>g.ids);
  assert.equal(new Set(ids).size,ids.length);
- assert.deepEqual(ids.slice(0,7),PARAMETERS.map(p=>p.id));
+ assert.deepEqual(ids.slice(0,5),["peep","fio2","rate","monitoring","nursing"]);
+ assert.deepEqual(new Set(ids.filter(id=>PARAMETERS.some(p=>p.id===id))),new Set(PARAMETERS.map(p=>p.id)));
  assert.deepEqual(new Set(ids),new Set(Object.keys(CLINICAL_TOPICS)));
  for(const [id,item] of Object.entries(CLINICAL_TOPICS)){
   for(const key of item.sourceIds)assert.ok(EDUCATION_SOURCES[key],id+" "+key);

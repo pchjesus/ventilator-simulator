@@ -17,8 +17,19 @@ try {
   await desktop.locator(".setting").first().waitFor({state:"visible"});
   assert.equal(await desktop.locator(".setting").count(),7);
   assert.equal(await desktop.locator(".readout").count(),7);
-  assert.equal(await desktop.locator("#panel-circuit").isVisible(),true);
-  pass("desktop loads all 7 settings and 7 reference readouts");
+  assert.equal(await desktop.locator("#panel-core").isVisible(),true);
+  assert.equal(await desktop.locator("#panel-circuit").isVisible(),false);
+  assert.equal(await desktop.locator("#extra-learning").evaluate(e=>e.open),false);
+  assert.equal(await desktop.locator(".core-concept").count(),6);
+  assert.equal(await desktop.locator('.setting[data-learning-tier="core"]').count(),3);
+  assert.equal(await desktop.locator('.setting[data-learning-tier="additional"]').count(),4);
+  await desktop.locator('[data-concept-id="peep"] > summary').click();
+  assert.match(await desktop.locator('[data-concept-id="peep"]').innerText(),/혈압/);
+  assert.match(await desktop.locator('[data-concept-id="vte"] > summary').innerText(),/VTE/);
+  await desktop.screenshot({path:"artifacts/browser/desktop-core-default.png",fullPage:false});
+  await desktop.locator("#extra-learning > summary").click();
+  assert.equal(await desktop.locator("#extra-learning").evaluate(e=>e.open),true);
+  pass("student-first default core: PEEP education, collapsible supplemental tabs and all 7 settings retained");
   assert.equal(await desktop.locator(".monitor-data .breath-example").innerText(),"C");
   assert.equal(await desktop.locator(".bezel-controls > span").count(),8,"eight physical keys plus one rotary = nine");
   assert.equal(await desktop.locator(".bezel-controls .rotary-knob").count(),1);
@@ -49,9 +60,14 @@ try {
   assert.equal(await desktop.locator("#panel-alarm").isVisible(),true);
   assert.equal(await desktop.locator("#panel-circuit").isVisible(),false);
   assert.equal(await desktop.locator(".alarm-lesson-card").count(),4);
+  await desktop.locator(".alarm-version-details > summary").click();
+  assert.match(await desktop.locator(".alarm-version-details").innerText(),/8.4.4.3/);
+  await desktop.locator(".alarm-version-details > summary").click();
   assert.match(await desktop.locator(".alarm-demo-notice").innerText(),/실제 발생 경보 아님/);
   await desktop.locator(".alarm-lesson-card").first().getByRole("button",{name:"알람 이해하기"}).click();
   assert.match(await desktop.locator(".alarm-detail-title").innerText(),/CIRCUIT DISCONNECT/);
+  assert.equal(await desktop.locator(".alarm-technical-details").evaluate(e=>e.open),false);
+  await desktop.locator(".alarm-technical-details > summary").click();
   assert.match(await desktop.locator(".alarm-learning-section").first().innerText(),/매뉴얼/);
   assert.equal(await desktop.locator(".alarm-choice").count(),3);
   await desktop.locator(".alarm-choice").nth(1).click();
@@ -78,6 +94,10 @@ try {
   assert.equal(await desktop.locator('.alarm-source-links a[target="_blank"][rel="noopener noreferrer"]').count(),2);
   await desktop.screenshot({path:"artifacts/browser/desktop-alarm-terms.png",fullPage:false});
   await desktop.getByRole("tab",{name:"CIRCUIT"}).click();
+  await desktop.locator("#extra-learning > summary").click();
+  await desktop.waitForTimeout(50);
+  assert.equal(await desktop.locator("#panel-core").isVisible(),true,"collapsing advanced returns to core");
+  await desktop.locator("#extra-learning > summary").click();
   pass("PB980 alarm teaching: 4 lessons, quiz, replay, glossary, safe links and isolated simulator state");
   // v0.3.8: case-learning data must be isolated from all existing LCD and setting state.
   const settingsBeforeCase=await desktop.locator("#settings").innerText();
@@ -286,6 +306,7 @@ try {
   assert.equal(sourceSafe.target,"_blank");
   await desktop.locator('#topic-buttons [data-topic="nursing"]').click();
   assert.match(await desktop.locator("#clinical-detail").innerText(),/기도·회로/);
+  await desktop.locator("#more-clinical-topics > summary").click();
   await desktop.locator('#topic-buttons [data-topic="waveforms"]').click();
   assert.match(await desktop.locator("#clinical-detail").innerText(),/유량–시간/);
   await desktop.locator('#topic-buttons [data-topic="monitoring"]').click();
@@ -363,6 +384,9 @@ try {
   assert.equal(mobileResponse.status(),200);
   await mobile.locator(".setting").first().waitFor({state:"visible"});
   assert.equal(await mobile.locator(".setting").count(),7);
+  assert.equal(await mobile.locator(".core-concept").count(),6);
+  await mobile.screenshot({path:"artifacts/browser/mobile-core-default.png",fullPage:false});
+  await mobile.locator("#extra-learning > summary").click();
   assert.equal(await mobile.locator(".prompt-area").count(),1);
   assert.equal(await mobile.locator(".settings-grid").evaluate(el=>getComputedStyle(el).gridTemplateColumns.split(" ").length),2,"mobile study settings must use two columns");
   assert.equal(await mobile.getByRole("button",{name:"PB980 참고형 모드"}).getAttribute("aria-pressed"),"true");
@@ -426,6 +450,10 @@ try {
   const narrowResponse=await narrow.goto(ROOT,{waitUntil:"networkidle",timeout:30000});
   assert.equal(narrowResponse.status(),200);
   await narrow.locator(".setting").first().waitFor({state:"visible"});
+  assert.equal(await narrow.locator("#panel-core").isVisible(),true);
+  assert.equal(await narrow.locator(".core-concept").count(),6);
+  await narrow.screenshot({path:"artifacts/browser/narrow-core-320.png",fullPage:false});
+  await narrow.locator("#extra-learning > summary").click();
   await narrow.locator("#open-manual").click();
   assert.equal(await narrow.locator("#manual-dialog").isVisible(),true);
   const narrowManual=await narrow.locator("#manual-dialog").boundingBox();

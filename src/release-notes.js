@@ -8,6 +8,12 @@ export const RELEASE_CATEGORIES=Object.freeze([
   {id:"docs",label:"문서·근거"}
 ]);
 export const RELEASE_NOTES=Object.freeze([
+ {version:"0.4.1",date:"2026-10-12",changes:[
+  {category:"ui",text:"실습 전 핵심 개념 탭을 기본 화면으로 지정, 핵심 설정 강조, 회로·PB980 알람과 전문 설정 설명을 추가 학습으로 분리"},
+  {category:"feature",text:"PEEP·FiO₂·VTE·설정/총 호흡수·Ppeak·환자 사정을 설명하는 여섯 개 읽기 쉬운 교육 카드와 원문 근거 연결"},
+  {category:"clinical",text:"학생에게 중요한 환자 관찰·설정/측정값 구분 강조; 장비 소프트웨어·알람 세부 차이는 추가 학습으로 배치"},
+  {category:"stability",text:"기존 7개 설정 조작·파형·CASE·회로·알람 보존, 기본 패널/접기·펼치기·모바일 회귀 테스트"},
+  {category:"docs",text:"제조사 공식 버전별 매뉴얼 7.6.1/8.0.9/8.1.0/8.2.0 계열과 8.4.4.3 이상 High PEEP 옵션 관련 차이 조사, 현장 설치 버전 미확인 명시"}]},
  {version:"0.4.0",date:"2026-10-12",changes:[
   {category:"ui",text:"네 번째 ALARM 학습 탭과 반응형 알람 카드·설정값/측정값 구분 용어 화면 추가"},
   {category:"feature",text:"PB980 제조사 문서에 등장하는 경보 명칭 4종의 교육용 선택·즉시 해설·다시 풀기 기능"},

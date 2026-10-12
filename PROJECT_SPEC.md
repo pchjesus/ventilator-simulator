@@ -120,3 +120,10 @@ Vent settings
 - Provide an independent glossary filter for 7 educational configurable settings, 7 fixed sample monitor values, and example SIMV(PC)+PS mode with conspicuous value-source distinction.
 - Never generate alarm colors, priority countdowns, beeps, fake measurements, circuit effects, diagnosis or treatment instructions via learner cards.
 - Remain visible and usable at 1440/360/320. Keep original device editor, quick settings, waveform, manual, CASE, CIRCUIT and reset behavior intact.
+
+## v0.4.1 student-priority UI
+- Default tab CORE with 6 explanatory concepts and sources. Keep old CASE and Help primary.
+- Circuit/ALARM retained under '추가 학습' disclosure, deep Help parameters and alarm technical details optionally expanded. Collapse while advanced is active returns CORE.
+- Highlight FiO₂/PEEP/f as primary controls. Pi/Ti/PS/V-TRIG remain fully operable with unchanged numeric semantics.
+- Explicit that sample VTE/Ppeak/fTOT are fixed, not dynamically measured. Keep no patient/alarm engineering and no patient data.
+- Reference software variant facts only as references; hospital firmware/option values must remain unconfirmed.

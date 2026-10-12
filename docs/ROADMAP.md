@@ -167,3 +167,12 @@ See [clinical content QA v0.3.9](CLINICAL_CONTENT_QA_v0.3.9.md).
 See [PB980 alarm education design & evidence boundaries](PB980_ALARM_EDUCATION_v0.4.0.md).
 
 - [x] v0.4.0 PR branch run 38208572810: **52/52 unit, Chromium desktop/360/320, package successful**; reviewed 28 browser captures for alarm UI.
+
+## v0.4.1 completed scope
+- [x] Student-first PEEP/FiO₂/VTE/f/fTOT/Ppeak/direct assessment six-card default UI.
+- [x] Keep original seven settings with 3 highlighted core / 4 supplementary controls.
+- [x] Make Help deep topics, CIRCUIT/ALARM and PB980 alarm details optional disclosures without removing functionality.
+- [x] Review official PB980 software-version manuals and mark unknown hospital firmware; cite 8.4.4.3+ High PEEP Alarm guide example.
+- [x] Add unit and 1440/360/320 browser regressions including collapse navigation and legacy controls.
+- [ ] Independently clinically review and pilot contents with nursing students and faculty.
+See STUDENT_FIRST_AND_PB980_VERSION_REVIEW_v0.4.1.md.

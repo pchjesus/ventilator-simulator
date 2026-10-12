@@ -282,3 +282,12 @@
 - A browser-test selector string quoting error was detected by CI and corrected; `npm run check` now validates test script syntax before Chromium installation.
 - Manually examined 28-shot browser artifact, including desktop glossary, desktop quiz feedback, and 320px mobile lesson.
 - Manufacturer manual-grounded vocabulary remains distinct from unreviewed student interpretation; there is still no actual simulated alarm engine.
+
+## v0.4.1 — student-first nursing education (2026-10-12)
+- Baseline Private main 68aea8ef631c13e86a916f8420f0e20b94bb9961.
+- Reprioritized initial study content around PEEP/FiO₂/VTE/set-vs-total respiratory rate/Ppeak/patient assessment, on AARC 2024 assessment concepts; curricular ordering is an educational design choice.
+- Added pure src/student-learning.js with six source-linked content objects and tier-coverage checks; no changes to waveform calculations, setting editor logic or hardcoded monitor samples.
+- Changed right-side navigation to core/CASE/Help by default and CIRCUIT/ALARM under native disclosure; restore core when advanced navigation collapses, auto-open when shortcut navigates to advanced. Additional Help and PB980 technical descriptions are collapsed.
+- Styled 3 core settings and 4 supplemental settings without changing array order, IDs or values. Screen remains a simulator demo, not real patient measurement.
+- Reviewed Medtronic software-version-specific PB980 manuals and High PEEP Alarm guide with 8.4.4.3+ qualifier; site-specific installed software remains unknown.
+- Test plan: 57 unit checks, Chromium 1440/360/320, mobile and existing CASE/editor/ALARM/circuit regressions, release zip source integrity; clinical SME signoff separately required.
