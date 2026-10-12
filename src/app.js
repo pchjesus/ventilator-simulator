@@ -97,7 +97,10 @@ function configureInfoDialog(id,triggerId){
     if(event.target!==dialog)return;
     const bounds=dialog.getBoundingClientRect();
     if(event.clientX<bounds.left||event.clientX>bounds.right||
-       event.clientY<bounds.top||event.clientY>bounds.bottom)dialog.close();
+       event.clientY<bounds.top||event.clientY>bounds.bottom){
+      event.preventDefault(); // a backdrop gesture must not focus/activate a behind-dialog control
+      dialog.close();
+    }
   });
   dialog.addEventListener("close",()=>{
     if(previousFocus&&previousFocus.isConnected)previousFocus.focus();
