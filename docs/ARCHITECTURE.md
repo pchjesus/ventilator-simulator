@@ -121,3 +121,10 @@ src/student-learning.js exports core teaching concepts, metadata tiers, referenc
 The existing CIRCUIT/ALARM panels are retained verbatim behind the #extra-learning details control, with safe restore-to-core on close. All 7 setting tiles stay in existing order; a data-learning-tier attribute only changes CSS emphasis.
 No state transitions in waveform model, device setting editor, case engine, alarm lesson scoring or monitor examples.
 src/device-learning.js exports manufacturer catalog version uncertainty and official documentation links only; no PB980 hardware revision detection.
+
+
+## v0.4.2 isolated core formative check
+Student-learning lessons/sources (read-only) → src/core-quiz.js (10 items, pure immutable state operations, schema audit) → src/app.js (independent coreQuizState in RAM and #core-quiz-root rendering) → existing concept-card review / existing CASE tab navigation.
+No write path reaches the device state, pending setting editor, fixed monitor example values, waveform engine, CASE state/reflection, alarm bank or circuit.
+The rate-static item cites this app's README as an implementation contract, not a manufacturer claim. No database, new browser tab, login, API, or automatic patient physiology is introduced.
+1440px / 360px / 320px browser regression is required.
