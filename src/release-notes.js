@@ -8,6 +8,12 @@ export const RELEASE_CATEGORIES=Object.freeze([
   {id:"docs",label:"문서·근거"}
 ]);
 export const RELEASE_NOTES=Object.freeze([
+ {version:"0.3.7",date:"2026-10-12",changes:[
+  {category:"ui",text:"PB980 내부 정보 구조를 유지하며 외형 장식을 절제한 중립 색상·고대비 환자 데이터 및 설정 UI로 가독성 개선"},
+  {category:"feature",text:"파형 분석 모드에서 정지된 교육용 Pressure/Flow/Volume 곡선의 시점·수치·호흡 단계 확인; 슬라이더/터치/키보드 지원"},
+  {category:"feature",text:"파형 격자 켜기/끄기와 Pause/Resume 간 상태 전환 보강"},
+  {category:"stability",text:"이중 설정·회로·설명서·고정 모니터 및 기존 파형의 회귀검증"},
+  {category:"docs",text:"PB980 매뉴얼의 pause/cursor/grid 개념과 시뮬레이터의 차이 명시"}]},
  {version:"0.3.6",date:"2026-10-12",changes:[
   {category:"clinical",text:"FiO₂·PEEP·f·Pᵢ·Tᵢ·PS·V-TRIG를 포함한 13개 학습 주제에 기본 개념·간호 관찰·제한·출처 보강"},
   {category:"feature",text:"상단 설명서 팝업과 버전별 패치 내역 팝업, 패치 카테고리 필터 추가"},

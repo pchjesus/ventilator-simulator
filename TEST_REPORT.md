@@ -136,3 +136,10 @@ GitHub Actions run: https://github.com/pchjesus/ventilator-simulator/actions/run
 - Exact merge commit passed main push GitHub Actions [38187571168](https://github.com/pchjesus/ventilator-simulator/actions/runs/38187571168): `test` (29/29), `browser` (desktop/360/320 + new dialogs), and `package` all **SUCCESS**.
 - Main remained `Private` and GitHub Pages was not published; downloadable workflow artifacts contain verified static browser assets and 15 Chromium screenshots.
 - This report-only follow-up commit does not alter app logic. Its CI is verified separately, if/when available.
+
+## v0.3.7 — readability and waveform inspector acceptance plan
+- Baseline private main `cdec71a3ab43a279b4f66b9d1009a6da737b48f6`.
+- Pure cursor unit tests: clamp/invalid numeric positions, pointer normalization, sampler deterministic mapping and finite values, validation of untrusted samples.
+- Chromium tests added: default moving graph, analysis freezes, three shared cursor lines, slider Home/End, direct plot click, sample values finite, fixed patient monitor unchanged, grid button independent, exit playback restoration.
+- Existing complete browser suite preserved (modal management, Accept/Cancel/pending, Quick Study, waveform mode effects, CIRCUIT, reduced-motion, desktop/360/320 responsive viewport, keyboard focus).
+- Source-code presence is not verification. Required green PR and **exact final main SHA** test/browser/package jobs; visual PNG inspection; no PB980 device/smartphone hardware validation or clinical physiology claims.
