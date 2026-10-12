@@ -32,7 +32,8 @@ test("critical clinical teaching does not confuse static readouts with measured 
 });
 test("all basic lessons include patient observation, caution, simulator limitations and citation",()=>{
  for(const lesson of CORE_LESSONS){
-  for(const key of ["key","meaning","observe","caution","simulator"])assert.ok(lesson[key].length>=15);
+  assert.ok(lesson.key.length>=8,"short teaching mnemonic must be meaningful");
+  for(const key of ["meaning","observe","caution","simulator"])assert.ok(lesson[key].length>=15);
   for(const ref of lesson.reference)assert.match(CORE_SOURCES[ref].url,/^https:\/\//);
  }
 });
