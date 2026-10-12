@@ -275,3 +275,10 @@
 - Risk review: (1) confusion between fake alarm and actual device → always-on explicit “실제 발생 경보 아님” notice; (2) numerical changes triggering false alarms → source-only read and no waveform/settings writes; (3) narrow screen → four tab labels adapt with native buttons, Chromium viewport regression; (4) answer persistence/reset → page RAM per alarm ID, not device or case state.
 - Dedicated source/UX limits in `docs/PB980_ALARM_EDUCATION_v0.4.0.md`. All clinical interpretations remain expert-review pending.
 - Required verification: catalog/unit tests, desktop/360/320 Chromium alarm path and pre-existing 45 unit assertions, actual screenshot review, PR & final exact private main CI.
+
+
+### v0.4.0 verified branch screenshots / CI
+- PR branch [38208572810](https://github.com/pchjesus/ventilator-simulator/actions/runs/38208572810) passed **52/52 Node tests**, Chromium 1440/360/320 and static package.
+- A browser-test selector string quoting error was detected by CI and corrected; `npm run check` now validates test script syntax before Chromium installation.
+- Manually examined 28-shot browser artifact, including desktop glossary, desktop quiz feedback, and 320px mobile lesson.
+- Manufacturer manual-grounded vocabulary remains distinct from unreviewed student interpretation; there is still no actual simulated alarm engine.

@@ -165,3 +165,5 @@ See [clinical content QA v0.3.9](CLINICAL_CONTENT_QA_v0.3.9.md).
 - [ ] PR screenshot review, merge Private main, verify exact final SHA CI.
 - [ ] Clinical SME sign-off and local MICU firmware/alarm protocol comparison (future).
 See [PB980 alarm education design & evidence boundaries](PB980_ALARM_EDUCATION_v0.4.0.md).
+
+- [x] v0.4.0 PR branch run 38208572810: **52/52 unit, Chromium desktop/360/320, package successful**; reviewed 28 browser captures for alarm UI.
