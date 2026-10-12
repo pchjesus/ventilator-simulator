@@ -9,6 +9,19 @@ export const DEVICE_EDUCATION_SOURCES=Object.freeze({
   pb980:{name:"Medtronic · Puritan Bennett 980 Operator's Manual, ch. 6 / Table 6-5",url:"https://asiapac.medtronic.com/content/dam/covidien/library/us/en/product/acute-care-ventilation/PuritanBennett980Ventilator_OperatorsManual_en_US_PT00101843A00.pdf"},
   aarc:{name:"AARC · Patient–Ventilator Assessment (2024)",url:"https://pmc.ncbi.nlm.nih.gov/articles/PMC11298231/"}
 });
+/** Documentation release review; installed ICU firmware/version remains UNKNOWN.
+ * These are catalog version labels, not assertions of installed features.
+ */
+export const DEVICE_VERSION_REVIEW=Object.freeze({
+ status:"local-version-unconfirmed",
+ summary:"병원 PB980의 실제 소프트웨어 버전·옵션 구성이 확인되지 않았어. 화면·알람 세부 동작이 동일하다고 가정하지 않아.",
+ examples:["제조사 매뉴얼: 7.6.1.0 이상","제조사 매뉴얼: 8.0.9.0 이상","제조사 매뉴얼: 8.1.0.46 이상","제조사 매뉴얼: 8.2.0.54 이상"],
+ versionSpecificExample:"Medtronic은 High PEEP Alarm 설정 안내에 소프트웨어 8.4.4.3 이상 조건을 명시해. 이 앱은 해당 제어 기능을 구현하지 않아.",
+ sourceLinks:[
+  {label:"Medtronic 공식 PB980 버전별 매뉴얼 목록",url:"https://www.medtronic.com/covidien/it-it/support/product-manuals.html"},
+  {label:"Medtronic PB980 제품·버전별 기능 안내",url:"https://www.medtronic.com/en-us/healthcare-professionals/products/respiratory/mechanical-ventilation/ventilators/puritan-bennett-980-series-ventilator.html"}
+ ]
+});
 export const DISPLAY_CATEGORIES=Object.freeze([
   {id:"all",label:"전체"},
   {id:"setting",label:"설정값"},
