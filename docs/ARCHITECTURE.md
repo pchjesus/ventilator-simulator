@@ -63,3 +63,17 @@ The staged editor performs an original-value match on Accept to prevent a stale 
 - `src/app.js` renders both through DOM APIs using `textContent` rather than injecting remote/source HTML. The per-param `explain()` contract and stable help selectors are preserved.
 - Native `dialog.showModal()` is used for top info popups; independent from `#setting-editor`. Backdrop pointer dismissal is accepted only outside dialog bounds and restores focus to its triggering toolbar button.
 - No runtime requests, new dependencies, persisted state, patient model or waveform changes. New modules included in `dist/src` and syntax check.
+
+## v0.3.7 waveform inspection state isolation
+```
+committed settings + animation clock
+  -> waveform-model.generateWaveform() (320 synthetic samples / 16s)
+  -> app.paintWaveforms() (same 3 paths as before)
+  -> waveform-inspector.inspectAt(samples, ratio)
+  -> readout + shared three vertical cursors (presentation only)
+```
+- Independent UI state: `inspectorActive`, `pausedBeforeInspection`, `inspectionRatio`, `gridVisible`. All are transient, never persisted, never affect settings or fixed patient monitoring.
+- Enter analysis: store prior pause flag, freeze, render synthetic sample readouts; exit: restore prior pause flag, hide cursor and inspection panel. Resume inside analysis closes analysis then resumes playback.
+- The slider's native keyboard handling provides accessible seek; pointer hit-testing uses each SVG's bounding rectangle.
+- Grids are CSS background toggled on one shared graph-area class; phase colors and waveform paths remain model driven and unchanged.
+- CSS appended as new version layer to preserve stable existing selectors. A later isolated cleanup/refactor is optional only after screenshot and accessibility review, not mixed into this patch.
