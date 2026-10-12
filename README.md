@@ -1,4 +1,4 @@
-# Ventilator Simulator — v0.3.8 Preview
+# Ventilator Simulator — v0.3.9 Preview
 
 간호학생을 위한 **PB980(Puritan Bennett 980) 참고형 웹 시뮬레이터** 초기 실행본.
 실제 장비의 화면 구성 학습을 목표로 하지만, 임상 사용이나 기계 조작 훈련을 대체하지 않는다.
@@ -9,7 +9,7 @@
 - 테스트: Node.js 18 이상에서 `npm test`, `npm run check`
 - npm 의존성 없음. 브라우저 ES modules 사용. `file://` 직접 실행은 권장하지 않음.
 
-## 현재 구현 (v0.3.8)
+## 현재 구현 (v0.3.9)
 - PB980 스타일의 화면 구획: 상단 monitoring, 중앙 pressure/flow/volume 파형, 하단 SIMV(PC)+PS 설정 영역
 - 화면 안에서 FiO₂, PEEP, f, Pi, Ti, PS, V-TRIG 값 증감 및 기본값 초기화
 - 각 설정 옆 `?` 도움말, 오른쪽 CIRCUIT 개념 학습 탭(부품/조립 개요/완성 개념도)
@@ -115,3 +115,12 @@ v0.2.2 improves keyboard-focus continuity when adjusting settings and adds a 320
 - 새 소스: `src/preclinical-cases.js` (가상 사례·출처) + `src/case-engine.js` (순수 형성평가 상태). 기존 파형·폐역학/모니터·설정 모델은 변경하지 않았다.
 - 근거: [AARC 2024 Patient-Ventilator Assessment](https://pmc.ncbi.nlm.nih.gov/articles/PMC11298231/), [INACSL Simulation Design](https://doi.org/10.1016/j.ecns.2021.08.009).
 - **실습 전 교육 수준까지의 단계별 개발·임상 검토 기준:** [CLINICAL_PRECLINICAL_ROADMAP_v0.3.8.md](docs/CLINICAL_PRECLINICAL_ROADMAP_v0.3.8.md).
+
+## v0.3.9 — 교육 콘텐츠 추적·교수자 검토 미리보기
+- CASE 탭의 2개 가상 사례·6문항을 **contentVersion 0.3.9**로 관리. 모든 문항은 학습목표 ID, HTTPS 근거 링크, 근거 성격/해설 메모를 연결한다.
+- `src/case-quality.js`는 누락·중복·출처 참조 오류·임상 미감수 상태 표시 여부를 검사한다. 실패하면 잘못된 CASE를 학생에게 제공하지 않는다. **구조 검사 성공은 임상적 정확성/승인 보증이 아니다.**
+- 목록의 **교수자 검토 미리보기 · 정답 공개**는 정답과 연결 문항·근거를 표시한다. 별도 인증/권한 관리가 없는 *미리보기*이므로 모든 학습자가 열 수 있다. 교수자 전용 보안 기능이나 정식 승인 기록은 없다.
+- CASE 문항 선택 후 근거 펼치기, 완료 후 내 답안과 권장 답안의 비교, 디브리핑 자기 메모 3개 추가. 메모는 브라우저 페이지 메모리에서만 유지, 새로고침/재시작 시 삭제. 저장/전송하지 않는다.
+- **INACSL 2025 개정**에 따라 현재 표준 링크로 교육 설계 검토 경로를 갱신. 이전 2021 자료는 역사적 출처로만 유지한다.
+- [v0.3.9 콘텐츠 품질/임상 검토 체크리스트](docs/CLINICAL_CONTENT_QA_v0.3.9.md)
+- 전문가 감수·학생 대상 효과검증은 여전히 미완료이며 정답률이 임상 역량 인증을 뜻하지 않는다.

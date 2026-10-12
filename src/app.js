@@ -6,6 +6,7 @@ import {RELEASE_CATEGORIES, notesForCategory} from "./release-notes.js";
 import {clampRatio, ratioFromClientX, inspectAt} from "./waveform-inspector.js";
 import {PRECLINICAL_CASES,CASE_SOURCES,findCase} from "./preclinical-cases.js";
 import {startCase,chooseCaseAnswer,advanceCase,caseScore} from "./case-engine.js";
+import {auditCaseBank,evidenceKindLabel} from "./case-quality.js";
 const settingsContainer = document.getElementById("settings");
 const monitor = document.getElementById("monitor");
 const status = document.getElementById("status");
@@ -377,6 +378,9 @@ function renderCircuit() {
 /* Pre-clinical choice-based education is intentionally isolated from settings,
  * waveform calculation and fixed monitor sample values. */
 let caseState=null;
+let reviewerCaseId=null;
+const reflectionNotes=new Map(); // intentionally RAM only, no student identity or storage
+const caseAudit=auditCaseBank(PRECLINICAL_CASES,CASE_SOURCES);
 function caseButton(label,handler,cssClass=""){
   const button=makeElement("button",cssClass,label);
   button.type="button";button.addEventListener("click",handler);return button;
@@ -392,21 +396,99 @@ function caseSources(root,sourceIds){
   }
   root.append(links);
 }
+
+function renderReviewPreview(root,scenario){
+  const section=makeElement("section","case-review");
+  section.setAttribute("aria-label","교수자 미리보기: "+scenario.title);
+  section.append(makeElement("h4",null,"문항·학습목표·근거 추적 미리보기"));
+  section.append(makeElement("p","case-review-warning","주의: 정답을 공개하는 누구나 볼 수 있는 개발·교수자 검토용 화면이야. 권한 관리나 공식 임상 승인 기능이 아니야."));
+  section.append(makeElement("p","case-review-status","임상 검토 상태: 미감수 / 승인 없음 · 콘텐츠 v"+scenario.contentVersion));
+  section.append(makeElement("p",null,scenario.review.note));
+  section.append(makeElement("p","case-audit-summary","구조 검사: "+caseAudit.itemCount+"개 문항의 연결 확인 · 오류 "+caseAudit.errors.length+"건. 구조 검사는 의학적 정확성을 보증하지 않아."));
+  const points=makeElement("ol","case-review-items");
+  for(const [index,step] of scenario.steps.entries()){
+    const entry=makeElement("li","case-review-item");
+    entry.append(makeElement("strong",null,"문항 "+(index+1)+" · "+step.id));
+    entry.append(makeElement("p",null,step.question));
+    const correct=step.options.find(x=>x.id===step.answer);
+    entry.append(makeElement("p","case-review-answer","정답(교수자용): "+step.answer.toUpperCase()+" · "+correct.label));
+    entry.append(makeElement("p",null,"정답 해설: "+step.explanation));
+    const linked=step.objectiveIds.map(id=>scenario.objectives.find(o=>o.id===id)?.text||"[누락 목표]");
+    entry.append(makeElement("p","case-review-trace","연결 학습목표: "+linked.join(" / ")));
+    entry.append(makeElement("p","case-review-trace","근거 분류: "+evidenceKindLabel(step.evidenceKind)));
+    entry.append(makeElement("p","case-review-trace","근거 메모: "+step.evidenceNote));
+    caseSources(entry,step.sourceIds);
+    points.append(entry);
+  }
+  section.append(points);
+  section.append(makeElement("p","case-review-warning","교수자 점검 제안: 사실 정확성, 오답 선택지의 오개념, 실습학생 업무범위, 기관 지침과의 충돌을 별도 검토·기록해야 해."));
+  root.append(section);
+}
+function appendCaseEvidence(root,step,scenario){
+  const details=makeElement("details","case-evidence");
+  details.append(makeElement("summary",null,"이 문항의 학습목표·근거 추적 보기"));
+  const goals=step.objectiveIds.map(id=>scenario.objectives.find(o=>o.id===id)?.text).filter(Boolean);
+  details.append(makeElement("p",null,"학습목표: "+goals.join(" / ")));
+  details.append(makeElement("p",null,"근거 성격: "+evidenceKindLabel(step.evidenceKind)));
+  details.append(makeElement("p",null,"근거 해설: "+step.evidenceNote));
+  caseSources(details,step.sourceIds);
+  root.append(details);
+}
+function renderReflection(root,scenario){
+  const block=makeElement("section","case-reflection");
+  block.append(makeElement("h4",null,"구조화 디브리핑 · 스스로 정리하기"));
+  block.append(makeElement("p","case-hint","문항별 정답과 별개로 남은 의문을 적어볼 수 있어. 아래 기록은 이 페이지 메모리에만 남고 저장·전송되지 않아. 새로고침하면 사라져."));
+  const notes=reflectionNotes.get(scenario.id)||["","",""];
+  for(const [i,prompt] of scenario.debrief.entries()){
+    const label=makeElement("label","case-reflection-item");
+    const id="case-reflect-"+scenario.id+"-"+i;
+    label.setAttribute("for",id);
+    label.append(makeElement("span",null,(i+1)+". "+prompt));
+    const area=document.createElement("textarea");
+    area.id=id;area.className="case-reflection-input";area.rows=3;
+    area.placeholder="관찰한 사실, 아직 확인되지 않은 점, 지도자에게 보고할 내용을 정리해봐.";
+    area.value=notes[i]||"";area.maxLength=1000;
+    area.addEventListener("input",()=>{
+      const next=[...(reflectionNotes.get(scenario.id)||["","",""])];
+      next[i]=area.value;
+      reflectionNotes.set(scenario.id,next);
+    });
+    label.append(area);block.append(label);
+  }
+  root.append(block);
+}
+
 function renderCase(){
   const root=document.getElementById("case-content");
   root.replaceChildren();
+  if(caseAudit.errors.length){
+    root.append(makeElement("h2","case-heading","CASE 콘텐츠 구조 검사 실패"));
+    root.append(makeElement("p","case-review-warning","학습 오류를 방지하기 위해 문항을 표시하지 않았어. 교육용 데이터의 누락·중복·참조 관계를 수정해야 해."));
+    for(const issue of caseAudit.errors)root.append(makeElement("p","case-audit-error",issue.path+": "+issue.reason));
+    return;
+  }
   if(!caseState){
     root.append(makeElement("h2","case-heading","실습 전 CASE 학습"));
     root.append(makeElement("p","case-intro","관찰 우선순위와 정보 구분을 연습하는 입문 사례야. 정답률은 형성 피드백이며 임상 역량 인증이나 평가 점수가 아니야."));
+    root.append(makeElement("p","case-audit-summary","콘텐츠 연결 구조 검사 통과 · "+caseAudit.caseCount+"개 사례 / "+caseAudit.itemCount+"문항 · 단, 의료 내용은 미감수"));
     for(const scenario of PRECLINICAL_CASES){
       const card=makeElement("section","case-card");
       card.append(makeElement("h3",null,scenario.title));
       card.append(makeElement("p","case-meta",scenario.level+" · 약 "+scenario.minutes+"분 · "+scenario.status));
       card.append(makeElement("p",null,scenario.premise));
       const ul=makeElement("ul","case-objectives");
-      for(const goal of scenario.objectives)ul.append(makeElement("li",null,goal));
+      for(const goal of scenario.objectives)ul.append(makeElement("li",null,goal.text));
       card.append(ul);
-      card.append(caseButton("이 사례 시작",()=>{caseState=startCase(scenario.id);renderCase();root.querySelector(".case-answer")?.focus();},"case-primary"));
+      card.append(caseButton("이 사례 시작",()=>{reviewerCaseId=null;caseState=startCase(scenario.id);renderCase();root.querySelector(".case-answer")?.focus();},"case-primary"));
+      const reviewBtn=caseButton(reviewerCaseId===scenario.id?"교수자 미리보기 닫기":"교수자 검토 미리보기 · 정답 공개",()=>{
+        reviewerCaseId=reviewerCaseId===scenario.id?null:scenario.id;
+        renderCase();
+        root.querySelector('[data-review-case="'+scenario.id+'"]')?.focus();
+      },"case-review-toggle");
+      reviewBtn.setAttribute("aria-expanded",String(reviewerCaseId===scenario.id));
+      reviewBtn.dataset.reviewCase=scenario.id;
+      card.append(reviewBtn);
+      if(reviewerCaseId===scenario.id)renderReviewPreview(card,scenario);
       root.append(card);
     }
     return;
@@ -427,7 +509,7 @@ function renderCase(){
   context.append(readings);
   context.append(makeElement("strong",null,"학습 목표"));
   const objectives=makeElement("ol","case-objectives");
-  for(const item of scenario.objectives)objectives.append(makeElement("li",null,item));
+  for(const item of scenario.objectives)objectives.append(makeElement("li",null,item.text));
   context.append(objectives);root.append(context);
 
   if(caseState.done){
@@ -435,7 +517,22 @@ function renderCase(){
     root.append(makeElement("p","case-score","학습 확인: "+score.correct+"/"+score.total+" 문항 (형성평가, 인증점수 아님)"));
     root.append(makeElement("p",null,"복습 질문: 무엇을 확인했으며, 어떤 정보가 부족했고, 실제 실습에서 어떤 근거로 지도자에게 보고해야 할까?"));
     root.append(makeElement("p","case-prebrief","이 결과는 학습 선택지에 대한 피드백일 뿐 실제 환자 상태 판단 능력이나 실기 수행 능력을 검증하지 않아."));
-    root.append(caseButton("처음부터 다시",()=>{caseState=startCase(scenario.id);renderCase();root.querySelector(".case-answer")?.focus();},"case-primary"));
+    const review=makeElement("details","case-answer-review");
+    review.append(makeElement("summary",null,"내 응답과 정답·근거 복습"));
+    for(const [index,item] of caseState.answers.entries()){
+      const step=scenario.steps[index];
+      const selected=step.options.find(x=>x.id===item.choiceId);
+      const correct=step.options.find(x=>x.id===step.answer);
+      const entry=makeElement("section","case-answer-comparison");
+      entry.append(makeElement("strong",null,(index+1)+". "+step.question));
+      entry.append(makeElement("p",null,"내 선택: "+selected.label+" ("+(item.correct?"일치":"복습 필요")+")"));
+      entry.append(makeElement("p",null,"권장 선택: "+correct.label));
+      appendCaseEvidence(entry,step,scenario);
+      review.append(entry);
+    }
+    root.append(review);
+    renderReflection(root,scenario);
+    root.append(caseButton("처음부터 다시",()=>{reflectionNotes.delete(scenario.id);caseState=startCase(scenario.id);renderCase();root.querySelector(".case-answer")?.focus();},"case-primary"));
     caseSources(root,scenario.sources);
     return;
   }
@@ -465,6 +562,7 @@ function renderCase(){
     feedback.append(makeElement("strong",null,chosen.correct?"핵심 판단 확인":"복습이 필요한 판단"));
     feedback.append(makeElement("p",null,option.feedback));
     feedback.append(makeElement("p",null,step.explanation));
+    appendCaseEvidence(feedback,step,scenario);
     root.append(feedback);
     root.append(caseButton(caseState.index===score.total-1?"결과·복습 보기":"다음 문항 →",()=>{
       caseState=advanceCase(caseState);

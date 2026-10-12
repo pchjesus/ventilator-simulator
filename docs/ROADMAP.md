@@ -141,3 +141,15 @@
 - [x] v0.3.8 corrected PR branch 38/38 unit and Chromium/package gate passed (run 38198237425; 22 screenshots, selected desktop/320px CASE views inspected).
 
 - [x] v0.3.8 PR #6 merged into Private main and exact app-commit CI 38198481423 test/browser/package SUCCESS.
+
+## v0.3.9 — audited content and instructor preview
+- [x] Version source bank and link pilot-case objectives, per-item evidence and explicit medical-review pending status.
+- [x] Pure schema/evidence audit and fail-closed CASE presentation; negative malformed-content test fixtures.
+- [x] Open instructor preview that **reveals answers**, never implies secured access or medical signoff.
+- [x] Structured reflection and learner item-evidence review, page-only memory.
+- [x] Current INACSL standards page references 2025 revisions; clinic-specific advice still awaits review.
+- [ ] Exact PR/main CI and 1440/360/320 screenshot review.
+- [ ] External qualified reviewers sign clinical item validation (out of scope for automatic coding).
+See [clinical content QA v0.3.9](CLINICAL_CONTENT_QA_v0.3.9.md).
+
+- [x] v0.3.9 45/45 unit, Chromium desktop/360/320 and static package PASS on PR branch run 38203543362; reviewed 24 screenshots with desktop/mobile instructor preview.

@@ -238,3 +238,25 @@
 - Merged clinical CASE prototype PR [#6](https://github.com/pchjesus/ventilator-simulator/pull/6), squash SHA `0942cc1b4138695474b0a92141bfb7a454697b6e`.
 - Main verification [38198481423](https://github.com/pchjesus/ventilator-simulator/actions/runs/38198481423) succeeded for **38/38** Node assertions, desktop/mobile Chromium regression and web-only packaging.
 - Still not suitable as clinician-reviewed preclinical curriculum: await expert review, institution-specific alignment, and teaching pilot before v1.0.
+
+## v0.3.9 — Evidence traceability, instructor review preview & debrief (2026-10-12)
+### Before change
+- Baseline v0.3.8 Private main `3be070dc57a032a61c71ce823655fae2e76da1e7`.
+- CASE question feedback and case-level sources existed, but individual questions were not linked to measurable objective IDs and specific evidence notes; there was no automatic content audit or educator-preview workflow.
+- Important UX/clinical risks: confusing a *green code test* with actual clinical sign-off, revealing answers to learners prematurely, losing notes during tab changes, mistaking vignette values for real monitoring.
+### Implementation
+- Added `src/case-quality.js`: pure static bank audit and clear distinction from SME medical review; fails CASE closed on invalid schema/links.
+- Each of the six pilot items now points to objective IDs, source IDs, evidence kind and a short source-boundary/clinical-inference note; both cases remain **review pending, approved=false**.
+- Added clearly labeled instructor **open-to-anyone** preview with all answers/source links/medical review gaps; no approval toggle and no simulated credential.
+- Added optional per-answer evidence accordion, end-of-case answer comparisons, three structured reflection prompts per case. The reflection notes exist only in memory; user-controlled case restart clears them, tab switch does not.
+- INACSL official standards page documents 2025 updates to Prebriefing and Debriefing. Do not treat 2021 historical article versions as necessarily current operating guidance.
+### Regression/validation requirements
+- Add missing-source/objective/duplicated-answer/source-kind and unsafe review-state unit tests.
+- Desktop, 360, 320 Chromium regression including instructor answer preview, paper-source link `noopener noreferrer`, back/forth and reflection focus/value persistence, simulator data unchanged, existing 34+ unit tests.
+- Critical limitation: no clinical external educator content approval or learner learning-outcome pilot. See `docs/CLINICAL_CONTENT_QA_v0.3.9.md`.
+
+
+### v0.3.9 UI/QA reviewed after first CI correction
+- 45 Node tests passing, Chromium desktop/360/320 scenario & legacy regressions passing, packaging passing on [PR workflow 38203543362](https://github.com/pchjesus/ventilator-simulator/actions/runs/38203543362).
+- Found and corrected a Playwright strict-selector regression caused by nested `<summary>` elements; no app code changes to resolve.
+- Captured 24 screenshots, reviewed desktop CASE instructor preview and 320px case preview. Publicly accessible answer reveal and explicit `review pending` status visible; actual student interface and machine simulation retained.

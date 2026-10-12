@@ -87,3 +87,16 @@ src/case-engine.js (start, choose, advance, score: pure functions)
 src/app.js → #panel-case (presentation, in-memory caseState)
 ```
 Case state is not connected to `sim-model.js`, `waveform-model.js`, `waveform-inspector.js`, `setting-editor.js` or `MONITOR_REFERENCE`. The two simulated cases never alter the device's own visual values, making v0.3.8 a separate **cognitive simulation rather than a physiological patient model**. Grouping CASE with Help/CIRCUIT updates only side-panel visibility and selection states, preserving all existing button selectors and tab behavior.
+
+## v0.3.9 content integrity boundary
+```
+src/preclinical-cases.js (versioned fictional case items, objectives, source IDs, pending review)
+  -> src/case-quality.js (pure schema/referential integrity: error list, not medical signoff)
+  -> src/app.js CASE (error => fail-closed; success => list/student or optional open instructor preview)
+  -> src/case-engine.js (same immutable learning answer state; untouched)
+  -> app.js reflectionNotes Map (current-page RAM only, not scored or stored)
+```
+- `caseAudit` computed once on module load for immutable static bundled contents; no network lookups, localStorage or scoring side effects.
+- Separate `reviewerCaseId` is only which source-preview card is expanded, never medical `approved`; learn/exam authorization **not available**.
+- `caseState` retains prior transition logic. Reflection inputs are stored separately by case ID and only updated on input; re-render restores them after tab change; replay deletes notes.
+- No change to `sim-model.js`, `waveform-model.js`, `setting-editor.js` or fixed top monitor reference values (except version string).

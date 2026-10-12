@@ -106,3 +106,10 @@ Vent settings
 - Persistent navigation within the *current page session only*: switching CIRCUIT/Help/CASE does not discard case progress; case reset is independent of simulator reset. No student identity or scores stored or transmitted.
 - Source-linked educational recognition and escalation only; no dynamic SpO₂, actual alarm, independently prescribed ventilator settings or certification.
 - Future expansions and validation exit criteria in `docs/CLINICAL_PRECLINICAL_ROADMAP_v0.3.8.md`.
+
+## v0.3.9 content schema / instructor review
+- Case data must have `contentVersion`, `review.status=pending`, `approved=false`, and at least 3 structured debrief prompts, plus ID-tagged objectives.
+- Each question must link to objective IDs and source IDs and carry an explicit `evidenceKind` / `evidenceNote` distinguishing simulator implementation from clinical guidelines and inference. A pure audit blocks CASE lessons with broken fields or reference URLs; this does **not** make content clinically approved.
+- Student UI retains in-page progress across tabs and simulator reset. After each question, optionally show its evidence; after completion offer answer-by-answer comparison and RAM-only reflection text fields that survive tab switches but not browser reloads or case replay.
+- Instructor preview is openly accessible (not authenticated); the button prominently warns that answers are revealed. It contains no approval controls or clinical signoff.
+- Reference the INACSL official standards page updated in 2025, not solely 2021 articles.

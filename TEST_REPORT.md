@@ -175,3 +175,19 @@ GitHub Actions run: https://github.com/pchjesus/ventilator-simulator/actions/run
 - Exact app commit GitHub Actions [38198481423](https://github.com/pchjesus/ventilator-simulator/actions/runs/38198481423): `test` (38/38), `browser` and `package` all **SUCCESS**.
 - Repository remained **Private** and no Pages deployment was activated.
 - Documentation-only status update does not alter runnable simulator or clinical case files; latest final SHA is rechecked via CI separately.
+
+## v0.3.9 — planned clinical-content integrity and browser regression
+- New `tests/case-quality.test.mjs` verifies mapped objectives/sources and rejects missing rationale, duplicate options, invalid answer keys, expired-ish malformed URLs, review metadata implying false approval, and incomplete debrief.
+- Existing case engine / waveform / staged editor / help/circuit tests remain enabled.
+- Chromium extensions: show 3-item instructor preview with pending status and secure links, dismiss and launch; show evidence after answer, complete 3 steps, compare answers, enter/retrieve reflection note after tab switch, device reset doesn't touch CASE, 320px review panel stays within viewport.
+- Separate quality claims: schema checks do not check clinical correctness, links resolving to current contents, local ICU procedures, or actual professional signatures.
+- Final gate: green PR and final Private main code SHA test/browser/package, screenshots manually inspected; no clinical expert validation.
+
+
+### v0.3.9 corrected PR regression and screenshot inspection — 2026-10-12
+- The first browser CI caught a strict-locator conflict between the answer-review outer summary and nested evidence details. Updated browser test to explicitly select only direct child `> summary`; no simulation or content grading change was needed.
+- Latest full PR-branch CI [38203543362](https://github.com/pchjesus/ventilator-simulator/actions/runs/38203543362): `test`, `browser`, `package` all **SUCCESS**.
+- Node: **45/45 pass** (previous 38 + 7 case-quality audits). Chromium: 1440 desktop, 360 and 320px mobile including instructor open answer preview, 3 item evidence links, answer accordion, reflection notes surviving tab switch and existing simulator regression suite.
+- 24 screenshots reviewed/generated: manually inspected `desktop-case-instructor.png` and `narrow-case-instructor-320.png`, with clear warning that the mode is open to anyone, **pending clinical review**, and no visible horizontal overflow.
+- Source URLs are structural HTTPS links only; live links and content wording still require instructor review. No patient data / memory storage.
+- Next integration gate is exact Private `main` merged commit CI.
