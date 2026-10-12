@@ -92,3 +92,10 @@ Vent settings
 - Clinical text must separate established general principles from specific PB980 manual facts and from the unmodeled simulator behavior. Every topic has explicit sources.
 - Release notes are grouped by version, with five category filters. The categories refer to changes actually shipped.
 - None of the popups may change committed settings, pending edits, control-mode switching, waveform state, reset or CIRCUIT navigation.
+
+## v0.3.7 internal-GUI readability and interactive waveform analysis
+- Retain PB980 reference **information hierarchy**, not exterior-brand color fidelity. Use high contrast, larger readouts, readable parameter controls and narrow viewport balance.
+- Waveform toolbar adds grid toggle and Analysis toggle. Both affect visualization only, not ventilator settings, monitoring banner or CIRCUIT.
+- Analysis pauses the **illustrative** waveform, adds synchronized cursors for Pressure/Flow/Volume and offers keyboard-accessible time slider plus direct pointer/touch seeking. The values shown must be sourced from the exact curve samples, not independently synthesized as patient measurements.
+- Leaving analysis restores prior pause; dedicated Resume leaves analysis and starts playback. Pending Accept state remains unaffected.
+- Scope excludes patient prediction, alarm simulation, OEM fidelity, loop modes and real captured breath data.
