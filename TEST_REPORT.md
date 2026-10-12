@@ -191,3 +191,11 @@ GitHub Actions run: https://github.com/pchjesus/ventilator-simulator/actions/run
 - 24 screenshots reviewed/generated: manually inspected `desktop-case-instructor.png` and `narrow-case-instructor-320.png`, with clear warning that the mode is open to anyone, **pending clinical review**, and no visible horizontal overflow.
 - Source URLs are structural HTTPS links only; live links and content wording still require instructor review. No patient data / memory storage.
 - Next integration gate is exact Private `main` merged commit CI.
+
+
+### v0.3.9 Private main integrated release (2026-10-12)
+- PR [#7](https://github.com/pchjesus/ventilator-simulator/pull/7) squash merged as `85bf91a82f48d5cc2956a501d4ce34510aaffd41`.
+- Exact application code merge CI [38203800899](https://github.com/pchjesus/ventilator-simulator/actions/runs/38203800899): `test`, `browser`, `package` all **SUCCESS**, **45/45 Node tests**.
+- The main branch remained **Private**. No GitHub Pages deployment or clinical publication.
+- GitHub Actions generated static web and 24 Chromium screenshots for source-matched application build.
+- Report-only follow-up commit makes no app-code or clinical-content changes; its exact final SHA CI should be separately verified before closure.

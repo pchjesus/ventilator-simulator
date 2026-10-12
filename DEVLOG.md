@@ -260,3 +260,9 @@
 - 45 Node tests passing, Chromium desktop/360/320 scenario & legacy regressions passing, packaging passing on [PR workflow 38203543362](https://github.com/pchjesus/ventilator-simulator/actions/runs/38203543362).
 - Found and corrected a Playwright strict-selector regression caused by nested `<summary>` elements; no app code changes to resolve.
 - Captured 24 screenshots, reviewed desktop CASE instructor preview and 320px case preview. Publicly accessible answer reveal and explicit `review pending` status visible; actual student interface and machine simulation retained.
+
+
+### v0.3.9 merged and main verified
+- PR [#7](https://github.com/pchjesus/ventilator-simulator/pull/7) → Private main app commit `85bf91a82f48d5cc2956a501d4ce34510aaffd41`.
+- Main CI [38203800899](https://github.com/pchjesus/ventilator-simulator/actions/runs/38203800899): **SUCCESS** on 45/45 unit, desktop/360/320 Chromium and static package.
+- Content is **unreviewed by clinical experts**, educator preview is open to all, and learner notes are RAM-only; no approval/grade certification.

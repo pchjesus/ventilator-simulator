@@ -148,8 +148,10 @@
 - [x] Open instructor preview that **reveals answers**, never implies secured access or medical signoff.
 - [x] Structured reflection and learner item-evidence review, page-only memory.
 - [x] Current INACSL standards page references 2025 revisions; clinic-specific advice still awaits review.
-- [ ] Exact PR/main CI and 1440/360/320 screenshot review.
+- [x] Exact PR/main CI and 1440/360/320 screenshot review.
 - [ ] External qualified reviewers sign clinical item validation (out of scope for automatic coding).
 See [clinical content QA v0.3.9](CLINICAL_CONTENT_QA_v0.3.9.md).
 
 - [x] v0.3.9 45/45 unit, Chromium desktop/360/320 and static package PASS on PR branch run 38203543362; reviewed 24 screenshots with desktop/mobile instructor preview.
+
+- [x] v0.3.9 PR #7 merged into Private main; full code-merge CI 38203800899 test/browser/package SUCCESS.
