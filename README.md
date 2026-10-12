@@ -1,4 +1,4 @@
-# Ventilator Simulator — v0.3.5 Preview
+# Ventilator Simulator — v0.3.6 Preview
 
 간호학생을 위한 **PB980(Puritan Bennett 980) 참고형 웹 시뮬레이터** 초기 실행본.
 실제 장비의 화면 구성 학습을 목표로 하지만, 임상 사용이나 기계 조작 훈련을 대체하지 않는다.
@@ -9,7 +9,7 @@
 - 테스트: Node.js 18 이상에서 `npm test`, `npm run check`
 - npm 의존성 없음. 브라우저 ES modules 사용. `file://` 직접 실행은 권장하지 않음.
 
-## 현재 구현 (v0.3.5)
+## 현재 구현 (v0.3.6)
 - PB980 스타일의 화면 구획: 상단 monitoring, 중앙 pressure/flow/volume 파형, 하단 SIMV(PC)+PS 설정 영역
 - 화면 안에서 FiO₂, PEEP, f, Pi, Ti, PS, V-TRIG 값 증감 및 기본값 초기화
 - 각 설정 옆 `?` 도움말, 오른쪽 CIRCUIT 개념 학습 탭(부품/조립 개요/완성 개념도)
@@ -87,3 +87,12 @@ v0.2.2 improves keyboard-focus continuity when adjusting settings and adds a 320
 - While a pending value is being edited the waveform continues on *committed* settings; after Accept the teaching graph is recomputed once. The static top patient-monitoring examples remain disconnected.
 - Manufacturer-reported limits/resolutions in ? help remain **separate** from the existing safe classroom UI bounds. A real PB980 has conditional limits, Accept All, alarms, and other interlocks that this app does not simulate.
 - See [dual controls and validation](docs/DUAL_CONTROL_IMPLEMENTATION_v0.3.5.md).
+
+## v0.3.6 — 간호·의학 설명 및 학습용 팝업
+- 상단 **▤ 설명서**: 7단계 사용법, 화면 구성, PB980 참고형 Accept/Cancel, 빠른 학습 ±, 파형·회로·한계를 한 화면에서 읽을 수 있는 팝업.
+- 상단 **◷ 패치 내역**: 버전별 UI/UX / 기능 추가 / 간호·의학 교육 / 안정성·테스트 / 문서·근거 카테고리별 변경 내역과 필터.
+- 두 팝업은 **X, 외부 클릭·터치, Esc**로 닫히고 키보드 포커스가 원래 상단 버튼으로 돌아간다. 360/320px에서 스크롤 가능한 모바일 시트로 표시한다.
+- 오른쪽 **? 설명**: 7개 기기 설정과 SIMV, 파형, 모니터링, 간호 사정, ABGA 관계, 회로 등 **13개 학습 주제**에서 기초→임상적 고려→간호 관찰→시뮬레이터 한계→공개 근거 링크로 이어지는 구조.
+- 근거: Medtronic PB980 Operator's Manual (기종별 설명), AARC 2024 환자-인공호흡기 사정 지침, Merck Manual Professional (일반 의학 설명). 기기의 임상 동작을 검증한 것은 아니며 실제 처방·ABGA·환자 반응을 계산하지 않는다.
+- 동작 상태·모델/파형 엔진·기존 v0.3.5 이중 설정 방식에는 변경 없음. 팝업 설명 데이터는 `src/education-content.js`, 변경 내역은 `src/release-notes.js`에서 관리한다.
+- 세부 문서: [근거 검토](docs/CLINICAL_EDUCATION_v0.3.6.md) · [팝업 UI 사양](docs/OVERLAYS_v0.3.6.md).

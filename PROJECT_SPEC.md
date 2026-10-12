@@ -85,3 +85,10 @@ Vent settings
 - Optional Quick Study mode restores immediate plus/minus controls and original study increments exactly.
 - Switching modes does not change values. The only waveform input is the confirmed setting state; Help, CIRCUIT, reset and keyboard access remain.
 - No assertion of manufacturer-certified dial resolution, interlocking limits or real ventilation changes. The top monitored data are still fixed instructional references.
+
+## v0.3.6 help, manual and categorized release history
+- Single-screen layout adds **top explanatory manual icon** and **patch history icon**; both launch native modal overlays dismissible using X, outside click/touch, or Esc. Screen-reader dialog title and keyboard focus return required.
+- Parameter ? remains the entry point to per-setting reference and expanded clinical/nursing interpretation. The right panel additionally offers 13 topical study selectors.
+- Clinical text must separate established general principles from specific PB980 manual facts and from the unmodeled simulator behavior. Every topic has explicit sources.
+- Release notes are grouped by version, with five category filters. The categories refer to changes actually shipped.
+- None of the popups may change committed settings, pending edits, control-mode switching, waveform state, reset or CIRCUIT navigation.

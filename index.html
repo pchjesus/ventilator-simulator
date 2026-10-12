@@ -12,7 +12,11 @@
   <header class="site-header">
     <div><p class="eyebrow">VENTILATOR SIMULATOR <span id="version"></span></p>
       <h1>Puritan Bennett 980 <small>교육용 화면</small></h1></div>
-    <button id="reset" type="button" class="reset">설정 초기화</button>
+    <nav class="header-actions" aria-label="학습 도구">
+      <button id="open-manual" type="button" class="top-action" aria-haspopup="dialog" aria-controls="manual-dialog"><span aria-hidden="true">▤</span> 설명서</button>
+      <button id="open-changelog" type="button" class="top-action" aria-haspopup="dialog" aria-controls="changelog-dialog"><span aria-hidden="true">◷</span> 패치 내역</button>
+      <button id="reset" type="button" class="reset">설정 초기화</button>
+    </nav>
   </header>
   <p class="warning" role="note">실제 환자 치료에 사용 불가 · PB980 외형 참고형 교육용 UI(실물과 동작 다름) · 상단 monitoring 값은 고정 예시, 아래 움직이는 파형은 단순화된 설명용 모델로 실제 환자 측정값이 아님</p>
   <main class="workspace">
@@ -90,13 +94,28 @@
         <div id="circuit-content" aria-live="polite"></div>
       </section>
       <section id="panel-help" role="tabpanel" aria-labelledby="tab-help" hidden>
+        <div class="topic-picker"><p>간호·의학 학습 주제</p><div id="topic-buttons" class="topic-buttons" role="group" aria-label="학습 주제 선택"></div></div>
         <h2 id="help-title">설정값 설명</h2>
         <p id="help-body">아래 설정 항목의 ? 버튼을 누르면 여기에 설명이 표시돼.</p>
         <p id="reference-info" class="reference-info" hidden></p>
+        <div id="clinical-detail" class="clinical-detail" aria-label="근거 기반 간호·의학 상세 설명"></div>
         <p class="fine-print">교육용 기본 설명이므로 세부 조작 및 실제 적용은 해당 장비 매뉴얼과 담당 의료진의 지침을 따라야 해.</p>
       </section>
     </aside>
   </main>
+  <dialog id="manual-dialog" class="info-dialog" aria-labelledby="manual-dialog-title">
+    <div class="info-modal">
+      <header class="info-modal-head"><div><span class="info-kicker">EDUCATIONAL GUIDE</span><h2 id="manual-dialog-title">사용 설명서</h2></div><button class="info-close" type="button" data-close-dialog="manual-dialog" aria-label="설명서 닫기">×</button></header>
+      <div id="manual-dialog-body" class="info-dialog-body"></div>
+    </div>
+  </dialog>
+  <dialog id="changelog-dialog" class="info-dialog" aria-labelledby="changelog-dialog-title">
+    <div class="info-modal">
+      <header class="info-modal-head"><div><span class="info-kicker">VERSION HISTORY</span><h2 id="changelog-dialog-title">패치 내역</h2></div><button class="info-close" type="button" data-close-dialog="changelog-dialog" aria-label="패치 내역 닫기">×</button></header>
+      <div class="changelog-controls" id="changelog-filters" role="group" aria-label="패치 카테고리"></div>
+      <div id="changelog-dialog-body" class="info-dialog-body"></div>
+    </div>
+  </dialog>
   <dialog id="setting-editor" class="setting-editor" aria-labelledby="editor-title" aria-describedby="editor-note">
     <form id="editor-form">
       <div class="editor-topline"><span>PB980-INSPIRED · EDUCATIONAL</span><span>SIMV (PC) + PS</span></div>
@@ -119,6 +138,6 @@
       </div>
     </form>
   </dialog>
-  <footer class="footer">MVP v0.3.5 · 브라우저에서 동작하는 교육용 프런트엔드 · 임상/장비 동작 검증 전</footer>
+  <footer class="footer">MVP v0.3.6 · 브라우저에서 동작하는 교육용 프런트엔드 · 임상/장비 동작 검증 전</footer>
 </body>
 </html>

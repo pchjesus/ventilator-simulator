@@ -56,3 +56,10 @@ Fixed sample monitor remains wholly independent from all the above.
 ```
 No new database, native browser storage, backend or dependencies. UI-only control mode always starts in device mode after reload; switching never changes a setting itself.
 The staged editor performs an original-value match on Accept to prevent a stale dialog from overwriting a more recent state value. Modals are single-setting only; original study bounds remain authoritative because the actual PB980 conditional limits have not been modeled. `tests/setting-editor.test.mjs` protects these invariants and Chromium checks verify browser states, focus and responsive bottom sheet.
+
+## v0.3.6 information architecture
+- `src/education-content.js` exports verified-reference URL registry, 13 structured Korean learning topics and the seven-section manual.
+- `src/release-notes.js` exports curated chronological category-coded notes and a pure category filter.
+- `src/app.js` renders both through DOM APIs using `textContent` rather than injecting remote/source HTML. The per-param `explain()` contract and stable help selectors are preserved.
+- Native `dialog.showModal()` is used for top info popups; independent from `#setting-editor`. Backdrop pointer dismissal is accepted only outside dialog bounds and restores focus to its triggering toolbar button.
+- No runtime requests, new dependencies, persisted state, patient model or waveform changes. New modules included in `dist/src` and syntax check.

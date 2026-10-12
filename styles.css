@@ -219,3 +219,66 @@ body[data-control-mode="device"] .setting{min-height:69px}
  .editor-adjuster{gap:14px}
  .editor-actions button{padding:7px 4px;font-size:12px}
 }
+
+/* v0.3.6 — top-level manual/changelog: real native modal overlays, separate from setting editor */
+.header-actions{display:flex;gap:7px;justify-content:flex-end;align-items:center;flex-wrap:wrap}
+.top-action{display:inline-flex;gap:7px;align-items:center;justify-content:center;min-height:44px;padding:9px 12px;border:1px solid #9eb9c8;border-radius:8px;background:#fff;color:#164968;font-size:13px;font-weight:750;white-space:nowrap}
+.top-action:hover{background:#e5f3fb}.top-action span{font-size:20px;line-height:1}
+.info-dialog{width:min(760px,calc(100vw - 26px));height:min(86dvh,780px);max-width:none;max-height:none;margin:auto;padding:0;border:1px solid #91b3c8;border-radius:15px;background:#f5f9fc;color:#1d3443;box-shadow:0 20px 65px #092c4299;overflow:hidden}
+.info-dialog::backdrop{background:#001c33a8}
+.info-modal{display:flex;flex-direction:column;width:100%;height:100%;min-height:0}
+.info-modal-head{flex-shrink:0;display:flex;align-items:flex-start;justify-content:space-between;gap:10px;padding:18px 20px;background:linear-gradient(115deg,#0b477b,#0d6492);color:#fff}
+.info-kicker{display:block;font-size:10px;letter-spacing:.11em;color:#d2eaff}
+.info-modal-head h2{margin:4px 0 0;font-size:20px;line-height:1.3}
+.info-close{flex:0 0 44px;width:44px;height:44px;display:grid;place-items:center;border:1px solid #d2e6f7;border-radius:9px;background:#ffffff16;color:white;font-size:29px;line-height:1}
+.info-close:hover{background:#ffffff30}
+.info-dialog-body{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:16px 22px 23px}
+.info-intro{font-size:13px;line-height:1.6;color:#36566d;margin:0 0 17px}
+.manual-section{border-bottom:1px solid #d3e0e8;padding:2px 0 14px;margin-bottom:16px}
+.manual-section h3{font-size:16px;margin:0 0 8px;color:#12517d}
+.manual-section ul{margin:0;padding-left:20px}
+.manual-section li{font-size:13px;line-height:1.75;margin:4px 0}
+.reference-list{margin-top:14px;padding:12px 14px;background:#e9f3fa;border-radius:9px}
+.reference-list p{font-weight:750;font-size:12px;margin:0 0 6px}
+.reference-list a,.clinical-sources a{display:block;font-size:12px;overflow-wrap:anywhere;color:#145f94;line-height:1.6;padding:2px 0}
+.changelog-controls{display:flex;flex-wrap:wrap;gap:6px;padding:12px 17px;border-bottom:1px solid #ccdae6;background:#eef5fa}
+.changelog-controls button{padding:7px 10px;min-height:36px;border:1px solid #a9c2d2;border-radius:22px;background:#fff;color:#285873;font-size:12px;font-weight:650}
+.changelog-controls button[aria-pressed="true"]{background:#125d92;border-color:#125d92;color:white}
+.release-entry{padding:0 0 13px;border-bottom:1px solid #d5e1e8;margin:0 0 17px}
+.release-entry h3{font-size:17px;color:#0c4c77;margin:0 0 2px}
+.release-date{font-size:11px;color:#557081;margin:0 0 9px}
+.release-item{display:flex;align-items:start;gap:9px;margin:8px 0}
+.release-category{flex:none;display:inline-block;min-width:72px;text-align:center;padding:3px 6px;border:1px solid #bed1dc;border-radius:6px;background:#e3eef6;color:#144966;font-size:10px;font-weight:750;white-space:nowrap}
+.release-category[data-category="feature"]{background:#e8f4e9;border-color:#bedac3;color:#28633b}
+.release-category[data-category="clinical"]{background:#eef0fc;border-color:#d0d5ed;color:#424c8c}
+.release-category[data-category="stability"]{background:#fff1dc;border-color:#e7d5ad;color:#745221}
+.release-category[data-category="docs"]{background:#f4ebf6;border-color:#dfc9e4;color:#6a4178}
+.release-item p{margin:0;font-size:12px;line-height:1.55}
+.topic-picker{padding:10px 8px;background:#f0f7fa;border-radius:7px;border:1px solid #d2e2eb}
+.topic-picker p{font-size:12px!important;margin:0 0 7px!important;font-weight:800;color:#345e72}
+.topic-group-title{font-size:10px;margin:8px 0 3px;font-weight:700;color:#607e8c}
+.topic-buttons{display:flex;flex-wrap:wrap;gap:4px}
+.topic-buttons button{padding:5px 7px;min-height:32px;border-radius:5px;background:white;color:#24546e;border:1px solid #c7dae4;font-size:11px}
+.topic-buttons button[aria-pressed="true"]{color:white;background:#1b658f;border-color:#1b658f}
+.clinical-detail{margin-top:12px}
+.clinical-intro{padding:10px 11px;border-left:3px solid #317aa4;background:#eef6fa;font-size:12px;line-height:1.6}
+.clinical-block{padding:10px 1px;border-bottom:1px solid #e1e8ec}
+.clinical-block h3{font-size:13px;color:#165475;margin:0 0 5px}
+.clinical-block ul{margin:0;padding-left:18px}
+.clinical-block li{font-size:12px;line-height:1.7;margin:4px 0}
+.clinical-sources{padding:10px;margin-top:12px;background:#f3f7fa;border-radius:7px}
+.clinical-sources strong{font-size:12px}
+@media(max-width:550px){
+ .site-header{flex-wrap:wrap;align-items:stretch}
+ .site-header>div:first-child{flex:1 1 100%}
+ .header-actions{flex:1 1 100%;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px}
+ .header-actions button{width:100%;min-width:0;min-height:42px;padding:6px 3px;font-size:11px;white-space:normal}
+ .top-action{gap:4px}.top-action span{font-size:15px}
+ .info-dialog{position:fixed;inset:auto 0 0 0;margin:0;width:100%;height:min(90dvh,850px);border-radius:17px 17px 0 0;border-bottom:0}
+ .info-modal-head{padding:12px 12px}.info-modal-head h2{font-size:17px}
+ .info-dialog-body{padding:12px 13px 18px}
+ .changelog-controls{padding:10px;gap:5px;max-height:146px;overflow-y:auto}
+ .changelog-controls button{min-height:34px;font-size:11px;padding:6px 8px}
+ .release-category{min-width:65px}
+ .info-close{width:40px;height:40px;flex-basis:40px}
+}
