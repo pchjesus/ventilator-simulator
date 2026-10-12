@@ -77,3 +77,13 @@ committed settings + animation clock
 - The slider's native keyboard handling provides accessible seek; pointer hit-testing uses each SVG's bounding rectangle.
 - Grids are CSS background toggled on one shared graph-area class; phase colors and waveform paths remain model driven and unchanged.
 - CSS appended as new version layer to preserve stable existing selectors. A later isolated cleanup/refactor is optional only after screenshot and accessibility review, not mixed into this patch.
+
+## v0.3.8 independent CASE education
+```
+src/preclinical-cases.js (2 fictional vignettes, objectives, options, references)
+         ↓
+src/case-engine.js (start, choose, advance, score: pure functions)
+         ↓
+src/app.js → #panel-case (presentation, in-memory caseState)
+```
+Case state is not connected to `sim-model.js`, `waveform-model.js`, `waveform-inspector.js`, `setting-editor.js` or `MONITOR_REFERENCE`. The two simulated cases never alter the device's own visual values, making v0.3.8 a separate **cognitive simulation rather than a physiological patient model**. Grouping CASE with Help/CIRCUIT updates only side-panel visibility and selection states, preserving all existing button selectors and tab behavior.
