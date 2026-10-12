@@ -8,6 +8,12 @@ export const RELEASE_CATEGORIES=Object.freeze([
   {id:"docs",label:"문서·근거"}
 ]);
 export const RELEASE_NOTES=Object.freeze([
+ {version:"0.4.2",date:"2026-10-12",changes:[
+  {category:"feature",text:"6개 핵심 개념에 연결된 10문항 학습 확인, 선택지 전체 해설·근거, 오개념 복습과 CASE 이동"},
+  {category:"clinical",text:"PEEP·FiO₂/SpO₂/PaO₂·VTE·f/fTOT·Ppeak/Pᵢ·환자 우선 사정의 입문 형성평가; 전문가 미감수"},
+  {category:"ui",text:"기존 핵심 개념 패널에 단계형 문제풀이를 추가하고 모바일 320/360px 접근성·상태 유지를 고려"},
+  {category:"stability",text:"형성학습을 페이지 메모리에만 보관하고 CASE·설정 초기화·고정 모니터·파형 상태와 분리"},
+  {category:"docs",text:"문항별 학습목표·오개념·원문 근거와 교수자 검토 미리보기·구조 검사 추가"}]},
  {version:"0.4.1",date:"2026-10-12",changes:[
   {category:"ui",text:"실습 전 핵심 개념 탭을 기본 화면으로 지정, 핵심 설정 강조, 회로·PB980 알람과 전문 설정 설명을 추가 학습으로 분리"},
   {category:"feature",text:"PEEP·FiO₂·VTE·설정/총 호흡수·Ppeak·환자 사정을 설명하는 여섯 개 읽기 쉬운 교육 카드와 원문 근거 연결"},
