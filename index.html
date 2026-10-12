@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="theme-color" content="#06396f">
+  <meta name="theme-color" content="#26343f">
   <title>PB980 Ventilator Simulator | Educational Preview</title>
   <link rel="stylesheet" href="./styles.css">
   <script src="./src/app.js" type="module"></script>
@@ -18,7 +18,7 @@
       <button id="reset" type="button" class="reset">설정 초기화</button>
     </nav>
   </header>
-  <p class="warning" role="note">실제 환자 치료에 사용 불가 · PB980 외형 참고형 교육용 UI(실물과 동작 다름) · 상단 monitoring 값은 고정 예시, 아래 움직이는 파형은 단순화된 설명용 모델로 실제 환자 측정값이 아님</p>
+  <p class="warning" role="note">실제 환자 치료에 사용 불가 · PB980 내부 화면 구성 참고형(실물과 동작 다름) · 상단 monitoring 값은 고정 예시, 아래 움직이는 파형은 단순화된 설명용 모델로 실제 환자 측정값이 아님</p>
   <main class="workspace">
     <section class="ventilator" aria-label="PB980 스타일 교육용 인공호흡기 디스플레이">
       <div class="bezel-brand" aria-hidden="true"><span class="bezel-logo">▣</span><strong>COVIDIEN</strong><span>Puritan Bennett</span><span>980 Series Ventilator</span><i class="bezel-led"></i></div>
@@ -30,10 +30,25 @@
             <div class="device-top"><span class="device-state">ADULT · INVASIVE <small class="state-sample">(예시 화면)</small></span><strong>SIMV <span class="subtle">(PC) + PS</span></strong><span class="reference-flag">EDUCATIONAL DEMO</span></div>
       <div class="waveform-toolbar">
         <div><strong>WAVEFORMS</strong><span class="waveform-tag"> SIMV PC+PS · 교육용 동적 파형</span></div>
-        <button type="button" id="waveform-pause" aria-pressed="false" aria-label="파형 일시정지">Ⅱ Pause</button>
+        <div class="waveform-actions" role="group" aria-label="파형 도구">
+          <button type="button" id="waveform-grid" aria-pressed="true" aria-label="파형 격자 숨기기">▦ 격자</button>
+          <button type="button" id="waveform-inspect" aria-pressed="false" aria-controls="inspection-panel">⌖ 파형 분석</button>
+          <button type="button" id="waveform-pause" aria-pressed="false" aria-label="파형 일시정지">Ⅱ Pause</button>
+        </div>
       </div>
       <div class="waveform-legend" aria-label="호흡 유형 범례"><span class="legend-mand">● 강제 흡기</span><span class="legend-spont">● 자발 흡기(예시)</span><span class="legend-exp">● 호기</span></div>
-      <div class="graph-area">
+      <div id="inspection-panel" class="inspection-panel" aria-label="교육용 파형 커서 분석" hidden>
+        <div class="inspection-summary"><strong>파형 분석 · 정지된 예시 파형</strong><span id="inspection-time">시간 +8.0 s / 16 s</span></div>
+        <label class="inspection-scrubber">분석 시점 <input id="inspection-position" type="range" min="0" max="100" value="50" step="1" aria-label="파형 분석 시간 위치"></label>
+        <div class="inspection-readouts" aria-live="off">
+          <span>압력 <strong id="inspection-pressure">—</strong> cmH₂O</span>
+          <span>유량 <strong id="inspection-flow">—</strong> L/min</span>
+          <span>용적 <strong id="inspection-volume">—</strong> mL</span>
+          <span>호흡 단계 <strong id="inspection-phase">—</strong></span>
+        </div>
+        <p>교육용 생성 곡선의 특정 지점을 읽는 기능이야. 아래 파형을 직접 클릭·터치하거나 슬라이더와 방향키로 이동할 수 있어. 실제 측정값·임상 진단 아님.</p>
+      </div>
+      <div class="graph-area show-grid">
         <div class="graph-row"><div class="graph-head"><span>Pressure / Time</span><span id="scale-pressure">cmH₂O</span></div>
           <svg id="graph-pressure" class="waveform-svg" viewBox="0 0 760 130" preserveAspectRatio="none" role="img" aria-label="동적 교육용 기도압-시간 파형">
             <path class="base-line" d="M0 116H760 M0 64H760 M0 12H760"></path>
@@ -138,6 +153,6 @@
       </div>
     </form>
   </dialog>
-  <footer class="footer">MVP v0.3.6 · 브라우저에서 동작하는 교육용 프런트엔드 · 임상/장비 동작 검증 전</footer>
+  <footer class="footer">MVP v0.3.7 · 브라우저에서 동작하는 교육용 프런트엔드 · 임상/장비 동작 검증 전</footer>
 </body>
 </html>
