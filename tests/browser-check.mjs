@@ -452,6 +452,14 @@ try {
   await narrow.locator(".setting").first().waitFor({state:"visible"});
   assert.equal(await narrow.locator("#panel-core").isVisible(),true);
   assert.equal(await narrow.locator(".core-concept").count(),6);
+  const tierOverlaps=await narrow.locator(".setting").evaluateAll(cards=>cards.map(card=>{
+    const tier=card.querySelector(".setting-tier")?.getBoundingClientRect();
+    const help=card.querySelector(".device-help")?.getBoundingClientRect();
+    if(!tier||!help)return false;
+    return tier.left<help.right-1 && tier.right>help.left+1 &&
+           tier.top<help.bottom-1 && tier.bottom>help.top+1;
+  }));
+  assert.ok(tierOverlaps.every(value=>!value),"320px setting importance labels must not overlap ? help controls");
   await narrow.screenshot({path:"artifacts/browser/narrow-core-320.png",fullPage:false});
   await narrow.locator("#extra-learning > summary").click();
   await narrow.locator("#open-manual").click();
