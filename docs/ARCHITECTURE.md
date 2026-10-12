@@ -128,3 +128,10 @@ Student-learning lessons/sources (read-only) → src/core-quiz.js (10 items, pur
 No write path reaches the device state, pending setting editor, fixed monitor example values, waveform engine, CASE state/reflection, alarm bank or circuit.
 The rate-static item cites this app's README as an implementation contract, not a manufacturer claim. No database, new browser tab, login, API, or automatic patient physiology is introduced.
 1440px / 360px / 320px browser regression is required.
+
+
+## v0.4.3 documentation and state boundaries
+- `src/core-quiz.js` retains question content and a separate `CORE_REVIEW_GUIDE` keyed by stable question IDs, checked by `auditCoreQuiz`. Global review approval stays `pending/false`.
+- External source IDs point to HTTPS medical reference pages; the `app` source has `scope:"internal"` and no URL. UI renders it as plain explanatory text, never as a link to a private repository.
+- The concept-card return button only scrolls/focuses the existing quiz area. It does not reset `coreQuizState`, `caseState`, device setting state, waveform time, or fixed monitor values.
+- No new tabs or runtime dependencies. Faculty handoff and future pilot protocol are repository documentation, not execution of review or data collection.
