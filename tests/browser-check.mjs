@@ -47,13 +47,13 @@ try {
   await desktop.locator(".core-quiz-secondary").first().click();
   assert.equal(await desktop.locator('[data-concept-id="peep"]').evaluate(e=>e.open),true,"review returns to correct lesson card");
   await desktop.locator("#tab-case").click();
-  quizOriginalCases=await desktop.locator("#case-content").innerText();
+  quizOriginalCases=await desktop.locator("#case-content").textContent();
   await desktop.locator("#tab-core").click();
   assert.match(await desktop.locator(".core-quiz-progress").innerText(),/1 \/ 10/,"tab change preserves quiz");
   await desktop.locator("#reset").click();
   assert.equal(await desktop.locator("#settings").innerText(),quizOriginalSettings,"quiz must not affect settings/reset");
   assert.equal(await desktop.locator("#monitor").innerText(),quizOriginalReadouts,"monitor remains fixed");
-  assert.equal(await desktop.locator("#case-content").innerText(),quizOriginalCases,"CASE not changed");
+  assert.equal(await desktop.locator("#case-content").textContent(),quizOriginalCases,"CASE not changed");
   assert.match(await desktop.locator(".core-quiz-feedback").innerText(),/오개념/,"device reset preserves quiz");
   for(let i=1;i<10;i++){
     await desktop.locator(".core-quiz-next").click();
