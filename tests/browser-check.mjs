@@ -445,7 +445,9 @@ try {
   assert.equal(await mobile.locator(".core-concept").count(),6);
   await mobile.screenshot({path:"artifacts/browser/mobile-core-default.png",fullPage:false});
   await mobile.locator("#core-quiz-root .core-quiz-primary").click();
-  assert.equal(await mobile.locator(".core-return-button:visible").count(),6);
+  assert.equal(await mobile.locator(".core-return-button").count(),6,"return action belongs to all six expandable concept cards");
+  await mobile.locator('[data-concept-id="peep"] > summary').click();
+  assert.equal(await mobile.locator('[data-concept-id="peep"] .core-return-button').isVisible(),true);
   await mobile.locator(".core-quiz-answer").nth(0).click();
   const quizMobileBox=await mobile.locator("#core-quiz-root").boundingBox();
   assert.ok(quizMobileBox.x>=-1&&quizMobileBox.x+quizMobileBox.width<=361,"360px quiz fits viewport");
@@ -530,7 +532,9 @@ try {
   assert.ok(tierOverlaps.every(value=>!value),"320px setting importance labels must not overlap ? help controls");
   await narrow.screenshot({path:"artifacts/browser/narrow-core-320.png",fullPage:false});
   await narrow.locator("#core-quiz-root .core-quiz-primary").click();
-  assert.equal(await narrow.locator(".core-return-button:visible").count(),6);
+  assert.equal(await narrow.locator(".core-return-button").count(),6,"320px cards retain return navigation");
+  await narrow.locator('[data-concept-id="peep"] > summary').click();
+  assert.equal(await narrow.locator('[data-concept-id="peep"] .core-return-button').isVisible(),true);
   await narrow.locator(".core-quiz-answer").nth(2).click();
   const quizNarrowBox=await narrow.locator("#core-quiz-root").boundingBox();
   assert.ok(quizNarrowBox.x>=-1&&quizNarrowBox.x+quizNarrowBox.width<=321,"320px quiz container fits viewport");
