@@ -1,6 +1,8 @@
 import {VERSION, PARAMETERS, DEVICE_REFERENCE, MONITOR_REFERENCE, initialSettings, adjustSetting, formatSetting} from "./sim-model.js";
 import {generateWaveform, previewScales} from "./waveform-model.js";
 import {beginSettingEdit, preferredEditStep, stepSettingEdit, acceptSettingEdit} from "./setting-editor.js";
+import {CLINICAL_TOPICS, TOPIC_GROUPS, EDUCATION_SOURCES, MANUAL_SECTIONS} from "./education-content.js";
+import {RELEASE_CATEGORIES, notesForCategory} from "./release-notes.js";
 const settingsContainer = document.getElementById("settings");
 const monitor = document.getElementById("monitor");
 const status = document.getElementById("status");
@@ -17,6 +19,145 @@ document.body.dataset.controlMode = controlMode;
 let circuitView = "parts";
 let assemblyStep = 0;
 document.getElementById("version").textContent = "v" + VERSION;
+let selectedTopicId=null;
+
+// All educational text is inserted through textContent: no copied page HTML,
+// no runtime medical-data/network dependency and no untrusted HTML in overlays.
+function makeElement(tag,className,text){
+  const element=document.createElement(tag);
+  if(className)element.className=className;
+  if(text!==undefined)element.textContent=text;
+  return element;
+}
+function addSources(container,ids){
+  const refs=makeElement("div","clinical-sources");
+  refs.append(makeElement("strong",null,"참고 근거 · 직접 원문 확인"));
+  for(const id of ids){
+    const source=EDUCATION_SOURCES[id];
+    if(!source)continue;
+    const link=makeElement("a",null,source.name);
+    link.href=source.url;link.target="_blank";link.rel="noopener noreferrer";
+    refs.append(link);
+  }
+  container.append(refs);
+}
+function renderClinicalTopic(id){
+  const root=document.getElementById("clinical-detail");
+  root.replaceChildren();
+  const topic=CLINICAL_TOPICS[id];
+  selectedTopicId=topic?id:null;
+  for(const button of document.querySelectorAll("#topic-buttons button[data-topic]")){
+    button.setAttribute("aria-pressed",String(button.dataset.topic===selectedTopicId));
+  }
+  if(!topic)return;
+  root.append(makeElement("p","clinical-intro",topic.summary));
+  for(const section of topic.sections){
+    const region=makeElement("section","clinical-block");
+    region.append(makeElement("h3",null,section.heading));
+    const list=document.createElement("ul");
+    for(const point of section.points)list.append(makeElement("li",null,point));
+    region.append(list);root.append(region);
+  }
+  addSources(root,topic.sourceIds);
+}
+function renderTopicNavigation(){
+  const root=document.getElementById("topic-buttons");
+  root.replaceChildren();
+  for(const group of TOPIC_GROUPS){
+    const wrapper=makeElement("div","topic-group");
+    wrapper.append(makeElement("div","topic-group-title",group.title));
+    const row=makeElement("div","topic-buttons");
+    for(const id of group.ids){
+      const param=PARAMETERS.find(p=>p.id===id);
+      const button=makeElement("button",null,param?param.label:CLINICAL_TOPICS[id].title.split(" ·")[0]);
+      button.type="button";button.dataset.topic=id;button.setAttribute("aria-pressed","false");
+      button.addEventListener("click",()=>{
+        const topic=CLINICAL_TOPICS[id];
+        explain(param?param.label:topic.title,param?param.help:topic.summary,DEVICE_REFERENCE[id]||null,id);
+      });
+      row.append(button);
+    }
+    wrapper.append(row);root.append(wrapper);
+  }
+}
+function configureInfoDialog(id,triggerId){
+  const dialog=document.getElementById(id),trigger=document.getElementById(triggerId);
+  let previousFocus=null;
+  trigger.addEventListener("click",()=>{
+    if(dialog.open||editorDialog.open)return;
+    previousFocus=trigger;
+    if(id==="changelog-dialog")selectReleaseCategory("all");
+    dialog.showModal();
+    dialog.querySelector(".info-close").focus();
+  });
+  dialog.querySelector(".info-close").addEventListener("click",()=>dialog.close());
+  // Native dialog backdrops are hit-tested as the dialog element itself.
+  // Close ONLY when pointer starts outside the dialog's visual rectangle.
+  dialog.addEventListener("pointerdown",event=>{
+    if(event.target!==dialog)return;
+    const bounds=dialog.getBoundingClientRect();
+    if(event.clientX<bounds.left||event.clientX>bounds.right||
+       event.clientY<bounds.top||event.clientY>bounds.bottom)dialog.close();
+  });
+  dialog.addEventListener("close",()=>{
+    if(previousFocus&&previousFocus.isConnected)previousFocus.focus();
+    previousFocus=null;
+  });
+}
+function renderManual(){
+  const root=document.getElementById("manual-dialog-body");root.replaceChildren();
+  root.append(makeElement("p","info-intro","본 설명서는 v"+VERSION+" 교육용 웹 시뮬레이터 사용법이야. 실제 환자 치료나 PB980 실물 설정 조작을 위한 사용설명서가 아니야."));
+  for(const section of MANUAL_SECTIONS){
+    const block=makeElement("section","manual-section");
+    block.append(makeElement("h3",null,section.title));
+    const list=document.createElement("ul");
+    for(const line of section.lines)list.append(makeElement("li",null,line));
+    block.append(list);root.append(block);
+  }
+  addSources(root,Object.keys(EDUCATION_SOURCES));
+}
+let activeReleaseCategory="all";
+function renderReleaseNotes(){
+  const root=document.getElementById("changelog-dialog-body");root.replaceChildren();
+  const entries=notesForCategory(activeReleaseCategory);
+  root.append(makeElement("p","info-intro","버전별 변경 사항을 카테고리로 나눠 표시해. 세부 검증 결과는 TEST_REPORT와 DEVLOG에 기록돼 있어."));
+  for(const entry of entries){
+    const region=makeElement("section","release-entry");
+    region.append(makeElement("h3",null,"v"+entry.version));
+    region.append(makeElement("p","release-date",entry.date));
+    for(const change of entry.changes){
+      const item=makeElement("div","release-item");
+      const category=RELEASE_CATEGORIES.find(c=>c.id===change.category);
+      const badge=makeElement("span","release-category",category.label);
+      badge.dataset.category=change.category;
+      item.append(badge,makeElement("p",null,change.text));
+      region.append(item);
+    }
+    root.append(region);
+  }
+}
+function selectReleaseCategory(id){
+  if(id!=="all"&&!RELEASE_CATEGORIES.some(category=>category.id===id))return;
+  activeReleaseCategory=id;
+  for(const button of document.querySelectorAll("#changelog-filters button")){
+    button.setAttribute("aria-pressed",String(button.dataset.category===id));
+  }
+  renderReleaseNotes();
+}
+function initEducationUI(){
+  renderTopicNavigation();renderManual();
+  const filters=document.getElementById("changelog-filters");
+  for(const category of [{id:"all",label:"전체"},...RELEASE_CATEGORIES]){
+    const button=makeElement("button",null,category.label);
+    button.type="button";button.dataset.category=category.id;
+    button.setAttribute("aria-pressed",String(category.id==="all"));
+    button.addEventListener("click",()=>selectReleaseCategory(category.id));
+    filters.append(button);
+  }
+  renderReleaseNotes();
+  configureInfoDialog("manual-dialog","open-manual");
+  configureInfoDialog("changelog-dialog","open-changelog");
+}
 
 function showSideTab(tab) {
   const help = tab === "help";
@@ -27,7 +168,7 @@ function showSideTab(tab) {
   helpTab.setAttribute("aria-selected",String(help));
   circuitTab.setAttribute("aria-selected",String(!help));
 }
-function explain(title, description, reference = null) {
+function explain(title, description, reference = null, explicitTopicId = null) {
   document.getElementById("help-title").textContent = title;
   document.getElementById("help-body").textContent = description;
   const info=document.getElementById("reference-info");
@@ -36,6 +177,9 @@ function explain(title, description, reference = null) {
     ? "PB980 매뉴얼 기준 (성인·해당 설정): "+reference.detail+
       " · 화면의 ± 버튼/설정 범위는 별도의 교육용 예시이며, 실제 장비의 조작·제약조건을 완전히 재현하지 않아."
     : "";
+  const topicId=explicitTopicId||
+    (title==="SIMV (PC) + PS"?"mode":PARAMETERS.find(p=>p.label===title)?.id);
+  renderClinicalTopic(topicId);
   showSideTab("help");
 }
 function renderMonitor() {
@@ -222,8 +366,14 @@ function renderCircuit() {
 }
 circuitTab.addEventListener("click",()=>showSideTab("circuit"));
 document.getElementById("shortcut-circuit").addEventListener("click",()=>showSideTab("circuit"));
-document.getElementById("shortcut-help").addEventListener("click",()=>showSideTab("help"));
-helpTab.addEventListener("click",()=>showSideTab("help"));
+document.getElementById("shortcut-help").addEventListener("click",()=>{
+  if(!selectedTopicId)explain(CLINICAL_TOPICS.nursing.title,CLINICAL_TOPICS.nursing.summary,null,"nursing");
+  else showSideTab("help");
+});
+helpTab.addEventListener("click",()=>{
+  if(!selectedTopicId)explain(CLINICAL_TOPICS.nursing.title,CLINICAL_TOPICS.nursing.summary,null,"nursing");
+  else showSideTab("help");
+});
 document.getElementById("modeHelp").addEventListener("click",()=>explain("SIMV (PC) + PS","SIMV는 강제호흡과 자발호흡을 조합하는 모드야. 이 예시에서는 강제호흡은 압력제어(PC), 자발호흡은 압력보조(PS)로 표시했어. 정확한 설정 화면과 사용 범위는 PB980 매뉴얼을 확인해야 해."));
 document.getElementById("reset").addEventListener("click",()=>{if(editorDialog.open)closeSettingEditor();state=initialSettings();refreshSettings();paintWaveforms();status.textContent="기본 예시 설정으로 초기화했어.";});
 document.querySelectorAll("[data-view]").forEach(button=>button.addEventListener("click",()=>{circuitView=button.dataset.view;assemblyStep=0;renderCircuit();}));
@@ -290,5 +440,5 @@ function animationFrame(now){
   }
   requestAnimationFrame(animationFrame);
 }
-renderMonitor();renderSettings();renderCircuit();paintWaveforms();
+initEducationUI();renderMonitor();renderSettings();renderCircuit();paintWaveforms();
 requestAnimationFrame(animationFrame);
