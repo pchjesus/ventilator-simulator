@@ -8,6 +8,12 @@ export const RELEASE_CATEGORIES=Object.freeze([
   {id:"docs",label:"문서·근거"}
 ]);
 export const RELEASE_NOTES=Object.freeze([
+ {version:"0.3.9",date:"2026-10-12",changes:[
+  {category:"ui",text:"CASE 목록에 정답 공개 경고가 있는 교수자 검토 미리보기, 문항별 근거 접기·펼치기, 구조화 복습 입력창 제공"},
+  {category:"feature",text:"학습목표·근거 ID 자동 연결 검사와 오류 시 CASE 학습 중단, 문항 선택 후 근거 추적 및 결과별 오답 복습 추가"},
+  {category:"clinical",text:"입문 2개 사례의 6개 문항에 출처 성격·근거 해석 메모를 추가하고 임상 전문가 미감수 상태 유지"},
+  {category:"stability",text:"답안·디브리핑 메모는 세션 메모리에만 유지, 기존 설정·파형과 분리하며 자동 회귀검증 확대"},
+  {category:"docs",text:"2025년 INACSL 표준 개정 정보 반영, 교수자 검토 규칙과 임상 내용 승인 이전의 제한 문서화"}]},
  {version:"0.3.8",date:"2026-10-12",changes:[
   {category:"ui",text:"세 번째 CASE 학습 탭과 가상 상황·문항·근거를 실제 장비 화면과 명확히 분리한 학습 카드 UI 추가"},
   {category:"clinical",text:"실습 전 입문 형성학습 2종: 기계환기 환자 인수인계 및 산소포화도 변화 인지(가상 상황, 전문가 미감수)"},
