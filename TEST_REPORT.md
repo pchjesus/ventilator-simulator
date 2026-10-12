@@ -237,3 +237,10 @@ GitHub Actions run: https://github.com/pchjesus/ventilator-simulator/actions/run
 - Screenshot artifact reviewed: desktop-core-quiz-feedback.png, desktop-core-quiz-complete.png, mobile-core-quiz-360.png, narrow-core-quiz-320.png plus existing UI screens. **35 screenshots captured**. Desktop quiz scroller applied only during active quiz; other pages remain unchanged. Hardware-device testing was not performed.
 - Early PR runs detected one obsolete version expectation in tests/release-notes.test.mjs and a false CASE text mismatch comparing innerText while hidden versus visible; corrected version assertion and used textContent for stable CASE DOM comparison, then full regression re-run passed. A separate screenshot-observed desktop scroll-context usability issue was corrected with a bounded study-panel scroll and desktop workspace alignment.
 - *Clinical validation is outstanding*: passing tests only establish program behavior and schema, not expert approval, examination validity or physiological correctness. Re-check the final merged main CI separately.
+
+
+## v0.4.3 QA / traceability extension
+- New `tests/core-quiz.test.mjs` assertions: 10/10 reviewer prompts and source-interpretation notes, approved=false, app-contract is internal/no private GitHub URL, rejection of clinical claims citing only internal app code.
+- Extended `tests/browser-check.mjs`: concept revisit → return-to-quiz focus and progress intact; instructor preview displays ten evidence notes and ten unanswered review prompts; no private GitHub source link; 1440/360/320px button checks.
+- Original tests retained; waveform/monitor/CASE source files unchanged. No actual instructor/student testing or mobile physical device test.
+- Final release CI results and screenshots must be recorded from the exact merged main SHA, not inferred from source code.
