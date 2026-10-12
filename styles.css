@@ -515,3 +515,55 @@ body[data-control-mode="device"] .setting{min-height:92px}
 .alarm-simulator-difference{background:#fff8e9;border-left:3px solid #d0a762;padding:6px 8px;color:#6b5830}
 .alarm-error{color:#a33528;font-size:12px;background:#fff0ed;padding:8px}
 @media(max-width:550px){.side-tabs{gap:3px}.side-tabs button{font-size:10px;min-height:47px;padding:7px 2px}.alarm-lesson-card,.alarm-quiz,.alarm-learning-section{padding:10px}.alarm-lesson-card h3{font-size:13px}.alarm-detail-title{font-size:15px}.alarm-choice{min-height:54px}}
+
+/* v0.4.1 — progressive-disclosure, student-first learning (no simulator model changes). */
+.student-path-label{font-size:11px;font-weight:800;color:#365c72;letter-spacing:.02em;margin:2px 0 8px}
+.core-tabs{gap:6px!important}.core-tabs button{min-width:0;flex:1 1 0;font-size:12px!important;min-height:46px}
+.extra-learning{border:1px solid #c2d5df;border-radius:8px;background:#f3f8fb;margin:10px 0 12px;overflow:visible}
+.extra-learning>summary{font-size:12px;line-height:1.5;min-height:44px;display:list-item;cursor:pointer;color:#27536e;font-weight:750;padding:11px 12px;list-style-position:inside}
+.extra-learning>summary:focus-visible,.core-concept>summary:focus-visible{outline:3px solid #5eaad1;outline-offset:2px}
+.extra-learning[open]>summary{border-bottom:1px solid #c8dbe6;background:#e7f1f6}
+.extra-learning>p{font-size:11px;color:#597486;line-height:1.6;padding:1px 12px 0;margin:9px 0}
+.extra-tabs{padding:8px 10px 10px;display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+.extra-tabs button{min-width:0;padding:8px 6px!important;min-height:44px;background:#fff;border:1px solid #b2cbd7;color:#315974;border-radius:6px}
+.extra-tabs button.active{background:#1e617f;border-color:#1e617f;color:#fff}
+.core-intro{font-size:13px;line-height:1.65;padding:12px;margin:12px 0 8px;color:#214960;border-left:4px solid #4b9dba;background:#eef7fa;border-radius:7px}
+.core-learning-steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;margin:9px 0 13px}
+.core-learning-steps span{background:#e6f1f7;border:1px solid #c0d7e5;border-radius:6px;text-align:center;padding:9px 4px;color:#28556e;font-size:10px;font-weight:700;line-height:1.4}
+#core-learning-content{display:grid;gap:8px}
+.core-concept{background:#fff;border:1px solid #c0d5e1;border-radius:9px;overflow:hidden}
+.core-concept[open]{border-color:#629ab5;box-shadow:0 2px 9px #22526c12}
+.core-concept-header{cursor:pointer;display:flex;flex-wrap:wrap;gap:5px;padding:11px 10px;align-items:baseline;line-height:1.4;min-height:42px}
+.core-concept-title{display:flex;flex-wrap:wrap;gap:5px;align-items:baseline;font-size:11px;color:#3e637a}
+.core-concept-title strong{font-size:17px;color:#16465e}
+.core-concept-short{font-size:11px;color:#426b80;display:block;flex-basis:100%;padding-left:17px}
+.core-concept[open] .core-concept-header{background:#eaf4fa;border-bottom:1px solid #d3e4ec}
+.core-concept-body{padding:9px 13px 13px}
+.core-concept-body p{font-size:12px;line-height:1.6;color:#314e60;margin:9px 0}
+.core-concept-body p strong{color:#245f77}
+.core-concept-sources{display:grid;gap:5px;border-top:1px solid #e0eaf0;margin-top:10px;padding-top:10px}
+.core-concept-sources strong{font-size:11px;color:#527184}
+.core-concept-sources a{font-size:11px;color:#155f91;text-decoration:underline;overflow-wrap:anywhere;line-height:1.4}
+.core-scope-warning{font-size:11px;line-height:1.55;color:#775934;background:#fff8e9;border:1px solid #efdaa8;border-radius:7px;margin:13px 0 3px;padding:10px}
+.setting[data-learning-tier="core"]{background:#fff;border:2px solid #74b1c5;box-shadow:0 1px 5px #32657b12}
+.setting[data-learning-tier="additional"]{border:1px solid #cbd7df;background:#f4f8fa}
+.setting-tier{font-size:9px;border-radius:4px;padding:2px 4px;font-weight:800;line-height:1.25;letter-spacing:.01em;float:right}
+.setting[data-learning-tier="core"] .setting-tier{background:#d9f0f6;color:#1a6477}
+.setting[data-learning-tier="additional"] .setting-tier{background:#e5ebee;color:#607b8c}
+.setting[data-learning-tier="additional"] .setting-name{color:#58788b}
+.clinical-extra{background:#f2f7fa;border:1px solid #c4d7e2;border-radius:7px;padding:8px;margin:10px 0}
+.clinical-extra>summary{cursor:pointer;font-size:11px;line-height:1.5;color:#376278;font-weight:800;padding:5px 3px}
+.clinical-extra .topic-buttons{padding-top:8px}
+.alarm-technical-details,.alarm-version-details{background:#f5f9fc;border:1px solid #c2d6e3;border-radius:8px;margin:11px 0;padding:8px 10px;overflow-wrap:anywhere}
+.alarm-technical-details>summary,.alarm-version-details>summary{font-size:11px;font-weight:750;line-height:1.5;color:#285875;cursor:pointer;min-height:32px;padding:5px 0}
+.alarm-technical-details p,.alarm-version-details p,.alarm-version-details li{font-size:11px;line-height:1.6;color:#486979}
+.alarm-version-details a{display:block;color:#15618d;font-size:11px;line-height:1.65;overflow-wrap:anywhere}
+.alarm-version-note{font-weight:700;color:#76572c!important}
+@media(max-width:550px){
+ .core-tabs button{font-size:11px!important;min-height:47px}
+ .core-intro{font-size:12px;padding:9px}
+ .core-concept-header{padding:10px 9px}
+ .core-concept-title strong{font-size:16px}
+ .core-learning-steps span{font-size:9px;padding:8px 2px}
+ .setting-tier{font-size:8px;padding:1px 3px}
+}
