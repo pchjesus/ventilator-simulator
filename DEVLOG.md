@@ -183,3 +183,20 @@
 - PR [#4](https://github.com/pchjesus/ventilator-simulator/pull/4) merged into private main; commit `c7cd912eff51665eda2a24e6ef801ccf7630aa7b`.
 - Main-commit workflow [38187571168](https://github.com/pchjesus/ventilator-simulator/actions/runs/38187571168) completed SUCCESS for all 3 jobs; 29/29 unit checks green.
 - No clinical-equivalence or physical PB980 validation claimed. No public web deployment.
+
+## v0.3.7 — Information-first interface + paused waveform inspection (2026-10-12)
+### Current code/risk review
+- Base v0.3.6 private main `cdec71a3ab43a279b4f66b9d1009a6da737b48f6`. Existing large decorative blue housing squeezed readouts and made the settings tiles difficult to read at 320px.
+- Chosen safe approach: CSS-only visual regrouping preserving existing HTML geography/legacy selectors, and a pure cursor sampler **consuming existing waveform samples only**. No new patient/clinical physiological model or change to settings precision.
+- Medical device vs app: manufacturer's waveform pause, grid and cursor navigation are inspiration; no OEM precision, looping, physiological trigger or measured values.
+### Implemented
+- Neutral, compact housing, bigger monitor numbers and names, separated dark waveform stage and pale study-setting tiles, more legible controls, two-column narrow settings; unchanged 7 monitoring examples and 7 inputs.
+- `src/waveform-inspector.js`: finite bounded 0–1 cursor fraction, coordinate-to-ratio mapping, deterministic sample selection/validation; no DOM.
+- `src/app.js`: new `inspectorActive/pausedBeforeInspection` state isolated from committed settings, pause/restore, shared cursor on three graphs, slider/keyboard/pointer selection, responsive synthetic sample readout and grid visibility toggle.
+- `index.html` adds analysis panel and wave toolbar controls; manual content and categorized v0.3.7 patch notes updated.
+### Risks and mitigation
+- Pause collision: analysis forces a frozen frame, restoring prior Pause/Resume on exit. Clicking Resume inside analysis explicitly resumes playback.
+- Sampling accuracy: cursor renders the very same 320 samples used for SVG paths; labels make it clear that samples are not bedside measurements. Fixed patient banner cannot change as a result of analysis.
+- Graph pointer only active in analysis, keyboard works via accessible range input; no hover-only dependency, no remote services, no storage changes.
+- Mobile layout: keep 2-column controls with enlarged values; browser CI at 1440/360/320px checks no overflow and old editor/quick mode.
+- Validation: pure math checks + Chromium regression gate + screenshots; real clinical device/smartphone verification remains out of scope.
