@@ -8,6 +8,7 @@ import {PRECLINICAL_CASES,CASE_SOURCES,findCase} from "./preclinical-cases.js";
 import {startCase,chooseCaseAnswer,advanceCase,caseScore} from "./case-engine.js";
 import {auditCaseBank,evidenceKindLabel} from "./case-quality.js";
 import {ALARM_LESSONS,DISPLAY_CATEGORIES,DEVICE_EDUCATION_SOURCES,termsForCategory,findAlarmLesson,evaluateAlarmChoice,auditDeviceEducation} from "./device-learning.js";
+import {CORE_LESSONS,CORE_SOURCES,ESSENTIAL_SETTING_IDS,auditCoreLearning} from "./student-learning.js";
 const settingsContainer = document.getElementById("settings");
 const monitor = document.getElementById("monitor");
 const status = document.getElementById("status");
@@ -15,6 +16,9 @@ const panelHelp = document.getElementById("panel-help");
 const panelCircuit = document.getElementById("panel-circuit");
 const panelCase = document.getElementById("panel-case");
 const panelAlarm = document.getElementById("panel-alarm");
+const panelCore = document.getElementById("panel-core");
+const coreTab = document.getElementById("tab-core");
+const extraLearning = document.getElementById("extra-learning");
 const helpTab = document.getElementById("tab-help");
 const circuitTab = document.getElementById("tab-circuit");
 const caseTab = document.getElementById("tab-case");
@@ -172,8 +176,9 @@ function initEducationUI(){
 }
 
 function showSideTab(tab) {
+  if(tab==="circuit"||tab==="alarm")extraLearning.open=true;
   for (const [id,button,panel] of [
-    ["help",helpTab,panelHelp],["circuit",circuitTab,panelCircuit],["case",caseTab,panelCase],["alarm",alarmTab,panelAlarm]
+    ["core",coreTab,panelCore],["help",helpTab,panelHelp],["circuit",circuitTab,panelCircuit],["case",caseTab,panelCase],["alarm",alarmTab,panelAlarm]
   ]) {
     const active=id===tab;
     panel.hidden=!active;
@@ -209,10 +214,13 @@ function renderSettings() {
   settingsContainer.replaceChildren();
   for (const param of PARAMETERS) {
     const card=document.createElement("div");card.className="setting";card.dataset.settingId=param.id;
+    const core=ESSENTIAL_SETTING_IDS.includes(param.id);
+    card.dataset.learningTier=core?"core":"additional";
     const select=document.createElement("button");select.type="button";select.className="setting-select";
     select.setAttribute("aria-label",param.label+" 설정 선택");
     select.addEventListener("click",()=>openSettingEditor(param.id,select));
     const label=document.createElement("div");label.className="setting-name";label.textContent=param.label;
+    const tier=makeElement("span","setting-tier",core?"핵심":"추가");label.append(tier);
     const value=document.createElement("div");value.className="setting-value";value.textContent=formatSetting(param.id,state[param.id]);
     const unit=document.createElement("div");unit.className="setting-unit";unit.textContent=param.unit;
     const buttons=document.createElement("div");buttons.className="step-buttons";
@@ -577,6 +585,52 @@ function renderCase(){
   }
   caseSources(root,scenario.sources);
 }
+
+/* v0.4.1: student-first learning is a read-only explanation layer.
+ * Never mutates device settings, synthetic graph or reference monitor data. */
+const coreAudit=auditCoreLearning();
+function renderCoreLearning(){
+  const root=document.getElementById("core-learning-content");
+  root.replaceChildren();
+  if(coreAudit.problems.length){
+    root.append(makeElement("p","core-audit-error","학습 콘텐츠 검사 실패: "+coreAudit.problems.join(", ")));
+    return;
+  }
+  for(const item of CORE_LESSONS){
+    const card=makeElement("details","core-concept");
+    card.dataset.conceptId=item.id;
+    const header=makeElement("summary","core-concept-header");
+    const title=makeElement("span","core-concept-title");
+    title.append(makeElement("strong",null,item.title),makeElement("span",null,item.label));
+    header.append(title,makeElement("span","core-concept-short",item.key));
+    card.append(header);
+    const body=makeElement("div","core-concept-body");
+    const content=[
+      ["한 줄 이해",item.meaning],
+      ["간호학생 관찰",item.observe],
+      ["주의할 점",item.caution],
+      ["이 앱의 한계",item.simulator]
+    ];
+    for(const [label,text] of content){
+      const p=makeElement("p",null,null);
+      p.append(makeElement("strong",null,label+" · "),document.createTextNode(text));
+      body.append(p);
+    }
+    const source=makeElement("div","core-concept-sources");
+    source.append(makeElement("strong",null,"참고"));
+    for(const key of item.reference){
+      const ref=CORE_SOURCES[key];
+      const a=makeElement("a",null,ref.label);
+      a.href=ref.url;a.target="_blank";a.rel="noopener noreferrer";
+      source.append(a);
+    }
+    body.append(source);
+    card.append(body);
+    root.append(card);
+  }
+}
+coreTab.addEventListener("click",()=>showSideTab("core"));
+
 caseTab.addEventListener("click",()=>{renderCase();showSideTab("case");});
 
 /* PB980 alarm vocabulary and device-readout literacy, independent of real or simulated
@@ -866,5 +920,5 @@ function animationFrame(now){
   }
   requestAnimationFrame(animationFrame);
 }
-initEducationUI();renderMonitor();renderSettings();renderCircuit();paintWaveforms();
+initEducationUI();renderMonitor();renderSettings();renderCircuit();renderCoreLearning();showSideTab("core");paintWaveforms();
 requestAnimationFrame(animationFrame);
