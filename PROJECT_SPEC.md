@@ -99,3 +99,10 @@ Vent settings
 - Analysis pauses the **illustrative** waveform, adds synchronized cursors for Pressure/Flow/Volume and offers keyboard-accessible time slider plus direct pointer/touch seeking. The values shown must be sourced from the exact curve samples, not independently synthesized as patient measurements.
 - Leaving analysis restores prior pause; dedicated Resume leaves analysis and starts playback. Pending Accept state remains unaffected.
 - Scope excludes patient prediction, alarm simulation, OEM fidelity, loop modes and real captured breath data.
+
+## v0.3.8 preclinical student case pilot
+- Add a CASE tab to the separate study panel. Show fictional case data with a prominent expert-not-reviewed label and a warning that case values are not reflected in the PB980-inspired monitor/graphics.
+- Each case needs a measurable learning objective list, prebrief, context, 3 student choice stages, individual answer feedback, rationale, score/debrief and restart.
+- Persistent navigation within the *current page session only*: switching CIRCUIT/Help/CASE does not discard case progress; case reset is independent of simulator reset. No student identity or scores stored or transmitted.
+- Source-linked educational recognition and escalation only; no dynamic SpO₂, actual alarm, independently prescribed ventilator settings or certification.
+- Future expansions and validation exit criteria in `docs/CLINICAL_PRECLINICAL_ROADMAP_v0.3.8.md`.
