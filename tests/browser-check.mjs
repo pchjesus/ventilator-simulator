@@ -86,7 +86,7 @@ try {
   await desktop.getByRole("tab",{name:"CIRCUIT"}).click();
   await desktop.getByRole("tab",{name:"CASE 학습"}).click();
   assert.equal(await desktop.locator(".case-reflection-input").first().inputValue(),"가상 자료와 실제 환자 사정을 구분한다");
-  await desktop.locator(".case-answer-review summary").click();
+  await desktop.locator(".case-answer-review > summary").click();
   assert.match(await desktop.locator(".case-answer-review").innerText(),/권장 선택/);
   await desktop.screenshot({path:"artifacts/browser/desktop-case-complete.png",fullPage:false});
   await desktop.getByRole("button",{name:"처음부터 다시"}).click();
