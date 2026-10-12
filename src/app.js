@@ -690,6 +690,7 @@ function renderCoreQuiz(){
    root.append(makeElement("p","core-quiz-instruction","핵심 카드 6개를 읽은 다음 시작해. 한 문항씩 풀고 선택지별 근거를 확인한 뒤 오개념을 복습할 수 있어."));
    root.append(quizButton("10문항 학습 확인 시작",()=>{
      coreQuizState=startCoreQuiz();renderCoreQuiz();
+     if(window.matchMedia("(min-width:1101px)").matches)document.querySelector(".workspace").scrollIntoView({block:"start",behavior:"auto"});
      root.querySelector(".core-quiz-answer")?.focus();
    },"core-quiz-primary"));
    return;
