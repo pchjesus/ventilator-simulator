@@ -137,3 +137,5 @@
 - [x] Design staged medical/nursing content, simulation-curriculum and clinical review roadmap. See [preclinical educational roadmap](CLINICAL_PRECLINICAL_ROADMAP_v0.3.8.md).
 - [ ] Complete GitHub PR integration and exact merged-main CI, screenshot review.
 - [ ] Subject-matter expert review and field pilot (**not claimed as v0.3.8 completion**).
+
+- [x] v0.3.8 corrected PR branch 38/38 unit and Chromium/package gate passed (run 38198237425; 22 screenshots, selected desktop/320px CASE views inspected).

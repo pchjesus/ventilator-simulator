@@ -225,3 +225,10 @@
 - Future curriculum work follows `docs/CLINICAL_PRECLINICAL_ROADMAP_v0.3.8.md` with explicit sign-off and learner pilot gates before v1.0.
 ### Required verification
 - Case-logic deterministic unit tests, source/answer validation, desktop 1440/mobile 360/320 browser run with CASE and old controls, no case settings/monitor mutation, integration package, updated TEST_REPORT.
+
+
+### v0.3.8 case pilot PR review
+- First CI found missing UI/UX entry for CASE tab in v0.3.8 release notes. Corrected categorization.
+- Branch PR workflow [38198237425](https://github.com/pchjesus/ventilator-simulator/actions/runs/38198237425): 38/38 unit PASS + browser PASS + web artifact PASS.
+- 22 browser PNGs generated; manually inspected CASE questions on desktop and 320px mobile. UI content and distinct fictional vignette presentation visible without horizontal overflow.
+- v0.3.8 remains an unreviewed **prototype** pending clinical educator review, student pilot and instructor sign-off before any preclinical training release.
