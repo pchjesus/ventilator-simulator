@@ -244,3 +244,12 @@ GitHub Actions run: https://github.com/pchjesus/ventilator-simulator/actions/run
 - Extended `tests/browser-check.mjs`: concept revisit → return-to-quiz focus and progress intact; instructor preview displays ten evidence notes and ten unanswered review prompts; no private GitHub source link; 1440/360/320px button checks.
 - Original tests retained; waveform/monitor/CASE source files unchanged. No actual instructor/student testing or mobile physical device test.
 - Final release CI results and screenshots must be recorded from the exact merged main SHA, not inferred from source code.
+
+
+### v0.4.3 PR #12 executed acceptance — 2026-10-12
+- Successful PR CI run: https://github.com/pchjesus/ventilator-simulator/actions/runs/38242016756 (head `887869442b14d0072a2e55425d05b4954e2a4371`); syntax, unit, Chromium and static package jobs all passed.
+- Node unit **66/66 passed**, no failures; Chromium **21 PASS checkpoints**, page/console errors none; coverage includes 1440 desktop and 360/320 touch emulation. CI screenshot artifact includes **35 PNG** images.
+- Inspected core-quiz feedback/completion and 320px screenshot evidence. Device panel remains visible on desktop during quiz, and mobile quiz buttons remain inside page width. Physical smartphone tests were not conducted.
+- An initial PR browser check failed due to a faulty **test expectation** that buttons inside all collapsed <details> cards should be visible. The test now checks existence of all six buttons and visibility after explicitly opening a card; no app logic changed for this fix. Subsequent full run succeeded.
+- Expert clinical content signoff / clinical simulation validity / actual student usability pilot: **NOT performed**.
+- Post-merge CI on exact final main SHA must be verified separately before release completion.
