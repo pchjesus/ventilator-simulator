@@ -43,6 +43,9 @@ try {
   await desktop.locator(".core-quiz-answer").nth(1).click(); // intentionally wrong PEEP answer
   assert.match(await desktop.locator(".core-quiz-feedback").innerText(),/오개념/);
   assert.equal(await desktop.locator(".core-quiz-explanations li").count(),3,"explain ALL options after choice");
+  const desktopDeviceWhileQuizzing=await desktop.locator(".ventilator").boundingBox();
+  assert.ok(desktopDeviceWhileQuizzing.y<900&&desktopDeviceWhileQuizzing.y+desktopDeviceWhileQuizzing.height>0,"quiz scrolling must keep reference ventilator visible on desktop");
+  assert.equal(await desktop.locator(".study-panel").evaluate(e=>e.classList.contains("core-quiz-active")),true);
   await desktop.screenshot({path:"artifacts/browser/desktop-core-quiz-feedback.png",fullPage:false});
   await desktop.locator(".core-quiz-secondary").first().click();
   assert.equal(await desktop.locator('[data-concept-id="peep"]').evaluate(e=>e.open),true,"review returns to correct lesson card");
