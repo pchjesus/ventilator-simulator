@@ -567,3 +567,9 @@ body[data-control-mode="device"] .setting{min-height:92px}
  .core-learning-steps span{font-size:9px;padding:8px 2px}
  .setting-tier{font-size:8px;padding:1px 3px}
 }
+
+/* v0.4.1 mobile screenshot review: stop tier badges sitting behind the ? help button. */
+@media(max-width:550px){
+  .setting .setting-tier{float:none;display:inline-block;vertical-align:middle;margin-left:5px;position:static}
+  .setting .setting-name{padding-right:18px;line-height:1.35}
+}
