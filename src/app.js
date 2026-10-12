@@ -73,7 +73,7 @@ function renderTopicNavigation(){
       button.type="button";button.dataset.topic=id;button.setAttribute("aria-pressed","false");
       button.addEventListener("click",()=>{
         const topic=CLINICAL_TOPICS[id];
-        explain(param?param.label:topic.title,param?param.help:topic.summary,DEVICE_REFERENCE[id]||null,id);
+        explain(param?param.label:topic.title,param?param.help:"핵심 개념과 간호 관찰, 시뮬레이터의 한계를 아래에서 확인해.",DEVICE_REFERENCE[id]||null,id);
       });
       row.append(button);
     }
@@ -370,7 +370,7 @@ function renderCircuit() {
 circuitTab.addEventListener("click",()=>showSideTab("circuit"));
 document.getElementById("shortcut-circuit").addEventListener("click",()=>showSideTab("circuit"));
 document.getElementById("shortcut-help").addEventListener("click",()=>{
-  if(!selectedTopicId)explain(CLINICAL_TOPICS.nursing.title,CLINICAL_TOPICS.nursing.summary,null,"nursing");
+  if(!selectedTopicId)explain(CLINICAL_TOPICS.nursing.title,"간호 사정 원칙과 관찰 포인트를 아래에서 확인해.",null,"nursing");
   else showSideTab("help");
 });
 helpTab.addEventListener("click",()=>{
