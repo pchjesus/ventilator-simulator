@@ -172,3 +172,8 @@
 - Initial PR #4 workflow 38187105272 reported **one content-schema test failure** (short PS summary) and **one browser focus-after-backdrop test failure**. Improved PS summary and suppressed pointer default for backdrop dismissal before repeat verification. Do not infer the latest CI result from this entry.
 ### Clinical verification boundary
 - Published reference-supported concepts are not a validated device workflow or clinical patient model. All monitor values remain fixed, waveform relationships illustrative.
+
+### v0.3.6 PR validation completion
+- Final patched branch run [38187368353](https://github.com/pchjesus/ventilator-simulator/actions/runs/38187368353) fully green (29/29 Node checks plus Chromium and static package).
+- Fixed initial PS summary schema failure and backdrop click/focus interaction, then polished narrow manual heading and removed duplicated clinical introductory description.
+- All 15 screenshot variants generated; final 320px manual and patch history layouts visually reviewed. Actual bedside PB980 clinical validation remains explicitly out of scope.

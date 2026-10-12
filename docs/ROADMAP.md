@@ -112,6 +112,6 @@
 - [x] Add upper-screen manual modal and categorized patch-history modal; X/backdrop/Esc, focus and mobile sheet.
 - [x] Keep v0.3.5 dual-control semantics and unchanged waveform/circuit logic.
 - [x] Extend unit/browser regressions for help content, release filter and popups.
-- [ ] Latest PR test/browser/package CI + screenshot audit.
+- [x] Latest PR test/browser/package CI + screenshot audit (run 38187368353; 29/29, browser and package PASS).
 - [ ] Final Private main merge and clean post-merge CI.
 - [ ] Later: subject-matter expert review of educational texts, actual PB980 firmware-specific workflow if device available (not a release prerequisite).
