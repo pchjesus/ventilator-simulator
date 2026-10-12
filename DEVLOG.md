@@ -154,3 +154,21 @@
 - PR [#3](https://github.com/pchjesus/ventilator-simulator/pull/3) squash merged successfully; code integration commit `762fea2cb03c747f6a6e1c9e94676436b8b4b71e`.
 - Post-merge main Actions [38055192585](https://github.com/pchjesus/ventilator-simulator/actions/runs/38055192585): test/browser/package SUCCESS. 24 original+new model tests and mobile/desktop browser workflow checks passed.
 - Original repository remains Private; no GitHub Pages/public release.
+
+## v0.3.6 — Clinical education, manual and categorized patch dialogs (2026-10-12)
+### Baseline and scope
+- Starting point: private main `41d1b80b97ec8de2f7d913836a83eb277f786bba` (v0.3.5).
+- Preserve committed-vs-pending control semantics, immediate Quick Study, settings ranges, device appearance, CIRCUIT, waveform model, pause/reset/reduced motion.
+### Added
+- `src/education-content.js`: 13 structured topics (7 settings, mode, waveforms, monitor, nursing, ABGA and circuit), clinical observation, simulator caveats, three public sources.
+- Top **설명서** and **패치 내역** native modal dialogs, X/backdrop/Esc, focus return, scrollable narrow-screen content.
+- `src/release-notes.js`: structured versions 0.2.x–0.3.6 with 5 categorized types and filter UI.
+- Schema and Chromium tests for source links, topic navigation, both dialogs, category filtering, mobile touch dismissal and all prior workflows.
+### Risk review
+- Existing right-side `#help-title` / `#help-body` / `#reference-info` preserved to avoid breaking current ? buttons and clinical device facts.
+- Education notes use safe DOM `textContent` and external HTTPS links with `rel=noopener noreferrer`; no remote fetch at runtime or patient-specific predictions.
+- Top dialogs are independent from the existing `#setting-editor` modal; native modal prevents click-through to underlying controls. Outside pointer gesture suppresses default behavior to avoid accidental focus/click-through.
+### First CI feedback
+- Initial PR #4 workflow 38187105272 reported **one content-schema test failure** (short PS summary) and **one browser focus-after-backdrop test failure**. Improved PS summary and suppressed pointer default for backdrop dismissal before repeat verification. Do not infer the latest CI result from this entry.
+### Clinical verification boundary
+- Published reference-supported concepts are not a validated device workflow or clinical patient model. All monitor values remain fixed, waveform relationships illustrative.

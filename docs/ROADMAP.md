@@ -105,3 +105,13 @@
 - [x] Verify editor-open/device/quick screenshots on 1440/360/320 and branch CI (38054960790).
 - [x] Verify merged application commit CI on main (38055192585: SUCCESS); physical PB980 and actual handset remain unverified.
 - [ ] Later consideration only: clinically reviewed conditional OEM settings, multi-param Accept All or truly interactive encoder; not within v0.3.5.
+
+## v0.3.6 — Educational depth, help overlays and patch history
+- [x] Add 13 evidence-linked conceptual education topics with nursing observations and known limitations.
+- [x] Keep device-specific PB980 references separate from AARC 2024 and Merck general clinical guidance.
+- [x] Add upper-screen manual modal and categorized patch-history modal; X/backdrop/Esc, focus and mobile sheet.
+- [x] Keep v0.3.5 dual-control semantics and unchanged waveform/circuit logic.
+- [x] Extend unit/browser regressions for help content, release filter and popups.
+- [ ] Latest PR test/browser/package CI + screenshot audit.
+- [ ] Final Private main merge and clean post-merge CI.
+- [ ] Later: subject-matter expert review of educational texts, actual PB980 firmware-specific workflow if device available (not a release prerequisite).

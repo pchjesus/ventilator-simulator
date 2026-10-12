@@ -115,3 +115,10 @@ GitHub Actions run: https://github.com/pchjesus/ventilator-simulator/actions/run
 - Merge PR [#3](https://github.com/pchjesus/ventilator-simulator/pull/3), squash SHA `762fea2cb03c747f6a6e1c9e94676436b8b4b71e`.
 - Actual main-branch Actions [38055192585](https://github.com/pchjesus/ventilator-simulator/actions/runs/38055192585): **SUCCESS**, all `test`, `browser` and `package` jobs green; verified remote `main` and repository Private visibility.
 - This subsequent report-only commit does not modify application code; CI should still be checked against its final commit before closing the patch.
+
+## v0.3.6 — Clinical info and modal UX regression (2026-10-12)
+- Base `main`: `41d1b80b97ec8de2f7d913836a83eb277f786bba`.
+- Added 5 unit-schema tests covering seven per-setting topics, source links, 13-topic navigation, seven-part manual, release category definitions and filter immutability.
+- New Chromium checks: desktop manual sections, linked references, release list & category filter, X, Escape, outside click, inside click stays open, focus restoration; 360px modal geometry and X; 320px native touch/backdrop close, filters and overflow. All existing editor/quick settings/CIRCUIT/waveform/reduced-motion assertions retained.
+- Initial PR #4 run 38187105272 failed 1 content assertion (PS summary too short) and browser focus restoration on backdrop; corrections made and CI rerun required. These are test-caught defects, not a passing release.
+- Manufacturer-certified clinical algorithms, patient-specific settings, actual ABGA/spO2, true ventilator alarms and physical mobile testing remain outside verification.
