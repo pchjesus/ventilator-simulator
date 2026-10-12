@@ -176,3 +176,12 @@ See [PB980 alarm education design & evidence boundaries](PB980_ALARM_EDUCATION_v
 - [x] Add unit and 1440/360/320 browser regressions including collapse navigation and legacy controls.
 - [ ] Independently clinically review and pilot contents with nursing students and faculty.
 See STUDENT_FIRST_AND_PB980_VERSION_REVIEW_v0.4.1.md.
+
+
+## v0.4.2 — core concepts → knowledge check → misconception review → CASE
+- [x] 10 source-aware items covering six core concept cards, objective mapping and all-option feedback.
+- [x] In-panel staged self-assessment, incorrect-concept revisit, original CASE 01/02 handoff, retake and post-completion open instructor preview.
+- [x] In-memory assessment state separated from simulator, fixed monitor, waveforms and CASE.
+- [x] Extend unit and Chromium scripts to cover 1440/360/320px and reset/tab persistence.
+- [ ] Instructor/clinical SME content signoff and in-person student usability study: NOT completed through source-code changes.
+See CORE_LEARNING_CHECK_v0.4.2.md for QA/evidence matrix.

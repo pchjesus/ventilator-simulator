@@ -9,6 +9,7 @@ import {startCase,chooseCaseAnswer,advanceCase,caseScore} from "./case-engine.js
 import {auditCaseBank,evidenceKindLabel} from "./case-quality.js";
 import {ALARM_LESSONS,DISPLAY_CATEGORIES,DEVICE_EDUCATION_SOURCES,DEVICE_VERSION_REVIEW,termsForCategory,findAlarmLesson,evaluateAlarmChoice,auditDeviceEducation} from "./device-learning.js";
 import {CORE_LESSONS,CORE_SOURCES,ESSENTIAL_SETTING_IDS,auditCoreLearning} from "./student-learning.js";
+import {CORE_QUESTIONS,CORE_QUIZ_REVIEW,CORE_QUIZ_VERSION,CORE_QUIZ_SOURCES,auditCoreQuiz,startCoreQuiz,chooseCoreAnswer,advanceCoreQuiz,scoreCoreQuiz} from "./core-quiz.js";
 const settingsContainer = document.getElementById("settings");
 const monitor = document.getElementById("monitor");
 const status = document.getElementById("status");
@@ -189,6 +190,7 @@ function showSideTab(tab) {
     button.classList.toggle("active",active);
     button.setAttribute("aria-selected",String(active));
   }
+  syncCoreQuizPanel();
 }
 function explain(title, description, reference = null, explicitTopicId = null) {
   document.getElementById("help-title").textContent = title;
@@ -633,6 +635,149 @@ function renderCoreLearning(){
     root.append(card);
   }
 }
+
+/* v0.4.2: isolated knowledge-check state; resetting device values or revisiting CASE
+ * must never mutate this assessment or any waveform/fixed-monitor content. */
+const coreQuizAudit=auditCoreQuiz();
+let coreQuizState=null;
+function syncCoreQuizPanel(){
+ const panel=document.querySelector(".study-panel");
+ const active=Boolean(coreQuizState)&&!panelCore.hidden;
+ panel.classList.toggle("core-quiz-active",active);
+ if(active)panel.tabIndex=0;
+ else panel.removeAttribute("tabindex");
+}
+function quizButton(label,handler,css=""){
+ const button=makeElement("button",css,label);
+ button.type="button";
+ button.addEventListener("click",handler);
+ return button;
+}
+function openCoreConcept(conceptId){
+ showSideTab("core");
+ const card=document.querySelector('.core-concept[data-concept-id="'+conceptId+'"]');
+ if(!card)return;
+ card.open=true;
+ const summary=card.querySelector("summary");
+ summary?.focus();
+ card.scrollIntoView({block:"nearest",behavior:"auto"});
+}
+function quizSources(root,ids){
+ const sources=makeElement("div","core-quiz-sources");
+ sources.append(makeElement("strong",null,"확인 근거 · 교육 콘텐츠는 전문가 미감수"));
+ for(const id of ids){
+   const reference=CORE_QUIZ_SOURCES[id];
+   if(!reference)continue;
+   const link=makeElement("a",null,reference.label);
+   link.href=reference.url;
+   link.target="_blank";
+   link.rel="noopener noreferrer";
+   sources.append(link);
+ }
+ root.append(sources);
+}
+function renderCoreQuiz(){
+ const root=document.getElementById("core-quiz-root");
+ syncCoreQuizPanel();
+ root.replaceChildren();
+ root.append(makeElement("h3","core-quiz-heading","핵심 개념 학습 확인"));
+ root.append(makeElement("p","core-quiz-scope","10문항 · 스스로 점검하는 형성평가 · 정답률은 임상 역량을 인증하지 않아. 답안은 이 페이지 메모리에만 남으며 새로고침 시 사라져."));
+ if(coreQuizAudit.errors.length){
+   root.append(makeElement("p","core-audit-error","문항 구조 검사 실패: "+coreQuizAudit.errors.join(" / ")));
+   return;
+ }
+ if(!coreQuizState){
+   root.append(makeElement("p","core-quiz-instruction","핵심 카드 6개를 읽은 다음 시작해. 한 문항씩 풀고 선택지별 근거를 확인한 뒤 오개념을 복습할 수 있어."));
+   root.append(quizButton("10문항 학습 확인 시작",()=>{
+     coreQuizState=startCoreQuiz();renderCoreQuiz();
+     if(window.matchMedia("(min-width:1101px)").matches)document.querySelector(".workspace").scrollIntoView({block:"start",behavior:"auto"});
+     root.querySelector(".core-quiz-answer")?.focus();
+   },"core-quiz-primary"));
+   return;
+ }
+ const score=scoreCoreQuiz(coreQuizState);
+ if(coreQuizState.done){
+   root.append(makeElement("p","core-quiz-score","완료 · "+score.correct+" / "+score.total+"문항 · 형성학습 참고 정보"));
+   root.append(makeElement("p","core-quiz-instruction",score.reviewConcepts.length?"복습할 개념을 다시 확인하고 CASE에 적용해봐.":"모든 문항을 확인했어. CASE에 적용하며 관찰·보고 과정을 연습해봐."));
+   if(score.reviewConcepts.length){
+     const review=makeElement("section","core-quiz-review");
+     review.append(makeElement("h4",null,"오개념 복습 · "+score.reviewConcepts.length+"개 주제"));
+     for(const id of score.reviewConcepts){
+       const lesson=CORE_LESSONS.find(x=>x.id===id);
+       const questions=coreQuizState.answers.filter(a=>!a.correct&&CORE_QUESTIONS.find(q=>q.id===a.questionId)?.conceptId===id);
+       const entry=makeElement("div","core-quiz-review-entry");
+       entry.append(makeElement("strong",null,lesson.title+" · "+lesson.label));
+       for(const answer of questions){
+         const question=CORE_QUESTIONS.find(q=>q.id===answer.questionId);
+         const choice=question.options.find(o=>o.id===answer.choiceId);
+         entry.append(makeElement("p",null,choice?.misconception||"핵심 개념을 다시 확인해."));
+       }
+       entry.append(quizButton(lesson.title+" 카드 복습",()=>openCoreConcept(id),"core-quiz-secondary"));
+       review.append(entry);
+     }
+     root.append(review);
+   }else root.append(quizButton("6개 핵심 개념 다시 읽기",()=>openCoreConcept("peep"),"core-quiz-secondary"));
+   root.append(quizButton("CASE 01·02에 적용하기 →",()=>{renderCase();showSideTab("case");caseTab.focus();},"core-quiz-primary"));
+   root.append(quizButton("학습 확인 다시 풀기",()=>{coreQuizState=startCoreQuiz();renderCoreQuiz();root.querySelector(".core-quiz-answer")?.focus();},"core-quiz-secondary"));
+   const preview=makeElement("details","core-quiz-instructor");
+   preview.append(makeElement("summary",null,"교수자·개발자 검토 미리보기 · 정답 공개"));
+   preview.append(makeElement("p","case-review-warning","정답·학습목표·오개념을 모두 공개하는 인증 없는 미리보기야. 임상 전문가 미감수 · 승인 없음 · 문항 버전 "+CORE_QUIZ_VERSION));
+   for(const [i,q] of CORE_QUESTIONS.entries()){
+     const group=makeElement("section","core-quiz-preview-item");
+     group.append(makeElement("strong",null,(i+1)+". "+q.stem));
+     group.append(makeElement("p",null,"학습목표: "+q.objective));
+     group.append(makeElement("p",null,"정답: "+q.answer.toUpperCase()+" · "+q.options.find(o=>o.id===q.answer)?.label));
+     for(const opt of q.options)group.append(makeElement("p",null,opt.id.toUpperCase()+". "+opt.feedback+(opt.misconception?" · 오개념: "+opt.misconception:"")));
+     group.append(makeElement("p",null,"근거 성격: "+evidenceKindLabel(q.evidenceKind)));
+     quizSources(group,q.sourceIds);
+     preview.append(group);
+   }
+   root.append(preview);
+   return;
+ }
+ const question=CORE_QUESTIONS[coreQuizState.index];
+ const answered=coreQuizState.answers[coreQuizState.index];
+ root.append(makeElement("p","core-quiz-progress","문항 "+(coreQuizState.index+1)+" / "+CORE_QUESTIONS.length+" · "+CORE_LESSONS.find(x=>x.id===question.conceptId).title));
+ const progress=makeElement("progress","core-quiz-meter");
+ progress.max=CORE_QUESTIONS.length;progress.value=coreQuizState.index+(answered?1:0);
+ progress.setAttribute("aria-label","학습 확인 완료 문항");
+ root.append(progress);
+ root.append(makeElement("h4","core-quiz-question",question.stem));
+ const answers=makeElement("div","core-quiz-options");
+ for(const choice of question.options){
+   const answer=quizButton(choice.id.toUpperCase()+". "+choice.label,()=>{
+     if(coreQuizState.answers.length!==coreQuizState.index)return;
+     coreQuizState=chooseCoreAnswer(coreQuizState,choice.id);
+     renderCoreQuiz();
+     root.querySelector(".core-quiz-next")?.focus();
+   },"core-quiz-answer");
+   answer.disabled=Boolean(answered);
+   if(answered&&answered.choiceId===choice.id){answer.classList.add("selected");answer.setAttribute("aria-pressed","true");}
+   answers.append(answer);
+ }
+ root.append(answers);
+ if(answered){
+   const feedback=makeElement("section","core-quiz-feedback");
+   feedback.setAttribute("role","status");
+   feedback.append(makeElement("strong",null,answered.correct?"개념 확인":"오개념 복습"));
+   feedback.append(makeElement("p",null,question.rationale));
+   const notes=makeElement("ol","core-quiz-explanations");
+   for(const choice of question.options){
+     const entry=makeElement("li",null,choice.id.toUpperCase()+". "+choice.feedback);
+     if(choice.misconception)entry.append(makeElement("span","core-quiz-misconception","오개념: "+choice.misconception));
+     notes.append(entry);
+   }
+   feedback.append(notes);
+   quizSources(feedback,question.sourceIds);
+   root.append(feedback);
+   root.append(quizButton("관련 핵심 카드 복습",()=>openCoreConcept(question.conceptId),"core-quiz-secondary"));
+   root.append(quizButton(coreQuizState.index===CORE_QUESTIONS.length-1?"결과·오개념 복습 보기":"다음 문항 →",()=>{
+     coreQuizState=advanceCoreQuiz(coreQuizState);renderCoreQuiz();
+     (root.querySelector(".core-quiz-answer")||root.querySelector(".core-quiz-primary"))?.focus();
+   },"core-quiz-next core-quiz-primary"));
+ }else root.append(makeElement("p","core-quiz-instruction","답을 선택하면 선택지 전체의 간결한 해설과 근거가 나타나. 실제 시뮬레이터 수치는 변하지 않아."));
+}
+
 coreTab.addEventListener("click",()=>showSideTab("core"));
 extraLearning.addEventListener("toggle",()=>{
   // When learners collapse advanced navigation, never strand them in a hidden-tab view.
@@ -945,5 +1090,5 @@ function animationFrame(now){
   }
   requestAnimationFrame(animationFrame);
 }
-initEducationUI();renderMonitor();renderSettings();renderCircuit();renderCoreLearning();showSideTab("core");paintWaveforms();
+initEducationUI();renderMonitor();renderSettings();renderCircuit();renderCoreLearning();renderCoreQuiz();showSideTab("core");paintWaveforms();
 requestAnimationFrame(animationFrame);

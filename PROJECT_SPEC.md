@@ -127,3 +127,12 @@ Vent settings
 - Highlight FiO₂/PEEP/f as primary controls. Pi/Ti/PS/V-TRIG remain fully operable with unchanged numeric semantics.
 - Explicit that sample VTE/Ppeak/fTOT are fixed, not dynamically measured. Keep no patient/alarm engineering and no patient data.
 - Reference software variant facts only as references; hospital firmware/option values must remain unconfirmed.
+
+
+## v0.4.2 core learning contract
+- Reuse existing core panel; 10 three-choice questions across six lesson cards, not a new tab.
+- Per question: objective, exact one answer, all-choice feedback, misconceptions on distractors, source and evidence category.
+- No correct-answer UI exposure until selection; instructor/developer preview shown only after completion. Preview is open, not a secure faculty area.
+- Flow: core concepts → formative check → misconception/card revisit → unchanged CASE 01/02 → existing debrief.
+- Quiz state in page RAM; tabs and device reset preserve answers; refresh/retry clears as intended. No PHI, tracking, persistence, sensor data, live clinical simulation or competency certification.
+- Data/QA: [docs/CORE_LEARNING_CHECK_v0.4.2.md](docs/CORE_LEARNING_CHECK_v0.4.2.md). Clinical expert review pending.

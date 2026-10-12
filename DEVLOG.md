@@ -291,3 +291,16 @@
 - Styled 3 core settings and 4 supplemental settings without changing array order, IDs or values. Screen remains a simulator demo, not real patient measurement.
 - Reviewed Medtronic software-version-specific PB980 manuals and High PEEP Alarm guide with 8.4.4.3+ qualifier; site-specific installed software remains unknown.
 - Test plan: 57 unit checks, Chromium 1440/360/320, mobile and existing CASE/editor/ALARM/circuit regressions, release zip source integrity; clinical SME signoff separately required.
+
+
+## v0.4.2 (2026-10-12) — 핵심 개념 학습 확인
+Added: 10 objective/evidence/misconception-linked quiz items, feedback for all three choices after selection, in-memory score, retry, concept review and CASE 01/02 navigation. Added optional after-completion instructor/developer answer preview (no access control).
+Changed: existing core panel only; responsive quiz UI, CI syntax/package/test coverage; docs and release note.
+Preserved: seven device controls, Accept/Cancel, Quick Study, static monitor examples, waveform model, analysis/grid, Help/manual, CIRCUIT, ALARM, original CASE prompts/answers/debrief.
+Risk control: separate pure quiz engine, page-only RAM state; no device/case mutations; answer exposure gated until choice; malformed content fails closed.
+Known: source links and wording still require clinical educator review; not a medical-device emulator, summative examination or clinical competency certificate.
+Next: instructor content audit and deidentified student pilot.
+
+### v0.4.2 UI verification addendum
+- New ten-item knowledge check initially produced a long page that moved the PB980 example screen outside the visible area during desktop answer review. Only while a quiz is active and at desktop widths >=1101px, the study panel now uses a bounded sticky scroll container. Starting the quiz aligns the desktop workspace to retain the ventilator overview. Mobile 360/320px and the pre-quiz layout keep their previous single-page scroll.
+- Browser screenshot review: PR #11, 1440px desktop-core-quiz-feedback / desktop-core-quiz-complete, mobile-core-quiz-360, narrow-core-quiz-320. No clipped answer or review buttons; key simulator areas remain visible in desktop quiz.

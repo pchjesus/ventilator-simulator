@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="#26343f">
-  <title>PB980 Ventilator Simulator v0.4.1 | Student-first Learning</title>
+  <title>PB980 Ventilator Simulator v0.4.2 | Core Learning Check</title>
   <link rel="stylesheet" href="./styles.css">
   <script src="./src/app.js" type="module"></script>
 </head>
@@ -112,9 +112,10 @@
       <section id="panel-core" role="tabpanel" aria-labelledby="tab-core">
         <p class="core-intro">PEEP · FiO₂ · VTE · 호흡수 · Ppeak부터 익혀. <strong>설정값과 환자 측정값의 차이</strong>를 구분하는 게 목표야.</p>
         <div class="core-learning-steps">
-          <span>1. 핵심 개념</span><span>2. 설정·측정 구분</span><span>3. CASE 적용</span>
+          <span>1. 핵심 개념</span><span>2. 학습 확인·복습</span><span>3. CASE 적용</span>
         </div>
         <div id="core-learning-content" aria-label="실습 전 필수 개념"></div>
+        <section id="core-quiz-root" class="core-quiz" aria-label="핵심 개념 학습 확인"></section>
         <p class="core-scope-warning">이 프로그램 상단 모니터는 실제 측정값이 아닌 고정 예시야. 환자 상태와 치료 반응을 계산하거나 예측하지 않아.</p>
       </section>
       <section id="panel-circuit" role="tabpanel" aria-labelledby="tab-circuit" hidden>
@@ -180,6 +181,6 @@
       </div>
     </form>
   </dialog>
-  <footer class="footer">MVP v0.4.1 · 브라우저에서 동작하는 교육용 프런트엔드 · 임상/장비 동작 검증 전</footer>
+  <footer class="footer">MVP v0.4.2 · 브라우저에서 동작하는 교육용 프런트엔드 · 임상/장비 동작 검증 전</footer>
 </body>
 </html>
