@@ -306,6 +306,7 @@ try {
   assert.equal(sourceSafe.target,"_blank");
   await desktop.locator('#topic-buttons [data-topic="nursing"]').click();
   assert.match(await desktop.locator("#clinical-detail").innerText(),/기도·회로/);
+  await desktop.locator("#more-clinical-topics > summary").click();
   await desktop.locator('#topic-buttons [data-topic="waveforms"]').click();
   assert.match(await desktop.locator("#clinical-detail").innerText(),/유량–시간/);
   await desktop.locator('#topic-buttons [data-topic="monitoring"]').click();
