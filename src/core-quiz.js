@@ -4,8 +4,8 @@
  */
 import {CORE_LESSONS,CORE_SOURCES} from "./student-learning.js";
 
-export const CORE_QUIZ_VERSION="0.4.2";
-export const CORE_QUIZ_SOURCES=Object.freeze({...CORE_SOURCES,app:{label:"앱 내부 구현 규약 · README",url:"https://github.com/pchjesus/ventilator-simulator/blob/main/README.md"}});
+export const CORE_QUIZ_VERSION="0.4.3";
+export const CORE_QUIZ_SOURCES=Object.freeze({...CORE_SOURCES,app:{label:"앱 내부 구현 사실 · 고정 모니터/교육용 파형/CASE 상태 분리",scope:"internal"}});
 export const CORE_QUIZ_REVIEW=Object.freeze({status:"pending",approved:false});
 const option=(id,label,feedback,misconception="")=>({id,label,feedback,misconception});
 export const CORE_QUESTIONS=Object.freeze([
@@ -46,7 +46,7 @@ export const CORE_QUESTIONS=Object.freeze([
    option("c","설정 압력과 실제 호기 용적은 구분하며 실제 환자에서는 측정값과 상태를 함께 확인한다.","맞아. 특히 PC에서 실제 VTE를 설정 압력만으로 단정하면 안 돼.")],
   answer:"c",rationale:"압력제어 환기에서 용적은 환자 특성과 조건에 영향을 받으며 이 앱은 실제 용적을 계산하지 않아.",sourceIds:["aarc","pb980"],evidenceKind:"educational-inference"},
  {id:"rate-distinction",conceptId:"rate",objective:"설정 호흡수 f와 자발호흡을 포함하는 총 호흡수 fTOT를 구분한다.",
-  stem:"SIMV에서 설정 f가 15/min, 표시 fTOT가 22/min일 때 올바른 해석은?",
+  stem:"SIMV의 일반적 개념을 묻는 예시야. 설정 f가 15/min, 표시 fTOT가 22/min이라면 어떻게 구별할까?",
   options:[option("a","f는 설정된 강제호흡수, fTOT는 총 호흡수로 서로 다른 개념이다.","맞아. 총 호흡수에는 자발호흡이 포함될 수 있어."),
    option("b","기계가 오류를 일으켰으므로 두 수치는 항상 같아야 한다.","SIMV에서는 강제호흡 설정과 총 호흡수는 다를 수 있어.","설정 호흡수와 총 호흡수 동일시"),
    option("c","fTOT만으로 환기 적절성이나 환자 호흡노력을 모두 확인할 수 있다.","호흡수 단독으로 환기 질이나 호흡 노력을 확정할 수 없어.","호흡수 단독으로 환기 적절성 판정")],
@@ -70,6 +70,19 @@ export const CORE_QUESTIONS=Object.freeze([
    option("c","지도자 확인 없이 독자적으로 환기 설정을 크게 바꾼다.","실습학생의 무단 설정 변경을 학습 정답으로 삼지 않아.","실습학생의 독자적 장비 조작")],
   answer:"b",rationale:"AARC 환자–인공호흡기 사정 지침은 직접 사정과 장비·기도 정보의 통합 평가를 강조해. 학생의 긴급 대응은 기관 지침과 지도 범위 내에서 이뤄져야 해.",sourceIds:["aarc"],evidenceKind:"educational-inference"}
 ]);
+/** Faculty questions are review requests, never signed approval. */
+export const CORE_REVIEW_GUIDE=Object.freeze({
+ "peep-meaning":{referenceNote:"AARC는 PEEP/auto-PEEP 평가를 권고하고 Merck는 PEEP 생리·위험을 설명한다. 보기의 학습용 표현 자체는 교육적 해석이다.",reviewPrompt:"호기말 양압의 이득·위험을 환자별 반응으로 표현했는가?"},
+ "peep-circulation":{referenceNote:"AARC의 PEEP 사정 권고와 Merck의 생리 설명을 근거로 환자 상태 관찰을 교육적으로 적용했다. 혈압 방향은 수치화하지 않았다.",reviewPrompt:"혈압·산소화 관찰과 신속 보고의 우선순위가 실습 지도 범위에 맞는가?"},
+ "fio2-setting":{referenceNote:"AARC는 FiO₂ 사정을 제안하며 산소화는 별도 환자 자료로 평가한다. 40%는 설정 예시이지 SpO₂/PaO₂ 예측값이 아니다.",reviewPrompt:"FiO₂ 설정과 환자 산소화 측정값을 명확하게 구별하는가?"},
+ "fio2-measure":{referenceNote:"SpO₂는 산소포화도 추정치, PaO₂는 동맥혈 산소분압이라는 일반 생리학 개념이다. AARC가 두 측정 방법의 정의를 입증하는 연구는 아니다.",reviewPrompt:"SpO₂의 측정 한계와 PaO₂의 의미를 학생 수준에서 정확하게 구별했는가?"},
+ "vte-meaning":{referenceNote:"PB980은 VTE 장비 표시 용어의 출처, AARC는 VT/PBW 평가 원칙의 근거이다. 제조사 명칭과 지침 권고를 분리해서 해석한다.",reviewPrompt:"호기 VTE와 설정 용적/목표 VT를 헷갈리지 않게 설명하는가?"},
+ "vte-pc":{referenceNote:"PB980은 기기 용어·모드 참고, AARC는 용적 평가 원칙이다. 압력 설정만으로 실제 VTE를 확정할 수 없다는 것은 교육적 해석이다.",reviewPrompt:"PC 환기의 용적 영향 요인과 앱 고정 VTE의 구분이 충분한가?"},
+ "rate-distinction":{referenceNote:"PB980 명칭과 SIMV 개념을 참고한다. 설정 f 15/min과 총 fTOT 22/min은 일반적인 교육 예시이지 실제 환자 자료가 아니다.",reviewPrompt:"설정과 측정 호흡수 차이를 이해하면서 숫자를 실측으로 오인하지 않는가?"},
+ "rate-static":{referenceNote:"의료 문헌이 아닌 이 앱 소스코드가 근거인 구현 사실이다. 비공개 GitHub README를 외부 임상 근거로 연결하지 않는다.",reviewPrompt:"앱의 f가 파형 간격만 바꾸고 상단 고정 모니터에는 연동되지 않는가?"},
+ "ppeak-pi":{referenceNote:"PB980 설정·측정 표시의 차이와 AARC 다면적 평가를 교육용으로 결합했다. 두 압력의 고정된 숫자 관계를 단정하지 않는다.",reviewPrompt:"PB980 PC 설정 및 압력 표기가 실제 기관의 버전과 일치하는가?"},
+ "patient-first":{referenceNote:"AARC는 환자 직접 침상 사정을 강조한다. 학생의 보고·도움 요청은 교육적 추론으로 기관 지침에 따라 달라진다.",reviewPrompt:"급격한 악화에서 학생의 도움 요청·사정·보고가 지도자와 기관 지침에 부합하는가?"},
+});
 export const CORE_QUIZ_OBJECTIVES=Object.freeze(CORE_LESSONS.map(item=>({id:item.id,title:item.title})));
 export function auditCoreQuiz(bank=CORE_QUESTIONS){
  const errors=[];const ids=new Set(),lessonIds=new Set(CORE_LESSONS.map(x=>x.id));
@@ -83,9 +96,18 @@ export function auditCoreQuiz(bank=CORE_QUESTIONS){
   if(!Array.isArray(q?.options)||q.options.length!==3||new Set(q.options.map(o=>o.id)).size!==3||
      q.options.filter(o=>o.id===q.answer).length!==1||q.options.some(o=>!o.label||!o.feedback||o.feedback.length<12||(o.id!==q.answer&&!o.misconception)))errors.push("options/feedback: "+q?.id);
   if(!q?.rationale||q.rationale.length<20||!["guideline-principle","educational-inference","simulator-contract"].includes(q.evidenceKind))errors.push("evidence meaning: "+q?.id);
-  if(!Array.isArray(q?.sourceIds)||!q.sourceIds.length||q.sourceIds.some(id=>!CORE_QUIZ_SOURCES[id]||!CORE_QUIZ_SOURCES[id].url.startsWith("https://")))errors.push("source reference: "+q?.id);
+  if(!Array.isArray(q?.sourceIds)||!q.sourceIds.length||q.sourceIds.some(id=>{
+   const ref=CORE_QUIZ_SOURCES[id];
+   return !ref||(ref.scope==="internal" ? Boolean(ref.url) : typeof ref.url!=="string"||!ref.url.startsWith("https://"));
+  }))errors.push("source reference: "+q?.id);
+  if(q?.evidenceKind==="simulator-contract"&&(q.sourceIds?.length!==1||q.sourceIds[0]!=="app"))errors.push("simulator contract requires internal source: "+q?.id);
+  if(q?.evidenceKind!=="simulator-contract"&&q?.sourceIds?.every(id=>id==="app"))errors.push("clinical item cannot cite app alone: "+q?.id);
+  const trace=CORE_REVIEW_GUIDE[q?.id];
+  if(!trace||typeof trace.referenceNote!=="string"||trace.referenceNote.length<35||
+     typeof trace.reviewPrompt!=="string"||trace.reviewPrompt.length<20)errors.push("faculty trace missing: "+q?.id);
  }
  for(const id of lessonIds)if(!(bank||[]).some(q=>q.conceptId===id))errors.push("unassessed lesson: "+id);
+ for(const id of Object.keys(CORE_REVIEW_GUIDE))if(!(bank||[]).some(q=>q.id===id))errors.push("stale faculty trace: "+id);
  return {errors,count:bank?.length||0,review:CORE_QUIZ_REVIEW};
 }
 function checked(state){

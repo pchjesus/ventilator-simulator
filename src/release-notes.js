@@ -8,6 +8,12 @@ export const RELEASE_CATEGORIES=Object.freeze([
   {id:"docs",label:"문서·근거"}
 ]);
 export const RELEASE_NOTES=Object.freeze([
+ {version:"0.4.3",date:"2026-10-12",changes:[
+  {category:"clinical",text:"핵심 문제은행 10문항별 근거 적용 범위·임상 검토 질문을 명시하고 학생 형성학습과 교수자 승인 영역을 분리"},
+  {category:"feature",text:"비공개 저장소 링크 대신 앱 자체 동작 근거 표시를 제공하여 정적 웹 실행본에서도 설명 유지"},
+  {category:"ui",text:"오개념 카드 복습 후 현재 문제풀이로 쉽게 돌아가는 버튼과 교수자 미리보기의 근거 해석 표시 추가"},
+  {category:"stability",text:"문항별 검토 추적/출처 유형 무결성 검사 강화 및 1440px·360px·320px 회귀 테스트"},
+  {category:"docs",text:"임상 교수자 검토용 문항별 확인 매트릭스·실습 전 사용성 파일럿 계획과 검증 한계 기록"}]},
  {version:"0.4.2",date:"2026-10-12",changes:[
   {category:"feature",text:"6개 핵심 개념에 연결된 10문항 학습 확인, 선택지 전체 해설·근거, 오개념 복습과 CASE 이동"},
   {category:"clinical",text:"PEEP·FiO₂/SpO₂/PaO₂·VTE·f/fTOT·Ppeak/Pᵢ·환자 우선 사정의 입문 형성평가; 전문가 미감수"},

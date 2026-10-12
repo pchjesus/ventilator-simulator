@@ -136,3 +136,11 @@ Vent settings
 - Flow: core concepts → formative check → misconception/card revisit → unchanged CASE 01/02 → existing debrief.
 - Quiz state in page RAM; tabs and device reset preserve answers; refresh/retry clears as intended. No PHI, tracking, persistence, sensor data, live clinical simulation or competency certification.
 - Data/QA: [docs/CORE_LEARNING_CHECK_v0.4.2.md](docs/CORE_LEARNING_CHECK_v0.4.2.md). Clinical expert review pending.
+
+
+## v0.4.3 clinical review handoff / usability
+- Keep 10 formative quiz items, original answer IDs, existing six core cards, two CASE scenarios and device simulation untouched.
+- Each quiz item has an auditable separate source-interpretation note and pending faculty review question. App-specific claims are internal implementation evidence and have no invented public source link.
+- Existing response gate and post-completion open instructor preview retained; the preview adds review prompt and evidence limits. No instructor role, signoff feature, credential or assessment validity claim.
+- Learners revisiting a concept during an active quiz can return to the current quiz step; no quiz reset, no server/database, no changes to device or CASE state.
+- Document real SME-review and anonymized usability pilot as **unperformed future work**. See docs/CLINICAL_REVIEW_HANDOFF_v0.4.3.md.

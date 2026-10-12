@@ -49,6 +49,10 @@ try {
   await desktop.screenshot({path:"artifacts/browser/desktop-core-quiz-feedback.png",fullPage:false});
   await desktop.locator(".core-quiz-secondary").first().click();
   assert.equal(await desktop.locator('[data-concept-id="peep"]').evaluate(e=>e.open),true,"review returns to correct lesson card");
+  assert.equal(await desktop.locator('[data-concept-id="peep"] .core-return-button').isVisible(),true);
+  await desktop.locator('[data-concept-id="peep"] .core-return-button').click();
+  assert.equal(await desktop.locator(".core-quiz-feedback").count(),1,"returning from lesson keeps answer");
+  assert.equal(await desktop.locator(".core-quiz-next").evaluate(e=>document.activeElement===e),true,"return navigation restores keyboard focus");
   await desktop.locator("#tab-case").click();
   quizOriginalCases=await desktop.locator("#case-content").textContent();
   await desktop.locator("#tab-core").click();
@@ -70,6 +74,10 @@ try {
   await desktop.screenshot({path:"artifacts/browser/desktop-core-quiz-complete.png",fullPage:false});
   await desktop.locator(".core-quiz-instructor > summary").click();
   assert.equal(await desktop.locator(".core-quiz-preview-item").count(),10);
+  assert.equal(await desktop.locator(".core-quiz-review-prompt").count(),10,"all items have pending faculty review prompt");
+  assert.equal(await desktop.locator(".core-quiz-evidence-note").count(),10,"all items expose evidence limitations");
+  assert.equal(await desktop.locator(".core-quiz-internal-source").count(),1,"only app contract is internal reference");
+  assert.equal(await desktop.locator('.core-quiz-sources a[href*="pchjesus"]').count(),0,"private README never exposed as public reference");
   assert.match(await desktop.locator(".core-quiz-instructor").innerText(),/전문가 미감수|미감수/);
   await desktop.locator("#core-quiz-root").getByRole("button",{name:/CASE 01·02에 적용하기/}).click();
   assert.equal(await desktop.locator("#panel-case").isVisible(),true);
@@ -437,6 +445,9 @@ try {
   assert.equal(await mobile.locator(".core-concept").count(),6);
   await mobile.screenshot({path:"artifacts/browser/mobile-core-default.png",fullPage:false});
   await mobile.locator("#core-quiz-root .core-quiz-primary").click();
+  assert.equal(await mobile.locator(".core-return-button").count(),6,"return action belongs to all six expandable concept cards");
+  await mobile.locator('[data-concept-id="peep"] > summary').click();
+  assert.equal(await mobile.locator('[data-concept-id="peep"] .core-return-button').isVisible(),true);
   await mobile.locator(".core-quiz-answer").nth(0).click();
   const quizMobileBox=await mobile.locator("#core-quiz-root").boundingBox();
   assert.ok(quizMobileBox.x>=-1&&quizMobileBox.x+quizMobileBox.width<=361,"360px quiz fits viewport");
@@ -521,6 +532,9 @@ try {
   assert.ok(tierOverlaps.every(value=>!value),"320px setting importance labels must not overlap ? help controls");
   await narrow.screenshot({path:"artifacts/browser/narrow-core-320.png",fullPage:false});
   await narrow.locator("#core-quiz-root .core-quiz-primary").click();
+  assert.equal(await narrow.locator(".core-return-button").count(),6,"320px cards retain return navigation");
+  await narrow.locator('[data-concept-id="peep"] > summary').click();
+  assert.equal(await narrow.locator('[data-concept-id="peep"] .core-return-button').isVisible(),true);
   await narrow.locator(".core-quiz-answer").nth(2).click();
   const quizNarrowBox=await narrow.locator("#core-quiz-root").boundingBox();
   assert.ok(quizNarrowBox.x>=-1&&quizNarrowBox.x+quizNarrowBox.width<=321,"320px quiz container fits viewport");

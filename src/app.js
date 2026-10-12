@@ -9,7 +9,7 @@ import {startCase,chooseCaseAnswer,advanceCase,caseScore} from "./case-engine.js
 import {auditCaseBank,evidenceKindLabel} from "./case-quality.js";
 import {ALARM_LESSONS,DISPLAY_CATEGORIES,DEVICE_EDUCATION_SOURCES,DEVICE_VERSION_REVIEW,termsForCategory,findAlarmLesson,evaluateAlarmChoice,auditDeviceEducation} from "./device-learning.js";
 import {CORE_LESSONS,CORE_SOURCES,ESSENTIAL_SETTING_IDS,auditCoreLearning} from "./student-learning.js";
-import {CORE_QUESTIONS,CORE_QUIZ_REVIEW,CORE_QUIZ_VERSION,CORE_QUIZ_SOURCES,auditCoreQuiz,startCoreQuiz,chooseCoreAnswer,advanceCoreQuiz,scoreCoreQuiz} from "./core-quiz.js";
+import {CORE_QUESTIONS,CORE_QUIZ_REVIEW,CORE_QUIZ_VERSION,CORE_QUIZ_SOURCES,CORE_REVIEW_GUIDE,auditCoreQuiz,startCoreQuiz,chooseCoreAnswer,advanceCoreQuiz,scoreCoreQuiz} from "./core-quiz.js";
 const settingsContainer = document.getElementById("settings");
 const monitor = document.getElementById("monitor");
 const status = document.getElementById("status");
@@ -631,6 +631,10 @@ function renderCoreLearning(){
       source.append(a);
     }
     body.append(source);
+    const returnButton=makeElement("button","core-return-button","학습 확인으로 돌아가기 →");
+    returnButton.type="button";returnButton.hidden=true;
+    returnButton.addEventListener("click",returnToCoreQuiz);
+    body.append(returnButton);
     card.append(body);
     root.append(card);
   }
@@ -646,6 +650,12 @@ function syncCoreQuizPanel(){
  panel.classList.toggle("core-quiz-active",active);
  if(active)panel.tabIndex=0;
  else panel.removeAttribute("tabindex");
+}
+function returnToCoreQuiz(){
+ const root=document.getElementById("core-quiz-root");
+ root.scrollIntoView({block:"nearest",behavior:"auto"});
+ const focus=root.querySelector(".core-quiz-next, .core-quiz-answer:not(:disabled), .core-quiz-primary");
+ (focus||root).focus();
 }
 function quizButton(label,handler,css=""){
  const button=makeElement("button",css,label);
@@ -664,21 +674,27 @@ function openCoreConcept(conceptId){
 }
 function quizSources(root,ids){
  const sources=makeElement("div","core-quiz-sources");
- sources.append(makeElement("strong",null,"확인 근거 · 교육 콘텐츠는 전문가 미감수"));
+ sources.append(makeElement("strong",null,"원문 참고·앱 구현 근거 · 전문가 미감수"));
  for(const id of ids){
    const reference=CORE_QUIZ_SOURCES[id];
    if(!reference)continue;
-   const link=makeElement("a",null,reference.label);
-   link.href=reference.url;
-   link.target="_blank";
-   link.rel="noopener noreferrer";
-   sources.append(link);
+   if(reference.scope==="internal"){
+     const info=makeElement("span","core-quiz-internal-source",reference.label+" (외부 임상 문헌 아님)");
+     sources.append(info);
+   }else{
+     const link=makeElement("a",null,reference.label);
+     link.href=reference.url;
+     link.target="_blank";
+     link.rel="noopener noreferrer";
+     sources.append(link);
+   }
  }
  root.append(sources);
 }
 function renderCoreQuiz(){
  const root=document.getElementById("core-quiz-root");
  syncCoreQuizPanel();
+ document.querySelectorAll(".core-return-button").forEach(button=>button.hidden=!coreQuizState);
  root.replaceChildren();
  root.append(makeElement("h3","core-quiz-heading","핵심 개념 학습 확인"));
  root.append(makeElement("p","core-quiz-scope","10문항 · 스스로 점검하는 형성평가 · 정답률은 임상 역량을 인증하지 않아. 답안은 이 페이지 메모리에만 남으며 새로고침 시 사라져."));
@@ -724,11 +740,14 @@ function renderCoreQuiz(){
    preview.append(makeElement("p","case-review-warning","정답·학습목표·오개념을 모두 공개하는 인증 없는 미리보기야. 임상 전문가 미감수 · 승인 없음 · 문항 버전 "+CORE_QUIZ_VERSION));
    for(const [i,q] of CORE_QUESTIONS.entries()){
      const group=makeElement("section","core-quiz-preview-item");
+     const trace=CORE_REVIEW_GUIDE[q.id];
      group.append(makeElement("strong",null,(i+1)+". "+q.stem));
      group.append(makeElement("p",null,"학습목표: "+q.objective));
      group.append(makeElement("p",null,"정답: "+q.answer.toUpperCase()+" · "+q.options.find(o=>o.id===q.answer)?.label));
      for(const opt of q.options)group.append(makeElement("p",null,opt.id.toUpperCase()+". "+opt.feedback+(opt.misconception?" · 오개념: "+opt.misconception:"")));
      group.append(makeElement("p",null,"근거 성격: "+evidenceKindLabel(q.evidenceKind)));
+     group.append(makeElement("p","core-quiz-evidence-note","근거의 해석 범위: "+trace.referenceNote));
+     group.append(makeElement("p","core-quiz-review-prompt","교수자 확인 질문(미검토): "+trace.reviewPrompt));
      quizSources(group,q.sourceIds);
      preview.append(group);
    }

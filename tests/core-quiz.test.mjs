@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import {CORE_LESSONS} from "../src/student-learning.js";
-import {CORE_QUESTIONS,CORE_QUIZ_REVIEW,auditCoreQuiz,startCoreQuiz,chooseCoreAnswer,advanceCoreQuiz,scoreCoreQuiz} from "../src/core-quiz.js";
+import {CORE_QUESTIONS,CORE_QUIZ_REVIEW,CORE_QUIZ_SOURCES,CORE_REVIEW_GUIDE,auditCoreQuiz,startCoreQuiz,chooseCoreAnswer,advanceCoreQuiz,scoreCoreQuiz} from "../src/core-quiz.js";
 import {initialSettings,MONITOR_REFERENCE} from "../src/sim-model.js";
 import {PRECLINICAL_CASES} from "../src/preclinical-cases.js";
 
@@ -65,4 +65,31 @@ test("knowledge check never modifies device settings, static monitoring or precl
  assert.equal(JSON.stringify(initialSettings()),settings);
  assert.equal(JSON.stringify(MONITOR_REFERENCE),monitoring);
  assert.equal(JSON.stringify(PRECLINICAL_CASES),cases);
+});
+
+test("all ten questions have explicit interpretation boundaries and pending faculty review prompts",()=>{
+ assert.equal(Object.keys(CORE_REVIEW_GUIDE).length,10);
+ for(const q of CORE_QUESTIONS){
+   assert.ok(CORE_REVIEW_GUIDE[q.id].reviewPrompt.length>=20,q.id);
+   assert.ok(CORE_REVIEW_GUIDE[q.id].referenceNote.length>=35,q.id);
+ }
+ assert.equal(CORE_QUIZ_REVIEW.approved,false);
+});
+test("app implementation is described locally, not misrepresented as public literature",()=>{
+ assert.equal(CORE_QUIZ_SOURCES.app.scope,"internal");
+ assert.equal(CORE_QUIZ_SOURCES.app.url,undefined);
+ const internalItem=CORE_QUESTIONS.find(q=>q.id==="rate-static");
+ assert.deepEqual(internalItem.sourceIds,["app"]);
+ assert.equal(internalItem.evidenceKind,"simulator-contract");
+ for(const [id,source] of Object.entries(CORE_QUIZ_SOURCES)){
+   if(id==="app")continue;
+   assert.match(source.url,/^https:\/\//);
+ }
+});
+test("content audit detects misclassified local and external evidence",()=>{
+ const bank=CORE_QUESTIONS.map(q=>({...q}));
+ bank.find(q=>q.id==="rate-static").sourceIds=["aarc"];
+ bank.find(q=>q.id==="patient-first").sourceIds=["app"];
+ assert.ok(auditCoreQuiz(bank).errors.some(e=>e.includes("simulator contract requires internal")));
+ assert.ok(auditCoreQuiz(bank).errors.some(e=>e.includes("clinical item cannot cite app alone")));
 });

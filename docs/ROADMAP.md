@@ -185,3 +185,14 @@ See STUDENT_FIRST_AND_PB980_VERSION_REVIEW_v0.4.1.md.
 - [x] Extend unit and Chromium scripts to cover 1440/360/320px and reset/tab persistence.
 - [ ] Instructor/clinical SME content signoff and in-person student usability study: NOT completed through source-code changes.
 See CORE_LEARNING_CHECK_v0.4.2.md for QA/evidence matrix.
+
+
+## v0.4.3 — content QA and guided review (bounded, no real expert signoff)
+- [x] 10-question faculty trace: explicit source interpretation limits and review prompts.
+- [x] Remove private-repository link as false external evidence for app-specific static monitor behavior.
+- [x] In-panel return-to-quiz navigation after concept rereading, with page RAM quiz state maintained.
+- [x] Add clinical educator handoff matrix, blank review record, proposed deidentified student pilot protocol.
+- [x] Extend tests for internal/external reference typing and review prompt coverage, plus browser navigation.
+- [ ] Obtain independent qualified clinical review and site-specific PB980 firmware comparison (not performed by software CI).
+- [ ] Run supervised user pilot with permission and deidentified findings (not performed).
+See CLINICAL_REVIEW_HANDOFF_v0.4.3.md.
