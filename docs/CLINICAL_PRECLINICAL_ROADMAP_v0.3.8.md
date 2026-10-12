@@ -27,7 +27,8 @@ References:
 - INACSL Simulation Design (2021): https://doi.org/10.1016/j.ecns.2021.08.009
 - INACSL Outcomes & Objectives (2021): https://doi.org/10.1016/j.ecns.2021.08.013
 - INACSL Prebriefing (2021): https://doi.org/10.1016/j.ecns.2021.08.008
-- INACSL Standards site: https://www.inacsl.org/simfographics
+- INACSL current official standards (includes 2025 revisions to Prebriefing, Debriefing Process, Facilitation and other standards): https://www.inacsl.org/healthcare-simulation-standards
+- INACSL archived/educational simfographics: https://www.inacsl.org/simfographics
 
 ## 2. Competency matrix (knowledge ≠ bedside skills)
 | Domain | Preclinical measurable learning objective | Learning method | Evidence of learning | Requires instructor validation? |
@@ -101,3 +102,10 @@ All case content is independent of the PB980 configuration and top fixed readout
 
 ## 8. Next sprint recommendation
 Implement **v0.3.9 content QA and evidence traceability** before more simulated physiology. Highest leverage: validators against missing citations and ambiguous explanations, instructor comment/review checklist, and a small prebrief/reflective-question view. Only once clinical educators review the first two scenarios should more complex desaturation/alarm branches be drafted.
+
+## v0.3.9 implementation & currency note (2026-10-12)
+- [x] Added a **structure-only** content integrity gate and question-by-question source/objective traceability for the first two fictional pilot cases.
+- [x] Added a clearly disclosed open instructor-preview (shows correct answers; no login), optional learner evidence accordions and 3 RAM-only debrief text prompts per case.
+- [x] New [clinical content QA protocol](CLINICAL_CONTENT_QA_v0.3.9.md) lists six item mappings, review blockers, and a blank SME signoff record.
+- The existing 2021 INACSL articles above are historical references; check the **2025-revised** official standards, especially prebriefing/debriefing, before a faculty-led teaching pilot.
+- [ ] Do not promote content review status beyond `pending/approved=false` until independent clinical review and formal instructor signoff, which are not provided by this repository's code tests.
