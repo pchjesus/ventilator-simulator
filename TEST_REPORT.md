@@ -152,3 +152,10 @@ GitHub Actions run: https://github.com/pchjesus/ventilator-simulator/actions/run
 - Screenshots inspected: `desktop.png`, `desktop-analysis.png`, `narrow-320.png`, `narrow-analysis-320.png`; neutral device body, legible settings and monitored readouts, mobile 2-column settings with no width overflow. Inspection cursor 3 graphs and generated values visible.
 - Limitations: no real PB980 UI pixel match, no direct real smartphone or physical device test, no clinical patient simulation or waveform physiological validation.
 - Subsequent documentation-only release-status commit (if any) is rechecked with the exact resulting main SHA separately.
+
+## v0.3.8 — Preclinical CASE pilot test plan
+- Base: `c5371ea86df003add7d7907aee4899966713f84c` (v0.3.7 Private main).
+- New Node tests: two case IDs, 3-step case schemas, rationale/sources, immutable answers, correct/incorrect scoring, start/advance/finish/restart, invalid inputs.
+- New Chromium checks: select a case, answer/rationale, advance to final grade and restart, tab switch retains state, ventilator reset does not change case, monitor and setting text invariant, switch to second scenario, 360/320px CASE layout without horizontal overflow.
+- Preserve all v0.3.7 graph inspection, grid, staged Accept/Cancel, Quick Study, help and manual, CIRCUIT, reduced motion and responsiveness.
+- **Explicit boundary:** automated test passing is not evidence of clinical accuracy or nurse student competency. SME content audit, institution alignment and facilitator pilot are not performed yet.
