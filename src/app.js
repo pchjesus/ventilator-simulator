@@ -7,7 +7,7 @@ import {clampRatio, ratioFromClientX, inspectAt} from "./waveform-inspector.js";
 import {PRECLINICAL_CASES,CASE_SOURCES,findCase} from "./preclinical-cases.js";
 import {startCase,chooseCaseAnswer,advanceCase,caseScore} from "./case-engine.js";
 import {auditCaseBank,evidenceKindLabel} from "./case-quality.js";
-import {ALARM_LESSONS,DISPLAY_CATEGORIES,DEVICE_EDUCATION_SOURCES,termsForCategory,findAlarmLesson,evaluateAlarmChoice,auditDeviceEducation} from "./device-learning.js";
+import {ALARM_LESSONS,DISPLAY_CATEGORIES,DEVICE_EDUCATION_SOURCES,DEVICE_VERSION_REVIEW,termsForCategory,findAlarmLesson,evaluateAlarmChoice,auditDeviceEducation} from "./device-learning.js";
 import {CORE_LESSONS,CORE_SOURCES,ESSENTIAL_SETTING_IDS,auditCoreLearning} from "./student-learning.js";
 const settingsContainer = document.getElementById("settings");
 const monitor = document.getElementById("monitor");
@@ -63,6 +63,8 @@ function renderClinicalTopic(id){
     button.setAttribute("aria-pressed",String(button.dataset.topic===selectedTopicId));
   }
   if(!topic)return;
+  const supplementary=document.getElementById("more-clinical-topics");
+  if(supplementary&&["pi","ti","ps","trigger","mode","waveforms","circuit","abga"].includes(id))supplementary.open=true;
   root.append(makeElement("p","clinical-intro",topic.summary));
   for(const section of topic.sections){
     const region=makeElement("section","clinical-block");
@@ -77,8 +79,10 @@ function renderTopicNavigation(){
   const root=document.getElementById("topic-buttons");
   root.replaceChildren();
   for(const group of TOPIC_GROUPS){
-    const wrapper=makeElement("div","topic-group");
-    wrapper.append(makeElement("div","topic-group-title",group.title));
+    const supplementary=group.level==="additional";
+    const wrapper=makeElement(supplementary?"details":"div","topic-group"+(supplementary?" clinical-extra":""));
+    if(supplementary)wrapper.id="more-clinical-topics";
+    wrapper.append(makeElement(supplementary?"summary":"div","topic-group-title",group.title));
     const row=makeElement("div","topic-buttons");
     for(const id of group.ids){
       const param=PARAMETERS.find(p=>p.id===id);
@@ -685,11 +689,15 @@ function renderAlarmLesson(root,lesson){
   root.append(makeAlarmButton("← 알람 목록",()=>{selectedAlarmLesson=null;renderAlarmLearning();alarmTab.focus();},"alarm-return"));
   root.append(makeElement("h3","alarm-detail-title",lesson.title));
   root.append(makeElement("p","alarm-detail-subtitle",lesson.subtitle));
-  root.append(makeElement("p","alarm-source-tag",lesson.manualSection));
+  const technical=makeElement("details","alarm-technical-details");
+  technical.append(makeElement("summary",null,"추가 학습 · PB980 매뉴얼 용어와 적용 버전"));
+  technical.append(makeElement("p","alarm-source-tag",lesson.manualSection));
   const meaning=makeElement("section","alarm-learning-section");
   meaning.append(makeElement("h4",null,"제조사 매뉴얼의 용어·의미"));
   meaning.append(makeElement("p",null,lesson.manufacturerMeaning));
-  root.append(meaning);
+  technical.append(meaning);
+  technical.append(makeElement("p","alarm-version-note",DEVICE_VERSION_REVIEW.summary));
+  root.append(technical);
   const context=makeElement("section","alarm-learning-section");
   context.append(makeElement("h4",null,"가상 학습 상황"));
   context.append(makeElement("p",null,lesson.observation));
@@ -752,7 +760,20 @@ function renderAlarmLearning(){
     if(lesson){renderAlarmLesson(root,lesson);return;}
     selectedAlarmLesson=null;
   }
-  root.append(makeElement("p","alarm-context","제조사 매뉴얼에 등장하는 명칭 4종을 학습해. 실제 경보의 발생 우선순위, 횟수 기준, 센서 알고리즘, 음향 알림을 구현하지는 않았어."));
+  root.append(makeElement("p","alarm-context","제조사 문서에 등장하는 4가지 알람의 의미와 학생의 관찰·보고 원칙을 학습해. 세부 알람 알고리즘·우선순위·경보음은 구현하지 않았어."));
+  const variant=makeElement("details","alarm-version-details");
+  variant.append(makeElement("summary",null,"추가 학습 · PB980 소프트웨어 버전별 차이"));
+  variant.append(makeElement("p",null,DEVICE_VERSION_REVIEW.summary));
+  variant.append(makeElement("p",null,DEVICE_VERSION_REVIEW.versionSpecificExample));
+  const versions=makeElement("ul",null);
+  for(const label of DEVICE_VERSION_REVIEW.examples)versions.append(makeElement("li",null,label));
+  variant.append(versions);
+  for(const link of DEVICE_VERSION_REVIEW.sourceLinks){
+    const anchor=makeElement("a",null,link.label);
+    anchor.href=link.url;anchor.target="_blank";anchor.rel="noopener noreferrer";
+    variant.append(anchor);
+  }
+  root.append(variant);
   for(const lesson of ALARM_LESSONS){
     const card=makeElement("section","alarm-lesson-card");
     card.append(makeElement("h3",null,lesson.title));
