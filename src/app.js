@@ -4,13 +4,17 @@ import {beginSettingEdit, preferredEditStep, stepSettingEdit, acceptSettingEdit}
 import {CLINICAL_TOPICS, TOPIC_GROUPS, EDUCATION_SOURCES, MANUAL_SECTIONS} from "./education-content.js";
 import {RELEASE_CATEGORIES, notesForCategory} from "./release-notes.js";
 import {clampRatio, ratioFromClientX, inspectAt} from "./waveform-inspector.js";
+import {PRECLINICAL_CASES,CASE_SOURCES,findCase} from "./preclinical-cases.js";
+import {startCase,chooseCaseAnswer,advanceCase,caseScore} from "./case-engine.js";
 const settingsContainer = document.getElementById("settings");
 const monitor = document.getElementById("monitor");
 const status = document.getElementById("status");
 const panelHelp = document.getElementById("panel-help");
 const panelCircuit = document.getElementById("panel-circuit");
+const panelCase = document.getElementById("panel-case");
 const helpTab = document.getElementById("tab-help");
 const circuitTab = document.getElementById("tab-circuit");
+const caseTab = document.getElementById("tab-case");
 const circuitContent = document.getElementById("circuit-content");
 let state = initialSettings(); // committed state only: sole input to waveform model
 let controlMode = "device"; // explicit opt-in for legacy quick study controls
@@ -164,13 +168,14 @@ function initEducationUI(){
 }
 
 function showSideTab(tab) {
-  const help = tab === "help";
-  panelHelp.hidden = !help;
-  panelCircuit.hidden = help;
-  helpTab.classList.toggle("active",help);
-  circuitTab.classList.toggle("active",!help);
-  helpTab.setAttribute("aria-selected",String(help));
-  circuitTab.setAttribute("aria-selected",String(!help));
+  for (const [id,button,panel] of [
+    ["help",helpTab,panelHelp],["circuit",circuitTab,panelCircuit],["case",caseTab,panelCase]
+  ]) {
+    const active=id===tab;
+    panel.hidden=!active;
+    button.classList.toggle("active",active);
+    button.setAttribute("aria-selected",String(active));
+  }
 }
 function explain(title, description, reference = null, explicitTopicId = null) {
   document.getElementById("help-title").textContent = title;
@@ -368,6 +373,111 @@ function renderCircuit() {
     circuitContent.innerHTML=circuitDiagram()+"<p class='circuit-notice'>파란 선: 흡기 방향 · 갈색 선: 호기 방향. 비례·실물 연결도 아님. 회로 애니메이션은 후속 버전에서 구현.</p>";
   }
 }
+
+/* Pre-clinical choice-based education is intentionally isolated from settings,
+ * waveform calculation and fixed monitor sample values. */
+let caseState=null;
+function caseButton(label,handler,cssClass=""){
+  const button=makeElement("button",cssClass,label);
+  button.type="button";button.addEventListener("click",handler);return button;
+}
+function caseSources(root,sourceIds){
+  const links=makeElement("div","case-sources");
+  links.append(makeElement("strong",null,"근거 자료"));
+  for(const key of sourceIds){
+    const source=CASE_SOURCES[key];if(!source)continue;
+    const a=makeElement("a",null,source.label);
+    a.href=source.url;a.rel="noopener noreferrer";a.target="_blank";
+    links.append(a);
+  }
+  root.append(links);
+}
+function renderCase(){
+  const root=document.getElementById("case-content");
+  root.replaceChildren();
+  if(!caseState){
+    root.append(makeElement("h2","case-heading","실습 전 CASE 학습"));
+    root.append(makeElement("p","case-intro","관찰 우선순위와 정보 구분을 연습하는 입문 사례야. 정답률은 형성 피드백이며 임상 역량 인증이나 평가 점수가 아니야."));
+    for(const scenario of PRECLINICAL_CASES){
+      const card=makeElement("section","case-card");
+      card.append(makeElement("h3",null,scenario.title));
+      card.append(makeElement("p","case-meta",scenario.level+" · 약 "+scenario.minutes+"분 · "+scenario.status));
+      card.append(makeElement("p",null,scenario.premise));
+      const ul=makeElement("ul","case-objectives");
+      for(const goal of scenario.objectives)ul.append(makeElement("li",null,goal));
+      card.append(ul);
+      card.append(caseButton("이 사례 시작",()=>{caseState=startCase(scenario.id);renderCase();root.querySelector(".case-answer")?.focus();},"case-primary"));
+      root.append(card);
+    }
+    return;
+  }
+  const scenario=findCase(caseState.caseId);
+  if(!scenario){caseState=null;renderCase();return;}
+  const score=caseScore(caseState);
+  root.append(makeElement("h2","case-heading",scenario.title));
+  root.append(makeElement("p","case-meta",scenario.status+" · 별도의 가상 사례 자료"));
+  root.append(caseButton("← 사례 목록",()=>{caseState=null;renderCase();caseTab.focus();},"case-back"));
+  const context=makeElement("details","case-context");
+  context.open=caseState.index===0&&!caseState.done;
+  context.append(makeElement("summary",null,"사전 안내·상황 자료·학습 목표"));
+  context.append(makeElement("p",null,scenario.premise));
+  context.append(makeElement("p","case-prebrief",scenario.prebrief));
+  const readings=makeElement("ul","case-vignette");
+  for(const item of scenario.vignette)readings.append(makeElement("li",null,item));
+  context.append(readings);
+  context.append(makeElement("strong",null,"학습 목표"));
+  const objectives=makeElement("ol","case-objectives");
+  for(const item of scenario.objectives)objectives.append(makeElement("li",null,item));
+  context.append(objectives);root.append(context);
+
+  if(caseState.done){
+    root.append(makeElement("h3","case-result","사례 학습 완료"));
+    root.append(makeElement("p","case-score","학습 확인: "+score.correct+"/"+score.total+" 문항 (형성평가, 인증점수 아님)"));
+    root.append(makeElement("p",null,"복습 질문: 무엇을 확인했으며, 어떤 정보가 부족했고, 실제 실습에서 어떤 근거로 지도자에게 보고해야 할까?"));
+    root.append(makeElement("p","case-prebrief","이 결과는 학습 선택지에 대한 피드백일 뿐 실제 환자 상태 판단 능력이나 실기 수행 능력을 검증하지 않아."));
+    root.append(caseButton("처음부터 다시",()=>{caseState=startCase(scenario.id);renderCase();root.querySelector(".case-answer")?.focus();},"case-primary"));
+    caseSources(root,scenario.sources);
+    return;
+  }
+  const step=scenario.steps[caseState.index];
+  root.append(makeElement("p","case-progress","문항 "+(caseState.index+1)+" / "+score.total));
+  root.append(makeElement("h3","case-question",step.question));
+  const chosen=caseState.answers[caseState.index];
+  const choiceRoot=makeElement("div","case-answers");
+  for(const option of step.options){
+    const btn=caseButton(option.label,()=>{
+      if(caseState.answers.length>caseState.index)return;
+      caseState=chooseCaseAnswer(caseState,option.id);
+      renderCase();
+      root.querySelector(".case-next")?.focus();
+    },"case-answer");
+    btn.disabled=Boolean(chosen);
+    if(chosen&&option.id===chosen.choiceId){
+      btn.classList.add("selected");
+      btn.setAttribute("aria-pressed","true");
+    }
+    choiceRoot.append(btn);
+  }
+  root.append(choiceRoot);
+  if(chosen){
+    const option=step.options.find(x=>x.id===chosen.choiceId);
+    const feedback=makeElement("section","case-feedback");
+    feedback.append(makeElement("strong",null,chosen.correct?"핵심 판단 확인":"복습이 필요한 판단"));
+    feedback.append(makeElement("p",null,option.feedback));
+    feedback.append(makeElement("p",null,step.explanation));
+    root.append(feedback);
+    root.append(caseButton(caseState.index===score.total-1?"결과·복습 보기":"다음 문항 →",()=>{
+      caseState=advanceCase(caseState);
+      renderCase();
+      (root.querySelector(".case-answer")||root.querySelector(".case-primary"))?.focus();
+    },"case-next case-primary"));
+  }else{
+    root.append(makeElement("p","case-hint","선택 후 이유와 참고 근거가 나타나. 실제 장비 설정이나 사례 수치는 바뀌지 않아."));
+  }
+  caseSources(root,scenario.sources);
+}
+caseTab.addEventListener("click",()=>{renderCase();showSideTab("case");});
+
 circuitTab.addEventListener("click",()=>showSideTab("circuit"));
 document.getElementById("shortcut-circuit").addEventListener("click",()=>showSideTab("circuit"));
 document.getElementById("shortcut-help").addEventListener("click",()=>{
