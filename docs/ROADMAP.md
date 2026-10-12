@@ -117,3 +117,12 @@
 - [ ] Later: subject-matter expert review of educational texts, actual PB980 firmware-specific workflow if device available (not a release prerequisite).
 
 - [x] Final v0.3.6 Private main merge and post-merge CI completed (PR #4, run 38187571168; 29/29, browser, package SUCCESS).
+
+## v0.3.7 — High-visibility LCD and waveform teaching tools
+- [x] Inspect prior v0.3.6 app architecture and PB980 waveform/grid/cursor reference concept.
+- [x] Reduce visual hardware imitation and raise contrast, typography and hit-target legibility without changing model semantics.
+- [x] Add waveform grid on/off and paused cursor analysis (pointer, touch, slider and keyboard) based only on illustrative samples.
+- [x] Retain static patient monitor labels, Accept/Cancel + Quick Study, CIRCUIT, manual and changelog data.
+- [x] Add cursor math and 1440/360/320px browser regression tests.
+- [ ] Final browser screenshot review, PR gate, and Private main CI confirmation.
+- [ ] Later: clinician-reviewed physiological waveforms and carefully bounded PB980 GUI behavior (not silently assumed).
