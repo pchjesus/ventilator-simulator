@@ -33,7 +33,7 @@ try {
   // v0.4.2: no added tab; staged formative learning is isolated from original modes.
   const quizOriginalSettings=await desktop.locator("#settings").innerText();
   const quizOriginalReadouts=await desktop.locator("#monitor").innerText();
-  const quizOriginalCases=await desktop.locator("#case-content").innerText();
+  let quizOriginalCases="";
   assert.equal(await desktop.locator("#core-quiz-root .core-quiz-primary").count(),1);
   assert.equal(await desktop.locator(".core-quiz-instructor").count(),0,"no answer-key preview before completion");
   await desktop.locator("#core-quiz-root .core-quiz-primary").click();
@@ -47,6 +47,7 @@ try {
   await desktop.locator(".core-quiz-secondary").first().click();
   assert.equal(await desktop.locator('[data-concept-id="peep"]').evaluate(e=>e.open),true,"review returns to correct lesson card");
   await desktop.locator("#tab-case").click();
+  quizOriginalCases=await desktop.locator("#case-content").innerText();
   await desktop.locator("#tab-core").click();
   assert.match(await desktop.locator(".core-quiz-progress").innerText(),/1 \/ 10/,"tab change preserves quiz");
   await desktop.locator("#reset").click();
