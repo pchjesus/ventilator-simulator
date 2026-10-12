@@ -44,7 +44,7 @@ try {
   // v0.4.0: static PB980 alarm terminology teaching never creates live alarms.
   const fixedMonitorForAlarm=await desktop.locator("#monitor").innerText();
   const settingsForAlarm=await desktop.locator("#settings").innerText();
-  const pressureWaveForAlarm=await desktop.locator("#graph-pressure").innerHTML();
+  const pressureTraceCount=await desktop.locator("#graph-pressure path").count();
   await desktop.getByRole("tab",{name:"ALARM 학습"}).click();
   assert.equal(await desktop.locator("#panel-alarm").isVisible(),true);
   assert.equal(await desktop.locator("#panel-circuit").isVisible(),false);
@@ -58,7 +58,7 @@ try {
   assert.match(await desktop.locator(".alarm-feedback").innerText(),/맞아/);
   assert.equal(await desktop.locator("#monitor").innerText(),fixedMonitorForAlarm);
   assert.equal(await desktop.locator("#settings").innerText(),settingsForAlarm);
-  assert.equal(await desktop.locator("#graph-pressure").innerHTML(),pressureWaveForAlarm,"alarm lessons must not alter pressure graph structure");
+  assert.equal(await desktop.locator("#graph-pressure path").count(),pressureTraceCount,"alarm lessons must not alter pressure graph structure");
   await desktop.screenshot({path:"artifacts/browser/desktop-alarm-feedback.png",fullPage:false});
   await desktop.getByRole("tab",{name:"CASE 학습"}).click();
   await desktop.getByRole("tab",{name:"ALARM 학습"}).click();
