@@ -222,3 +222,10 @@ GitHub Actions run: https://github.com/pchjesus/ventilator-simulator/actions/run
 - Initial Chromium test had a hidden advanced waveforms topic click. Adjusted to explicitly expand additional Help before selecting; no underlying app error.
 - Browser assertions now cover default six-card core, advanced disclosure closed, setting tiers 3/4, preserve old settings/CASE/CIRCUIT/ALARM/waveforms, safe advanced collapse, mobile 320/360, and browser screenshot captures.
 - Green CI is not clinical validation of PEEP response, local PB980 alarm firmware, or learning effectiveness.
+
+
+## v0.4.2 coverage added (2026-10-12)
+- tests/core-quiz.test.mjs: 10-item/six-concept structure, all-option explanations, invalid data, source trace, immutable gated state, reset/retry, final score, original case/monitor/settings nonmutation.
+- tests/browser-check.mjs: 1440px start/feedback/review, tab/device-reset persistence, complete ten questions, instructor preview, retry and unchanged CASE; 360/320px touch control, overflow and screenshots.
+- Existing tests are retained; npm syntax check and CI packaged-site file set now include src/core-quiz.js.
+- CI execution outcome and screenshot inspection are not implied by source changes. Passing automation is not clinical expert approval. See docs/CORE_LEARNING_CHECK_v0.4.2.md.
