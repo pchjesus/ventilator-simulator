@@ -177,3 +177,9 @@
 - Final patched branch run [38187368353](https://github.com/pchjesus/ventilator-simulator/actions/runs/38187368353) fully green (29/29 Node checks plus Chromium and static package).
 - Fixed initial PS summary schema failure and backdrop click/focus interaction, then polished narrow manual heading and removed duplicated clinical introductory description.
 - All 15 screenshot variants generated; final 320px manual and patch history layouts visually reviewed. Actual bedside PB980 clinical validation remains explicitly out of scope.
+
+
+### v0.3.6 final merge and main CI
+- PR [#4](https://github.com/pchjesus/ventilator-simulator/pull/4) merged into private main; commit `c7cd912eff51665eda2a24e6ef801ccf7630aa7b`.
+- Main-commit workflow [38187571168](https://github.com/pchjesus/ventilator-simulator/actions/runs/38187571168) completed SUCCESS for all 3 jobs; 29/29 unit checks green.
+- No clinical-equivalence or physical PB980 validation claimed. No public web deployment.

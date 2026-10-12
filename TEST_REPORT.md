@@ -129,3 +129,10 @@ GitHub Actions run: https://github.com/pchjesus/ventilator-simulator/actions/run
 - Chromium: native manual and version dialogs, 5-category filter, Escape/X/outside touch/click, focus handling, 13 evidence-linked learning topics, desktop 1440px, mobile 360px and 320px checks; original quick/device setting mode, waveform pause/reset/CIRCUIT still pass.
 - Examined 15 browser screenshots from latest branch workflow, including the corrected narrow 320px `사용 설명서` heading, 320px patch filtering and desktop clinical help.
 - PR merge + post-merge main CI is a **separate required gate**.
+
+
+### Integrated Private main release verification — v0.3.6
+- PR [#4](https://github.com/pchjesus/ventilator-simulator/pull/4) successfully squash merged as `c7cd912eff51665eda2a24e6ef801ccf7630aa7b`.
+- Exact merge commit passed main push GitHub Actions [38187571168](https://github.com/pchjesus/ventilator-simulator/actions/runs/38187571168): `test` (29/29), `browser` (desktop/360/320 + new dialogs), and `package` all **SUCCESS**.
+- Main remained `Private` and GitHub Pages was not published; downloadable workflow artifacts contain verified static browser assets and 15 Chromium screenshots.
+- This report-only follow-up commit does not alter app logic. Its CI is verified separately, if/when available.

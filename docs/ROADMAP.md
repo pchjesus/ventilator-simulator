@@ -115,3 +115,5 @@
 - [x] Latest PR test/browser/package CI + screenshot audit (run 38187368353; 29/29, browser and package PASS).
 - [ ] Final Private main merge and clean post-merge CI.
 - [ ] Later: subject-matter expert review of educational texts, actual PB980 firmware-specific workflow if device available (not a release prerequisite).
+
+- [x] Final v0.3.6 Private main merge and post-merge CI completed (PR #4, run 38187571168; 29/29, browser, package SUCCESS).
