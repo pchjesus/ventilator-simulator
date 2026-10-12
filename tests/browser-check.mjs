@@ -30,6 +30,52 @@ try {
   await desktop.locator("#extra-learning > summary").click();
   assert.equal(await desktop.locator("#extra-learning").evaluate(e=>e.open),true);
   pass("student-first default core: PEEP education, collapsible supplemental tabs and all 7 settings retained");
+  // v0.4.2: no added tab; staged formative learning is isolated from original modes.
+  const quizOriginalSettings=await desktop.locator("#settings").innerText();
+  const quizOriginalReadouts=await desktop.locator("#monitor").innerText();
+  const quizOriginalCases=await desktop.locator("#case-content").innerText();
+  assert.equal(await desktop.locator("#core-quiz-root .core-quiz-primary").count(),1);
+  assert.equal(await desktop.locator(".core-quiz-instructor").count(),0,"no answer-key preview before completion");
+  await desktop.locator("#core-quiz-root .core-quiz-primary").click();
+  assert.match(await desktop.locator(".core-quiz-progress").innerText(),/1 \/ 10/);
+  assert.equal(await desktop.locator(".core-quiz-answer").count(),3);
+  assert.equal(await desktop.locator(".core-quiz-feedback").count(),0);
+  await desktop.locator(".core-quiz-answer").nth(1).click(); // intentionally wrong PEEP answer
+  assert.match(await desktop.locator(".core-quiz-feedback").innerText(),/오개념/);
+  assert.equal(await desktop.locator(".core-quiz-explanations li").count(),3,"explain ALL options after choice");
+  await desktop.screenshot({path:"artifacts/browser/desktop-core-quiz-feedback.png",fullPage:false});
+  await desktop.locator(".core-quiz-secondary").first().click();
+  assert.equal(await desktop.locator('[data-concept-id="peep"]').evaluate(e=>e.open),true,"review returns to correct lesson card");
+  await desktop.locator("#tab-case").click();
+  await desktop.locator("#tab-core").click();
+  assert.match(await desktop.locator(".core-quiz-progress").innerText(),/1 \/ 10/,"tab change preserves quiz");
+  await desktop.locator("#reset").click();
+  assert.equal(await desktop.locator("#settings").innerText(),quizOriginalSettings,"quiz must not affect settings/reset");
+  assert.equal(await desktop.locator("#monitor").innerText(),quizOriginalReadouts,"monitor remains fixed");
+  assert.equal(await desktop.locator("#case-content").innerText(),quizOriginalCases,"CASE not changed");
+  assert.match(await desktop.locator(".core-quiz-feedback").innerText(),/오개념/,"device reset preserves quiz");
+  for(let i=1;i<10;i++){
+    await desktop.locator(".core-quiz-next").click();
+    assert.equal(await desktop.locator(".core-quiz-feedback").count(),0);
+    await desktop.locator(".core-quiz-answer").first().click();
+  }
+  await desktop.locator(".core-quiz-next").click();
+  assert.match(await desktop.locator(".core-quiz-score").innerText(),/10문항/);
+  assert.equal(await desktop.locator(".core-quiz-instructor").count(),1);
+  assert.ok(await desktop.locator(".core-quiz-review-entry").count()>0);
+  await desktop.screenshot({path:"artifacts/browser/desktop-core-quiz-complete.png",fullPage:false});
+  await desktop.locator(".core-quiz-instructor > summary").click();
+  assert.equal(await desktop.locator(".core-quiz-preview-item").count(),10);
+  assert.match(await desktop.locator(".core-quiz-instructor").innerText(),/전문가 미감수|미감수/);
+  await desktop.locator("#core-quiz-root").getByRole("button",{name:/CASE 01·02에 적용하기/}).click();
+  assert.equal(await desktop.locator("#panel-case").isVisible(),true);
+  assert.equal(await desktop.locator(".case-card").count(),2);
+  await desktop.locator("#tab-core").click();
+  assert.match(await desktop.locator(".core-quiz-score").innerText(),/10문항/);
+  await desktop.locator("#core-quiz-root").getByRole("button",{name:"학습 확인 다시 풀기"}).click();
+  assert.match(await desktop.locator(".core-quiz-progress").innerText(),/1 \/ 10/);
+  assert.equal(await desktop.locator(".core-quiz-instructor").count(),0,"retry hides answer review");
+  pass("core formative quiz: gated answers, all-option explanations, lesson review, CASE pathway, reset/tab/state independence");
   assert.equal(await desktop.locator(".monitor-data .breath-example").innerText(),"C");
   assert.equal(await desktop.locator(".bezel-controls > span").count(),8,"eight physical keys plus one rotary = nine");
   assert.equal(await desktop.locator(".bezel-controls .rotary-knob").count(),1);
@@ -386,6 +432,15 @@ try {
   assert.equal(await mobile.locator(".setting").count(),7);
   assert.equal(await mobile.locator(".core-concept").count(),6);
   await mobile.screenshot({path:"artifacts/browser/mobile-core-default.png",fullPage:false});
+  await mobile.locator("#core-quiz-root .core-quiz-primary").click();
+  await mobile.locator(".core-quiz-answer").nth(0).click();
+  const quizMobileBox=await mobile.locator("#core-quiz-root").boundingBox();
+  assert.ok(quizMobileBox.x>=-1&&quizMobileBox.x+quizMobileBox.width<=361,"360px quiz fits viewport");
+  assert.equal(await mobile.locator(".core-quiz-explanations li").count(),3);
+  await mobile.screenshot({path:"artifacts/browser/mobile-core-quiz-360.png",fullPage:false});
+  await mobile.locator("#tab-case").click();
+  await mobile.locator("#tab-core").click();
+  assert.equal(await mobile.locator(".core-quiz-feedback").count(),1);
   await mobile.locator("#extra-learning > summary").click();
   assert.equal(await mobile.locator(".prompt-area").count(),1);
   assert.equal(await mobile.locator(".settings-grid").evaluate(el=>getComputedStyle(el).gridTemplateColumns.split(" ").length),2,"mobile study settings must use two columns");
@@ -461,6 +516,19 @@ try {
   }));
   assert.ok(tierOverlaps.every(value=>!value),"320px setting importance labels must not overlap ? help controls");
   await narrow.screenshot({path:"artifacts/browser/narrow-core-320.png",fullPage:false});
+  await narrow.locator("#core-quiz-root .core-quiz-primary").click();
+  await narrow.locator(".core-quiz-answer").nth(2).click();
+  const quizNarrowBox=await narrow.locator("#core-quiz-root").boundingBox();
+  assert.ok(quizNarrowBox.x>=-1&&quizNarrowBox.x+quizNarrowBox.width<=321,"320px quiz container fits viewport");
+  const quizButtonsFit=await narrow.locator(".core-quiz button").evaluateAll(buttons=>buttons.every(el=>{
+    const box=el.getBoundingClientRect();return box.left>=-1&&box.right<=321;
+  }));
+  assert.ok(quizButtonsFit,"320px quiz buttons do not overflow");
+  assert.equal(await narrow.locator(".core-quiz-feedback").count(),1);
+  await narrow.screenshot({path:"artifacts/browser/narrow-core-quiz-320.png",fullPage:false});
+  await narrow.locator("#tab-case").click();
+  await narrow.locator("#tab-core").click();
+  assert.equal(await narrow.locator(".core-quiz-feedback").count(),1);
   await narrow.locator("#extra-learning > summary").click();
   await narrow.locator("#open-manual").click();
   assert.equal(await narrow.locator("#manual-dialog").isVisible(),true);
