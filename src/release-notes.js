@@ -8,6 +8,12 @@ export const RELEASE_CATEGORIES=Object.freeze([
   {id:"docs",label:"문서·근거"}
 ]);
 export const RELEASE_NOTES=Object.freeze([
+ {version:"0.3.8",date:"2026-10-12",changes:[
+  {category:"ui",text:"세 번째 CASE 학습 탭과 가상 상황·문항·근거를 실제 장비 화면과 명확히 분리한 학습 카드 UI 추가"},
+  {category:"clinical",text:"실습 전 입문 형성학습 2종: 기계환기 환자 인수인계 및 산소포화도 변화 인지(가상 상황, 전문가 미감수)"},
+  {category:"feature",text:"CASE 학습 탭에 사례 선택·사전 안내·단계별 판단·선택 이유·근거·디브리핑·재시도 기능 추가"},
+  {category:"stability",text:"사례학습 상태를 실제 기기 설정과 파형·고정 모니터에서 분리하고 전환/초기화 회귀검증"},
+  {category:"docs",text:"학생 임상실습 전 교육 수준 달성을 위한 임상 감수·시나리오·평가 체계 로드맵과 승인 기준 설계"}]},
  {version:"0.3.7",date:"2026-10-12",changes:[
   {category:"ui",text:"PB980 내부 정보 구조를 유지하며 외형 장식을 절제한 중립 색상·고대비 환자 데이터 및 설정 UI로 가독성 개선"},
   {category:"feature",text:"파형 분석 모드에서 정지된 교육용 Pressure/Flow/Volume 곡선의 시점·수치·호흡 단계 확인; 슬라이더/터치/키보드 지원"},

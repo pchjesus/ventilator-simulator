@@ -208,3 +208,27 @@
 - 18 actual Chromium screenshots generated; inspected neutral UI, desktop analysis and 320px responsive.
 - Changed only UI, pure cursor reader, readout rendering/control integration, documentation. `src/waveform-model.js`, `src/setting-editor.js`, original top monitor sample model untouched.
 - No manufacturer-certified clinical model or public deployment.
+
+## v0.3.8 — Preclinical case pilot and education pathway (2026-10-12)
+### Baseline and current-risk review
+- Started from verified Private main v0.3.7 `c5371ea86df003add7d7907aee4899966713f84c`.
+- Examined current panel routing, static MONITOR_REFERENCE banner, committed-versus-pending parameter state, education source-link presentation and waveform render independence.
+- Central clinical-safety risk: a realistic-looking case value such as SpO₂ 88% could be mistaken for an actual simulator-derived patient response. **Mitigation:** cases live in visually separate right-hand panels marked fictional; no writes to model, waveform, settings, alerts or fixed top monitor.
+### Scope delivered
+- New CASE tab, two fictional introductory scenarios, objectives/prebrief/context, 3 graded prompts per case, individualized feedback, review/score and restart.
+- Pure modules: `src/preclinical-cases.js` and `src/case-engine.js`, with case/source schema and protected transitions.
+- Tab changes retain case answers. Reset of device settings does not wipe case state. Opening CASE cannot commit pending settings or control the waveform.
+- Help manual and release notes updated. Static CI bundle includes both new ES modules.
+### Risk, usability and future clinical evidence boundary
+- Avoid an unsupported physiology/oxygenation model. Initial assessment only tests cognitive recognition, patient-centered direct assessment, trainee escalation and structured reporting.
+- Knowledge choices are formative; correctness should not imply licensed competence. Educational contents are marked **expert review pending**.
+- Future curriculum work follows `docs/CLINICAL_PRECLINICAL_ROADMAP_v0.3.8.md` with explicit sign-off and learner pilot gates before v1.0.
+### Required verification
+- Case-logic deterministic unit tests, source/answer validation, desktop 1440/mobile 360/320 browser run with CASE and old controls, no case settings/monitor mutation, integration package, updated TEST_REPORT.
+
+
+### v0.3.8 case pilot PR review
+- First CI found missing UI/UX entry for CASE tab in v0.3.8 release notes. Corrected categorization.
+- Branch PR workflow [38198237425](https://github.com/pchjesus/ventilator-simulator/actions/runs/38198237425): 38/38 unit PASS + browser PASS + web artifact PASS.
+- 22 browser PNGs generated; manually inspected CASE questions on desktop and 320px mobile. UI content and distinct fictional vignette presentation visible without horizontal overflow.
+- v0.3.8 remains an unreviewed **prototype** pending clinical educator review, student pilot and instructor sign-off before any preclinical training release.

@@ -1,4 +1,4 @@
-# Ventilator Simulator — v0.3.7 Preview
+# Ventilator Simulator — v0.3.8 Preview
 
 간호학생을 위한 **PB980(Puritan Bennett 980) 참고형 웹 시뮬레이터** 초기 실행본.
 실제 장비의 화면 구성 학습을 목표로 하지만, 임상 사용이나 기계 조작 훈련을 대체하지 않는다.
@@ -9,7 +9,7 @@
 - 테스트: Node.js 18 이상에서 `npm test`, `npm run check`
 - npm 의존성 없음. 브라우저 ES modules 사용. `file://` 직접 실행은 권장하지 않음.
 
-## 현재 구현 (v0.3.7)
+## 현재 구현 (v0.3.8)
 - PB980 스타일의 화면 구획: 상단 monitoring, 중앙 pressure/flow/volume 파형, 하단 SIMV(PC)+PS 설정 영역
 - 화면 안에서 FiO₂, PEEP, f, Pi, Ti, PS, V-TRIG 값 증감 및 기본값 초기화
 - 각 설정 옆 `?` 도움말, 오른쪽 CIRCUIT 개념 학습 탭(부품/조립 개요/완성 개념도)
@@ -105,3 +105,13 @@ v0.2.2 improves keyboard-focus continuity when adjusting settings and adds a 320
 - **중요한 한계:** 파형 커서의 수치는 시뮬레이터가 그린 시간곡선의 샘플 값이다. PB980 실측자료도, 고정 환자 모니터 예시값도, ABGA/SpO₂ 계산값도 아니다.
 - 근거: [Medtronic PB980 operator manual](https://asiapac.medtronic.com/content/dam/covidien/library/us/en/product/acute-care-ventilation/PuritanBennett980Ventilator_OperatorsManual_en_US_PT00101843A00.pdf) 파형 일시정지·커서·격자 및 [제조사 교육 비디오](https://www.medtronic.com/en-us/healthcare-professionals/products/respiratory/mechanical-ventilation/ventilators/puritan-bennett-980-series-ventilator/in-service-videos.html). 본 앱은 제조사의 조작 동작을 그대로 재현하는 것이 아닌 간략 교육 모드다.
 - 새 순수 계산 보조: `src/waveform-inspector.js`; `src/waveform-model.js` 및 `src/setting-editor.js`는 수정하지 않았다.
+
+## v0.3.8 — 실습 전 CASE 학습 첫 탑재
+- 오른쪽 **CASE 학습** 탭: 성인 중환자실 간호대학생 사전 실습 오리엔테이션을 위한 **가상 시나리오 2종** (기계환기 환자 인수인계 / SpO₂ 하락 인지).
+- 각 사례에는 **학습목표, prebrief, 가상 상황자료, 3단계 판단 질문, 선택별 피드백·근거, 결과·복습, 재시도**가 포함된다. 총 6개 문항이며 형성평가로만 활용한다.
+- CASE 자료는 시뮬레이터의 장비 **설정값·파형·고정 모니터 화면과 전혀 연동되지 않는다**. 가상 사례의 SpO₂ 변화는 별도 학습 카드이지 앱에 설치된 실제 알람/환자 모델이 아니다.
+- 선택지의 정답은 기초적인 *인식·사정·보고 우선순위*에 초점을 둔다. 학생이 임의로 인공호흡기 설정을 변경하도록 학습시키지 않는다.
+- 콘텐츠는 **전문가 미감수 초안**이다. 학습 점수는 임상 역량 인증이나 병원 정책·장비 운용 지침을 대신하지 않는다.
+- 새 소스: `src/preclinical-cases.js` (가상 사례·출처) + `src/case-engine.js` (순수 형성평가 상태). 기존 파형·폐역학/모니터·설정 모델은 변경하지 않았다.
+- 근거: [AARC 2024 Patient-Ventilator Assessment](https://pmc.ncbi.nlm.nih.gov/articles/PMC11298231/), [INACSL Simulation Design](https://doi.org/10.1016/j.ecns.2021.08.009).
+- **실습 전 교육 수준까지의 단계별 개발·임상 검토 기준:** [CLINICAL_PRECLINICAL_ROADMAP_v0.3.8.md](docs/CLINICAL_PRECLINICAL_ROADMAP_v0.3.8.md).

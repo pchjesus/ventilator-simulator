@@ -396,3 +396,42 @@ body[data-control-mode="device"] .setting{min-height:92px}
  .study-panel{padding:11px}
 }
 @media(max-width:360px){.readout strong{font-size:18px}.readout .label{font-size:9px}.setting-value{font-size:25px}.inspection-readouts{gap:4px}}
+
+/* v0.3.8 — preclinical CASE education; separate from the PB980-style device LCD. */
+.side-tabs{gap:5px}.side-tabs button{min-width:0;padding:10px 3px;font-size:12px}
+#panel-case[hidden]{display:none}
+.case-disclaimer{margin:12px 0;padding:10px;border:1px solid #ead6ae;background:#fff7e5;color:#705526;border-radius:8px;font-size:12px;line-height:1.55}
+.case-heading{font-size:19px;line-height:1.45;color:#173e54;margin:16px 0 11px}
+.case-intro,#panel-case p{font-size:12px;line-height:1.65}
+.case-card{margin:12px 0;padding:14px;border:1px solid #c4d8e4;border-radius:10px;background:#f7fbfd}
+.case-card h3{font-size:15px;color:#174862;margin:0 0 6px;line-height:1.4}
+.case-card p{margin:7px 0}
+.case-meta{color:#607587;font-size:11px!important}
+.case-objectives{margin:7px 0 12px;padding-left:20px;color:#334e60}
+.case-objectives li{font-size:12px;line-height:1.6;margin-bottom:5px}
+.case-primary,.case-back{min-height:44px;padding:9px 12px;border-radius:7px;font-size:12px;font-weight:750}
+.case-primary{border:1px solid #145978;background:#155c7c;color:white}
+.case-primary:hover{background:#0d4865}.case-back{border:1px solid #adbfcb;background:#fff;color:#2a5168;margin:4px 0 10px}
+.case-context{margin:10px 0 16px;padding:10px 12px;border:1px solid #c4d5df;border-radius:8px;background:#f3f8fa}
+.case-context summary{font-weight:800;color:#295268;font-size:12px;cursor:pointer}
+.case-context p{margin:10px 0}
+.case-prebrief{border-left:3px solid #b8873f;background:#fff5df;padding:8px;color:#68542e}
+.case-vignette{padding-left:20px;margin:8px 0}
+.case-vignette li{font-size:12px;line-height:1.6;margin:6px 0}
+.case-progress{font-size:11px!important;color:#517089;margin:10px 0}
+.case-question{font-size:16px;line-height:1.55;margin:8px 0 14px;color:#163e52}
+.case-answers{display:grid;gap:8px;margin-bottom:10px}
+.case-answer{display:block;width:100%;text-align:left;min-height:50px;padding:12px 13px;border:1px solid #abc6d6;border-radius:8px;background:#fff;color:#224a62;font-size:12px;line-height:1.55;white-space:normal}
+.case-answer:not(:disabled):hover{background:#eaf5fa;border-color:#579ac1}
+.case-answer.selected{background:#d9ecf5;border:2px solid #24678c;font-weight:800}
+.case-answer:disabled:not(.selected){opacity:.72;cursor:default}
+.case-feedback{border:1px solid #b8d6c1;background:#eff8f1;border-radius:8px;padding:12px;color:#285541;margin:10px 0 12px}
+.case-feedback p{margin:7px 0}.case-feedback strong{font-size:13px}
+.case-next{width:100%}
+.case-result{font-size:16px;margin:15px 0}
+.case-score{font-size:16px!important;font-weight:800;color:#16516e}
+.case-hint{font-size:11px!important;color:#607787}
+.case-sources{border-top:1px solid #d2e1e9;margin:17px 0 6px;padding:12px 0}
+.case-sources strong{font-size:12px;display:block;margin-bottom:6px}
+.case-sources a{display:block;color:#185d8c;font-size:11px;line-height:1.6;overflow-wrap:anywhere;margin:4px 0}
+@media(max-width:550px){.side-tabs button{font-size:11px;min-height:46px}.case-card{padding:12px}.case-answer{min-height:56px;font-size:12px}}
