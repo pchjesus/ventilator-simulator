@@ -5,6 +5,7 @@
 import {CORE_LESSONS,CORE_SOURCES} from "./student-learning.js";
 
 export const CORE_QUIZ_VERSION="0.4.2";
+export const CORE_QUIZ_SOURCES=Object.freeze({...CORE_SOURCES,app:{label:"앱 내부 구현 규약 · README",url:"https://github.com/pchjesus/ventilator-simulator/blob/main/README.md"}});
 export const CORE_QUIZ_REVIEW=Object.freeze({status:"pending",approved:false});
 const option=(id,label,feedback,misconception="")=>({id,label,feedback,misconception});
 export const CORE_QUESTIONS=Object.freeze([
@@ -55,7 +56,7 @@ export const CORE_QUESTIONS=Object.freeze([
   options:[option("a","실제 환자의 fTOT와 SpO₂를 새로 계산한다.","현재 앱은 환자 총 호흡수나 산소화 반응을 계산하지 않아.","실제 환자 계산 모델이 있다고 가정"),
    option("b","교육용 파형 간격은 바뀔 수 있지만 상단 fTOT 예시는 고정되어 있다.","맞아. 앱의 파형과 고정 모니터 표시는 독립이야."),
    option("c","상단 VTE와 Ppeak가 새로운 임상 측정값으로 동기화된다.","상단 모니터 7종은 모두 고정 예시야.","교육용 파형을 실측 모니터링으로 오해")],
-  answer:"b",rationale:"앱 내부의 설정·파형 변경은 고정 모니터 수치 및 CASE 가상 환자자료와 독립이야.",sourceIds:["pb980"],evidenceKind:"simulator-contract"},
+  answer:"b",rationale:"앱 내부의 설정·파형 변경은 고정 모니터 수치 및 CASE 가상 환자자료와 독립이야.",sourceIds:["app"],evidenceKind:"simulator-contract"},
  {id:"ppeak-pi",conceptId:"ppeak",objective:"최고기도압 Ppeak와 압력제어 흡기압 설정 Pᵢ를 구분한다.",
   stem:"Ppeak와 Pᵢ에 관한 설명으로 가장 적절한 것은?",
   options:[option("a","둘은 모두 동일한 설정값이며 언제나 같은 숫자여야 한다.","Pᵢ는 설정값이고 Ppeak는 관찰되는 기도압 수치야.","측정 Ppeak와 설정 Pᵢ 동일시"),
@@ -82,7 +83,7 @@ export function auditCoreQuiz(bank=CORE_QUESTIONS){
   if(!Array.isArray(q?.options)||q.options.length!==3||new Set(q.options.map(o=>o.id)).size!==3||
      q.options.filter(o=>o.id===q.answer).length!==1||q.options.some(o=>!o.label||!o.feedback||o.feedback.length<12||(o.id!==q.answer&&!o.misconception)))errors.push("options/feedback: "+q?.id);
   if(!q?.rationale||q.rationale.length<20||!["guideline-principle","educational-inference","simulator-contract"].includes(q.evidenceKind))errors.push("evidence meaning: "+q?.id);
-  if(!Array.isArray(q?.sourceIds)||!q.sourceIds.length||q.sourceIds.some(id=>!CORE_SOURCES[id]||!CORE_SOURCES[id].url.startsWith("https://")))errors.push("source reference: "+q?.id);
+  if(!Array.isArray(q?.sourceIds)||!q.sourceIds.length||q.sourceIds.some(id=>!CORE_QUIZ_SOURCES[id]||!CORE_QUIZ_SOURCES[id].url.startsWith("https://")))errors.push("source reference: "+q?.id);
  }
  for(const id of lessonIds)if(!(bank||[]).some(q=>q.conceptId===id))errors.push("unassessed lesson: "+id);
  return {errors,count:bank?.length||0,review:CORE_QUIZ_REVIEW};
