@@ -175,3 +175,10 @@ GitHub Actions run: https://github.com/pchjesus/ventilator-simulator/actions/run
 - Exact app commit GitHub Actions [38198481423](https://github.com/pchjesus/ventilator-simulator/actions/runs/38198481423): `test` (38/38), `browser` and `package` all **SUCCESS**.
 - Repository remained **Private** and no Pages deployment was activated.
 - Documentation-only status update does not alter runnable simulator or clinical case files; latest final SHA is rechecked via CI separately.
+
+## v0.3.9 — planned clinical-content integrity and browser regression
+- New `tests/case-quality.test.mjs` verifies mapped objectives/sources and rejects missing rationale, duplicate options, invalid answer keys, expired-ish malformed URLs, review metadata implying false approval, and incomplete debrief.
+- Existing case engine / waveform / staged editor / help/circuit tests remain enabled.
+- Chromium extensions: show 3-item instructor preview with pending status and secure links, dismiss and launch; show evidence after answer, complete 3 steps, compare answers, enter/retrieve reflection note after tab switch, device reset doesn't touch CASE, 320px review panel stays within viewport.
+- Separate quality claims: schema checks do not check clinical correctness, links resolving to current contents, local ICU procedures, or actual professional signatures.
+- Final gate: green PR and final Private main code SHA test/browser/package, screenshots manually inspected; no clinical expert validation.
