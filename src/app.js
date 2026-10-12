@@ -9,7 +9,7 @@ import {startCase,chooseCaseAnswer,advanceCase,caseScore} from "./case-engine.js
 import {auditCaseBank,evidenceKindLabel} from "./case-quality.js";
 import {ALARM_LESSONS,DISPLAY_CATEGORIES,DEVICE_EDUCATION_SOURCES,DEVICE_VERSION_REVIEW,termsForCategory,findAlarmLesson,evaluateAlarmChoice,auditDeviceEducation} from "./device-learning.js";
 import {CORE_LESSONS,CORE_SOURCES,ESSENTIAL_SETTING_IDS,auditCoreLearning} from "./student-learning.js";
-import {CORE_QUESTIONS,CORE_QUIZ_REVIEW,CORE_QUIZ_VERSION,auditCoreQuiz,startCoreQuiz,chooseCoreAnswer,advanceCoreQuiz,scoreCoreQuiz} from "./core-quiz.js";
+import {CORE_QUESTIONS,CORE_QUIZ_REVIEW,CORE_QUIZ_VERSION,CORE_QUIZ_SOURCES,auditCoreQuiz,startCoreQuiz,chooseCoreAnswer,advanceCoreQuiz,scoreCoreQuiz} from "./core-quiz.js";
 const settingsContainer = document.getElementById("settings");
 const monitor = document.getElementById("monitor");
 const status = document.getElementById("status");
@@ -658,7 +658,7 @@ function quizSources(root,ids){
  const sources=makeElement("div","core-quiz-sources");
  sources.append(makeElement("strong",null,"확인 근거 · 교육 콘텐츠는 전문가 미감수"));
  for(const id of ids){
-   const reference=CORE_SOURCES[id];
+   const reference=CORE_QUIZ_SOURCES[id];
    if(!reference)continue;
    const link=makeElement("a",null,reference.label);
    link.href=reference.url;
