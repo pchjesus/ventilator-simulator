@@ -312,3 +312,9 @@ Changed: App-only implementation evidence appears as internal product behavior w
 Preserved: Ten question IDs, correct answer IDs, six core concepts, CASE 01/02 and their answers, settings, monitor reference values, mathematical waveform engine, pause/inspect/grid, ALARM/CIRCUIT/Help, RAM-only privacy boundary, and existing first-screen student-first layout.
 Risk/QA: Source classification and every faculty trace must pass schema audit, and all baseline regression tests remain. No human clinical SME review, hospital device signoff, user recruitment or certification was performed.
 Next: Independent educator review → targeted wording corrections → real student usability pilot (with required approvals).
+
+
+### v0.4.3 QA closeout notes
+- New quiz→concept→quiz return path is accessible through an expanded original concept card; unopened cards remain naturally collapsed. This preserves existing progressive disclosure.
+- Structured clinical reviewer questions are descriptive evidence interpretation, not a reviewer decision or review signoff.
+- PR #12 regression: 66/66 unit + 21 Chromium PASS checkpoints at 1440/360/320 (run 38242016756). A mistaken collapsed-<details> visibility assertion was corrected without altering application behavior.
