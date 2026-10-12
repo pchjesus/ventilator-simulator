@@ -7,15 +7,18 @@ import {clampRatio, ratioFromClientX, inspectAt} from "./waveform-inspector.js";
 import {PRECLINICAL_CASES,CASE_SOURCES,findCase} from "./preclinical-cases.js";
 import {startCase,chooseCaseAnswer,advanceCase,caseScore} from "./case-engine.js";
 import {auditCaseBank,evidenceKindLabel} from "./case-quality.js";
+import {ALARM_LESSONS,DISPLAY_CATEGORIES,DEVICE_EDUCATION_SOURCES,termsForCategory,findAlarmLesson,evaluateAlarmChoice,auditDeviceEducation} from "./device-learning.js";
 const settingsContainer = document.getElementById("settings");
 const monitor = document.getElementById("monitor");
 const status = document.getElementById("status");
 const panelHelp = document.getElementById("panel-help");
 const panelCircuit = document.getElementById("panel-circuit");
 const panelCase = document.getElementById("panel-case");
+const panelAlarm = document.getElementById("panel-alarm");
 const helpTab = document.getElementById("tab-help");
 const circuitTab = document.getElementById("tab-circuit");
 const caseTab = document.getElementById("tab-case");
+const alarmTab = document.getElementById("tab-alarm");
 const circuitContent = document.getElementById("circuit-content");
 let state = initialSettings(); // committed state only: sole input to waveform model
 let controlMode = "device"; // explicit opt-in for legacy quick study controls
@@ -170,7 +173,7 @@ function initEducationUI(){
 
 function showSideTab(tab) {
   for (const [id,button,panel] of [
-    ["help",helpTab,panelHelp],["circuit",circuitTab,panelCircuit],["case",caseTab,panelCase]
+    ["help",helpTab,panelHelp],["circuit",circuitTab,panelCircuit],["case",caseTab,panelCase],["alarm",alarmTab,panelAlarm]
   ]) {
     const active=id===tab;
     panel.hidden=!active;
@@ -575,6 +578,142 @@ function renderCase(){
   caseSources(root,scenario.sources);
 }
 caseTab.addEventListener("click",()=>{renderCase();showSideTab("case");});
+
+/* PB980 alarm vocabulary and device-readout literacy, independent of real or simulated
+ * alarms; no threshold comparison, no time-based alarm state, and no patient intervention. */
+let alarmLearningView="alarms";
+let selectedAlarmLesson=null;
+let displayTermCategory="all";
+const alarmAnswers=new Map();
+const alarmAudit=auditDeviceEducation();
+function makeAlarmButton(label,handler,className=""){
+  const button=makeElement("button",className,label);
+  button.type="button";button.addEventListener("click",handler);
+  return button;
+}
+function appendAlarmSources(container,keys){
+  const box=makeElement("div","alarm-source-links");
+  box.append(makeElement("strong",null,"원문 참고자료 · 의료지침/장비매뉴얼"));
+  for(const key of keys){
+    const source=DEVICE_EDUCATION_SOURCES[key];
+    if(!source)continue;
+    const anchor=makeElement("a",null,source.name);
+    anchor.href=source.url;anchor.target="_blank";anchor.rel="noopener noreferrer";
+    box.append(anchor);
+  }
+  container.append(box);
+}
+function renderDeviceTerms(root){
+  root.append(makeElement("p","alarm-context","현재 앱에 표시되는 설정값 7종, 고정 모니터 예시 7종, 환기 모드 예시를 어떻게 구분하는지 연습해."));
+  const filters=makeElement("div","alarm-term-filters");
+  filters.setAttribute("role","group");filters.setAttribute("aria-label","장비 화면 용어 분류");
+  for(const group of DISPLAY_CATEGORIES){
+    const button=makeAlarmButton(group.label,()=>{displayTermCategory=group.id;renderAlarmLearning();root.querySelector('[data-term-category="'+group.id+'"]')?.focus();},"alarm-term-filter");
+    button.dataset.termCategory=group.id;
+    button.setAttribute("aria-pressed",String(displayTermCategory===group.id));
+    filters.append(button);
+  }
+  root.append(filters);
+  const terms=makeElement("div","alarm-term-list");
+  for(const term of termsForCategory(displayTermCategory)){
+    const section=makeElement("section","alarm-term-card");
+    const heading=makeElement("h3",null,term.symbol);
+    const label=makeElement("span","alarm-term-kind",({setting:"장비 설정",measured:"모니터 수치 · 이 앱에선 고정",mode:"환기 모드"})[term.category]);
+    heading.append(label);section.append(heading);
+    section.append(makeElement("p",null,term.meaning));
+    section.append(makeElement("p","alarm-simulator-difference",term.simulator));
+    terms.append(section);
+  }
+  root.append(terms);
+  appendAlarmSources(root,["pb980","aarc"]);
+}
+function renderAlarmLesson(root,lesson){
+  root.append(makeAlarmButton("← 알람 목록",()=>{selectedAlarmLesson=null;renderAlarmLearning();alarmTab.focus();},"alarm-return"));
+  root.append(makeElement("h3","alarm-detail-title",lesson.title));
+  root.append(makeElement("p","alarm-detail-subtitle",lesson.subtitle));
+  root.append(makeElement("p","alarm-source-tag",lesson.manualSection));
+  const meaning=makeElement("section","alarm-learning-section");
+  meaning.append(makeElement("h4",null,"제조사 매뉴얼의 용어·의미"));
+  meaning.append(makeElement("p",null,lesson.manufacturerMeaning));
+  root.append(meaning);
+  const context=makeElement("section","alarm-learning-section");
+  context.append(makeElement("h4",null,"가상 학습 상황"));
+  context.append(makeElement("p",null,lesson.observation));
+  root.append(context);
+  const focus=makeElement("section","alarm-learning-section");
+  focus.append(makeElement("h4",null,"간호학생의 관찰·보고 학습 포인트"));
+  const list=makeElement("ol","alarm-observation-list");
+  for(const line of lesson.nursingFocus)list.append(makeElement("li",null,line));
+  focus.append(list);root.append(focus);
+  const question=makeElement("section","alarm-quiz");
+  question.append(makeElement("h4",null,"학습 확인 · "+lesson.question));
+  const saved=alarmAnswers.get(lesson.id);
+  const choices=makeElement("div","alarm-choices");
+  for(const choice of lesson.choices){
+    const button=makeAlarmButton(choice.label,()=>{
+      if(alarmAnswers.has(lesson.id))return;
+      alarmAnswers.set(lesson.id,evaluateAlarmChoice(lesson.id,choice.id));
+      renderAlarmLearning();
+      root.querySelector(".alarm-feedback")?.focus();
+    },"alarm-choice");
+    if(saved){button.disabled=true;if(saved.choiceId===choice.id)button.classList.add("selected");}
+    choices.append(button);
+  }
+  question.append(choices);
+  if(saved){
+    const feedback=makeElement("div","alarm-feedback");
+    feedback.tabIndex=-1;
+    feedback.append(makeElement("strong",null,saved.correct?"핵심 판단 확인":"다시 확인할 판단"));
+    feedback.append(makeElement("p",null,saved.feedback));
+    feedback.append(makeElement("p",null,saved.rationale));
+    feedback.append(makeElement("p","alarm-limits",lesson.uncertainty));
+    feedback.append(makeAlarmButton("이 알람 다시 풀기",()=>{alarmAnswers.delete(lesson.id);renderAlarmLearning();root.querySelector(".alarm-choice")?.focus();},"alarm-retry"));
+    question.append(feedback);
+  }else question.append(makeElement("p","alarm-quiz-hint","선택하면 정답 근거와 반응이 표시돼. 기기의 알람이나 환기 파형은 전혀 바뀌지 않아."));
+  root.append(question);
+  appendAlarmSources(root,lesson.sources);
+}
+function renderAlarmLearning(){
+  const root=document.getElementById("alarm-learning-root");
+  root.replaceChildren();
+  if(alarmAudit.errors.length){
+    root.append(makeElement("h3","alarm-error","장비 교육 데이터 검사 실패"));
+    for(const error of alarmAudit.errors)root.append(makeElement("p","alarm-error",error));
+    return;
+  }
+  const switches=makeElement("div","alarm-learning-modes");
+  switches.setAttribute("role","group");switches.setAttribute("aria-label","ALARM 학습 방식");
+  for(const item of [{id:"alarms",label:"알람 인지"},{id:"terms",label:"설정·모니터 용어"}]){
+    const btn=makeAlarmButton(item.label,()=>{
+      alarmLearningView=item.id;renderAlarmLearning();root.querySelector('[data-alarm-view="'+item.id+'"]')?.focus();
+    },"alarm-view-switch");
+    btn.dataset.alarmView=item.id;
+    btn.setAttribute("aria-pressed",String(alarmLearningView===item.id));
+    switches.append(btn);
+  }
+  root.append(switches);
+  if(alarmLearningView==="terms"){renderDeviceTerms(root);return;}
+  if(selectedAlarmLesson){
+    const lesson=findAlarmLesson(selectedAlarmLesson);
+    if(lesson){renderAlarmLesson(root,lesson);return;}
+    selectedAlarmLesson=null;
+  }
+  root.append(makeElement("p","alarm-context","제조사 매뉴얼에 등장하는 명칭 4종을 학습해. 실제 경보의 발생 우선순위, 횟수 기준, 센서 알고리즘, 음향 알림을 구현하지는 않았어."));
+  for(const lesson of ALARM_LESSONS){
+    const card=makeElement("section","alarm-lesson-card");
+    card.append(makeElement("h3",null,lesson.title));
+    card.append(makeElement("p",null,lesson.subtitle));
+    card.append(makeElement("p","alarm-source-tag",lesson.manualSection));
+    if(alarmAnswers.has(lesson.id))card.append(makeElement("p","alarm-attempt-note","학습 확인 완료 · 정답 근거 다시 확인 가능"));
+    card.append(makeAlarmButton("알람 이해하기",()=>{
+      selectedAlarmLesson=lesson.id;renderAlarmLearning();root.querySelector(".alarm-return")?.focus();
+    },"alarm-open"));
+    root.append(card);
+  }
+  appendAlarmSources(root,["pb980","aarc"]);
+}
+alarmTab.addEventListener("click",()=>{renderAlarmLearning();showSideTab("alarm");});
+
 
 circuitTab.addEventListener("click",()=>showSideTab("circuit"));
 document.getElementById("shortcut-circuit").addEventListener("click",()=>showSideTab("circuit"));
