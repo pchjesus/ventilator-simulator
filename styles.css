@@ -464,3 +464,54 @@ body[data-control-mode="device"] .setting{min-height:92px}
 .case-reflection-input{display:block;box-sizing:border-box;width:100%;min-height:76px;resize:vertical;line-height:1.5;font:inherit;font-size:12px;border:1px solid #97b3c2;background:white;border-radius:6px;color:#173b52;padding:10px}
 .case-reflection-input:focus-visible{outline:3px solid #8ed0e4;outline-offset:1px}
 @media(max-width:550px){.case-review{padding:8px}.case-review-item{padding:8px}.case-reflection{padding:9px}.case-review-toggle{min-height:46px}}
+
+/* v0.4.0 — separately scoped manufacturer-referenced, non-live ALARM education. */
+.side-tabs{display:flex;gap:4px}.side-tabs button{flex:1 1 0;min-width:0;padding:10px 3px;font-size:11px;line-height:1.25;white-space:normal;overflow-wrap:anywhere}
+#panel-alarm[hidden]{display:none}
+.alarm-demo-notice{background:#fff6e4;border:1px solid #d8b774;border-left:4px solid #ab792d;border-radius:7px;padding:11px 12px;margin:12px 0 14px;color:#674a22;font-size:11px;line-height:1.65}
+.alarm-demo-notice strong{display:block;font-size:13px;margin-bottom:4px;color:#66451e}
+.alarm-learning-head{display:flex;justify-content:space-between;align-items:baseline;gap:5px;flex-wrap:wrap;margin:9px 0}
+.alarm-learning-head h2{font-size:19px;line-height:1.45;color:#174761;margin:0}
+.alarm-learning-head span{font-size:10px;color:#6d7986}
+.alarm-learning-modes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;margin:13px 0}
+.alarm-view-switch{border:1px solid #a9c6d4;background:#f6fbfd;color:#28506b;border-radius:7px;min-height:44px;padding:8px 5px;font-size:12px;font-weight:700}
+.alarm-view-switch[aria-pressed="true"]{background:#1a5975;border-color:#1a5975;color:#fff}
+.alarm-context{font-size:12px;line-height:1.65;color:#496578;margin:11px 0 14px}
+.alarm-lesson-card{background:#f8fcfd;border:1px solid #c2d6e1;border-radius:9px;padding:13px;margin:11px 0;overflow-wrap:anywhere}
+.alarm-lesson-card h3{color:#153e57;margin:0 0 7px;font-size:14px;line-height:1.5}
+.alarm-lesson-card p{margin:5px 0;font-size:11px;line-height:1.6;color:#4a687b}
+.alarm-source-tag{font-size:10px!important;color:#536f81;line-height:1.5;overflow-wrap:anywhere}
+.alarm-open,.alarm-return,.alarm-retry{border-radius:7px;min-height:44px;padding:9px 12px;font-size:12px;font-weight:750}
+.alarm-open{background:#195f80;color:#fff;border:1px solid #195f80;margin-top:8px}
+.alarm-open:hover{background:#104e6d}.alarm-return,.alarm-retry{background:#fff;color:#285c77;border:1px solid #abc8d6}
+.alarm-return{margin:4px 0 12px}.alarm-retry{margin-top:6px}
+.alarm-detail-title{font-size:17px;color:#133e56;line-height:1.45;overflow-wrap:anywhere;margin:8px 0 5px}
+.alarm-detail-subtitle{font-size:12px!important;color:#486c83;margin:4px 0 7px}
+.alarm-learning-section,.alarm-quiz{padding:12px;margin:12px 0;background:#f6fafc;border:1px solid #c6d8e3;border-radius:8px}
+.alarm-learning-section h4,.alarm-quiz h4{font-size:13px;color:#1c536e;margin:0 0 8px;line-height:1.5}
+.alarm-learning-section p,.alarm-quiz p{font-size:12px;line-height:1.65;margin:7px 0}
+.alarm-observation-list{margin:7px 0;padding-left:18px}.alarm-observation-list li{font-size:12px;line-height:1.6;margin-bottom:7px}
+.alarm-choices{display:grid;gap:7px;margin:10px 0}
+.alarm-choice{display:block;width:100%;text-align:left;min-height:50px;white-space:normal;background:#fff;color:#214b62;border:1px solid #a6c0cf;border-radius:7px;padding:11px 12px;font-size:12px;line-height:1.55}
+.alarm-choice:hover:not(:disabled){background:#eaf5fa;border-color:#3b84a8}
+.alarm-choice:focus-visible,.alarm-open:focus-visible,.alarm-view-switch:focus-visible,.alarm-term-filter:focus-visible{outline:3px solid #61b3d6;outline-offset:2px}
+.alarm-choice.selected{background:#d9edf7;border:2px solid #337da0;font-weight:800}
+.alarm-choice:disabled:not(.selected){opacity:.75;cursor:default}
+.alarm-feedback{background:#ecf6ef;color:#23533d;border:1px solid #b9d4c1;padding:12px;border-radius:7px;margin:10px 0;line-height:1.6}
+.alarm-feedback strong{font-size:13px}.alarm-feedback p{font-size:12px}
+.alarm-limits{color:#476c59;font-size:11px!important}
+.alarm-quiz-hint{font-size:11px!important;color:#536e7d}
+.alarm-attempt-note{color:#2c7058!important;font-weight:700}
+.alarm-source-links{border-top:1px solid #d1e0e8;padding:10px 0;margin-top:17px;display:grid;gap:5px}
+.alarm-source-links strong{font-size:11px;color:#315771}
+.alarm-source-links a{font-size:11px;color:#165c8d;overflow-wrap:anywhere;line-height:1.6}
+.alarm-term-filters{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;margin:12px 0}
+.alarm-term-filter{background:#f6fbfd;border:1px solid #adc6d3;color:#2c5c76;border-radius:7px;padding:9px 6px;min-height:42px;font-weight:750;font-size:11px}
+.alarm-term-filter[aria-pressed="true"]{background:#225b7c;border-color:#225b7c;color:#fff}
+.alarm-term-list{display:grid;gap:8px}.alarm-term-card{background:#fff;border:1px solid #c8dce6;padding:10px 12px;border-radius:8px;overflow-wrap:anywhere}
+.alarm-term-card h3{display:flex;gap:7px;flex-wrap:wrap;align-items:center;color:#1b4b66;font-size:15px;margin:2px 0 7px}
+.alarm-term-kind{font-size:10px;font-weight:650;color:#4c7086;background:#e8f2f7;padding:4px 6px;border-radius:4px}
+.alarm-term-card p{font-size:11px;line-height:1.6;margin:6px 0}
+.alarm-simulator-difference{background:#fff8e9;border-left:3px solid #d0a762;padding:6px 8px;color:#6b5830}
+.alarm-error{color:#a33528;font-size:12px;background:#fff0ed;padding:8px}
+@media(max-width:550px){.side-tabs{gap:3px}.side-tabs button{font-size:10px;min-height:47px;padding:7px 2px}.alarm-lesson-card,.alarm-quiz,.alarm-learning-section{padding:10px}.alarm-lesson-card h3{font-size:13px}.alarm-detail-title{font-size:15px}.alarm-choice{min-height:54px}}
