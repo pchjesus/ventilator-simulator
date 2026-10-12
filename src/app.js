@@ -3,6 +3,7 @@ import {generateWaveform, previewScales} from "./waveform-model.js";
 import {beginSettingEdit, preferredEditStep, stepSettingEdit, acceptSettingEdit} from "./setting-editor.js";
 import {CLINICAL_TOPICS, TOPIC_GROUPS, EDUCATION_SOURCES, MANUAL_SECTIONS} from "./education-content.js";
 import {RELEASE_CATEGORIES, notesForCategory} from "./release-notes.js";
+import {clampRatio, ratioFromClientX, inspectAt} from "./waveform-inspector.js";
 const settingsContainer = document.getElementById("settings");
 const monitor = document.getElementById("monitor");
 const status = document.getElementById("status");
@@ -384,6 +385,78 @@ document.querySelectorAll("[data-view]").forEach(button=>button.addEventListener
 const plotPhases=["mandatory","spontaneous","expiration"];
 const plotNames=["pressure","flow","volume"];
 const WAVE_WINDOW_SECONDS=16;
+const analysisButton=document.getElementById("waveform-inspect");
+const gridButton=document.getElementById("waveform-grid");
+const inspectionPanel=document.getElementById("inspection-panel");
+const inspectionPosition=document.getElementById("inspection-position");
+let inspectorActive=false;
+let pausedBeforeInspection=false;
+let inspectionRatio=0.5;
+let displayedSamples=[];
+let gridVisible=true;
+const cursorLines=new Map();
+for(const name of plotNames){
+  const svg=document.getElementById("graph-"+name);
+  const line=document.createElementNS("http://www.w3.org/2000/svg","line");
+  line.setAttribute("y1","0");line.setAttribute("y2","130");
+  line.setAttribute("class","study-cursor");
+  svg.append(line);cursorLines.set(name,line);
+  svg.addEventListener("pointerdown",event=>{
+    if(!inspectorActive)return;
+    const bounds=svg.getBoundingClientRect();
+    inspectionRatio=ratioFromClientX(event.clientX,bounds.left,bounds.width);
+    inspectionPosition.value=String(Math.round(inspectionRatio*100));
+    renderInspection();
+  });
+}
+function renderInspection(){
+  for(const line of cursorLines.values())line.style.display=inspectorActive?"":"none";
+  if(!inspectorActive||!displayedSamples.length)return;
+  const selected=inspectAt(displayedSamples,inspectionRatio);
+  const x=(selected.ratio*760).toFixed(1);
+  for(const line of cursorLines.values()){
+    line.setAttribute("x1",x);line.setAttribute("x2",x);
+  }
+  document.getElementById("inspection-time").textContent="표시 구간 +"+(selected.ratio*WAVE_WINDOW_SECONDS).toFixed(1)+" s / 16 s";
+  document.getElementById("inspection-pressure").textContent=selected.point.pressure.toFixed(1);
+  document.getElementById("inspection-flow").textContent=selected.point.flow.toFixed(1);
+  document.getElementById("inspection-volume").textContent=selected.point.volume.toFixed(0);
+  document.getElementById("inspection-phase").textContent=({mandatory:"강제 흡기 (예시)",spontaneous:"자발 흡기 (예시)",expiration:"호기 (예시)"})[selected.point.phase];
+}
+function setInspector(next){
+  if(next===inspectorActive)return;
+  if(next){
+    pausedBeforeInspection=waveformPaused;
+    waveformPaused=true;
+    inspectorActive=true;
+    inspectionPanel.hidden=false;
+    analysisButton.setAttribute("aria-pressed","true");
+    analysisButton.textContent="⌖ 분석 종료";
+    refreshPauseControl();
+    paintWaveforms();
+    inspectionPosition.focus();
+  }else{
+    inspectorActive=false;
+    inspectionPanel.hidden=true;
+    analysisButton.setAttribute("aria-pressed","false");
+    analysisButton.textContent="⌖ 파형 분석";
+    waveformPaused=pausedBeforeInspection;
+    refreshPauseControl();
+    renderInspection();
+    analysisButton.focus();
+  }
+}
+gridButton.addEventListener("click",()=>{
+  gridVisible=!gridVisible;
+  document.querySelector(".graph-area").classList.toggle("show-grid",gridVisible);
+  gridButton.setAttribute("aria-pressed",String(gridVisible));
+  gridButton.setAttribute("aria-label",gridVisible?"파형 격자 숨기기":"파형 격자 표시하기");
+});
+analysisButton.addEventListener("click",()=>setInspector(!inspectorActive));
+inspectionPosition.addEventListener("input",()=>{
+  inspectionRatio=clampRatio(Number(inspectionPosition.value)/100);
+  renderInspection();
+});
 let waveformTime=0;
 // Keep animations still by default when the device requests reduced motion.
 // Students may explicitly choose Resume; the setting values remain interactive.
@@ -392,6 +465,7 @@ let previousFrameTime=null;
 let previousPaintTime=-1000;
 function paintWaveforms(){
   const samples=generateWaveform(state,waveformTime,WAVE_WINDOW_SECONDS,320);
+  displayedSamples=samples;
   const scale=previewScales(state,samples);
   document.getElementById("scale-pressure").textContent="0–"+scale.pressureMax+" cmH₂O";
   document.getElementById("scale-flow").textContent="±"+scale.flowMax+" L/min";
@@ -418,6 +492,7 @@ function paintWaveforms(){
       group.querySelector('[data-phase="'+phase+'"]').setAttribute("d",path);
     }
   }
+  renderInspection();
 }
 const pauseButton=document.getElementById("waveform-pause");
 function refreshPauseControl(){
@@ -427,7 +502,8 @@ function refreshPauseControl(){
 }
 refreshPauseControl();
 pauseButton.addEventListener("click",()=>{
-  waveformPaused=!waveformPaused;
+  if(inspectorActive){setInspector(false);waveformPaused=false;}
+  else waveformPaused=!waveformPaused;
   refreshPauseControl();
   // Commit the frozen frame synchronously, preventing one later repaint jump.
   if(waveformPaused) paintWaveforms();
