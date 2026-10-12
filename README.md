@@ -1,4 +1,4 @@
-# Ventilator Simulator — v0.3.6 Preview
+# Ventilator Simulator — v0.3.7 Preview
 
 간호학생을 위한 **PB980(Puritan Bennett 980) 참고형 웹 시뮬레이터** 초기 실행본.
 실제 장비의 화면 구성 학습을 목표로 하지만, 임상 사용이나 기계 조작 훈련을 대체하지 않는다.
@@ -9,7 +9,7 @@
 - 테스트: Node.js 18 이상에서 `npm test`, `npm run check`
 - npm 의존성 없음. 브라우저 ES modules 사용. `file://` 직접 실행은 권장하지 않음.
 
-## 현재 구현 (v0.3.6)
+## 현재 구현 (v0.3.7)
 - PB980 스타일의 화면 구획: 상단 monitoring, 중앙 pressure/flow/volume 파형, 하단 SIMV(PC)+PS 설정 영역
 - 화면 안에서 FiO₂, PEEP, f, Pi, Ti, PS, V-TRIG 값 증감 및 기본값 초기화
 - 각 설정 옆 `?` 도움말, 오른쪽 CIRCUIT 개념 학습 탭(부품/조립 개요/완성 개념도)
@@ -96,3 +96,12 @@ v0.2.2 improves keyboard-focus continuity when adjusting settings and adds a 320
 - 근거: Medtronic PB980 Operator's Manual (기종별 설명), AARC 2024 환자-인공호흡기 사정 지침, Merck Manual Professional (일반 의학 설명). 기기의 임상 동작을 검증한 것은 아니며 실제 처방·ABGA·환자 반응을 계산하지 않는다.
 - 동작 상태·모델/파형 엔진·기존 v0.3.5 이중 설정 방식에는 변경 없음. 팝업 설명 데이터는 `src/education-content.js`, 변경 내역은 `src/release-notes.js`에서 관리한다.
 - 세부 문서: [근거 검토](docs/CLINICAL_EDUCATION_v0.3.6.md) · [팝업 UI 사양](docs/OVERLAYS_v0.3.6.md).
+
+## v0.3.7 — 정보 우선 UI와 파형 분석
+- PB980의 **상단 patient data → 모드 및 파형 → prompt → 현재 설정** 구조를 유지하면서, 외형 장식은 중립 색상으로 절제하고 숫자/레이블/버튼 대비와 크기를 개선했다.
+- 동작 추가: **▦ 격자**는 파형 배경 격자의 표시만 전환한다. 설정, 데이터 및 시간 진행에는 영향을 주지 않는다.
+- **⌖ 파형 분석**을 누르면 현재 교육용 파형이 정지되며 **3개의 SVG 커서**가 하나의 선택 시점을 가리킨다. 파형을 터치·클릭하거나 시간 슬라이더(키보드 방향키 포함)를 움직이면 해당 **생성 예시 압력/유량/용적/단계**가 표시된다.
+- 분석 모드 종료 시 진입 전 재생/정지 상태로 돌아간다. 분석 중 **Resume**은 분석 모드를 종료하고 재생한다.
+- **중요한 한계:** 파형 커서의 수치는 시뮬레이터가 그린 시간곡선의 샘플 값이다. PB980 실측자료도, 고정 환자 모니터 예시값도, ABGA/SpO₂ 계산값도 아니다.
+- 근거: [Medtronic PB980 operator manual](https://asiapac.medtronic.com/content/dam/covidien/library/us/en/product/acute-care-ventilation/PuritanBennett980Ventilator_OperatorsManual_en_US_PT00101843A00.pdf) 파형 일시정지·커서·격자 및 [제조사 교육 비디오](https://www.medtronic.com/en-us/healthcare-professionals/products/respiratory/mechanical-ventilation/ventilators/puritan-bennett-980-series-ventilator/in-service-videos.html). 본 앱은 제조사의 조작 동작을 그대로 재현하는 것이 아닌 간략 교육 모드다.
+- 새 순수 계산 보조: `src/waveform-inspector.js`; `src/waveform-model.js` 및 `src/setting-editor.js`는 수정하지 않았다.
