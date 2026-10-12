@@ -304,3 +304,11 @@ Next: instructor content audit and deidentified student pilot.
 ### v0.4.2 UI verification addendum
 - New ten-item knowledge check initially produced a long page that moved the PB980 example screen outside the visible area during desktop answer review. Only while a quiz is active and at desktop widths >=1101px, the study panel now uses a bounded sticky scroll container. Starting the quiz aligns the desktop workspace to retain the ventilator overview. Mobile 360/320px and the pre-quiz layout keep their previous single-page scroll.
 - Browser screenshot review: PR #11, 1440px desktop-core-quiz-feedback / desktop-core-quiz-complete, mobile-core-quiz-360, narrow-core-quiz-320. No clipped answer or review buttons; key simulator areas remain visible in desktop quiz.
+
+
+## v0.4.3 (2026-10-12) — clinical content QA handoff
+Added: Per-item faculty evidence notes and review questions for all ten formative items; after concept-card review, a button returns to the current quiz question. A separate faculty clinical-review handoff matrix and future pilot protocol were documented.
+Changed: App-only implementation evidence appears as internal product behavior without an inaccessible Private GitHub link; one f/fTOT question clarifies that displayed figures are a **conceptual example**, not real patient data. Updated version metadata/patch history.
+Preserved: Ten question IDs, correct answer IDs, six core concepts, CASE 01/02 and their answers, settings, monitor reference values, mathematical waveform engine, pause/inspect/grid, ALARM/CIRCUIT/Help, RAM-only privacy boundary, and existing first-screen student-first layout.
+Risk/QA: Source classification and every faculty trace must pass schema audit, and all baseline regression tests remain. No human clinical SME review, hospital device signoff, user recruitment or certification was performed.
+Next: Independent educator review → targeted wording corrections → real student usability pilot (with required approvals).
