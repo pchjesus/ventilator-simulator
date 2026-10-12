@@ -254,3 +254,9 @@
 - Add missing-source/objective/duplicated-answer/source-kind and unsafe review-state unit tests.
 - Desktop, 360, 320 Chromium regression including instructor answer preview, paper-source link `noopener noreferrer`, back/forth and reflection focus/value persistence, simulator data unchanged, existing 34+ unit tests.
 - Critical limitation: no clinical external educator content approval or learner learning-outcome pilot. See `docs/CLINICAL_CONTENT_QA_v0.3.9.md`.
+
+
+### v0.3.9 UI/QA reviewed after first CI correction
+- 45 Node tests passing, Chromium desktop/360/320 scenario & legacy regressions passing, packaging passing on [PR workflow 38203543362](https://github.com/pchjesus/ventilator-simulator/actions/runs/38203543362).
+- Found and corrected a Playwright strict-selector regression caused by nested `<summary>` elements; no app code changes to resolve.
+- Captured 24 screenshots, reviewed desktop CASE instructor preview and 320px case preview. Publicly accessible answer reveal and explicit `review pending` status visible; actual student interface and machine simulation retained.

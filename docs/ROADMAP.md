@@ -151,3 +151,5 @@
 - [ ] Exact PR/main CI and 1440/360/320 screenshot review.
 - [ ] External qualified reviewers sign clinical item validation (out of scope for automatic coding).
 See [clinical content QA v0.3.9](CLINICAL_CONTENT_QA_v0.3.9.md).
+
+- [x] v0.3.9 45/45 unit, Chromium desktop/360/320 and static package PASS on PR branch run 38203543362; reviewed 24 screenshots with desktop/mobile instructor preview.
