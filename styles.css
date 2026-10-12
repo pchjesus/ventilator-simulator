@@ -575,6 +575,11 @@ body[data-control-mode="device"] .setting{min-height:92px}
 }
 
 
+/* v0.4.2: keep desktop PB980 reference visible during long formative checks only.
+ * Avoid applying nested scrolling to v0.4.1 baseline or mobile single-column UI. */
+@media (min-width:1101px){
+ .study-panel.core-quiz-active{position:sticky;top:12px;max-height:calc(100vh - 24px);overflow-y:auto;overscroll-behavior:contain;scrollbar-gutter:stable;scrollbar-width:thin}
+}
 /* v0.4.2 core formative-check: isolated from device setting cards. */
 .core-quiz{margin:17px 0 12px;padding:13px;border:1px solid #aacbd9;border-radius:10px;background:#f4fafc;min-width:0;overflow-wrap:anywhere}
 .core-quiz-heading{font-size:16px;color:#17455d;line-height:1.4;margin:1px 0 8px}
