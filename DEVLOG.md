@@ -266,3 +266,19 @@
 - PR [#7](https://github.com/pchjesus/ventilator-simulator/pull/7) → Private main app commit `85bf91a82f48d5cc2956a501d4ce34510aaffd41`.
 - Main CI [38203800899](https://github.com/pchjesus/ventilator-simulator/actions/runs/38203800899): **SUCCESS** on 45/45 unit, desktop/360/320 Chromium and static package.
 - Content is **unreviewed by clinical experts**, educator preview is open to all, and learner notes are RAM-only; no approval/grade certification.
+
+## v0.4.0 — Device alarm recognition and parameter-versus-monitor literacy (2026-10-12)
+- Baseline v0.3.9 Private main `249bb3b132679b15d44e56136a0927be3f839fac`.
+- Evidence review: Medtronic PB980 Operator Manual chapter 6 / Table 6-5 and AARC 2024 Patient–Ventilator Assessment; avoided implying a single fixed alarm priority or actual response algorithm for multiple hardware/firmware conditions.
+- New pure `src/device-learning.js`: four documented alarm recognition lessons with 3 response choices, generic patient-safety observation/report education, source links, safe grading; glossary crosswalk matches simulator's seven settings, seven fixed monitor readouts, and example SIMV mode.
+- New fourth **ALARM** right-side study tab. No alarm state emitted to existing fixed monitor, synthetic waveform, case-state engine, staged setting editor, or CIRCUIT view.
+- Risk review: (1) confusion between fake alarm and actual device → always-on explicit “실제 발생 경보 아님” notice; (2) numerical changes triggering false alarms → source-only read and no waveform/settings writes; (3) narrow screen → four tab labels adapt with native buttons, Chromium viewport regression; (4) answer persistence/reset → page RAM per alarm ID, not device or case state.
+- Dedicated source/UX limits in `docs/PB980_ALARM_EDUCATION_v0.4.0.md`. All clinical interpretations remain expert-review pending.
+- Required verification: catalog/unit tests, desktop/360/320 Chromium alarm path and pre-existing 45 unit assertions, actual screenshot review, PR & final exact private main CI.
+
+
+### v0.4.0 verified branch screenshots / CI
+- PR branch [38208572810](https://github.com/pchjesus/ventilator-simulator/actions/runs/38208572810) passed **52/52 Node tests**, Chromium 1440/360/320 and static package.
+- A browser-test selector string quoting error was detected by CI and corrected; `npm run check` now validates test script syntax before Chromium installation.
+- Manually examined 28-shot browser artifact, including desktop glossary, desktop quiz feedback, and 320px mobile lesson.
+- Manufacturer manual-grounded vocabulary remains distinct from unreviewed student interpretation; there is still no actual simulated alarm engine.

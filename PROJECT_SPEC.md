@@ -113,3 +113,10 @@ Vent settings
 - Student UI retains in-page progress across tabs and simulator reset. After each question, optionally show its evidence; after completion offer answer-by-answer comparison and RAM-only reflection text fields that survive tab switches but not browser reloads or case replay.
 - Instructor preview is openly accessible (not authenticated); the button prominently warns that answers are revealed. It contains no approval controls or clinical signoff.
 - Reference the INACSL official standards page updated in 2025, not solely 2021 articles.
+
+## v0.4.0 PB980 ALARM teaching contract
+- Add fourth right-side `ALARM 학습` tab, independent from Help/CIRCUIT/CASE and from any virtual ventilator physiological or measurement state.
+- Provide exactly 4 manufacturer-grounded **non-live, educational** alarm cards (disconnect, high pressure, low minute ventilation, apnea), each with source context, student role-safe observation/report, one formative 3-option question and replay.
+- Provide an independent glossary filter for 7 educational configurable settings, 7 fixed sample monitor values, and example SIMV(PC)+PS mode with conspicuous value-source distinction.
+- Never generate alarm colors, priority countdowns, beeps, fake measurements, circuit effects, diagnosis or treatment instructions via learner cards.
+- Remain visible and usable at 1440/360/320. Keep original device editor, quick settings, waveform, manual, CASE, CIRCUIT and reset behavior intact.

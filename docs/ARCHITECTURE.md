@@ -100,3 +100,18 @@ src/preclinical-cases.js (versioned fictional case items, objectives, source IDs
 - Separate `reviewerCaseId` is only which source-preview card is expanded, never medical `approved`; learn/exam authorization **not available**.
 - `caseState` retains prior transition logic. Reflection inputs are stored separately by case ID and only updated on input; re-render restores them after tab change; replay deletes notes.
 - No change to `sim-model.js`, `waveform-model.js`, `setting-editor.js` or fixed top monitor reference values (except version string).
+
+## v0.4.0 non-live alarm study module
+```
+src/sim-model.js (7 settings metadata + 7 fixed readouts) READ ONLY
+             ↓
+src/device-learning.js (15 display terms, 4 alarm lessons, pure grading/audit)
+             ↓
+src/app.js local ALARM state (selected lesson, chosen response Map, filter)
+             ↓
+#panel-alarm (text-only educational card; no changes to device LCD)
+```
+- `src/waveform-model.js`, `src/case-engine.js`, `src/setting-editor.js` have no dependency on alarm module.
+- No timer, patient signal, hardware inputs, sound, alarm limit setting, device transport or persistence is introduced.
+- `auditDeviceEducation()` compares glossary IDs to `PARAMETERS`/`MONITOR_REFERENCE` to prevent an omitted setting or readout when device screen is later extended.
+- Note: imported case content and this catalog are separate educational domains: combining them into dynamic simulated patient safety messages needs a future planned clinical safety design gate.

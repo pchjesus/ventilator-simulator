@@ -199,3 +199,19 @@ GitHub Actions run: https://github.com/pchjesus/ventilator-simulator/actions/run
 - The main branch remained **Private**. No GitHub Pages deployment or clinical publication.
 - GitHub Actions generated static web and 24 Chromium screenshots for source-matched application build.
 - Report-only follow-up commit makes no app-code or clinical-content changes; its exact final SHA CI should be separately verified before closure.
+
+## v0.4.0 — planned alarm learning & baseline regressions
+- Existing 45 unit assertions, browser staged settings, fixed monitors, waveform inspection/pause, modal Help, CIRCUIT, case/debrief and instructor preview retained.
+- New unit tests for 15 display terms, 4 lessons, coverage, unique IDs, source metadata, 3-choice answer grading, immutability and invalid action rejection.
+- Browser: choose each tab, 4 alarm cards, instructor-independent page-only quiz and retry, return to list, setting/monitor/mode filter counts of 7/7/1; ensure text and waveform structures unchanged; 360 and 320px cases and no horizontal overflow.
+- Clarify not tested: **real PB980 alarm trigger thresholds, priority conditions, sensor analysis, patient ventilatory outcome, clinician approval and physical handset tests**.
+- Gate: green PR unit/browser/package and exact merged Private main CI, with browser screenshots visually reviewed.
+
+
+### v0.4.0 successful PR integration and screenshot review (2026-10-12)
+- Initial PR workflow [38208445072](https://github.com/pchjesus/ventilator-simulator/actions/runs/38208445072) passed **52/52 unit tests** but browser never started because of a misquoted CSS locator in the newly added test. Fixed test selector and added `node --check tests/browser-check.mjs` to preflight syntax checks.
+- Corrected PR workflow [38208572810](https://github.com/pchjesus/ventilator-simulator/actions/runs/38208572810): **test 52/52, browser, package all SUCCESS**.
+- Chromium generated **28 PNG captures**, covering existing desktop/360px/320px workflows plus new `desktop-alarm-feedback.png`, `desktop-alarm-terms.png`, `mobile-alarm.png`, `narrow-alarm-320.png`.
+- Inspected actual `desktop-alarm-feedback`, `desktop-alarm-terms` and `narrow-alarm-320` screenshots. Right study panel remains usable with 4 tabs, alarm quiz/feedback display, terms filters and narrow text wrap; narrow viewport browser assertions detect horizontal overflow.
+- No patient alarm triggers, acoustic alerts, physiology, device firmware or actual field training is validated.
+- Required release gate still ahead: merge PR #8 to Private main and verify exact final main commit CI (test/browser/package).

@@ -1,4 +1,4 @@
-# Ventilator Simulator — v0.3.9 Preview
+# Ventilator Simulator — v0.4.0 Preview
 
 간호학생을 위한 **PB980(Puritan Bennett 980) 참고형 웹 시뮬레이터** 초기 실행본.
 실제 장비의 화면 구성 학습을 목표로 하지만, 임상 사용이나 기계 조작 훈련을 대체하지 않는다.
@@ -9,7 +9,7 @@
 - 테스트: Node.js 18 이상에서 `npm test`, `npm run check`
 - npm 의존성 없음. 브라우저 ES modules 사용. `file://` 직접 실행은 권장하지 않음.
 
-## 현재 구현 (v0.3.9)
+## 현재 구현 (v0.4.0)
 - PB980 스타일의 화면 구획: 상단 monitoring, 중앙 pressure/flow/volume 파형, 하단 SIMV(PC)+PS 설정 영역
 - 화면 안에서 FiO₂, PEEP, f, Pi, Ti, PS, V-TRIG 값 증감 및 기본값 초기화
 - 각 설정 옆 `?` 도움말, 오른쪽 CIRCUIT 개념 학습 탭(부품/조립 개요/완성 개념도)
@@ -124,3 +124,10 @@ v0.2.2 improves keyboard-focus continuity when adjusting settings and adds a 320
 - **INACSL 2025 개정**에 따라 현재 표준 링크로 교육 설계 검토 경로를 갱신. 이전 2021 자료는 역사적 출처로만 유지한다.
 - [v0.3.9 콘텐츠 품질/임상 검토 체크리스트](docs/CLINICAL_CONTENT_QA_v0.3.9.md)
 - 전문가 감수·학생 대상 효과검증은 여전히 미완료이며 정답률이 임상 역량 인증을 뜻하지 않는다.
+
+## v0.4.0 — PB980 알람·설정/측정 용어 학습
+- 오른쪽 **ALARM 학습**(4번째 탭): 제조사 매뉴얼 6장/표 6-5의 4개 알람 명칭(CIRCUIT DISCONNECT, HIGH CIRCUIT PRESSURE, LOW EXHALED MINUTE VOLUME, APNEA)을 가상 카드로 학습. 의미·간호학생 사정/보고 포인트·3지선다 판단·선택 해설·다시 풀기 제공.
+- **설정·모니터 용어**: 변경 가능한 교육용 설정 7종, 상단 고정 모니터 예시 7종, 고정 모드 1종을 선택 필터로 구분. 설정/측정 혼동 방지가 목표.
+- **실제 알람 발생·알람 소리·감지/우선순위/지연·회로 분리·환자 반응은 구현하지 않았음.** 기존 파형·고정 모니터·CASE·설정 초기화 및 Accept/Cancel과 연동하지 않는다.
+- [PB980 알람 교육 원문 근거·한계 문서](docs/PB980_ALARM_EDUCATION_v0.4.0.md): 제조사 매뉴얼 Table 6-5와 AARC 2024 사정 지침 분리. 실제 실습 지침/의료행위를 대체하지 않음.
+- 4개 카드의 의료 문장은 임상전문가 감수 전 단계이며, 알람의 원인/우선순위를 추정하는 임상 시뮬레이터로 사용해서는 안 된다.

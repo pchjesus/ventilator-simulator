@@ -155,3 +155,15 @@ See [clinical content QA v0.3.9](CLINICAL_CONTENT_QA_v0.3.9.md).
 - [x] v0.3.9 45/45 unit, Chromium desktop/360/320 and static package PASS on PR branch run 38203543362; reviewed 24 screenshots with desktop/mobile instructor preview.
 
 - [x] v0.3.9 PR #7 merged into Private main; full code-merge CI 38203800899 test/browser/package SUCCESS.
+
+## v0.4.0 — PB980 terminology and non-live alarm recognition
+- [x] Crosscheck four alarm label/meaning topics against Medtronic PB980 Operator Manual chapter 6/Table 6-5.
+- [x] Implement fourth ALARM tab with recognition exercises, feedback and source links, without actual sensor alarms.
+- [x] Add 7/7 setting-vs-monitor glossary and permanent distinction between device display reference and modeled waveform.
+- [x] Preserve original CASE / CIRCUIT / Help / waveform / staged device editor and quick study states in application architecture.
+- [x] Add pure grading and glossary integrity tests and desktop/360/320 browser regression coverage.
+- [ ] PR screenshot review, merge Private main, verify exact final SHA CI.
+- [ ] Clinical SME sign-off and local MICU firmware/alarm protocol comparison (future).
+See [PB980 alarm education design & evidence boundaries](PB980_ALARM_EDUCATION_v0.4.0.md).
+
+- [x] v0.4.0 PR branch run 38208572810: **52/52 unit, Chromium desktop/360/320, package successful**; reviewed 28 browser captures for alarm UI.

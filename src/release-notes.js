@@ -8,6 +8,12 @@ export const RELEASE_CATEGORIES=Object.freeze([
   {id:"docs",label:"문서·근거"}
 ]);
 export const RELEASE_NOTES=Object.freeze([
+ {version:"0.4.0",date:"2026-10-12",changes:[
+  {category:"ui",text:"네 번째 ALARM 학습 탭과 반응형 알람 카드·설정값/측정값 구분 용어 화면 추가"},
+  {category:"feature",text:"PB980 제조사 문서에 등장하는 경보 명칭 4종의 교육용 선택·즉시 해설·다시 풀기 기능"},
+  {category:"clinical",text:"회로 이탈·높은 기도압·낮은 호기 분당환기량·무호흡 알람의 원문 의미, 학생 관찰·보고 원칙, AARC 근거 설명"},
+  {category:"stability",text:"환자·회로·파형에 경보를 실제 발생시키지 않는 독립 상태, 설정값 7/고정 모니터 7 커버리지 검사와 회귀검증"},
+  {category:"docs",text:"PB980 Operator Manual 6장 Table 6-5와 AARC 2024를 구분한 알람 교육 계약 및 미구현 범위 명시"}]},
  {version:"0.3.9",date:"2026-10-12",changes:[
   {category:"ui",text:"CASE 목록에 정답 공개 경고가 있는 교수자 검토 미리보기, 문항별 근거 접기·펼치기, 구조화 복습 입력창 제공"},
   {category:"feature",text:"학습목표·근거 ID 자동 연결 검사와 오류 시 CASE 학습 중단, 문항 선택 후 근거 추적 및 결과별 오답 복습 추가"},
