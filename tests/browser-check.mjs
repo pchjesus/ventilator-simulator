@@ -75,7 +75,7 @@ try {
   assert.match(await desktop.locator(".alarm-term-list").innerText(),/고정/);
   await desktop.locator('[data-term-category="mode"]').click();
   assert.equal(await desktop.locator(".alarm-term-card").count(),1);
-  assert.equal(await desktop.locator(".alarm-source-links a[target="_blank"][rel="noopener noreferrer"]').count(),2);
+  assert.equal(await desktop.locator('.alarm-source-links a[target="_blank"][rel="noopener noreferrer"]').count(),2);
   await desktop.screenshot({path:"artifacts/browser/desktop-alarm-terms.png",fullPage:false});
   await desktop.getByRole("tab",{name:"CIRCUIT"}).click();
   pass("PB980 alarm teaching: 4 lessons, quiz, replay, glossary, safe links and isolated simulator state");
