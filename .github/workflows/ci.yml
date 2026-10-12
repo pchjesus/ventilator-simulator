@@ -52,7 +52,7 @@ jobs:
         run: |
           mkdir -p dist/src
           cp index.html styles.css dist/
-          cp src/app.js src/sim-model.js src/waveform-model.js src/setting-editor.js src/education-content.js src/release-notes.js src/waveform-inspector.js dist/src/
+          cp src/app.js src/sim-model.js src/waveform-model.js src/setting-editor.js src/education-content.js src/release-notes.js src/waveform-inspector.js src/preclinical-cases.js src/case-engine.js dist/src/
           touch dist/.nojekyll
           test -s dist/index.html
           test -s dist/styles.css
@@ -63,6 +63,8 @@ jobs:
           test -s dist/src/education-content.js
           test -s dist/src/release-notes.js
           test -s dist/src/waveform-inspector.js
+          test -s dist/src/preclinical-cases.js
+          test -s dist/src/case-engine.js
       - uses: actions/upload-artifact@v4
         with:
           name: pb980-web-only
