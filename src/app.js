@@ -190,6 +190,7 @@ function showSideTab(tab) {
     button.classList.toggle("active",active);
     button.setAttribute("aria-selected",String(active));
   }
+  syncCoreQuizPanel();
 }
 function explain(title, description, reference = null, explicitTopicId = null) {
   document.getElementById("help-title").textContent = title;
@@ -639,6 +640,13 @@ function renderCoreLearning(){
  * must never mutate this assessment or any waveform/fixed-monitor content. */
 const coreQuizAudit=auditCoreQuiz();
 let coreQuizState=null;
+function syncCoreQuizPanel(){
+ const panel=document.querySelector(".study-panel");
+ const active=Boolean(coreQuizState)&&!panelCore.hidden;
+ panel.classList.toggle("core-quiz-active",active);
+ if(active)panel.tabIndex=0;
+ else panel.removeAttribute("tabindex");
+}
 function quizButton(label,handler,css=""){
  const button=makeElement("button",css,label);
  button.type="button";
@@ -670,6 +678,7 @@ function quizSources(root,ids){
 }
 function renderCoreQuiz(){
  const root=document.getElementById("core-quiz-root");
+ syncCoreQuizPanel();
  root.replaceChildren();
  root.append(makeElement("h3","core-quiz-heading","핵심 개념 학습 확인"));
  root.append(makeElement("p","core-quiz-scope","10문항 · 스스로 점검하는 형성평가 · 정답률은 임상 역량을 인증하지 않아. 답안은 이 페이지 메모리에만 남으며 새로고침 시 사라져."));
