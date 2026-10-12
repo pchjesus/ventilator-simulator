@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="#26343f">
-  <title>PB980 Ventilator Simulator | Educational Preview</title>
+  <title>PB980 Ventilator Simulator v0.3.8 | Preclinical Learning</title>
   <link rel="stylesheet" href="./styles.css">
   <script src="./src/app.js" type="module"></script>
 </head>
@@ -98,6 +98,7 @@
       <div class="side-tabs" role="tablist" aria-label="학습 탭">
         <button type="button" id="tab-circuit" class="active" role="tab" aria-selected="true" aria-controls="panel-circuit">CIRCUIT</button>
         <button type="button" id="tab-help" role="tab" aria-selected="false" aria-controls="panel-help">? 설명</button>
+        <button type="button" id="tab-case" role="tab" aria-selected="false" aria-controls="panel-case">CASE 학습</button>
       </div>
       <section id="panel-circuit" role="tabpanel" aria-labelledby="tab-circuit">
         <p class="panel-caption">호흡회로 개념도 · 실제 연결 순서/부품은 기관과 구성에 따라 달라짐</p>
@@ -115,6 +116,10 @@
         <p id="reference-info" class="reference-info" hidden></p>
         <div id="clinical-detail" class="clinical-detail" aria-label="근거 기반 간호·의학 상세 설명"></div>
         <p class="fine-print">교육용 기본 설명이므로 세부 조작 및 실제 적용은 해당 장비 매뉴얼과 담당 의료진의 지침을 따라야 해.</p>
+      </section>
+      <section id="panel-case" role="tabpanel" aria-labelledby="tab-case" hidden>
+        <p class="case-disclaimer">가상 사례 · 전문가 미감수 형성학습 · 이 패널은 현재 기기 설정·모니터·파형과 독립적이야.</p>
+        <div id="case-content" aria-live="off"></div>
       </section>
     </aside>
   </main>
@@ -153,6 +158,6 @@
       </div>
     </form>
   </dialog>
-  <footer class="footer">MVP v0.3.7 · 브라우저에서 동작하는 교육용 프런트엔드 · 임상/장비 동작 검증 전</footer>
+  <footer class="footer">MVP v0.3.8 · 브라우저에서 동작하는 교육용 프런트엔드 · 임상/장비 동작 검증 전</footer>
 </body>
 </html>
