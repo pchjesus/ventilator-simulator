@@ -168,3 +168,10 @@ GitHub Actions run: https://github.com/pchjesus/ventilator-simulator/actions/run
 - Existing simulated ventilator settings/waveform, help/manual, quick/device mode and simulator reset verified unaffected by case choices. Case progress survives tab switch and simulator reset.
 - Remaining before closing: merge PR #6, verify Private `main`, ensure exact final main SHA independently passes test/browser/package.
 - Not completed: external clinical SME sign-off, hospital-policy alignment, nursing education effectiveness pilot and physical-phone field study.
+
+
+### v0.3.8 merged-main integration verification (2026-10-12)
+- PR [#6](https://github.com/pchjesus/ventilator-simulator/pull/6) merged as `0942cc1b4138695474b0a92141bfb7a454697b6e`.
+- Exact app commit GitHub Actions [38198481423](https://github.com/pchjesus/ventilator-simulator/actions/runs/38198481423): `test` (38/38), `browser` and `package` all **SUCCESS**.
+- Repository remained **Private** and no Pages deployment was activated.
+- Documentation-only status update does not alter runnable simulator or clinical case files; latest final SHA is rechecked via CI separately.

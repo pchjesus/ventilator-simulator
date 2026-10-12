@@ -232,3 +232,9 @@
 - Branch PR workflow [38198237425](https://github.com/pchjesus/ventilator-simulator/actions/runs/38198237425): 38/38 unit PASS + browser PASS + web artifact PASS.
 - 22 browser PNGs generated; manually inspected CASE questions on desktop and 320px mobile. UI content and distinct fictional vignette presentation visible without horizontal overflow.
 - v0.3.8 remains an unreviewed **prototype** pending clinical educator review, student pilot and instructor sign-off before any preclinical training release.
+
+
+### v0.3.8 merged Private main
+- Merged clinical CASE prototype PR [#6](https://github.com/pchjesus/ventilator-simulator/pull/6), squash SHA `0942cc1b4138695474b0a92141bfb7a454697b6e`.
+- Main verification [38198481423](https://github.com/pchjesus/ventilator-simulator/actions/runs/38198481423) succeeded for **38/38** Node assertions, desktop/mobile Chromium regression and web-only packaging.
+- Still not suitable as clinician-reviewed preclinical curriculum: await expert review, institution-specific alignment, and teaching pilot before v1.0.
