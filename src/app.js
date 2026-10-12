@@ -634,6 +634,10 @@ function renderCoreLearning(){
   }
 }
 coreTab.addEventListener("click",()=>showSideTab("core"));
+extraLearning.addEventListener("toggle",()=>{
+  // When learners collapse advanced navigation, never strand them in a hidden-tab view.
+  if(!extraLearning.open&&( !panelCircuit.hidden||!panelAlarm.hidden))showSideTab("core");
+});
 
 caseTab.addEventListener("click",()=>{renderCase();showSideTab("case");});
 
