@@ -215,3 +215,10 @@ GitHub Actions run: https://github.com/pchjesus/ventilator-simulator/actions/run
 - Inspected actual `desktop-alarm-feedback`, `desktop-alarm-terms` and `narrow-alarm-320` screenshots. Right study panel remains usable with 4 tabs, alarm quiz/feedback display, terms filters and narrow text wrap; narrow viewport browser assertions detect horizontal overflow.
 - No patient alarm triggers, acoustic alerts, physiology, device firmware or actual field training is validated.
 - Required release gate still ahead: merge PR #8 to Private main and verify exact final main commit CI (test/browser/package).
+
+## v0.4.1 student-first acceptance
+- Existing 52 unit checks + 5 new core-curriculum validations = 57 total.
+- Initial CI caught old topic-array ordering assumption and an overlong teaching mnemonic requirement. Updated tests to preserve full topic coverage while intentionally changing priority.
+- Initial Chromium test had a hidden advanced waveforms topic click. Adjusted to explicitly expand additional Help before selecting; no underlying app error.
+- Browser assertions now cover default six-card core, advanced disclosure closed, setting tiers 3/4, preserve old settings/CASE/CIRCUIT/ALARM/waveforms, safe advanced collapse, mobile 320/360, and browser screenshot captures.
+- Green CI is not clinical validation of PEEP response, local PB980 alarm firmware, or learning effectiveness.

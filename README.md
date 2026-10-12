@@ -1,4 +1,4 @@
-# Ventilator Simulator — v0.4.0 Preview
+# Ventilator Simulator — v0.4.1 Preview
 
 간호학생을 위한 **PB980(Puritan Bennett 980) 참고형 웹 시뮬레이터** 초기 실행본.
 실제 장비의 화면 구성 학습을 목표로 하지만, 임상 사용이나 기계 조작 훈련을 대체하지 않는다.
@@ -9,7 +9,7 @@
 - 테스트: Node.js 18 이상에서 `npm test`, `npm run check`
 - npm 의존성 없음. 브라우저 ES modules 사용. `file://` 직접 실행은 권장하지 않음.
 
-## 현재 구현 (v0.4.0)
+## 현재 구현 (v0.4.1)
 - PB980 스타일의 화면 구획: 상단 monitoring, 중앙 pressure/flow/volume 파형, 하단 SIMV(PC)+PS 설정 영역
 - 화면 안에서 FiO₂, PEEP, f, Pi, Ti, PS, V-TRIG 값 증감 및 기본값 초기화
 - 각 설정 옆 `?` 도움말, 오른쪽 CIRCUIT 개념 학습 탭(부품/조립 개요/완성 개념도)
@@ -131,3 +131,11 @@ v0.2.2 improves keyboard-focus continuity when adjusting settings and adds a 320
 - **실제 알람 발생·알람 소리·감지/우선순위/지연·회로 분리·환자 반응은 구현하지 않았음.** 기존 파형·고정 모니터·CASE·설정 초기화 및 Accept/Cancel과 연동하지 않는다.
 - [PB980 알람 교육 원문 근거·한계 문서](docs/PB980_ALARM_EDUCATION_v0.4.0.md): 제조사 매뉴얼 Table 6-5와 AARC 2024 사정 지침 분리. 실제 실습 지침/의료행위를 대체하지 않음.
 - 4개 카드의 의료 문장은 임상전문가 감수 전 단계이며, 알람의 원인/우선순위를 추정하는 임상 시뮬레이터로 사용해서는 안 된다.
+
+## v0.4.1 — 학생 핵심 중심 개편
+- 기본 학습 화면: PEEP, FiO₂, VTE, f/fTOT, Ppeak, 환자 우선 사정 6개 카드. 각 카드에 개념·간호 관찰·주의·앱 한계·참고문헌을 제공한다.
+- 필수 3개 설정 FiO₂/PEEP/f를 강조하지만 기존 7개 조작 항목·파형 모델·Accept/Cancel을 보존한다.
+- 기본 탭은 핵심 개념/CASE/? 설명이며 CIRCUIT와 ALARM은 펼칠 수 있는 '추가 학습'으로 이동했다. 심화 Help/알람 매뉴얼 설명도 접기·펼치기 제공.
+- 보조 학습 패널을 접어 선택된 알람·회로 탭에 접근하기 어려워지는 상황에서는 핵심으로 복귀한다. 기존 바로가기는 여전히 회로/도움말을 연다.
+- PB980 버전별 공식 설명서·High PEEP Alarm 버전 특이 안내를 조사했지만 병원 실제 소프트웨어 버전은 확인하지 못했다. 알람 실제 동작은 재현하지 않는다.
+- 자세한 조사: docs/STUDENT_FIRST_AND_PB980_VERSION_REVIEW_v0.4.1.md. 모든 임상 콘텐츠 전문가 검토 전.

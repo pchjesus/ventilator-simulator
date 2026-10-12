@@ -115,3 +115,9 @@ src/app.js local ALARM state (selected lesson, chosen response Map, filter)
 - No timer, patient signal, hardware inputs, sound, alarm limit setting, device transport or persistence is introduced.
 - `auditDeviceEducation()` compares glossary IDs to `PARAMETERS`/`MONITOR_REFERENCE` to prevent an omitted setting or readout when device screen is later extended.
 - Note: imported case content and this catalog are separate educational domains: combining them into dynamic simulated patient safety messages needs a future planned clinical safety design gate.
+
+## v0.4.1 student-first UI separation
+src/student-learning.js exports core teaching concepts, metadata tiers, references and audit. src/app.js renders these read-only in #panel-core and sets initial active study tab to core.
+The existing CIRCUIT/ALARM panels are retained verbatim behind the #extra-learning details control, with safe restore-to-core on close. All 7 setting tiles stay in existing order; a data-learning-tier attribute only changes CSS emphasis.
+No state transitions in waveform model, device setting editor, case engine, alarm lesson scoring or monitor examples.
+src/device-learning.js exports manufacturer catalog version uncertainty and official documentation links only; no PB980 hardware revision detection.
