@@ -126,3 +126,6 @@
 - [x] Add cursor math and 1440/360/320px browser regression tests.
 - [ ] Final browser screenshot review, PR gate, and Private main CI confirmation.
 - [ ] Later: clinician-reviewed physiological waveforms and carefully bounded PB980 GUI behavior (not silently assumed).
+
+- [x] v0.3.7 screenshot review and PR gate complete (34/34 plus Chromium and package).
+- [x] v0.3.7 merged into Private `main` PR #5 and exact code-commit CI 38192764211 passed.

@@ -200,3 +200,11 @@
 - Graph pointer only active in analysis, keyboard works via accessible range input; no hover-only dependency, no remote services, no storage changes.
 - Mobile layout: keep 2-column controls with enlarged values; browser CI at 1440/360/320px checks no overflow and old editor/quick mode.
 - Validation: pure math checks + Chromium regression gate + screenshots; real clinical device/smartphone verification remains out of scope.
+
+
+### v0.3.7 validation & merge
+- Merged PR [#5](https://github.com/pchjesus/ventilator-simulator/pull/5) as `9370cf6797886f7e7af3e9cb55f51e8927904675`.
+- Final app merge CI [38192764211](https://github.com/pchjesus/ventilator-simulator/actions/runs/38192764211): **SUCCESS** on 34/34 unit checks, browser desktop/360/320 regression, and static web packaging.
+- 18 actual Chromium screenshots generated; inspected neutral UI, desktop analysis and 320px responsive.
+- Changed only UI, pure cursor reader, readout rendering/control integration, documentation. `src/waveform-model.js`, `src/setting-editor.js`, original top monitor sample model untouched.
+- No manufacturer-certified clinical model or public deployment.

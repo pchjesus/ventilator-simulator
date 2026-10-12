@@ -143,3 +143,12 @@ GitHub Actions run: https://github.com/pchjesus/ventilator-simulator/actions/run
 - Chromium tests added: default moving graph, analysis freezes, three shared cursor lines, slider Home/End, direct plot click, sample values finite, fixed patient monitor unchanged, grid button independent, exit playback restoration.
 - Existing complete browser suite preserved (modal management, Accept/Cancel/pending, Quick Study, waveform mode effects, CIRCUIT, reduced-motion, desktop/360/320 responsive viewport, keyboard focus).
 - Source-code presence is not verification. Required green PR and **exact final main SHA** test/browser/package jobs; visual PNG inspection; no PB980 device/smartphone hardware validation or clinical physiology claims.
+
+
+### v0.3.7 integrated browser review and Private main release (2026-10-12)
+- PR [#5](https://github.com/pchjesus/ventilator-simulator/pull/5) merged into private `main` as `9370cf6797886f7e7af3e9cb55f51e8927904675`.
+- Exact merge commit verified by GitHub Actions [38192764211](https://github.com/pchjesus/ventilator-simulator/actions/runs/38192764211): `test`, `browser` and `package` all **SUCCESS**.
+- Node regression count **34 passed / 0 failed** (prior 29 + five pure cursor tests). Chromium browser acceptance generated 18 screenshots (including desktop/mobile/narrow analysis captures). Existing Accept/Cancel, quick study, CIRCUIT, 7 fixed monitor values, 3 graph phases, Pause/Resume, Manual/Changelog retained.
+- Screenshots inspected: `desktop.png`, `desktop-analysis.png`, `narrow-320.png`, `narrow-analysis-320.png`; neutral device body, legible settings and monitored readouts, mobile 2-column settings with no width overflow. Inspection cursor 3 graphs and generated values visible.
+- Limitations: no real PB980 UI pixel match, no direct real smartphone or physical device test, no clinical patient simulation or waveform physiological validation.
+- Subsequent documentation-only release-status commit (if any) is rechecked with the exact resulting main SHA separately.
