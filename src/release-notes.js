@@ -8,6 +8,19 @@ export const RELEASE_CATEGORIES=Object.freeze([
   {id:"docs",label:"문서·근거"}
 ]);
 export const RELEASE_NOTES=Object.freeze([
+ {version:"0.4.6",date:"2026-10-13",changes:[
+  {category:"feature",text:"CASE 01·02의 단계별 목표·진행 경로 표시와 개별 이어 하기/다시 시작"},
+  {category:"ui",text:"실습 전 목표·현재 단계 및 사전 상황 자료를 CASE 진행 중 언제든 열람"},
+  {category:"stability",text:"사례별 메모리 상태를 분리하고 목록·학습 탭 전환에도 답안과 복습 메모 유지"},
+  {category:"clinical",text:"기존 사례·정답·근거 유지, 별도 임상전문가 검토 미완료 명시"},
+  {category:"docs",text:"기본 기능 회귀 및 0.4.4·0.4.5·0.4.6 연속 개발 이력"}]},
+ {version:"0.4.5",date:"2026-10-13",changes:[
+  {category:"feature",text:"설정 팝업에서 숫자 직접 입력과 ± 버튼 길게 누르기, TURN 장식 제거"},
+  {category:"ui",text:"이 항목 기본값을 Pending에만 반영하고 Accept 후 해당 설정만 확정"},
+  {category:"stability",text:"미확정 설정과 기존 파형을 분리하고 입력 범위·소수 정밀도 엄격 검증"},
+  {category:"stability",text:"포인터 해제·취소·창 이탈·포커스 상실 시 자동 증감 중단"},
+  {category:"docs",text:"기존 PB980 참고값과 교육용 설정 범위의 차이를 유지"}]},
+
  {version:"0.4.4",date:"2026-10-13",changes:[
   {category:"ui",text:"학습 집중·나란히·장비 집중 3개 배치, 기본 학습·장비 탐색 2개 보기 전환"},
   {category:"stability",text:"레이아웃과 UI 표시 상태는 설정·파형·CASE·형성 퀴즈 상태와 분리"},
