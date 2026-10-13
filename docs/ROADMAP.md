@@ -1,5 +1,19 @@
 # Development Roadmap (checked against GitHub 2026-10-09)
 
+## v0.5.0 FINAL — 학생 학습 UX 단계별 진행 (2026-10-13)
+
+- [x] v0.4.7 — 설명서·팝업 불일치와 고정 모니터 값 잘림 수정. CI [38343016130](https://github.com/pchjesus/ventilator-simulator/actions/runs/38343016130) 통과.
+- [x] v0.4.8 — 모바일 학습 우선, 장비 접근 및 6개 개념 설명 층위/약어. CI [38343423745](https://github.com/pchjesus/ventilator-simulator/actions/runs/38343423745) 통과.
+- [x] v0.4.9 — CASE 이전 응답 읽기 전용·목표별 복습, 형성평가 영역 구분, 교수자 수업 자료. CI [38343729579](https://github.com/pchjesus/ventilator-simulator/actions/runs/38343729579) 통과.
+- [x] v0.5.0 — 승인된 다섯 UX 선택, 자료 출처 분리 안내, 브라우저·회귀 테스트·문서·사용성 파일럿 계획 통합 구현. 최종 CI/병합 검증은 `TEST_REPORT.md` 참고.
+- [ ] 실제 학생 사용성 파일럿 및 교수자 수업 적합성 평가 시행(계획 문서만 작성).
+- [ ] 임상 전문가의 6개 개념·10개 문항·CASE 2개 및 실습학생 역할 검토/승인.
+- [ ] 병원 PB980 실물 펌웨어/설정 범위, 실제 스마트폰 조작, 확대·보조기기 접근성 검증.
+
+관련 문서: [승인된 구현 추적](V0.5.0_APPROVED_STUDENT_UX_IMPLEMENTATION.md), [교수자 수업자료](FACULTY_CLASS_GUIDE_v0.5.0_DRAFT.md), [파일럿 계획](V0.5.0_USABILITY_PILOT_PROTOCOL.md). **실제 사용자·임상 검증을 완료한 버전은 아님**.
+
+---
+
 ## Phase 0 — Verify reference and baseline
 - [x] Inspect repository, README/AGENTS/SPEC and initial commit
 - [x] Identify MICU webapp patterns to reuse (separation, regression, reporting)

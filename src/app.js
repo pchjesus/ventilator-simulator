@@ -8,7 +8,7 @@ import {PRECLINICAL_CASES,CASE_SOURCES,findCase} from "./preclinical-cases.js";
 import {startCase,chooseCaseAnswer,advanceCase,caseScore} from "./case-engine.js";
 import {auditCaseBank,evidenceKindLabel} from "./case-quality.js";
 import {ALARM_LESSONS,DISPLAY_CATEGORIES,DEVICE_EDUCATION_SOURCES,DEVICE_VERSION_REVIEW,termsForCategory,findAlarmLesson,evaluateAlarmChoice,auditDeviceEducation} from "./device-learning.js";
-import {CORE_LESSONS,CORE_SOURCES,ESSENTIAL_SETTING_IDS,auditCoreLearning} from "./student-learning.js";
+import {CORE_LESSONS,CORE_SOURCES,CORE_LESSON_EXTRAS,STUDENT_GLOSSARY,ESSENTIAL_SETTING_IDS,auditCoreLearning} from "./student-learning.js";
 import {CORE_QUESTIONS,CORE_QUIZ_REVIEW,CORE_QUIZ_VERSION,CORE_QUIZ_SOURCES,CORE_REVIEW_GUIDE,auditCoreQuiz,startCoreQuiz,chooseCoreAnswer,advanceCoreQuiz,scoreCoreQuiz} from "./core-quiz.js";
 const settingsContainer = document.getElementById("settings");
 const monitor = document.getElementById("monitor");
@@ -55,7 +55,7 @@ function syncViewChoices(){
 document.querySelectorAll("button[data-presentation]").forEach(button=>button.addEventListener("click",()=>{
   const next=button.dataset.presentation;
   if(!["learning","device"].includes(next))return;
-  presentationMode=next;document.body.dataset.presentation=next;syncViewChoices();
+  presentationMode=next;document.body.dataset.presentation=next;syncViewChoices();syncResponsiveSections();
 }));
 document.querySelectorAll("button[data-layout]").forEach(button=>button.addEventListener("click",()=>{
   const next=button.dataset.layout;
@@ -63,6 +63,40 @@ document.querySelectorAll("button[data-layout]").forEach(button=>button.addEvent
   layoutPreset=next;document.body.dataset.layout=next;syncViewChoices();
 }));
 syncViewChoices();
+// Reorder existing DOM nodes only. Device, editor, quiz and CASE data remain unchanged.
+const compactWorkspace=window.matchMedia("(max-width:1100px)");
+const narrowDevice=window.matchMedia("(max-width:700px)");
+const workspace=document.querySelector(".workspace");
+const devicePanel=document.getElementById("device-panel");
+const learningPanel=document.getElementById("learning-panel");
+const mobileDeviceToggle=document.getElementById("mobile-device-toggle");
+let deviceExpanded=false;
+function syncResponsiveSections(){
+ const first=compactWorkspace.matches&&presentationMode==="learning"?learningPanel:devicePanel;
+ if(workspace.firstElementChild!==first)workspace.insertBefore(first,workspace.firstElementChild);
+ document.body.dataset.deviceExpanded=String(deviceExpanded);
+ mobileDeviceToggle.setAttribute("aria-expanded",String(deviceExpanded));
+ mobileDeviceToggle.textContent=deviceExpanded?"장비 화면 접기":"장비 화면 펼치기";
+}
+mobileDeviceToggle.addEventListener("click",()=>{
+ deviceExpanded=!deviceExpanded;syncResponsiveSections();
+ if(deviceExpanded){devicePanel.scrollIntoView({block:"start",behavior:"auto"});document.getElementById("mobile-learning-back").focus();}
+ else learningPanel.scrollIntoView({block:"start",behavior:"auto"});
+});
+document.getElementById("mobile-learning-back").addEventListener("click",()=>{
+ presentationMode="learning";deviceExpanded=false;document.body.dataset.presentation="learning";
+ syncViewChoices();syncResponsiveSections();
+ learningPanel.scrollIntoView({block:"start",behavior:"auto"});
+ learningPanel.querySelector(".core-tabs button[aria-selected='true']")?.focus();
+});
+document.querySelector('a[href="#device-panel"]').addEventListener("click",event=>{
+ if(narrowDevice.matches&&presentationMode==="learning"&&!deviceExpanded){
+  event.preventDefault();deviceExpanded=true;syncResponsiveSections();
+  devicePanel.scrollIntoView({block:"start",behavior:"auto"});
+ }
+});
+compactWorkspace.addEventListener("change",syncResponsiveSections);
+syncResponsiveSections();
 let circuitView = "parts";
 let assemblyStep = 0;
 document.getElementById("version").textContent = "v" + VERSION;
@@ -517,10 +551,15 @@ const CASE_STEP_LABELS=Object.freeze({
 function appendCaseRoadmap(root,scenario,activeIndex,done){
  const section=makeElement("section","case-roadmap");
  section.append(makeElement("h3",null,"이 사례의 학습 경로"));
- section.append(makeElement("p","case-roadmap-purpose","목표를 먼저 확인하고 순서에 따라 판단해 봐. 이전 답은 다시 볼 수 있지만 진행 중 정답을 변경하지는 않아."));
+ section.append(makeElement("p","case-roadmap-purpose","현재 목표를 확인하고 순서대로 판단해 봐. 이전 응답은 읽기만 가능하며 정답과 진행 상태는 수정할 수 없어."));
+ const activeStep=scenario.steps[Math.min(activeIndex,scenario.steps.length-1)];
+ const activeGoals=activeStep.objectiveIds.map(id=>scenario.objectives.find(goal=>goal.id===id)?.text).filter(Boolean);
+ section.append(makeElement("p","case-current-goal",(done?"마지막 단계 목표: ":"현재 학습목표: ")+activeGoals.join(" / ")));
+ const allGoals=makeElement("details","case-all-goals");
+ allGoals.append(makeElement("summary",null,"이 사례의 전체 학습목표 펼치기"));
  const goals=makeElement("ul","case-roadmap-goals");
  for(const item of scenario.objectives)goals.append(makeElement("li",null,item.text));
- section.append(goals);
+ allGoals.append(goals);section.append(allGoals);
  const steps=makeElement("ol","case-roadmap-stages");
  const labels=CASE_STEP_LABELS[scenario.id]||scenario.steps.map((_,i)=>"문항 "+(i+1));
  for(const [i,label] of labels.entries()){
@@ -588,6 +627,36 @@ function appendCaseEvidence(root,step,scenario){
   details.append(makeElement("p",null,"근거 해설: "+step.evidenceNote));
   caseSources(details,step.sourceIds);
   root.append(details);
+}
+/** Prior completed stages only. Never exposes an unanswered key or permits replay editing. */
+function appendPriorCaseAnswers(root,scenario,state){
+ const completed=state.answers.slice(0,state.index);
+ if(!completed.length)return;
+ const history=makeElement("details","case-history");
+ history.append(makeElement("summary",null,"이전 응답 "+completed.length+"개 복습 · 읽기 전용"));
+ for(const [i,answer] of completed.entries()){
+  const step=scenario.steps[i];
+  const chosen=step.options.find(option=>option.id===answer.choiceId);
+  const entry=makeElement("section","case-history-item");
+  entry.append(makeElement("strong",null,(i+1)+". "+step.question));
+  entry.append(makeElement("p",null,"내가 선택한 답: "+(chosen?.label||"확인 불가")));
+  entry.append(makeElement("p",null,"해설: "+step.explanation));
+  history.append(entry);
+ }
+ root.append(history);
+}
+function appendCaseObjectiveReview(root,scenario,state){
+ const section=makeElement("section","case-objective-review");
+ section.append(makeElement("h4",null,"학습목표별 복습 방향"));
+ for(const objective of scenario.objectives){
+  const related=scenario.steps.map((step,i)=>({step,answer:state.answers[i]})).filter(x=>x.step.objectiveIds.includes(objective.id));
+  const toReview=related.some(x=>!x.answer?.correct);
+  const row=makeElement("p",null,null);
+  row.append(makeElement("strong",null,objective.text+" · "),
+    document.createTextNode(toReview?"관련 선택지를 다시 읽고 근거를 설명해 봐.":"관련 응답을 확인했어. 실제 환자 관찰과 보고에 적용할 수 있는지 생각해 봐."));
+  section.append(row);
+ }
+ root.append(section);
 }
 function renderReflection(root,scenario){
   const block=makeElement("section","case-reflection");
@@ -670,10 +739,7 @@ function renderCase(){
   const readings=makeElement("ul","case-vignette");
   for(const item of scenario.vignette)readings.append(makeElement("li",null,item));
   context.append(readings);
-  context.append(makeElement("strong",null,"학습 목표"));
-  const objectives=makeElement("ol","case-objectives");
-  for(const item of scenario.objectives)objectives.append(makeElement("li",null,item.text));
-  context.append(objectives);root.append(context);
+  root.append(context); // Objectives are in the roadmap disclosure, not duplicated here.
 
   if(caseState.done){
     root.append(makeElement("h3","case-result","사례 학습 완료"));
@@ -694,11 +760,13 @@ function renderCase(){
       review.append(entry);
     }
     root.append(review);
+    appendCaseObjectiveReview(root,scenario,caseState);
     renderReflection(root,scenario);
     root.append(caseButton("이 사례 처음부터 다시 풀기",()=>openCaseSession(scenario.id,true),"case-primary"));
     caseSources(root,scenario.sources);
     return;
   }
+  appendPriorCaseAnswers(root,scenario,caseState);
   const step=scenario.steps[caseState.index];
   root.append(makeElement("p","case-progress","현재 학습 단계 · 문항 "+(caseState.index+1)+" / "+score.total+" · "+(CASE_STEP_LABELS[scenario.id]?.[caseState.index]||"상황 판단")));
   root.append(makeElement("h3","case-question",step.question));
@@ -724,7 +792,7 @@ function renderCase(){
     const feedback=makeElement("section","case-feedback");
     feedback.append(makeElement("strong",null,chosen.correct?"핵심 판단 확인":"복습이 필요한 판단"));
     feedback.append(makeElement("p",null,option.feedback));
-    feedback.append(makeElement("p",null,step.explanation));
+    feedback.append(makeElement("p","case-why","판단 이유 · "+step.explanation));
     appendCaseEvidence(feedback,step,scenario);
     root.append(feedback);
     root.append(caseButton(caseState.index===score.total-1?"결과·복습 보기":"다음 문항 →",()=>{
@@ -757,17 +825,23 @@ function renderCoreLearning(){
     header.append(title,makeElement("span","core-concept-short",item.key));
     card.append(header);
     const body=makeElement("div","core-concept-body");
+    const extras=CORE_LESSON_EXTRAS[item.id];
     const content=[
-      ["한 줄 이해",item.meaning],
-      ["간호학생 관찰",item.observe],
-      ["주의할 점",item.caution],
-      ["이 앱의 한계",item.simulator]
+      ["쉬운 정의",item.key+". "+item.meaning],
+      ["작동 원리·의미",extras.principle],
+      ["실제 간호 관찰",item.observe],
+      ["흔한 오개념과 주의",item.caution],
+      ["간단한 예시",extras.example],
+      ["이 앱의 자료 구분",item.simulator]
     ];
     for(const [label,text] of content){
       const p=makeElement("p",null,null);
       p.append(makeElement("strong",null,label+" · "),document.createTextNode(text));
       body.append(p);
     }
+    const deeper=makeElement("details","core-deep");
+    deeper.append(makeElement("summary",null,"심화 개념·참고문헌 펼치기"));
+    deeper.append(makeElement("p",null,extras.advanced));
     const source=makeElement("div","core-concept-sources");
     source.append(makeElement("strong",null,"참고"));
     for(const key of item.reference){
@@ -776,7 +850,7 @@ function renderCoreLearning(){
       a.href=ref.url;a.target="_blank";a.rel="noopener noreferrer";
       source.append(a);
     }
-    body.append(source);
+    deeper.append(source);body.append(deeper);
     const returnButton=makeElement("button","core-return-button","학습 확인으로 돌아가기 →");
     returnButton.type="button";returnButton.hidden=true;
     returnButton.addEventListener("click",returnToCoreQuiz);
@@ -784,6 +858,14 @@ function renderCoreLearning(){
     card.append(body);
     root.append(card);
   }
+  const glossary=makeElement("details","student-glossary");
+  glossary.append(makeElement("summary",null,"처음 보는 약어 · PBW, Pplat, auto-PEEP, ABGA, V-TRIG"));
+  for(const entry of STUDENT_GLOSSARY){
+    const term=makeElement("p",null,null);
+    term.append(makeElement("strong",null,entry.term+" · "),document.createTextNode(entry.text));
+    glossary.append(term);
+  }
+  root.append(glossary);
 }
 
 /* v0.4.2: isolated knowledge-check state; resetting device values or revisiting CASE
@@ -859,6 +941,15 @@ function renderCoreQuiz(){
  }
  const score=scoreCoreQuiz(coreQuizState);
  if(coreQuizState.done){
+   const categories=[{id:"app",name:"앱 동작 이해",questions:CORE_QUESTIONS.filter(q=>q.evidenceKind==="simulator-contract")},{id:"nursing",name:"간호 기초 개념",questions:CORE_QUESTIONS.filter(q=>q.evidenceKind!=="simulator-contract")}];
+   const typeSummary=makeElement("section","core-quiz-type-summary");
+   typeSummary.append(makeElement("h4",null,"학습 목적별 확인 · 임상 역량 점수 아님"));
+   for(const group of categories){
+     const ids=new Set(group.questions.map(q=>q.id));
+     const correct=coreQuizState.answers.filter(a=>ids.has(a.questionId)&&a.correct).length;
+     typeSummary.append(makeElement("p",null,group.name+": "+correct+"/"+group.questions.length+" · 형성 피드백"));
+   }
+   root.append(typeSummary);
    root.append(makeElement("p","core-quiz-score","완료 · "+score.correct+" / "+score.total+"문항 · 형성학습 참고 정보"));
    root.append(makeElement("p","core-quiz-instruction",score.reviewConcepts.length?"복습할 개념을 다시 확인하고 CASE에 적용해봐.":"모든 문항을 확인했어. CASE에 적용하며 관찰·보고 과정을 연습해봐."));
    if(score.reviewConcepts.length){
@@ -903,6 +994,7 @@ function renderCoreQuiz(){
  const question=CORE_QUESTIONS[coreQuizState.index];
  const answered=coreQuizState.answers[coreQuizState.index];
  root.append(makeElement("p","core-quiz-progress","문항 "+(coreQuizState.index+1)+" / "+CORE_QUESTIONS.length+" · "+CORE_LESSONS.find(x=>x.id===question.conceptId).title));
+ root.append(makeElement("p","core-quiz-kind",question.evidenceKind==="simulator-contract"?"구분: 앱 동작 이해 확인":"구분: 간호 기초 개념 이해 확인 (임상 수행평가 아님)"));
  const progress=makeElement("progress","core-quiz-meter");
  progress.max=CORE_QUESTIONS.length;progress.value=coreQuizState.index+(answered?1:0);
  progress.setAttribute("aria-label","학습 확인 완료 문항");

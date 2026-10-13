@@ -1,4 +1,36 @@
-# TEST_REPORT — v0.2.0
+# TEST_REPORT — v0.5.0 FINAL (교육용 베타)
+
+## v0.5.0 FINAL — 최종 기능 브랜치 실행 결과 (2026-10-13)
+
+- 브랜치: `feat/v0.5.0-student-learning-final`, Draft PR [#16](https://github.com/pchjesus/ventilator-simulator/pull/16).
+- [GitHub Actions #38344179977](https://github.com/pchjesus/ventilator-simulator/actions/runs/38344179977): **SUCCESS**.
+- Job test: Node.js 22 JavaScript syntax + Node unit tests **PASS**.
+- Job browser: 실제 headless Chromium 기반 종합 브라우저 테스트 **PASS**.
+- Job package: 정적 웹사이트 실행 ZIP 업로드 **PASS**.
+- 스크린샷: 자동 Chromium 캡처가 포함된 `browser-screenshots` artifact [#11788630762](https://github.com/pchjesus/ventilator-simulator/actions/runs/38344179977/artifacts/11788630762).
+- 웹 실행본: `pb980-web-only` 정적 앱 artifact [#11788660655](https://github.com/pchjesus/ventilator-simulator/actions/runs/38344179977/artifacts/11788660655).
+- 추가된 검사: 7 화면 너비(1440,1280,1100,960,700,360,320), 네 가지 데이터 출처 안내, 키보드 Enter 장비 펼치기/학습 복귀, 3개 파형 유지, 7개 고정 값 유지, 기존 설정과 CASE 흐름 회귀.
+- 이 결과는 CI **실행/자동 브라우저 검증**을 뜻하며 실제 학생/교수자 대상 연구, 전문가 검증, 실물 PB980 동일성, 보조기기 전수 검사 완료가 아님.
+- `main` 병합 후 발생할 최종 커밋과 CI는 해당 머지 SHA와 Actions 실행 ID로 별도 재확인한다.
+
+
+## v0.5.0 FINAL 통합 검증 기록 — 자동과 수동 검증 구별
+
+**테스트 대상:** v0.4.6 FINAL `f884383...`을 기준으로 v0.4.7→v0.4.8→v0.4.9→v0.5.0 순차 개발. 최종 `main` SHA/CI 결과는 병합 검증 후 별도로 추가한다.
+
+| 단계 | 자동 CI | 범위 |
+|---|---|---|
+| v0.4.7 | [38343016130 · SUCCESS](https://github.com/pchjesus/ventilator-simulator/actions/runs/38343016130) | 문구 및 I:E·V̇E 자리 잘림, 1440/1280/1100/960/700/360/320 브라우저 값 표시 |
+| v0.4.8 | [38343423745 · SUCCESS](https://github.com/pchjesus/ventilator-simulator/actions/runs/38343423745) | 모바일 학습 우선/펼치기, 학습 내용, 기존 설정·파형·CASE·퀴즈 회귀 |
+| v0.4.9 | [38343729579 · SUCCESS](https://github.com/pchjesus/ventilator-simulator/actions/runs/38343729579) | CASE 읽기 전용 역사/진행/학습목표 복습, 두 영역으로 구분한 퀴즈 결과 및 기존 동작 |
+
+**v0.5.0 추가 브라우저 범위:** 네 자료 출처 구분, 모바일 펼치기/복귀 키보드 Enter, 3개 파형/고정 7개 값의 상태 보존, 기본/장비 탐색, 1440/1280/1100/960/700/360/320 폭과 스크린샷, 가로 오버플로. 기존 CI 단위·구문·브라우저·웹 정적 ZIP 워크플로 모두 재실행한다.
+
+**검증 완료로 주장할 수 없는 것:** 실제 스마트폰 및 사람의 육안 UX 검사, 화면읽기 도구 전체 호환성, 200% 확대 전문 QA, 초보 간호학생 대상 실제 사용성/효과 연구, 임상전문가 감수, 실제 PB980 정확성/환자 생리 예측 검증. 모두 별도 계획만 마련했으며 미실시.
+
+**되돌리기:** Private main의 v0.4.6 FINAL `f884383a54563fdb75ed6ca14b4b1db987e92856`을 기준으로 복귀할 수 있다. 기능 브랜치에서 CI 실패 시 main 병합 보류.
+
+---
 
 ## Scope
 Implementation introduces first web entrypoint, educational settings and CIRCUIT conceptual views.

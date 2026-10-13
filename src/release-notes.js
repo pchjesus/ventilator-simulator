@@ -8,6 +8,30 @@ export const RELEASE_CATEGORIES=Object.freeze([
   {id:"docs",label:"문서·근거"}
 ]);
 export const RELEASE_NOTES=Object.freeze([
+ {version:"0.5.0",date:"2026-10-13",changes:[
+ {category:"ui",text:"용어 학습에서 개념·퀴즈·CASE·복습까지 이어지는 학생 학습 진입 흐름 통합"},
+ {category:"feature",text:"모바일에서 장비 펼치기·접기와 CASE 이전 답 읽기 전용 기능 통합"},
+ {category:"clinical",text:"고정 모니터·생성 파형·설정값·가상 CASE 수치의 구분과 감수 미완료를 지속 명시"},
+ {category:"stability",text:"기존 설정 편집·고정 모니터·독립 학습 세션의 회귀 검증 유지"},
+ {category:"docs",text:"수업 자료와 교육·사용성 파일럿 준비 문서 제공, 실제 사용성 검증은 미실시"}]},
+ {version:"0.4.9",date:"2026-10-13",changes:[
+ {category:"feature",text:"CASE 진행 중 이전 완료 문항의 선택과 해설을 읽기 전용으로 복습"},
+ {category:"ui",text:"현재 학습목표를 강조하고 중복된 전체 목표는 요청 시만 펼치기"},
+ {category:"clinical",text:"CASE 종료 시 목표별 복습과 피드백 이유를 함께 표시"},
+ {category:"stability",text:"기존 CASE 정답·문항 순서·세션 재개·중복 제출 제한 유지"},
+ {category:"docs",text:"형성평가 결과에 앱 작동 이해와 간호 기초 개념을 분리"}]},
+ {version:"0.4.8",date:"2026-10-13",changes:[
+ {category:"ui",text:"좁은 화면에서 핵심 학습 우선·장비 펼치기 및 학습 돌아가기"},
+ {category:"feature",text:"핵심 6개 개념의 정의·원리·간호 관찰·오개념·예시·심화 설명"},
+ {category:"clinical",text:"PBW·Pplat·auto-PEEP·ABGA·V-TRIG 입문용 용어 설명"},
+ {category:"stability",text:"단일 장비와 학습 패널 DOM 재배치로 기존 상태 복제 없이 유지"},
+ {category:"docs",text:"모바일 학습과 장비 탐색의 사용 경로·자료 성격을 분리 안내"}]},
+ {version:"0.4.7",date:"2026-10-13",changes:[
+  {category:"ui",text:"7개 고정 모니터 카드의 I:E 긴 숫자 읽기 오류를 보정"},
+  {category:"stability",text:"1440px 장비 컬럼의 모니터 표시 회귀 검사를 추가"},
+  {category:"feature",text:"기존 설정 팝업의 개별 기본값과 전체 초기화 기능은 그대로 유지"},
+  {category:"clinical",text:"고정 모니터 예시를 실제 환자 측정값으로 해석하지 않는 범위 유지"},
+  {category:"docs",text:"설명서의 잘못된 전체 초기화 문구와 직접입력/홀드 안내 수정"}]},
  {version:"0.4.6",date:"2026-10-13",changes:[
   {category:"feature",text:"CASE 01·02의 단계별 목표·진행 경로 표시와 개별 이어 하기/다시 시작"},
   {category:"ui",text:"실습 전 목표·현재 단계 및 사전 상황 자료를 CASE 진행 중 언제든 열람"},

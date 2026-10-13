@@ -726,3 +726,49 @@ body[data-presentation="learning"] .study-panel .side-tabs button{min-height:46p
  }
  body[data-control-mode="device"] .setting-select{padding-right:2px}
 }
+
+/* v0.4.7: long I:E sample remains fully legible in narrow seven-column monitor banners.
+ * Do not alter the independent static data or the seven readout positions. */
+.monitor-data .readout:is(:nth-child(4),:nth-child(7)) strong{font-size:clamp(13px,1.1vw,17px);letter-spacing:-.045em;white-space:nowrap}
+.monitor-data .readout strong{max-width:100%;min-width:0}
+@media(max-width:550px){.monitor-data .readout:is(:nth-child(4),:nth-child(7)) strong{font-size:17px}}
+
+/* v0.4.8: responsive study entry, retains a single live device DOM. */
+#mobile-device-toggle,#mobile-learning-back,.compact-layout-help{display:none}
+.core-deep,.student-glossary{margin-top:12px;border:1px solid #b6d2df;border-radius:8px;background:#f5fbff;padding:10px 12px}
+.core-deep summary,.student-glossary summary{font-weight:750;cursor:pointer;color:#19516d;font-size:14px;line-height:1.5}
+.student-glossary p{font-size:14px;line-height:1.65;color:#294b5d}
+.learning-onboarding{font-size:14px;line-height:1.65;color:#2d5165;background:#f1f8fb;padding:10px;border-radius:8px}
+@media(max-width:1100px){
+ .view-toolbar-group[aria-label="화면 배치"]{display:none}
+ .compact-layout-help{display:block;font-size:12px;line-height:1.5;margin:2px 0;color:#35556b}
+}
+@media(max-width:700px){
+ #mobile-device-toggle{display:block;width:100%;min-height:44px;padding:10px;border:1px solid #317897;border-radius:8px;background:#e6f5fc;color:#175573;font-size:14px;font-weight:800}
+ #mobile-learning-back{display:block;width:100%;min-height:44px;padding:9px;border:1px solid #8bb6cd;border-radius:6px;background:#f3faff;color:#195774;font-size:14px;font-weight:750;margin-bottom:7px}
+ body[data-presentation="learning"]:not([data-device-expanded="true"]) #device-panel{display:none}
+ body[data-presentation="device"] #mobile-device-toggle{display:none}
+ .student-glossary p,.core-deep p{font-size:13px}
+}
+
+/* v0.4.9: CASE navigation and uneditable prior-response review. */
+.case-current-goal{font-size:14px!important;font-weight:800;color:#154b68;line-height:1.6}
+.case-all-goals{margin:9px 0;padding:9px;border:1px solid #bed5e2;background:#fff;border-radius:7px}
+.case-all-goals summary,.case-history summary{cursor:pointer;font-size:13px;font-weight:800;color:#175572}
+.case-history,.case-objective-review{background:#f3f9fc;border:1px solid #b9d5e4;border-radius:9px;padding:12px;margin:13px 0}
+.case-history-item{padding:9px 0;border-top:1px solid #d5e5ed;font-size:13px;line-height:1.6}
+.case-history-item p{font-size:13px!important;margin:4px 0}
+.case-objective-review h4{color:#16465f;font-size:15px;margin:2px 0 8px}
+.case-objective-review p{font-size:13px!important;line-height:1.6}
+.case-why{border-left:3px solid #80b49c;padding-left:9px}
+.core-quiz-type-summary{border:1px solid #b4d2df;background:#eaf6fb;border-radius:8px;padding:10px;margin:10px 0}
+.core-quiz-type-summary h4{margin:0;color:#154b66;font-size:14px}
+.core-quiz-type-summary p,.core-quiz-kind{font-size:13px;line-height:1.6;color:#284c63}
+
+/* v0.5.0: explicitly contrast independent educational data sources. */
+.data-source-guide{background:#fff;border:1px solid #b3d2de;border-radius:9px;margin:10px 0 15px;padding:11px}
+.data-source-guide summary{font-size:14px;font-weight:800;color:#175876;cursor:pointer;line-height:1.6}
+.data-source-guide dl{display:grid;gap:9px;margin:12px 0 2px}
+.data-source-guide dl div{border-left:3px solid #4b98b5;background:#f0f8fb;padding:9px;border-radius:3px}
+.data-source-guide dt{color:#174a63;font-size:14px;font-weight:800}
+.data-source-guide dd{color:#294f66;font-size:13px;line-height:1.6;margin:4px 0 0}
