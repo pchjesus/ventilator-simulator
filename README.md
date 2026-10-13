@@ -1,6 +1,6 @@
 # Ventilator Simulator — v0.5.1 (교육용 베타)
 
-> **다음 개발 준비:** [v0.6.0 확정 UX/구현 명세](docs/V0.6.0_APPROVED_UX_IMPLEMENTATION_SPEC.md) · [v0.5.1→v0.6.0 단계별 구현/회귀 테스트 실행계획](docs/V0.5.1_TO_V0.6.0_IMPLEMENTATION_PLAYBOOK.md) · [새 채팅에서 v0.5.1 구현 시작하기](docs/NEW_CHAT_START_v0.5.1.md). 사용자 D1~D5=A 승인. 이 문서는 차기 개발 계획이며 현재 실행본은 **v0.5.0 FINAL**이다.
+> **개발 이어가기:** [v0.6.0 확정 UX 명세](docs/V0.6.0_APPROVED_UX_IMPLEMENTATION_SPEC.md) · [v0.5.1→v0.6.0 Playbook](docs/V0.5.1_TO_V0.6.0_IMPLEMENTATION_PLAYBOOK.md). 사용자 D1~D5=A 승인. 현재 실행본 v0.5.1은 **D1-A만 구현**했으며 후속 D2–D5 개발은 미시행.
 
 
 > **현행 구현:** 승인된 D1-A 큰 글씨 읽기 기능이 v0.5.1에 추가됨. D2–D5(학습요약·파형비교·LAB·문항)는 v0.5.2–v0.6.0 개발 대상으로 아직 미구현. [승인 명세](docs/V0.6.0_APPROVED_UX_IMPLEMENTATION_SPEC.md) · [실행 Playbook](docs/V0.5.1_TO_V0.6.0_IMPLEMENTATION_PLAYBOOK.md).
