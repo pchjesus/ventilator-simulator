@@ -11,7 +11,9 @@ export const RELEASE_NOTES=Object.freeze([
  {version:"0.4.4",date:"2026-10-13",changes:[
   {category:"ui",text:"학습 집중·나란히·장비 집중 3개 배치, 기본 학습·장비 탐색 2개 보기 전환"},
   {category:"stability",text:"레이아웃과 UI 표시 상태는 설정·파형·CASE·형성 퀴즈 상태와 분리"},
-  {category:"ui",text:"모바일 학습/장비 바로가기와 반응형 설정 카드, 학습 UI의 읽기 쉬운 본문 및 장식 비노출"}]},
+  {category:"ui",text:"모바일 학습/장비 바로가기와 반응형 설정 카드, 학습 UI의 읽기 쉬운 본문 및 장식 비노출"},
+  {category:"feature",text:"설정 편집기·퀴즈·CASE 상태를 변경하지 않는 학습/장비 화면 전환"},
+  {category:"docs",text:"v0.4.4~v0.4.6 UI 위험 및 회귀 검증 기준"}]},
 
  {version:"0.4.3",date:"2026-10-12",changes:[
   {category:"clinical",text:"핵심 문제은행 10문항별 근거 적용 범위·임상 검토 질문을 명시하고 학생 형성학습과 교수자 승인 영역을 분리"},
