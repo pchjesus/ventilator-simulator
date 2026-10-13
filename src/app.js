@@ -28,6 +28,14 @@ const circuitContent = document.getElementById("circuit-content");
 let state = initialSettings(); // committed state only: sole input to waveform model
 let controlMode = "device"; // explicit opt-in for legacy quick study controls
 let editState = null; // {id, original, pending}, never feeds waveform engine
+let quickHoldDelay=null,quickHoldInterval=null;
+function stopQuickHold(){
+ if(quickHoldDelay!==null)clearTimeout(quickHoldDelay);
+ if(quickHoldInterval!==null)clearInterval(quickHoldInterval);
+ quickHoldDelay=null;quickHoldInterval=null;
+}
+window.addEventListener("blur",stopQuickHold);
+document.addEventListener("visibilitychange",()=>{if(document.hidden)stopQuickHold();});
 let editorFocusTarget = null;
 document.body.dataset.controlMode = controlMode;
 /* Presentation and layout are read-only projections of the existing DOM.
@@ -260,14 +268,30 @@ function renderSettings() {
       button.textContent=delta>0?"+"+delta:String(delta);
       button.setAttribute("aria-label",param.label+" "+(delta>0?"증가 ":"감소 ")+Math.abs(delta));
       button.disabled = (delta<0 && state[param.id]<=param.min) || (delta>0 && state[param.id]>=param.max);
-      button.addEventListener("click",()=>{
+      const applyQuickStep=()=>{
+        if(controlMode!=="quick")return;
         const next=adjustSetting(state,param.id,delta);
         const changed=next[param.id]!==state[param.id];
         state=next;
         status.textContent=changed ? param.label+": "+formatSetting(param.id,state[param.id])+param.unit+" (학습용 설정만 변경)" : "설정 범위 끝이야.";
         refreshSettings();
-        paintWaveforms();
+        if(changed)paintWaveforms();
+      };
+      button.addEventListener("pointerdown",event=>{
+        if(event.pointerType==="mouse"&&event.button!==0)return;
+        if(controlMode!=="quick"||button.disabled)return;
+        stopQuickHold();
+        applyQuickStep();
+        quickHoldDelay=setTimeout(()=>{
+          quickHoldDelay=null;
+          quickHoldInterval=setInterval(()=>{
+            if(button.disabled||controlMode!=="quick"){stopQuickHold();return;}
+            applyQuickStep();
+          },120);
+        },400);
       });
+      for(const type of ["pointerup","pointercancel","pointerleave","lostpointercapture"])button.addEventListener(type,stopQuickHold);
+      button.addEventListener("click",event=>{if(event.detail===0)applyQuickStep();});
       buttons.append(button);
     }
     const help=document.createElement("button");help.type="button";help.className="help";help.textContent="?";
@@ -346,6 +370,7 @@ for(const [button,dir] of [[incButton,1],[decButton,-1]]){
 
 function setControlMode(next){
   if(next!=="device"&&next!=="quick")return;
+  stopQuickHold();
   // A pending edit is never allowed to flow silently into quick study.
   if(editorDialog.open) closeSettingEditor();
   controlMode=next;
