@@ -715,3 +715,14 @@ body[data-presentation="learning"] .study-panel .side-tabs button{min-height:46p
  body[data-control-mode="device"] .setting-name{overflow-wrap:anywhere}
  body[data-control-mode="device"] .setting .setting-tier{display:block;float:none;margin:4px 0 0;width:max-content;max-width:100%}
 }
+
+
+/* Root-cause correction: absolute help button overlays wrapped title/badge on
+ * tiny two-column cards. Put it back in normal document flow on narrow screens. */
+@media(max-width:550px){
+ body[data-control-mode="device"] .setting .device-help{
+  position:static;display:block;margin:8px 0 0 auto;float:none;
+  min-width:36px;min-height:36px;
+ }
+ body[data-control-mode="device"] .setting-select{padding-right:2px}
+}
