@@ -1,21 +1,18 @@
 # Ventilator Simulator — v0.5.1 (교육용 베타)
 
-> **개발 이어가기:** [v0.6.0 확정 UX 명세](docs/V0.6.0_APPROVED_UX_IMPLEMENTATION_SPEC.md) · [v0.5.1→v0.6.0 Playbook](docs/V0.5.1_TO_V0.6.0_IMPLEMENTATION_PLAYBOOK.md). 사용자 D1~D5=A 승인. 현재 실행본 v0.5.1은 **D1-A만 구현**했으며 후속 D2–D5 개발은 미시행.
+> **릴리스 확인 (2026-10-14):** [병합 PR #19](https://github.com/pchjesus/ventilator-simulator/pull/19) · [v0.5.1 실행 코드 main SHA `893476ff19de1db576e87cd5d4e8966c1e3e4e05` 및 최종 CI 성공](https://github.com/pchjesus/ventilator-simulator/actions/runs/38423564087). D1-A 큰 글씨 읽기 구현 완료. D2–D5는 차기 v0.5.2–v0.6.0 범위이며 미구현. 개발 기준은 [승인 UX 명세](docs/V0.6.0_APPROVED_UX_IMPLEMENTATION_SPEC.md)와 [Playbook](docs/V0.5.1_TO_V0.6.0_IMPLEMENTATION_PLAYBOOK.md).
 
-
-> **현행 구현:** 승인된 D1-A 큰 글씨 읽기 기능이 v0.5.1에 추가됨. D2–D5(학습요약·파형비교·LAB·문항)는 v0.5.2–v0.6.0 개발 대상으로 아직 미구현. [승인 명세](docs/V0.6.0_APPROVED_UX_IMPLEMENTATION_SPEC.md) · [실행 Playbook](docs/V0.5.1_TO_V0.6.0_IMPLEMENTATION_PLAYBOOK.md).
- 
 ## v0.5.1 — 원형 장비와 독립적인 큰 글씨 읽기 (2026-10-14)
 
 - 화면 상단의 **표시값 큰 글씨로 읽기** 버튼을 통해 모니터 7개, 설정 7개, 파형 3종을 하나의 교육용 읽기 전용 대화상자에서 볼 수 있다. 한국어 뜻·단위·자료 출처와 차이를 함께 표시한다.
 - 모니터 숫자/표시 순서는 원본 `MONITOR_REFERENCE`를 그대로 사용하고, 설정은 편집 중 Pending이 아닌 `state`의 확정값을 읽으며, 파형은 실제 환자 실측값이 아니라 생성곡선이라고 안내한다.
 - 기존 PB980 참고형 장비 레이아웃·설정 팝업·`?` 설명·파형 분석/재생/정지·CORE 6카드/10문항·CASE 01/02·모바일 재배치는 수정하지 않는다.
 - `Escape`, 닫기, 포커스 복귀, 7개 화면 너비와 200%/400%에 해당하는 CSS viewport reflow를 Chromium 자동 검사하였다. 실제 브라우저 200%/400% 수동 확대, 보조공학 전수 검증, 실제 스마트폰 및 학생/전문가 파일럿은 별도 미실시다.
-- 검사 및 스크린샷: [PR #19](https://github.com/pchjesus/ventilator-simulator/pull/19), [초기 PR CI](https://github.com/pchjesus/ventilator-simulator/actions/runs/38420856416), `TEST_REPORT.md`. 실제 최종 `main` 커밋에 대한 CI는 GitHub Actions 기록을 별도로 확인한다.
+- 검사 및 스크린샷: [병합된 PR #19](https://github.com/pchjesus/ventilator-simulator/pull/19), [최종 기능 main CI PASS](https://github.com/pchjesus/ventilator-simulator/actions/runs/38423564087), [실행 ZIP](https://github.com/pchjesus/ventilator-simulator/actions/runs/38423564087/artifacts/11827517172), [Chromium 캡처](https://github.com/pchjesus/ventilator-simulator/actions/runs/38423564087/artifacts/11827916241), `TEST_REPORT.md`.
 
 ## v0.5.0 FINAL — 교육용 베타 (2026-10-13)
 
-**현재 실행 버전:** v0.5.0 FINAL. 기존 v0.4.6 기능을 유지하면서 초보 간호학생 중심으로 화면·설명·CASE·복습을 통합했다.
+**당시 안정 릴리스:** v0.5.0 FINAL. 기존 v0.4.6 기능을 유지하면서 초보 간호학생 중심으로 화면·설명·CASE·복습을 통합했다.
 
 **권장 학생 학습 흐름:** 화면 용어·자료 출처 구분 → 6개 핵심 개념 카드와 심화 약어 → 10문항 핵심 개념 형성평가 → CASE 01·02 중 사례 선택 → 이유·학습목표별 복습·디브리핑.
 
