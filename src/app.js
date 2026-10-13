@@ -8,7 +8,7 @@ import {PRECLINICAL_CASES,CASE_SOURCES,findCase} from "./preclinical-cases.js";
 import {startCase,chooseCaseAnswer,advanceCase,caseScore} from "./case-engine.js";
 import {auditCaseBank,evidenceKindLabel} from "./case-quality.js";
 import {ALARM_LESSONS,DISPLAY_CATEGORIES,DEVICE_EDUCATION_SOURCES,DEVICE_VERSION_REVIEW,termsForCategory,findAlarmLesson,evaluateAlarmChoice,auditDeviceEducation} from "./device-learning.js";
-import {CORE_LESSONS,CORE_SOURCES,ESSENTIAL_SETTING_IDS,auditCoreLearning} from "./student-learning.js";
+import {CORE_LESSONS,CORE_SOURCES,CORE_LESSON_EXTRAS,STUDENT_GLOSSARY,ESSENTIAL_SETTING_IDS,auditCoreLearning} from "./student-learning.js";
 import {CORE_QUESTIONS,CORE_QUIZ_REVIEW,CORE_QUIZ_VERSION,CORE_QUIZ_SOURCES,CORE_REVIEW_GUIDE,auditCoreQuiz,startCoreQuiz,chooseCoreAnswer,advanceCoreQuiz,scoreCoreQuiz} from "./core-quiz.js";
 const settingsContainer = document.getElementById("settings");
 const monitor = document.getElementById("monitor");
@@ -55,7 +55,7 @@ function syncViewChoices(){
 document.querySelectorAll("button[data-presentation]").forEach(button=>button.addEventListener("click",()=>{
   const next=button.dataset.presentation;
   if(!["learning","device"].includes(next))return;
-  presentationMode=next;document.body.dataset.presentation=next;syncViewChoices();
+  presentationMode=next;document.body.dataset.presentation=next;syncViewChoices();syncResponsiveSections();
 }));
 document.querySelectorAll("button[data-layout]").forEach(button=>button.addEventListener("click",()=>{
   const next=button.dataset.layout;
@@ -63,6 +63,40 @@ document.querySelectorAll("button[data-layout]").forEach(button=>button.addEvent
   layoutPreset=next;document.body.dataset.layout=next;syncViewChoices();
 }));
 syncViewChoices();
+// Reorder existing DOM nodes only. Device, editor, quiz and CASE data remain unchanged.
+const compactWorkspace=window.matchMedia("(max-width:1100px)");
+const narrowDevice=window.matchMedia("(max-width:700px)");
+const workspace=document.querySelector(".workspace");
+const devicePanel=document.getElementById("device-panel");
+const learningPanel=document.getElementById("learning-panel");
+const mobileDeviceToggle=document.getElementById("mobile-device-toggle");
+let deviceExpanded=false;
+function syncResponsiveSections(){
+ const first=compactWorkspace.matches&&presentationMode==="learning"?learningPanel:devicePanel;
+ if(workspace.firstElementChild!==first)workspace.insertBefore(first,workspace.firstElementChild);
+ document.body.dataset.deviceExpanded=String(deviceExpanded);
+ mobileDeviceToggle.setAttribute("aria-expanded",String(deviceExpanded));
+ mobileDeviceToggle.textContent=deviceExpanded?"장비 화면 접기":"장비 화면 펼치기";
+}
+mobileDeviceToggle.addEventListener("click",()=>{
+ deviceExpanded=!deviceExpanded;syncResponsiveSections();
+ if(deviceExpanded){devicePanel.scrollIntoView({block:"start",behavior:"auto"});document.getElementById("mobile-learning-back").focus();}
+ else learningPanel.scrollIntoView({block:"start",behavior:"auto"});
+});
+document.getElementById("mobile-learning-back").addEventListener("click",()=>{
+ presentationMode="learning";deviceExpanded=false;document.body.dataset.presentation="learning";
+ syncViewChoices();syncResponsiveSections();
+ learningPanel.scrollIntoView({block:"start",behavior:"auto"});
+ learningPanel.querySelector(".core-tabs button[aria-selected='true']")?.focus();
+});
+document.querySelector('a[href="#device-panel"]').addEventListener("click",event=>{
+ if(narrowDevice.matches&&presentationMode==="learning"&&!deviceExpanded){
+  event.preventDefault();deviceExpanded=true;syncResponsiveSections();
+  devicePanel.scrollIntoView({block:"start",behavior:"auto"});
+ }
+});
+compactWorkspace.addEventListener("change",syncResponsiveSections);
+syncResponsiveSections();
 let circuitView = "parts";
 let assemblyStep = 0;
 document.getElementById("version").textContent = "v" + VERSION;
@@ -757,17 +791,23 @@ function renderCoreLearning(){
     header.append(title,makeElement("span","core-concept-short",item.key));
     card.append(header);
     const body=makeElement("div","core-concept-body");
+    const extras=CORE_LESSON_EXTRAS[item.id];
     const content=[
-      ["한 줄 이해",item.meaning],
-      ["간호학생 관찰",item.observe],
-      ["주의할 점",item.caution],
-      ["이 앱의 한계",item.simulator]
+      ["쉬운 정의",item.key+". "+item.meaning],
+      ["작동 원리·의미",extras.principle],
+      ["실제 간호 관찰",item.observe],
+      ["흔한 오개념과 주의",item.caution],
+      ["간단한 예시",extras.example],
+      ["이 앱의 자료 구분",item.simulator]
     ];
     for(const [label,text] of content){
       const p=makeElement("p",null,null);
       p.append(makeElement("strong",null,label+" · "),document.createTextNode(text));
       body.append(p);
     }
+    const deeper=makeElement("details","core-deep");
+    deeper.append(makeElement("summary",null,"심화 개념·참고문헌 펼치기"));
+    deeper.append(makeElement("p",null,extras.advanced));
     const source=makeElement("div","core-concept-sources");
     source.append(makeElement("strong",null,"참고"));
     for(const key of item.reference){
@@ -776,7 +816,7 @@ function renderCoreLearning(){
       a.href=ref.url;a.target="_blank";a.rel="noopener noreferrer";
       source.append(a);
     }
-    body.append(source);
+    deeper.append(source);body.append(deeper);
     const returnButton=makeElement("button","core-return-button","학습 확인으로 돌아가기 →");
     returnButton.type="button";returnButton.hidden=true;
     returnButton.addEventListener("click",returnToCoreQuiz);
@@ -784,6 +824,14 @@ function renderCoreLearning(){
     card.append(body);
     root.append(card);
   }
+  const glossary=makeElement("details","student-glossary");
+  glossary.append(makeElement("summary",null,"처음 보는 약어 · PBW, Pplat, auto-PEEP, ABGA, V-TRIG"));
+  for(const entry of STUDENT_GLOSSARY){
+    const term=makeElement("p",null,null);
+    term.append(makeElement("strong",null,entry.term+" · "),document.createTextNode(entry.text));
+    glossary.append(term);
+  }
+  root.append(glossary);
 }
 
 /* v0.4.2: isolated knowledge-check state; resetting device values or revisiting CASE
