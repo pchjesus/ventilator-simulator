@@ -87,6 +87,7 @@ try {
   }
   await desktop.locator(".core-quiz-next").click();
   assert.match(await desktop.locator(".core-quiz-score").innerText(),/10문항/);
+  assert.equal(await desktop.locator(".core-quiz-type-summary p").count(),2,"app rules and nursing concepts reported separately");
   assert.equal(await desktop.locator(".core-quiz-instructor").count(),1);
   assert.ok(await desktop.locator(".core-quiz-review-entry").count()>0);
   await desktop.screenshot({path:"artifacts/browser/desktop-core-quiz-complete.png",fullPage:false});
@@ -211,6 +212,11 @@ try {
   assert.match(await desktop.locator(".case-feedback").innerText(),/맞아/,"tab switch retains scenario progress");
   await desktop.locator(".case-next").click();
   assert.match(await desktop.locator("#case-content").innerText(),/문항 2 \/ 3/);
+  assert.equal(await desktop.locator(".case-history").count(),1,"previous answer review at stage two");
+  await desktop.locator(".case-history summary").click();
+  assert.equal(await desktop.locator(".case-history-item").count(),1);
+  assert.equal(await desktop.locator(".case-history button").count(),0,"read-only history cannot resubmit");
+  assert.equal(await desktop.locator(".case-feedback").count(),0,"stage two unanswered key stays hidden");
   await desktop.locator(".case-back").click();
   assert.match(await desktop.locator(".case-card").first().innerText(),/진행 상태: 2\/3문항/);
   await desktop.locator(".case-card").first().getByRole("button",{name:"이어 하기"}).click();
@@ -220,6 +226,7 @@ try {
   await desktop.locator(".case-answer").nth(2).click();
   await desktop.locator(".case-next").click();
   assert.match(await desktop.locator(".case-score").innerText(),/3\/3/);
+  assert.equal(await desktop.locator(".case-objective-review p").count(),3,"per-objective review");
   assert.equal(await desktop.locator(".case-reflection-input").count(),3);
   assert.equal(await desktop.locator(".case-answer-comparison").count(),3);
   await desktop.locator(".case-reflection-input").first().fill("가상 자료와 실제 환자 사정을 구분한다");
