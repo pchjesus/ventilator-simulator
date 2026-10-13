@@ -755,6 +755,7 @@ try {
     if(originalMonitorUnits[i]!=="참고값")assert.equal(await item.locator(".reading-unit").textContent(),originalMonitorUnits[i]);
     assert.match(await item.locator(".reading-source").textContent(),/MONITOR_REFERENCE/);
   }
+  assert.match(await readingPage.locator("#reading-dialog .reading-item").nth(3).textContent(),/비율 \(단위 없음\)/);
   await readingPage.screenshot({path:"artifacts/browser/v051-reading-monitor-1280.png",fullPage:false});
   await readingPage.locator('[data-reading-category="settings"]').click();
   assert.equal(await readingPage.locator("#reading-dialog .reading-item").count(),7);
