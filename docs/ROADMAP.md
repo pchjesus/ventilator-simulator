@@ -196,3 +196,33 @@ See CORE_LEARNING_CHECK_v0.4.2.md for QA/evidence matrix.
 - [ ] Obtain independent qualified clinical review and site-specific PB980 firmware comparison (not performed by software CI).
 - [ ] Run supervised user pilot with permission and deidentified findings (not performed).
 See CLINICAL_REVIEW_HANDOFF_v0.4.3.md.
+
+
+## CONFIRMED UPCOMING UX RELEASES — approved 2026-10-13; NOT implemented
+**Design baseline:** Private v0.4.3 FINAL \`56e120b6ad4c192cfde7064a4997e42fb582d6e0\`.
+Detailed decisions, implementation invariants, risk register, patch sequencing and release-acceptance matrix:
+[UI/UX final redesign plan v0.4.4–v0.4.6](UI_UX_REDESIGN_PLAN_v0.4.4-v0.4.6.md).
+
+### v0.4.4 — three layout presets + two UI presentations
+- [ ] Display presets: 학습 집중 (default) / 나란히 / 장비 집중.
+- [ ] UI presentations: 기본 학습 UI (default) / 장비 탐색 UI.
+- [ ] Preserve separate existing staged-vs-quick settings mode, settings, waveform, quiz, CASE and extra-learning state when switching layout/presentation.
+- [ ] Hide/de-emphasize inert decorative elements in learning UI, not functional controls. Improve readable terminology, font, click/touch sizing, discoverability.
+- [ ] Avoid naive whole-device transform scaling, mobile DOM/focus order mismatch, overflow or nested-scroll traps.
+- [ ] PASS 3 × 2 presentation/layout permutations plus staged/quick regression; browser 1440/1280/1100/960/700/360/320; unit, Chromium and static package.
+
+### v0.4.5 — press/hold, text input and setting-level default
+- [ ] Keep Pending → Accept/Cancel transaction. Add strict direct-entry parsing, educational bounds, per-parameter precision/grid checks; no silent rounding or live waveform change before Accept.
+- [ ] Hold +/- with pointer lifecycle cleanup, no double click on release, keyboard and touch coverage; remove decorative TURN from setting dialog.
+- [ ] Dialog \`이 항목 기본값\` changes only the selected parameter Pending; retain header global \`설정 초기화\`.
+- [ ] Preserve stale-edit guard, seven existing parameter settings/ranges, quick mode, keyboard focus and model/monitor separation.
+- [ ] PASS boundary/invalid-input/blur/close/cancel/timer/state-independent regression across UI modes/sizes.
+
+### v0.4.6 — goal-led CASE with separate per-CASE resume
+- [ ] Display explicit prebrief, objective/roadmap, three original questions, stage guidance, and debrief.
+- [ ] In-memory per-CASE states with not-started/in-progress/completed and explicit resume/restart; preserve each case's notes.
+- [ ] Preserve original 2 × 3 questions/answers, core quiz and expert-unreviewed warnings, CASE-ventilator independence.
+- [ ] Page refresh still clears quiz/CASE; no storage or PHI feature.
+- [ ] PASS switching CASE 01 ↔ CASE 02, tabs, view/layout, device reset, retry, student/faculty preview and responsive regression.
+
+**Release gates:** assess impact before each patch; run unit, feature, integration, actual Chromium/browser visual, and affected old-feature regressions; inspect screenshots; merge only after successful PR CI; verify final exact main SHA CI. Real expert content signoff and physical student pilot remain **separate, incomplete activities**.
