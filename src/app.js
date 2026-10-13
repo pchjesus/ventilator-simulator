@@ -475,7 +475,40 @@ function renderCircuit() {
 /* Pre-clinical choice-based education is intentionally isolated from settings,
  * waveform calculation and fixed monitor sample values. */
 let caseState=null;
+const caseSessions=new Map(); // each fictional scenario is independently resumable in RAM
 let reviewerCaseId=null;
+function openCaseSession(caseId,restart=false){
+ if(restart||!caseSessions.has(caseId))caseSessions.set(caseId,startCase(caseId));
+ caseState=caseSessions.get(caseId);
+ if(restart)reflectionNotes.delete(caseId);
+ renderCase();
+ document.querySelector("#case-content .case-answer, #case-content .case-back")?.focus();
+}
+function saveCaseSession(){if(caseState)caseSessions.set(caseState.caseId,caseState);}
+const CASE_STEP_LABELS=Object.freeze({
+ orientation:["예시 정보 출처","FiO₂ 설정 이해","환자·기도·회로 확인"],
+ desaturation:["위험 신호 인지","추가 사정 정보","관찰 내용 보고"]
+});
+function appendCaseRoadmap(root,scenario,activeIndex,done){
+ const section=makeElement("section","case-roadmap");
+ section.append(makeElement("h3",null,"이 사례의 학습 경로"));
+ section.append(makeElement("p","case-roadmap-purpose","목표를 먼저 확인하고 순서에 따라 판단해 봐. 이전 답은 다시 볼 수 있지만 진행 중 정답을 변경하지는 않아."));
+ const goals=makeElement("ul","case-roadmap-goals");
+ for(const item of scenario.objectives)goals.append(makeElement("li",null,item.text));
+ section.append(goals);
+ const steps=makeElement("ol","case-roadmap-stages");
+ const labels=CASE_STEP_LABELS[scenario.id]||scenario.steps.map((_,i)=>"문항 "+(i+1));
+ for(const [i,label] of labels.entries()){
+   const item=makeElement("li","case-roadmap-stage",label);
+   if(i<activeIndex||done)item.classList.add("done");
+   if(i===activeIndex&&!done)item.classList.add("current");
+   item.append(makeElement("span",null,done||i<activeIndex?" · 확인함":i===activeIndex?" · 현재 단계":" · 다음 단계"));
+   steps.append(item);
+ }
+ section.append(steps);
+ section.append(makeElement("p","case-roadmap-end","이후: 결과·근거 복습 → 3개 디브리핑 질문"));
+ root.append(section);
+}
 const reflectionNotes=new Map(); // intentionally RAM only, no student identity or storage
 const caseAudit=auditCaseBank(PRECLINICAL_CASES,CASE_SOURCES);
 function caseButton(label,handler,cssClass=""){
@@ -576,7 +609,14 @@ function renderCase(){
       const ul=makeElement("ul","case-objectives");
       for(const goal of scenario.objectives)ul.append(makeElement("li",null,goal.text));
       card.append(ul);
-      card.append(caseButton("이 사례 시작",()=>{reviewerCaseId=null;caseState=startCase(scenario.id);renderCase();root.querySelector(".case-answer")?.focus();},"case-primary"));
+      const saved=caseSessions.get(scenario.id);
+      card.append(makeElement("p","case-session-status",!saved?"진행 상태: 시작 전":saved.done?"진행 상태: 완료 · 결과 확인 가능":"진행 상태: "+(saved.index+1)+"/"+scenario.steps.length+"문항"));
+      card.append(caseButton(!saved?"이 사례 시작":saved.done?"완료 결과 보기":"이어 하기",()=>{
+        reviewerCaseId=null;openCaseSession(scenario.id);
+      },"case-primary"));
+      if(saved)card.append(caseButton("이 사례 처음부터 다시 시작",()=>{
+        reviewerCaseId=null;openCaseSession(scenario.id,true);
+      },"case-restart"));
       const reviewBtn=caseButton(reviewerCaseId===scenario.id?"교수자 미리보기 닫기":"교수자 검토 미리보기 · 정답 공개",()=>{
         reviewerCaseId=reviewerCaseId===scenario.id?null:scenario.id;
         renderCase();
@@ -595,10 +635,11 @@ function renderCase(){
   const score=caseScore(caseState);
   root.append(makeElement("h2","case-heading",scenario.title));
   root.append(makeElement("p","case-meta",scenario.status+" · 별도의 가상 사례 자료"));
-  root.append(caseButton("← 사례 목록",()=>{caseState=null;renderCase();caseTab.focus();},"case-back"));
+  root.append(caseButton("← 사례 목록 (진행 유지)",()=>{saveCaseSession();caseState=null;renderCase();caseTab.focus();},"case-back"));
+  appendCaseRoadmap(root,scenario,caseState.index,caseState.done);
   const context=makeElement("details","case-context");
   context.open=caseState.index===0&&!caseState.done;
-  context.append(makeElement("summary",null,"사전 안내·상황 자료·학습 목표"));
+  context.append(makeElement("summary",null,"가상 상황 자료·사전 안내 다시 보기 (언제든 펼치기)"));
   context.append(makeElement("p",null,scenario.premise));
   context.append(makeElement("p","case-prebrief",scenario.prebrief));
   const readings=makeElement("ul","case-vignette");
@@ -629,12 +670,12 @@ function renderCase(){
     }
     root.append(review);
     renderReflection(root,scenario);
-    root.append(caseButton("처음부터 다시",()=>{reflectionNotes.delete(scenario.id);caseState=startCase(scenario.id);renderCase();root.querySelector(".case-answer")?.focus();},"case-primary"));
+    root.append(caseButton("이 사례 처음부터 다시 풀기",()=>openCaseSession(scenario.id,true),"case-primary"));
     caseSources(root,scenario.sources);
     return;
   }
   const step=scenario.steps[caseState.index];
-  root.append(makeElement("p","case-progress","문항 "+(caseState.index+1)+" / "+score.total));
+  root.append(makeElement("p","case-progress","현재 학습 단계 · 문항 "+(caseState.index+1)+" / "+score.total+" · "+(CASE_STEP_LABELS[scenario.id]?.[caseState.index]||"상황 판단")));
   root.append(makeElement("h3","case-question",step.question));
   const chosen=caseState.answers[caseState.index];
   const choiceRoot=makeElement("div","case-answers");
@@ -642,7 +683,7 @@ function renderCase(){
     const btn=caseButton(option.label,()=>{
       if(caseState.answers.length>caseState.index)return;
       caseState=chooseCaseAnswer(caseState,option.id);
-      renderCase();
+      saveCaseSession();renderCase();
       root.querySelector(".case-next")?.focus();
     },"case-answer");
     btn.disabled=Boolean(chosen);
@@ -663,7 +704,7 @@ function renderCase(){
     root.append(feedback);
     root.append(caseButton(caseState.index===score.total-1?"결과·복습 보기":"다음 문항 →",()=>{
       caseState=advanceCase(caseState);
-      renderCase();
+      saveCaseSession();renderCase();
       (root.querySelector(".case-answer")||root.querySelector(".case-primary"))?.focus();
     },"case-next case-primary"));
   }else{
