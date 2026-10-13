@@ -1,7 +1,17 @@
-# Ventilator Simulator — v0.5.0 FINAL (교육용 베타)
+# Ventilator Simulator — v0.5.1 (교육용 베타)
 
 > **다음 개발 준비:** [v0.6.0 확정 UX/구현 명세](docs/V0.6.0_APPROVED_UX_IMPLEMENTATION_SPEC.md) · [v0.5.1→v0.6.0 단계별 구현/회귀 테스트 실행계획](docs/V0.5.1_TO_V0.6.0_IMPLEMENTATION_PLAYBOOK.md) · [새 채팅에서 v0.5.1 구현 시작하기](docs/NEW_CHAT_START_v0.5.1.md). 사용자 D1~D5=A 승인. 이 문서는 차기 개발 계획이며 현재 실행본은 **v0.5.0 FINAL**이다.
 
+
+> **현행 구현:** 승인된 D1-A 큰 글씨 읽기 기능이 v0.5.1에 추가됨. D2–D5(학습요약·파형비교·LAB·문항)는 v0.5.2–v0.6.0 개발 대상으로 아직 미구현. [승인 명세](docs/V0.6.0_APPROVED_UX_IMPLEMENTATION_SPEC.md) · [실행 Playbook](docs/V0.5.1_TO_V0.6.0_IMPLEMENTATION_PLAYBOOK.md).
+ 
+## v0.5.1 — 원형 장비와 독립적인 큰 글씨 읽기 (2026-10-14)
+
+- 화면 상단의 **표시값 큰 글씨로 읽기** 버튼을 통해 모니터 7개, 설정 7개, 파형 3종을 하나의 교육용 읽기 전용 대화상자에서 볼 수 있다. 한국어 뜻·단위·자료 출처와 차이를 함께 표시한다.
+- 모니터 숫자/표시 순서는 원본 `MONITOR_REFERENCE`를 그대로 사용하고, 설정은 편집 중 Pending이 아닌 `state`의 확정값을 읽으며, 파형은 실제 환자 실측값이 아니라 생성곡선이라고 안내한다.
+- 기존 PB980 참고형 장비 레이아웃·설정 팝업·`?` 설명·파형 분석/재생/정지·CORE 6카드/10문항·CASE 01/02·모바일 재배치는 수정하지 않는다.
+- `Escape`, 닫기, 포커스 복귀, 7개 화면 너비와 200%/400%에 해당하는 CSS viewport reflow를 Chromium 자동 검사하였다. 실제 브라우저 200%/400% 수동 확대, 보조공학 전수 검증, 실제 스마트폰 및 학생/전문가 파일럿은 별도 미실시다.
+- 검사 및 스크린샷: [PR #19](https://github.com/pchjesus/ventilator-simulator/pull/19), [초기 PR CI](https://github.com/pchjesus/ventilator-simulator/actions/runs/38420856416), `TEST_REPORT.md`. 실제 최종 `main` 커밋에 대한 CI는 GitHub Actions 기록을 별도로 확인한다.
 
 ## v0.5.0 FINAL — 교육용 베타 (2026-10-13)
 
