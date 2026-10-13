@@ -198,7 +198,7 @@ See CORE_LEARNING_CHECK_v0.4.2.md for QA/evidence matrix.
 See CLINICAL_REVIEW_HANDOFF_v0.4.3.md.
 
 
-## CONFIRMED UPCOMING UX RELEASES — approved 2026-10-13; NOT implemented
+## CONFIRMED UX RELEASES — approved 2026-10-13; implemented in progressive v0.4.4–v0.4.6 branch
 **Design baseline:** Private v0.4.3 FINAL `56e120b6ad4c192cfde7064a4997e42fb582d6e0`.
 Detailed decisions, implementation invariants, risk register, patch sequencing and release-acceptance matrix:
 [UI/UX final redesign plan v0.4.4–v0.4.6](UI_UX_REDESIGN_PLAN_v0.4.4-v0.4.6.md).
