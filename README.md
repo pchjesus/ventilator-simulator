@@ -1,5 +1,8 @@
 # Ventilator Simulator — v0.5.0 FINAL (교육용 베타)
 
+> **다음 개발 준비:** [v0.6.0 확정 UX/구현 명세](docs/V0.6.0_APPROVED_UX_IMPLEMENTATION_SPEC.md) · [v0.5.1→v0.6.0 단계별 구현/회귀 테스트 실행계획](docs/V0.5.1_TO_V0.6.0_IMPLEMENTATION_PLAYBOOK.md) · [새 채팅에서 v0.5.1 구현 시작하기](docs/NEW_CHAT_START_v0.5.1.md). 사용자 D1~D5=A 승인. 이 문서는 차기 개발 계획이며 현재 실행본은 **v0.5.0 FINAL**이다.
+
+
 ## v0.5.0 FINAL — 교육용 베타 (2026-10-13)
 
 **현재 실행 버전:** v0.5.0 FINAL. 기존 v0.4.6 기능을 유지하면서 초보 간호학생 중심으로 화면·설명·CASE·복습을 통합했다.
