@@ -8,6 +8,12 @@ export const RELEASE_CATEGORIES=Object.freeze([
   {id:"docs",label:"문서·근거"}
 ]);
 export const RELEASE_NOTES=Object.freeze([
+ {version:"0.5.0",date:"2026-10-13",changes:[
+ {category:"ui",text:"용어 학습에서 개념·퀴즈·CASE·복습까지 이어지는 학생 학습 진입 흐름 통합"},
+ {category:"feature",text:"모바일에서 장비 펼치기·접기와 CASE 이전 답 읽기 전용 기능 통합"},
+ {category:"clinical",text:"고정 모니터·생성 파형·설정값·가상 CASE 수치의 구분과 감수 미완료를 지속 명시"},
+ {category:"stability",text:"기존 설정 편집·고정 모니터·독립 학습 세션의 회귀 검증 유지"},
+ {category:"docs",text:"수업 자료와 교육·사용성 파일럿 준비 문서 제공, 실제 사용성 검증은 미실시"}]},
  {version:"0.4.9",date:"2026-10-13",changes:[
  {category:"feature",text:"CASE 진행 중 이전 완료 문항의 선택과 해설을 읽기 전용으로 복습"},
  {category:"ui",text:"현재 학습목표를 강조하고 중복된 전체 목표는 요청 시만 펼치기"},
