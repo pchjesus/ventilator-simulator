@@ -28,20 +28,20 @@ try {
   assert.match(await desktop.locator('[data-concept-id="vte"] > summary').innerText(),/VTE/);
   const layoutBaseline=await desktop.locator("#settings").textContent();
   const fixedBeforeLayouts=await desktop.locator("#monitor").textContent();
-  assert.equal(await desktop.locator('[data-presentation="learning"]').getAttribute("aria-pressed"),"true");
-  assert.equal(await desktop.locator('[data-layout="learning"]').getAttribute("aria-pressed"),"true");
+  assert.equal(await desktop.locator('button[data-presentation="learning"]').getAttribute("aria-pressed"),"true");
+  assert.equal(await desktop.locator('button[data-layout="learning"]').getAttribute("aria-pressed"),"true");
   assert.equal(await desktop.locator(".bezel-controls").isVisible(),false,"basic learning hides nonfunctional bezel keys");
   for(const layout of ["balanced","device","learning"]){
-    await desktop.locator('[data-layout="'+layout+'"]').click();
-    assert.equal(await desktop.locator('[data-layout="'+layout+'"]').getAttribute("aria-pressed"),"true");
+    await desktop.locator('button[data-layout="'+layout+'"]').click();
+    assert.equal(await desktop.locator('button[data-layout="'+layout+'"]').getAttribute("aria-pressed"),"true");
     assert.equal(await desktop.locator("#settings").textContent(),layoutBaseline);
     assert.equal(await desktop.locator("#monitor").textContent(),fixedBeforeLayouts);
     assert.equal(await desktop.locator(".setting").count(),7);
   }
-  await desktop.locator('[data-presentation="device"]').click();
+  await desktop.locator('button[data-presentation="device"]').click();
   assert.equal(await desktop.locator(".bezel-controls").isVisible(),true);
   await desktop.screenshot({path:"artifacts/browser/desktop-device-explore.png",fullPage:false});
-  await desktop.locator('[data-presentation="learning"]').click();
+  await desktop.locator('button[data-presentation="learning"]').click();
   assert.equal(await desktop.locator(".bezel-controls").isVisible(),false);
   await desktop.screenshot({path:"artifacts/browser/desktop-core-default.png",fullPage:false});
   pass("v0.4.4 independent 3 layouts x 2 presentations preserve settings and fixed monitoring");
