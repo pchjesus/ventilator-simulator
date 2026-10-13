@@ -1,4 +1,18 @@
-# TEST_REPORT — v0.2.0
+# TEST_REPORT — v0.5.0 FINAL (교육용 베타)
+
+## v0.5.0 FINAL — 최종 기능 브랜치 실행 결과 (2026-10-13)
+
+- 브랜치: `feat/v0.5.0-student-learning-final`, Draft PR [#16](https://github.com/pchjesus/ventilator-simulator/pull/16).
+- [GitHub Actions #38344179977](https://github.com/pchjesus/ventilator-simulator/actions/runs/38344179977): **SUCCESS**.
+- Job test: Node.js 22 JavaScript syntax + Node unit tests **PASS**.
+- Job browser: 실제 headless Chromium 기반 종합 브라우저 테스트 **PASS**.
+- Job package: 정적 웹사이트 실행 ZIP 업로드 **PASS**.
+- 스크린샷: 자동 Chromium 캡처가 포함된 `browser-screenshots` artifact [#11788630762](https://github.com/pchjesus/ventilator-simulator/actions/runs/38344179977/artifacts/11788630762).
+- 웹 실행본: `pb980-web-only` 정적 앱 artifact [#11788660655](https://github.com/pchjesus/ventilator-simulator/actions/runs/38344179977/artifacts/11788660655).
+- 추가된 검사: 7 화면 너비(1440,1280,1100,960,700,360,320), 네 가지 데이터 출처 안내, 키보드 Enter 장비 펼치기/학습 복귀, 3개 파형 유지, 7개 고정 값 유지, 기존 설정과 CASE 흐름 회귀.
+- 이 결과는 CI **실행/자동 브라우저 검증**을 뜻하며 실제 학생/교수자 대상 연구, 전문가 검증, 실물 PB980 동일성, 보조기기 전수 검사 완료가 아님.
+- `main` 병합 후 발생할 최종 커밋과 CI는 해당 머지 SHA와 Actions 실행 ID로 별도 재확인한다.
+
 
 ## v0.5.0 FINAL 통합 검증 기록 — 자동과 수동 검증 구별
 
