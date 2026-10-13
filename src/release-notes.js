@@ -8,6 +8,11 @@ export const RELEASE_CATEGORIES=Object.freeze([
   {id:"docs",label:"문서·근거"}
 ]);
 export const RELEASE_NOTES=Object.freeze([
+ {version:"0.4.4",date:"2026-10-13",changes:[
+  {category:"ui",text:"학습 집중·나란히·장비 집중 3개 배치, 기본 학습·장비 탐색 2개 보기 전환"},
+  {category:"stability",text:"레이아웃과 UI 표시 상태는 설정·파형·CASE·형성 퀴즈 상태와 분리"},
+  {category:"ui",text:"모바일 학습/장비 바로가기와 반응형 설정 카드, 학습 UI의 읽기 쉬운 본문 및 장식 비노출"}]},
+
  {version:"0.4.3",date:"2026-10-12",changes:[
   {category:"clinical",text:"핵심 문제은행 10문항별 근거 적용 범위·임상 검토 질문을 명시하고 학생 형성학습과 교수자 승인 영역을 분리"},
   {category:"feature",text:"비공개 저장소 링크 대신 앱 자체 동작 근거 표시를 제공하여 정적 웹 실행본에서도 설명 유지"},
