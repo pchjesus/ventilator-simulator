@@ -1,5 +1,5 @@
 // Educational UI demonstration; not verified PB980 operating ranges.
-export const VERSION = "0.4.4";
+export const VERSION = "0.4.6";
 export const DEVICE = "Puritan Bennett 980 (reference-inspired)";
 // Adult invasive SIMV/PC/PS manufacturer's Table 11-9 reference data.
 // These DO NOT replace the separate educational control ranges or steps.
