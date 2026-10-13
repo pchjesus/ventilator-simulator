@@ -1,10 +1,20 @@
 # Development Roadmap (checked against GitHub 2026-10-09)
 
-> **v0.6.0 상세 설계 실행 준비 완료 (2026-10-13, 구현 전):** 기존 [승인 UX 명세](V0.6.0_APPROVED_UX_IMPLEMENTATION_SPEC.md)를 개발 단위로 해체한 [v0.5.1~v0.6.0 구현·테스트 Playbook](V0.5.1_TO_V0.6.0_IMPLEMENTATION_PLAYBOOK.md)과 [새 채팅 시작 프롬프트](NEW_CHAT_START_v0.5.1.md)를 추가했다. 첫 착수는 v0.5.1의 가독성/읽기 확대·접근성 P1~P5. 코드는 아직 **v0.5.0 FINAL** 그대로이며 새 기능 구현/검증 완료로 간주하지 않는다.
+> **2026-10-14 구현 상태:** v0.5.1 D1-A 읽기 확대 기능은 [PR #19](https://github.com/pchjesus/ventilator-simulator/pull/19)에 실제 구현됨. 초기 PR CI의 test/browser/package 3 작업 성공. 최종 main SHA·CI 기록은 별도 확인. v0.5.2–v0.6.0 D2–D5는 아직 미구현이며 기존 [승인 UX 명세](V0.6.0_APPROVED_UX_IMPLEMENTATION_SPEC.md)와 [Playbook](V0.5.1_TO_V0.6.0_IMPLEMENTATION_PLAYBOOK.md)을 기준으로 개발한다.
 
+## v0.5.1 — Readability and Focus Baseline
+- [x] 7개 독립 고정 모니터 확대 읽기(순서·값 보존), 한국어 뜻/단위/출처.
+- [x] 7개 committed 설정과 Pressure·Flow·Volume 3종 생성곡선 설명/출처.
+- [x] 키보드·Escape·포커스 복귀·읽기 전용 동작 테스트, 7개 반응형 viewport.
+- [x] 초기 CI test/browser/package 성공, PNG 다운로드 후 v0.5.0 기준 스크린샷과 비교.
+- [ ] 실제 물리적 스마트폰, OS 브라우저 자체 200%·400% 확대, 화면읽기 보조기기·학생 사용성 파일럿, 임상 전문가 감수(릴리스 자동화 테스트와 별개).
 
-> **차기 확정 설계(2026-10-13, 구현 전):** v0.5.1–v0.6.0의 D1~D5 A 승인 및 패치·QA 게이트는 [v0.6.0 최종 승인 UX/구현 명세](V0.6.0_APPROVED_UX_IMPLEMENTATION_SPEC.md)를 참조. 현재 배포는 **v0.5.0 FINAL**이며 v0.6.0 구현 완료/테스트 완료 아님. 과거 체크박스는 해당 버전 당시의 역사적 계획이며 현재 상태와 혼동하지 말 것.
-
+## 다음 릴리스
+- **v0.5.2:** D2-A 핵심 요약·상세 설명·네 자료 출처를 간결하게 구분; 기존 6카드·10문항의 정답/원문 불변.
+- **v0.5.3:** D3-A 파형 비교 엔진과 D4-A CORE 내부 독립 LAB 표면.
+- **v0.5.4:** D5-A PEEP/f/FiO₂ LAB 3개와 전용 6문항, 별도 메모리 상태.
+- **v0.5.5:** 교수자/학생 문서 분리 및 콘텐츠 감사.
+- **v0.6.0:** 전체 통합·회귀 검증 및 교육용 베타 릴리스.
 
 ## v0.5.0 FINAL — 학생 학습 UX 단계별 진행 (2026-10-13)
 
