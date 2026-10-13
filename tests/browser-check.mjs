@@ -694,6 +694,44 @@ try {
     await probe.close();
   }
   pass("v0.4.7 monitor cards display complete values in seven widths");
+  // v0.5.0: complete learning -> device -> learning keyboard path on the same DOM/state.
+  const learningMobile=await browser.newPage({viewport:{width:360,height:780},isMobile:true,hasTouch:true});
+  await learningMobile.goto(ROOT,{waitUntil:"networkidle",timeout:30000});
+  assert.equal(await learningMobile.locator(".data-source-guide dt").count(),4,"four clearly separated data sources");
+  assert.equal(await learningMobile.locator(".workspace > :first-child").getAttribute("id"),"learning-panel");
+  assert.equal(await learningMobile.locator("#device-panel").isVisible(),false);
+  const fixedSamples=await learningMobile.locator("#monitor").textContent();
+  const originalSetting=await learningMobile.locator("#settings").textContent();
+  await learningMobile.locator("#mobile-device-toggle").focus();
+  await learningMobile.keyboard.press("Enter");
+  assert.equal(await learningMobile.locator("#device-panel").isVisible(),true,"keyboard expands device");
+  assert.equal(await learningMobile.locator("#mobile-device-toggle").getAttribute("aria-expanded"),"true");
+  assert.equal(await learningMobile.locator(".waveform-svg").count(),3);
+  await learningMobile.screenshot({path:"artifacts/browser/v050-mobile-device-expanded.png",fullPage:false});
+  await learningMobile.locator("#mobile-learning-back").focus();
+  await learningMobile.keyboard.press("Enter");
+  assert.equal(await learningMobile.locator("#device-panel").isVisible(),false,"keyboard returns to learning");
+  assert.equal(await learningMobile.locator("#monitor").textContent(),fixedSamples);
+  assert.equal(await learningMobile.locator("#settings").textContent(),originalSetting);
+  await learningMobile.locator('button[data-presentation="device"]').click();
+  assert.equal(await learningMobile.locator("#device-panel").isVisible(),true,"device explore shows full device");
+  assert.equal(await learningMobile.locator(".bezel-controls").isVisible(),true);
+  await learningMobile.locator("#mobile-learning-back").click();
+  assert.equal(await learningMobile.locator("#panel-core").isVisible(),true);
+  await learningMobile.screenshot({path:"artifacts/browser/v050-mobile-learning-first.png",fullPage:false});
+  await learningMobile.close();
+  for(const width of [1440,1280,1100,960,700,360,320]){
+    const view=await browser.newPage({viewport:{width,height:900}});
+    await view.goto(ROOT,{waitUntil:"networkidle",timeout:30000});
+    assert.equal(await view.locator(".data-source-guide dt").count(),4);
+    const first=await view.locator(".workspace > :first-child").getAttribute("id");
+    assert.equal(first,width<=1100?"learning-panel":"device-panel","responsive visual/DOM study order at "+width);
+    const metrics=await view.evaluate(()=>({scroll:document.documentElement.scrollWidth,client:document.documentElement.clientWidth}));
+    assert.ok(metrics.scroll<=metrics.client+2,"horizontal overflow "+width+": "+JSON.stringify(metrics));
+    await view.screenshot({path:"artifacts/browser/v050-learning-"+width+".png",fullPage:false});
+    await view.close();
+  }
+  pass("v0.5.0 mobile keyboard navigation, four data sources, 7 breakpoint learning order/overflow");
   const reduced=await browser.newPage({viewport:{width:1000,height:700}});
   reduced.on("pageerror",e=>errors.push("Reduced motion pageerror: "+e.message));
   await reduced.emulateMedia({reducedMotion:"reduce"});
