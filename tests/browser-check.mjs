@@ -195,6 +195,8 @@ try {
   assert.equal(await desktop.locator(".case-review").count(),0);
   await desktop.locator(".case-card").first().getByRole("button",{name:"이 사례 시작"}).click();
   assert.match(await desktop.locator("#case-content").innerText(),/문항 1 \/ 3/);
+  assert.equal(await desktop.locator(".case-roadmap-stage").count(),3);
+  assert.match(await desktop.locator(".case-roadmap").innerText(),/이 사례의 학습 경로/);
   await desktop.screenshot({path:"artifacts/browser/desktop-case-question.png",fullPage:false});
   await desktop.locator(".case-answer").nth(1).click();
   assert.match(await desktop.locator(".case-feedback").innerText(),/맞아/);
@@ -208,6 +210,10 @@ try {
   await desktop.getByRole("tab",{name:"CASE 학습"}).click();
   assert.match(await desktop.locator(".case-feedback").innerText(),/맞아/,"tab switch retains scenario progress");
   await desktop.locator(".case-next").click();
+  assert.match(await desktop.locator("#case-content").innerText(),/문항 2 \/ 3/);
+  await desktop.locator(".case-back").click();
+  assert.match(await desktop.locator(".case-card").first().innerText(),/진행 상태: 2\/3문항/);
+  await desktop.locator(".case-card").first().getByRole("button",{name:"이어 하기"}).click();
   assert.match(await desktop.locator("#case-content").innerText(),/문항 2 \/ 3/);
   await desktop.locator(".case-answer").nth(1).click();
   await desktop.locator(".case-next").click();
@@ -341,11 +347,29 @@ try {
   await desktop.getByRole("button",{name:"Accept"}).press("Escape");
   assert.equal(await editor.isVisible(),false);
   assert.equal(await desktop.locator('.setting[data-setting-id="pi"] .setting-value').innerText(),"11.0","Escape must discard changes");
-  // In-modal reset can explicitly discard a pending value and restore full defaults.
+  // Staged single-setting default and validated typing must not reset other settings.
   await desktop.getByRole("button",{name:"Pᵢ 설정 선택"}).click();
   await desktop.getByRole("button",{name:"선택한 설정값 증가"}).click();
-  await desktop.getByRole("button",{name:"전체 초기화"}).click();
+  await desktop.getByRole("button",{name:"이 항목 기본값"}).click();
+  assert.equal(await editor.isVisible(),true);
+  assert.match(await desktop.locator("#editor-pending").innerText(),/10.0/);
+  assert.equal(await desktop.locator('.setting[data-setting-id="pi"] .setting-value').innerText(),"11.0");
+  await desktop.locator("#editor-number").fill("10.06");
+  assert.equal(await desktop.locator("#editor-accept").isDisabled(),true,"invalid decimal must not commit");
+  assert.equal(await desktop.locator("#editor-entry-error").isVisible(),true);
+  await desktop.locator("#editor-number").fill("10.0");
+  assert.equal(await desktop.locator("#editor-accept").isEnabled(),true);
+  await desktop.getByRole("button",{name:"Accept"}).click();
   assert.equal(await editor.isVisible(),false);
+  assert.equal(await desktop.locator('.setting[data-setting-id="pi"] .setting-value').innerText(),initialPi);
+  await desktop.getByRole("button",{name:"Pᵢ 설정 선택"}).click();
+  const holdTarget=desktop.getByRole("button",{name:"선택한 설정값 증가"});
+  await holdTarget.dispatchEvent("pointerdown",{pointerType:"mouse",button:0});
+  await desktop.waitForTimeout(560);
+  await holdTarget.dispatchEvent("pointerup",{pointerType:"mouse",button:0});
+  const heldValue=Number(await desktop.locator("#editor-pending").innerText().then(v=>v.replace(/[^0-9.]/g,"")));
+  assert.ok(heldValue>=12&&heldValue<=30,"holding increases pending with bounded repeats");
+  await desktop.getByRole("button",{name:"Cancel"}).click();
   assert.equal(await desktop.locator('.setting[data-setting-id="pi"] .setting-value').innerText(),initialPi);
   await desktop.getByRole("button",{name:"파형 재생"}).click();
   // User opt-in to legacy immediate study buttons: no conversion of state is allowed.
