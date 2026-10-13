@@ -337,7 +337,7 @@ function renderReadingCategory(){
     readingBody.append(makeElement("p","reading-notice",
       "서로 독립적인 7개 고정 예시값이야. 한 환자의 동시 측정값이 아니며 설정값이나 파형과 연동되지 않아."));
     MONITOR_REFERENCE.forEach(([label,value,unit],index)=>{
-      list.append(makeReadingCard(label+" · "+MONITOR_READ_NAMES[index],value,unit,
+      list.append(makeReadingCard(label+" · "+MONITOR_READ_NAMES[index],value,unit||(label==="I:E"?"비율 (단위 없음)":""),
         "독립 고정 모니터 표시 예시",
         "이 숫자는 화면 표시를 연습하기 위한 예시야. 환자 실측값이나 치료 반응이 아니야.",
         "프로젝트 src/sim-model.js의 MONITOR_REFERENCE (고정 화면 예시)"));
