@@ -114,6 +114,15 @@
     <aside class="study-panel" id="learning-panel" aria-label="학습 보조 영역">
       <p class="student-path-label">실습 전 핵심 학습 · 기본부터 시작하기</p>
       <p class="learning-onboarding">용어와 화면 구분 → 개념 카드 6개 → 형성평가 10문항 → CASE 01·02 → 피드백 복습. 장비 화면의 값은 실제 측정값이 아니야.</p>
+      <details class="data-source-guide">
+        <summary>이 앱에 표시되는 4가지 자료의 차이</summary>
+        <dl>
+          <div><dt>교육용 설정값</dt><dd>학습자가 바꾸는 7개 설정. Accept 후 일부 예시 파형이 달라져.</dd></div>
+          <div><dt>고정 모니터 표시 예시</dt><dd>각 숫자는 화면 읽기를 위한 독립적인 고정 예시야. 한 환자의 동시 측정값이 아니며 설정과도 연동되지 않아.</dd></div>
+          <div><dt>단순화된 교육용 파형</dt><dd>Pressure·Flow·Volume은 설정 일부에 따라 생성하는 움직이는 곡선이야. 실제 환자 측정값이나 계산된 VTE가 아니야.</dd></div>
+          <div><dt>CASE의 가상 상황 자료</dt><dd>사례별 별도 가상 환자 정보야. 실제 기기 설정·고정 모니터·파형을 변경하지 않아.</dd></div>
+        </dl>
+      </details>
       <div class="side-tabs core-tabs" role="tablist" aria-label="기본 학습 탭">
         <button type="button" id="tab-core" class="active" role="tab" aria-selected="true" aria-controls="panel-core">핵심 개념</button>
         <button type="button" id="tab-case" role="tab" aria-selected="false" aria-controls="panel-case">CASE 학습</button>
