@@ -782,8 +782,33 @@ try {
   await readingPage.locator("#settings .setting-select").first().click();
   assert.equal(await readingPage.locator("#setting-editor").evaluate(d=>d.open),true);
   await readingPage.locator("#editor-cancel").click();
+  // v0.5.1 release closure: the enlarged setting is a live view of committed
+  // settings, but must never show a discarded editor Pending value.
+  const oxygenTile=readingPage.locator('.setting[data-setting-id="fio2"]');
+  const fixedMonitorBeforeEdit=await readingPage.locator("#monitor").textContent();
+  await oxygenTile.locator(".setting-select").click();
+  await readingPage.locator("#editor-number").fill("55");
+  assert.match(await readingPage.locator("#editor-pending").textContent(),/55/);
+  await readingPage.locator("#editor-accept").click();
+  assert.equal(await oxygenTile.locator(".setting-value").textContent(),"55");
+  await readingPage.locator("#open-reading").click();
+  await readingPage.locator('[data-reading-category="settings"]').click();
+  assert.equal(await readingPage.locator(".reading-item").first().locator(".reading-value").evaluate(el=>el.firstChild.textContent),"55");
+  await readingPage.keyboard.press("Escape");
+  await oxygenTile.locator(".setting-select").click();
+  await readingPage.locator("#editor-number").fill("90");
+  assert.match(await readingPage.locator("#editor-pending").textContent(),/90/);
+  await readingPage.locator("#editor-cancel").click();
+  assert.equal(await oxygenTile.locator(".setting-value").textContent(),"55");
+  await readingPage.locator("#open-reading").click();
+  await readingPage.locator('[data-reading-category="settings"]').click();
+  assert.equal(await readingPage.locator(".reading-item").first().locator(".reading-value").evaluate(el=>el.firstChild.textContent),"55",
+    "discarded Pending must not appear in the enlarged committed values");
+  await readingPage.locator("#reading-close").click();
+  assert.equal(await readingPage.locator("#monitor").textContent(),fixedMonitorBeforeEdit,
+    "committing settings never changes independent fixed monitor examples");
   await readingPage.close();
-  pass("v0.5.1 seven source-matched monitor and committed settings, three waveform guides, Escape/focus, read-only state");
+  pass("v0.5.1 source-matched reading, committed-vs-Pending separation, waveform guides, Escape/focus, read-only state");
   for(const width of [1440,1280,1100,960,700,360,320]){
     const page=await browser.newPage({viewport:{width,height:850}});
     page.on("pageerror",e=>errors.push("Reading "+width+"px pageerror: "+e.message));
