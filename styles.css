@@ -732,3 +732,21 @@ body[data-presentation="learning"] .study-panel .side-tabs button{min-height:46p
 .monitor-data .readout:is(:nth-child(4),:nth-child(7)) strong{font-size:clamp(13px,1.1vw,17px);letter-spacing:-.045em;white-space:nowrap}
 .monitor-data .readout strong{max-width:100%;min-width:0}
 @media(max-width:550px){.monitor-data .readout:is(:nth-child(4),:nth-child(7)) strong{font-size:17px}}
+
+/* v0.4.8: responsive study entry, retains a single live device DOM. */
+#mobile-device-toggle,#mobile-learning-back,.compact-layout-help{display:none}
+.core-deep,.student-glossary{margin-top:12px;border:1px solid #b6d2df;border-radius:8px;background:#f5fbff;padding:10px 12px}
+.core-deep summary,.student-glossary summary{font-weight:750;cursor:pointer;color:#19516d;font-size:14px;line-height:1.5}
+.student-glossary p{font-size:14px;line-height:1.65;color:#294b5d}
+.learning-onboarding{font-size:14px;line-height:1.65;color:#2d5165;background:#f1f8fb;padding:10px;border-radius:8px}
+@media(max-width:1100px){
+ .view-toolbar-group[aria-label="화면 배치"]{display:none}
+ .compact-layout-help{display:block;font-size:12px;line-height:1.5;margin:2px 0;color:#35556b}
+}
+@media(max-width:700px){
+ #mobile-device-toggle{display:block;width:100%;min-height:44px;padding:10px;border:1px solid #317897;border-radius:8px;background:#e6f5fc;color:#175573;font-size:14px;font-weight:800}
+ #mobile-learning-back{display:block;width:100%;min-height:44px;padding:9px;border:1px solid #8bb6cd;border-radius:6px;background:#f3faff;color:#195774;font-size:14px;font-weight:750;margin-bottom:7px}
+ body[data-presentation="learning"]:not([data-device-expanded="true"]) #device-panel{display:none}
+ body[data-presentation="device"] #mobile-device-toggle{display:none}
+ .student-glossary p,.core-deep p{font-size:13px}
+}
