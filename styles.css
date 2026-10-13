@@ -750,3 +750,17 @@ body[data-presentation="learning"] .study-panel .side-tabs button{min-height:46p
  body[data-presentation="device"] #mobile-device-toggle{display:none}
  .student-glossary p,.core-deep p{font-size:13px}
 }
+
+/* v0.4.9: CASE navigation and uneditable prior-response review. */
+.case-current-goal{font-size:14px!important;font-weight:800;color:#154b68;line-height:1.6}
+.case-all-goals{margin:9px 0;padding:9px;border:1px solid #bed5e2;background:#fff;border-radius:7px}
+.case-all-goals summary,.case-history summary{cursor:pointer;font-size:13px;font-weight:800;color:#175572}
+.case-history,.case-objective-review{background:#f3f9fc;border:1px solid #b9d5e4;border-radius:9px;padding:12px;margin:13px 0}
+.case-history-item{padding:9px 0;border-top:1px solid #d5e5ed;font-size:13px;line-height:1.6}
+.case-history-item p{font-size:13px!important;margin:4px 0}
+.case-objective-review h4{color:#16465f;font-size:15px;margin:2px 0 8px}
+.case-objective-review p{font-size:13px!important;line-height:1.6}
+.case-why{border-left:3px solid #80b49c;padding-left:9px}
+.core-quiz-type-summary{border:1px solid #b4d2df;background:#eaf6fb;border-radius:8px;padding:10px;margin:10px 0}
+.core-quiz-type-summary h4{margin:0;color:#154b66;font-size:14px}
+.core-quiz-type-summary p,.core-quiz-kind{font-size:13px;line-height:1.6;color:#284c63}
