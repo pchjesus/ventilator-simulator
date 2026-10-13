@@ -1,6 +1,6 @@
 import {VERSION, PARAMETERS, DEVICE_REFERENCE, MONITOR_REFERENCE, initialSettings, adjustSetting, formatSetting} from "./sim-model.js";
 import {generateWaveform, previewScales} from "./waveform-model.js";
-import {beginSettingEdit, preferredEditStep, stepSettingEdit, acceptSettingEdit} from "./setting-editor.js";
+import {beginSettingEdit, preferredEditStep, stepSettingEdit, parseSettingEntry, defaultSettingEdit, acceptSettingEdit} from "./setting-editor.js";
 import {CLINICAL_TOPICS, TOPIC_GROUPS, EDUCATION_SOURCES, MANUAL_SECTIONS} from "./education-content.js";
 import {RELEASE_CATEGORIES, notesForCategory} from "./release-notes.js";
 import {clampRatio, ratioFromClientX, inspectAt} from "./waveform-inspector.js";
@@ -302,6 +302,47 @@ const editorDialog=document.getElementById("setting-editor");
 const editorForm=document.getElementById("editor-form");
 const incButton=document.getElementById("editor-increase");
 const decButton=document.getElementById("editor-decrease");
+const editorNumber=document.getElementById("editor-number");
+const editorEntryError=document.getElementById("editor-entry-error");
+let editorRaw="",editorError=null;
+let holdDelay=null,holdInterval=null;
+function stopEditorHold(){
+  if(holdDelay!==null)clearTimeout(holdDelay);
+  if(holdInterval!==null)clearInterval(holdInterval);
+  holdDelay=null;holdInterval=null;
+}
+window.addEventListener("blur",stopEditorHold);
+document.addEventListener("visibilitychange",()=>{if(document.hidden)stopEditorHold();});
+function setEditorRaw(raw){
+  editorRaw=raw;
+  const parsed=parseSettingEntry(editState.id,raw);
+  editorError=parsed.error;
+  if(!editorError)editState={...editState,pending:parsed.value};
+  editorNumber.setAttribute("aria-invalid",String(Boolean(editorError)));
+  editorEntryError.hidden=!editorError;editorEntryError.textContent=editorError||"";
+  document.getElementById("editor-accept").disabled=Boolean(editorError);
+  if(!editorError)updateEditorDisplay(false);
+}
+editorNumber.addEventListener("input",()=>{if(editState)setEditorRaw(editorNumber.value);});
+function startEditorHold(button,direction,event){
+  if(event.pointerType==="mouse"&&event.button!==0)return;
+  if(!editState||button.disabled)return;
+  stopEditorHold();
+  movePending(direction);
+  holdDelay=setTimeout(()=>{
+    holdDelay=null;
+    holdInterval=setInterval(()=>{
+      if(!editState||button.disabled){stopEditorHold();return;}
+      movePending(direction);
+    },120);
+  },400);
+}
+for(const [button,dir] of [[incButton,1],[decButton,-1]]){
+  button.addEventListener("pointerdown",event=>startEditorHold(button,dir,event));
+  for(const type of ["pointerup","pointercancel","pointerleave","lostpointercapture"])button.addEventListener(type,stopEditorHold);
+  // Pointerdown already applied one change. Keyboard-triggered clicks have detail 0.
+  button.addEventListener("click",event=>{if(event.detail===0)movePending(dir);});
+}
 
 function setControlMode(next){
   if(next!=="device"&&next!=="quick")return;
@@ -316,7 +357,7 @@ function setControlMode(next){
     :"빠른 학습: 기존 ± 버튼을 누르면 교육용 설정과 파형이 즉시 변경돼.";
   refreshSettings(); // update existing nodes; do not replace focused quick controls
 }
-function updateEditorDisplay(){
+function updateEditorDisplay(syncNumber=true){
   if(!editState)return;
   const param=PARAMETERS.find(p=>p.id===editState.id);
   const step=preferredEditStep(editState.id);
@@ -327,6 +368,11 @@ function updateEditorDisplay(){
     "모의 노브 증감: "+step+" "+param.unit+"씩 · 학습용 설정 범위 "+param.min+"–"+param.max;
   decButton.disabled=editState.pending<=param.min;
   incButton.disabled=editState.pending>=param.max;
+  if(syncNumber){editorRaw=formatSetting(param.id,editState.pending);editorNumber.value=editorRaw;
+    editorError=null;editorNumber.setAttribute("aria-invalid","false");
+    editorEntryError.hidden=true;editorEntryError.textContent="";
+    document.getElementById("editor-accept").disabled=false;
+  }
 }
 function openSettingEditor(id,trigger){
   if(controlMode!=="device"||editorDialog.open)return;
@@ -345,6 +391,7 @@ function movePending(direction){
   updateEditorDisplay();
 }
 function closeSettingEditor(){
+  stopEditorHold();
   const focus=editorFocusTarget;
   editState=null;
   editorFocusTarget=null;
@@ -352,7 +399,7 @@ function closeSettingEditor(){
   if(focus&&focus.isConnected&&!focus.disabled)focus.focus();
 }
 function acceptEditor(){
-  if(!editState)return;
+  if(!editState||editorError)return;
   const id=editState.id;
   const before=state;
   state=acceptSettingEdit(state,editState);
@@ -366,18 +413,26 @@ function acceptEditor(){
 }
 document.getElementById("mode-device").addEventListener("click",()=>setControlMode("device"));
 document.getElementById("mode-quick").addEventListener("click",()=>setControlMode("quick"));
-incButton.addEventListener("click",()=>movePending(1));
-decButton.addEventListener("click",()=>movePending(-1));
 document.getElementById("editor-cancel").addEventListener("click",closeSettingEditor);
 document.getElementById("editor-reset").addEventListener("click",()=>{
-  closeSettingEditor();
-  state=initialSettings();
-  refreshSettings();paintWaveforms();
-  status.textContent="전체 설정을 초기화했어.";
+  if(!editState)return;
+  stopEditorHold();
+  editState=defaultSettingEdit(editState);
+  updateEditorDisplay();
+  status.textContent="선택한 항목 기본값이 미확정값에 표시됐어. Accept로 반영해.";
 });
-editorForm.addEventListener("submit",event=>{event.preventDefault();acceptEditor();});
+editorForm.addEventListener("submit",event=>{
+  event.preventDefault();
+  if(!editState)return;
+  // Validate again on submission; avoid applying stale typed drafts.
+  const validated=parseSettingEntry(editState.id,editorNumber.value);
+  if(validated.error){setEditorRaw(editorNumber.value);return;}
+  editState={...editState,pending:validated.value};
+  editorError=null;acceptEditor();
+});
 editorDialog.addEventListener("cancel",event=>{event.preventDefault();closeSettingEditor();});
 editorDialog.addEventListener("keydown",event=>{
+  if(event.target===editorNumber||event.isComposing)return;
   if(event.key==="ArrowUp"||event.key==="ArrowRight"){
     event.preventDefault();movePending(1);
   }else if(event.key==="ArrowDown"||event.key==="ArrowLeft"){
