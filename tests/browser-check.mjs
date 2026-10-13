@@ -495,10 +495,15 @@ try {
   mobile.on("console",m=>{if(m.type()==="error")errors.push("Mobile console: "+m.text());});
   const mobileResponse=await mobile.goto(ROOT,{waitUntil:"networkidle",timeout:30000});
   assert.equal(mobileResponse.status(),200);
-  await mobile.locator(".setting").first().waitFor({state:"visible"});
+  await mobile.locator(".core-concept").first().waitFor({state:"visible"});
+  assert.equal(await mobile.locator("#device-panel").isVisible(),false,"mobile learning hides device until requested");
+  assert.equal(await mobile.locator(".workspace > :first-child").getAttribute("id"),"learning-panel");
   assert.equal(await mobile.locator(".setting").count(),7);
   assert.equal(await mobile.locator(".core-concept").count(),6);
+  assert.equal(await mobile.locator(".student-glossary").count(),1);
   await mobile.screenshot({path:"artifacts/browser/mobile-core-default.png",fullPage:false});
+  await mobile.getByRole("button",{name:"장비 화면 펼치기"}).click();
+  assert.equal(await mobile.locator("#device-panel").isVisible(),true);
   await mobile.locator("#core-quiz-root .core-quiz-primary").click();
   assert.equal(await mobile.locator(".core-return-button").count(),6,"return action belongs to all six expandable concept cards");
   await mobile.locator('[data-concept-id="peep"] > summary').click();
@@ -574,6 +579,9 @@ try {
   narrow.on("pageerror",e=>errors.push("320px page error: "+e.message));
   const narrowResponse=await narrow.goto(ROOT,{waitUntil:"networkidle",timeout:30000});
   assert.equal(narrowResponse.status(),200);
+  await narrow.locator("#panel-core").waitFor({state:"visible"});
+  assert.equal(await narrow.locator("#device-panel").isVisible(),false);
+  await narrow.getByRole("button",{name:"장비 화면 펼치기"}).click();
   await narrow.locator(".setting").first().waitFor({state:"visible"});
   assert.equal(await narrow.locator("#panel-core").isVisible(),true);
   assert.equal(await narrow.locator(".core-concept").count(),6);
@@ -667,6 +675,7 @@ try {
   for(const width of [1440,1280,1100,960,700,360,320]){
     const probe=await browser.newPage({viewport:{width,height:850}});
     await probe.goto(ROOT,{waitUntil:"networkidle",timeout:30000});
+    if(await probe.locator("#mobile-device-toggle").isVisible())await probe.locator("#mobile-device-toggle").click();
     const readout=await probe.locator("#monitor .readout").evaluateAll(cards=>cards.map(card=>{
       const v=card.querySelector("strong"),r=v.getBoundingClientRect(),box=card.getBoundingClientRect();
       return {label:card.querySelector(".label")?.textContent,text:v.textContent,
