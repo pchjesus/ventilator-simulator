@@ -1,5 +1,8 @@
 # Development Roadmap (checked against GitHub 2026-10-09)
 
+> **차기 확정 설계(2026-10-13, 구현 전):** v0.5.1–v0.6.0의 D1~D5 A 승인 및 패치·QA 게이트는 [v0.6.0 최종 승인 UX/구현 명세](V0.6.0_APPROVED_UX_IMPLEMENTATION_SPEC.md)를 참조. 현재 배포는 **v0.5.0 FINAL**이며 v0.6.0 구현 완료/테스트 완료 아님. 과거 체크박스는 해당 버전 당시의 역사적 계획이며 현재 상태와 혼동하지 말 것.
+
+
 ## v0.5.0 FINAL — 학생 학습 UX 단계별 진행 (2026-10-13)
 
 - [x] v0.4.7 — 설명서·팝업 불일치와 고정 모니터 값 잘림 수정. CI [38343016130](https://github.com/pchjesus/ventilator-simulator/actions/runs/38343016130) 통과.
