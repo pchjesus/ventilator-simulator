@@ -795,6 +795,15 @@ try {
     const overflow=await page.evaluate(()=>({body:document.documentElement.scrollWidth,client:document.documentElement.clientWidth}));
     assert.ok(overflow.body<=overflow.client+2,"reading dialog horizontal overflow "+width+": "+JSON.stringify(overflow));
     await page.screenshot({path:"artifacts/browser/v051-reading-monitor-"+width+".png",fullPage:false});
+    // The final source value must remain reachable by scrolling inside the modal.
+    await page.locator("#reading-dialog .reading-item").last().scrollIntoViewIfNeeded();
+    const finalCard=await page.locator("#reading-dialog .reading-item").last().boundingBox();
+    const scrollRegion=await page.locator("#reading-dialog-body").boundingBox();
+    assert.ok(finalCard.y>=scrollRegion.y-2 && finalCard.y+finalCard.height<=scrollRegion.y+scrollRegion.height+2,
+      "last monitor reading scrolls fully into dialog at "+width+"px");
+    await page.keyboard.press("Tab");
+    assert.equal(await page.evaluate(()=>document.querySelector("#reading-dialog").contains(document.activeElement)),true,
+      "Tab focus stays within native reading dialog at "+width+"px");
     await page.locator('[data-reading-category="settings"]').click();
     assert.equal(await page.locator("#reading-dialog .reading-item").count(),7);
     await page.locator('[data-reading-category="waveforms"]').click();
