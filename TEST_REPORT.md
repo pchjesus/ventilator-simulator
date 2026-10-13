@@ -1,5 +1,23 @@
 # TEST_REPORT — v0.2.0
 
+## v0.5.0 FINAL 통합 검증 기록 — 자동과 수동 검증 구별
+
+**테스트 대상:** v0.4.6 FINAL `f884383...`을 기준으로 v0.4.7→v0.4.8→v0.4.9→v0.5.0 순차 개발. 최종 `main` SHA/CI 결과는 병합 검증 후 별도로 추가한다.
+
+| 단계 | 자동 CI | 범위 |
+|---|---|---|
+| v0.4.7 | [38343016130 · SUCCESS](https://github.com/pchjesus/ventilator-simulator/actions/runs/38343016130) | 문구 및 I:E·V̇E 자리 잘림, 1440/1280/1100/960/700/360/320 브라우저 값 표시 |
+| v0.4.8 | [38343423745 · SUCCESS](https://github.com/pchjesus/ventilator-simulator/actions/runs/38343423745) | 모바일 학습 우선/펼치기, 학습 내용, 기존 설정·파형·CASE·퀴즈 회귀 |
+| v0.4.9 | [38343729579 · SUCCESS](https://github.com/pchjesus/ventilator-simulator/actions/runs/38343729579) | CASE 읽기 전용 역사/진행/학습목표 복습, 두 영역으로 구분한 퀴즈 결과 및 기존 동작 |
+
+**v0.5.0 추가 브라우저 범위:** 네 자료 출처 구분, 모바일 펼치기/복귀 키보드 Enter, 3개 파형/고정 7개 값의 상태 보존, 기본/장비 탐색, 1440/1280/1100/960/700/360/320 폭과 스크린샷, 가로 오버플로. 기존 CI 단위·구문·브라우저·웹 정적 ZIP 워크플로 모두 재실행한다.
+
+**검증 완료로 주장할 수 없는 것:** 실제 스마트폰 및 사람의 육안 UX 검사, 화면읽기 도구 전체 호환성, 200% 확대 전문 QA, 초보 간호학생 대상 실제 사용성/효과 연구, 임상전문가 감수, 실제 PB980 정확성/환자 생리 예측 검증. 모두 별도 계획만 마련했으며 미실시.
+
+**되돌리기:** Private main의 v0.4.6 FINAL `f884383a54563fdb75ed6ca14b4b1db987e92856`을 기준으로 복귀할 수 있다. 기능 브랜치에서 CI 실패 시 main 병합 보류.
+
+---
+
 ## Scope
 Implementation introduces first web entrypoint, educational settings and CIRCUIT conceptual views.
 
