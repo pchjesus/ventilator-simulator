@@ -283,6 +283,119 @@ function renderMonitor() {
     card.append(name,number,suffix);monitor.append(card);
   }
 }
+/* v0.5.1 reading surface: UI-only state; no edits to committed, pending,
+ * monitor, waveform playback, quiz, or CASE session values. */
+const readingDialog=document.getElementById("reading-dialog");
+const readingTrigger=document.getElementById("open-reading");
+const readingBody=document.getElementById("reading-dialog-body");
+const MONITOR_READ_NAMES=Object.freeze([
+  "최고 기도압 (Ppeak)",
+  "평균 기도압 (Pmean)",
+  "호기말 양압 (PEEP)",
+  "흡기:호기 시간 비율 (I:E)",
+  "총 호흡수 (fTOT)",
+  "호기 일회호흡량 (VTE)",
+  "총 호기 분당환기량 (V̇E TOT)"
+]);
+const SETTING_READ_NAMES=Object.freeze({
+  fio2:"흡입 산소 농도 (FiO₂)",
+  peep:"호기말 양압 설정 (PEEP)",
+  rate:"설정 강제호흡수 (f)",
+  pi:"압력제어 흡기압 설정 (Pᵢ)",
+  ti:"강제흡기 시간 (Tᵢ)",
+  ps:"자발호흡 압력보조 (PS)",
+  trigger:"유량 트리거 감도 (V-TRIG)"
+});
+const WAVE_READ_NAMES=Object.freeze([
+  {label:"Pressure / Time",title:"기도압-시간 파형",unit:"cmH₂O",description:"시간에 따른 기도압의 교육용 생성 곡선이야."},
+  {label:"Flow / Time",title:"유량-시간 파형",unit:"L/min",description:"시간에 따른 유량의 교육용 생성 곡선이야."},
+  {label:"Volume / Time",title:"용적-시간 파형",unit:"mL",description:"시간에 따른 용적의 교육용 생성 곡선이야."}
+]);
+let readingCategory="monitor"; // independent presentation state only
+function makeReadingCard(label,value,unit,tag,description,source){
+  const article=makeElement("article","reading-item");
+  article.append(makeElement("h3",null,label));
+  if(value!==null){
+    const number=makeElement("strong","reading-value",value);
+    if(unit)number.append(" ",makeElement("span","reading-unit",unit));
+    article.append(number);
+  }
+  article.append(makeElement("span","reading-tag",tag));
+  if(description)article.append(makeElement("p","reading-explainer",description));
+  article.append(makeElement("p","reading-source","자료 출처: "+source));
+  return article;
+}
+function renderReadingCategory(){
+  for(const button of document.querySelectorAll("[data-reading-category]")){
+    button.setAttribute("aria-pressed",String(button.dataset.readingCategory===readingCategory));
+  }
+  readingBody.replaceChildren();
+  const list=makeElement("div","reading-list");
+  if(readingCategory==="monitor"){
+    readingBody.append(makeElement("p","reading-notice",
+      "서로 독립적인 7개 고정 예시값이야. 한 환자의 동시 측정값이 아니며 설정값이나 파형과 연동되지 않아."));
+    MONITOR_REFERENCE.forEach(([label,value,unit],index)=>{
+      list.append(makeReadingCard(label+" · "+MONITOR_READ_NAMES[index],value,unit,
+        "독립 고정 모니터 표시 예시",
+        "이 숫자는 화면 표시를 연습하기 위한 예시야. 환자 실측값이나 치료 반응이 아니야.",
+        "프로젝트 src/sim-model.js의 MONITOR_REFERENCE (고정 화면 예시)"));
+    });
+  }else if(readingCategory==="settings"){
+    readingBody.append(makeElement("p","reading-notice",
+      "교육용 설정의 현재 확정값만 표시해. Pending(미확정 편집값)은 반영되지 않고, 이 창에서는 설정을 변경할 수 없어."));
+    for(const parameter of PARAMETERS){
+      list.append(makeReadingCard(parameter.label+" · "+SETTING_READ_NAMES[parameter.id],
+        formatSetting(parameter.id,state[parameter.id]),parameter.unit,
+        "교육용 설정값 · 확정됨 (Committed)",parameter.help,
+        "프로젝트 src/sim-model.js의 PARAMETERS와 현재 확정 설정 state"));
+    }
+    readingBody.append(makeElement("p","reading-notice",
+      "상단의 PEEP 고정 표시 예시(5.8 cmH₂O)와 아래 교육용 PEEP 설정 기본값(5.0 cmH₂O)은 서로 다른 자료야."));
+  }else{
+    readingBody.append(makeElement("p","reading-notice",
+      "Pressure·Flow·Volume은 일부 교육용 설정을 이용해 생성한 파형이야. 실제 PB980 신호나 환자 실측값이 아니야."));
+    for(const wave of WAVE_READ_NAMES){
+      list.append(makeReadingCard(wave.label+" · "+wave.title,null,wave.unit,
+        "생성 곡선 · 실측 아님",wave.description+" 단위: "+wave.unit+".",
+        "프로젝트 src/waveform-model.js의 교육용 generateWaveform 모델"));
+    }
+    readingBody.append(makeElement("p","reading-notice",
+      "교육용 파형에 반영: PEEP·Pi·PS·f·Ti. FiO₂·V-TRIG 및 실제 환자의 SpO₂·ABGA·VTE·알람은 계산하거나 예측하지 않아. CASE의 가상 상황 자료도 별개야."));
+  }
+  readingBody.append(list);
+  readingBody.scrollTop=0;
+}
+function initReadingUI(){
+  readingTrigger.addEventListener("click",()=>{
+    // Native modal prevents interacting with underlying controls. Never stack dialogs.
+    if(Array.from(document.querySelectorAll("dialog")).some(dialog=>dialog.open))return;
+    readingCategory="monitor";
+    renderReadingCategory();
+    readingDialog.showModal();
+    document.getElementById("reading-close").focus();
+  });
+  document.querySelectorAll("[data-reading-category]").forEach(button=>{
+    button.addEventListener("click",()=>{
+      if(!readingDialog.open)return;
+      readingCategory=button.dataset.readingCategory;
+      renderReadingCategory();
+    });
+  });
+  document.getElementById("reading-close").addEventListener("click",()=>readingDialog.close());
+  readingDialog.addEventListener("close",()=>{
+    if(readingTrigger.isConnected&&readingTrigger.getClientRects().length)readingTrigger.focus();
+  });
+  readingDialog.addEventListener("pointerdown",event=>{
+    if(event.target!==readingDialog)return;
+    const bounds=readingDialog.getBoundingClientRect();
+    if(event.clientX<bounds.left||event.clientX>bounds.right||
+       event.clientY<bounds.top||event.clientY>bounds.bottom){
+      event.preventDefault();
+      readingDialog.close();
+    }
+  });
+}
+
 function renderSettings() {
   settingsContainer.replaceChildren();
   for (const param of PARAMETERS) {
@@ -1347,5 +1460,5 @@ function animationFrame(now){
   }
   requestAnimationFrame(animationFrame);
 }
-initEducationUI();renderMonitor();renderSettings();renderCircuit();renderCoreLearning();renderCoreQuiz();showSideTab("core");paintWaveforms();
+initEducationUI();renderMonitor();renderSettings();initReadingUI();renderCircuit();renderCoreLearning();renderCoreQuiz();showSideTab("core");paintWaveforms();
 requestAnimationFrame(animationFrame);
