@@ -764,7 +764,7 @@ try {
   await readingPage.screenshot({path:"artifacts/browser/v051-reading-settings-1280.png",fullPage:false});
   await readingPage.locator('[data-reading-category="waveforms"]').click();
   assert.equal(await readingPage.locator("#reading-dialog .reading-item").count(),3);
-  for(const unit of ["cmH₂O","L/min","mL"])assert.ok((await readingPage.locator("#reading-dialog-body").textContent()).includes(unit));
+  assert.deepEqual(await readingPage.locator("#reading-dialog .reading-wave-unit").allTextContents(),["단위 · cmH₂O","단위 · L/min","단위 · mL"]);
   assert.match(await readingPage.locator("#reading-dialog-body").textContent(),/실측 아님/);
   await readingPage.screenshot({path:"artifacts/browser/v051-reading-waveforms-1280.png",fullPage:false});
   await readingPage.keyboard.press("Escape");
