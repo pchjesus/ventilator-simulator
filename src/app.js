@@ -30,6 +30,31 @@ let controlMode = "device"; // explicit opt-in for legacy quick study controls
 let editState = null; // {id, original, pending}, never feeds waveform engine
 let editorFocusTarget = null;
 document.body.dataset.controlMode = controlMode;
+/* Presentation and layout are read-only projections of the existing DOM.
+ * Never reconstruct settings, waveform SVG, CORE quiz, or CASE state on a view change. */
+let presentationMode="learning";
+let layoutPreset="learning";
+document.body.dataset.presentation=presentationMode;
+document.body.dataset.layout=layoutPreset;
+function syncViewChoices(){
+  document.querySelectorAll("[data-presentation]").forEach(button=>{
+    button.setAttribute("aria-pressed",String(button.dataset.presentation===presentationMode));
+  });
+  document.querySelectorAll("[data-layout]").forEach(button=>{
+    button.setAttribute("aria-pressed",String(button.dataset.layout===layoutPreset));
+  });
+}
+document.querySelectorAll("[data-presentation]").forEach(button=>button.addEventListener("click",()=>{
+  const next=button.dataset.presentation;
+  if(!["learning","device"].includes(next))return;
+  presentationMode=next;document.body.dataset.presentation=next;syncViewChoices();
+}));
+document.querySelectorAll("[data-layout]").forEach(button=>button.addEventListener("click",()=>{
+  const next=button.dataset.layout;
+  if(!["learning","balanced","device"].includes(next))return;
+  layoutPreset=next;document.body.dataset.layout=next;syncViewChoices();
+}));
+syncViewChoices();
 let circuitView = "parts";
 let assemblyStep = 0;
 document.getElementById("version").textContent = "v" + VERSION;
