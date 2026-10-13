@@ -1,5 +1,31 @@
 # DEVLOG
 
+## v0.4.7 → v0.5.0 FINAL — 연속 학생 학습 UX 개선 (2026-10-13)
+
+### Added / Changed
+- **v0.4.7:** 도움말 설정 초기화 문구 동기화, 길게 누르기/직접 입력 안내, I:E 및 V̇E TOT 고정 모니터 긴 수치 잘림 보정.
+- **v0.4.8:** 좁은 화면의 학습 우선 배치, 장비 펼치기 및 학습 복귀, 6개 핵심 개념을 쉬운 정의부터 오개념/예/심화까지 층위화, 약어 풀이. 기존 DOM을 유지하고 UI 표시 상태만 전환.
+- **v0.4.9:** CASE 이전 완료 응답 읽기 전용 확인, 현재 목표 강조·전체 목표 중복 최소화, 판단 이유 및 목표별 복습, 앱 기능 이해/간호 개념 분리 결과, 교수자용 정답/수업 문서.
+- **v0.5.0:** 네 종류의 교육용 자료(설정·독립 고정 표시·예시 파형·별도 가상 CASE)를 학습 도입에서 명시. 사용자 승인 Q1–Q5 통합, 실제 파일럿 계획 및 회귀 테스트 확장.
+
+### Fixed
+- 과거 설명서에서 설정 팝업 “전체 초기화”라는 오해 소지가 있던 동작 설명을 “이 항목 기본값은 Pending만 수정”으로 교정.
+- 7열 환자 모니터의 I:E와 V̇E 긴 숫자 잘림을 좁은 장비 레이아웃에서 보정.
+- 기존 CASE 진행 안내와 실제 이전 응답 열람 경로의 불일치 개선.
+
+### Release gate and evidence
+- v0.4.7: [CI 38343016130](https://github.com/pchjesus/ventilator-simulator/actions/runs/38343016130) 통과.
+- v0.4.8: [CI 38343423745](https://github.com/pchjesus/ventilator-simulator/actions/runs/38343423745) 통과.
+- v0.4.9: [CI 38343729579](https://github.com/pchjesus/ventilator-simulator/actions/runs/38343729579) 통과.
+- v0.5.0: 통합 브랜치 및 최종 `main` CI 결과는 `TEST_REPORT.md`의 최종 기록으로 추적한다.
+
+### Known Issues / Next
+- 실제 사용자 사용성·교수자 수업적합성·임상/기기 전문가 감수 미완료. 자동 테스트 성공은 이 검증을 대신하지 않는다.
+- 자료·파형·CASE는 연동된 환자 생리 데이터가 아니다. 향후 개발에서 검증되지 않은 값을 실제 환자 결과처럼 연결하지 않는다.
+- [사용성 파일럿 계획](docs/V0.5.0_USABILITY_PILOT_PROTOCOL.md) 시행 및 관찰 결과 기반 후속 개선.
+
+---
+
 ## v0.2.0 — First executable browser prototype (2026-10-09)
 ### Added
 - `index.html` entry, `styles.css`, `src/sim-model.js`, `src/app.js`
