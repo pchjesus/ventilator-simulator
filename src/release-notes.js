@@ -8,6 +8,12 @@ export const RELEASE_CATEGORIES=Object.freeze([
   {id:"docs",label:"문서·근거"}
 ]);
 export const RELEASE_NOTES=Object.freeze([
+ {version:"0.4.9",date:"2026-10-13",changes:[
+ {category:"feature",text:"CASE 진행 중 이전 완료 문항의 선택과 해설을 읽기 전용으로 복습"},
+ {category:"ui",text:"현재 학습목표를 강조하고 중복된 전체 목표는 요청 시만 펼치기"},
+ {category:"clinical",text:"CASE 종료 시 목표별 복습과 피드백 이유를 함께 표시"},
+ {category:"stability",text:"기존 CASE 정답·문항 순서·세션 재개·중복 제출 제한 유지"},
+ {category:"docs",text:"형성평가 결과에 앱 작동 이해와 간호 기초 개념을 분리"}]},
  {version:"0.4.8",date:"2026-10-13",changes:[
  {category:"ui",text:"좁은 화면에서 핵심 학습 우선·장비 펼치기 및 학습 돌아가기"},
  {category:"feature",text:"핵심 6개 개념의 정의·원리·간호 관찰·오개념·예시·심화 설명"},
