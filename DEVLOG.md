@@ -318,3 +318,7 @@ Next: Independent educator review → targeted wording corrections → real stud
 - New quiz→concept→quiz return path is accessible through an expanded original concept card; unopened cards remain naturally collapsed. This preserves existing progressive disclosure.
 - Structured clinical reviewer questions are descriptive evidence interpretation, not a reviewer decision or review signoff.
 - PR #12 regression: 66/66 unit + 21 Chromium PASS checkpoints at 1440/360/320 (run 38242016756). A mistaken collapsed-<details> visibility assertion was corrected without altering application behavior.
+
+
+## 2026-10-13 — UX design decision and regression risk review (documentation only)
+Five user decisions for v0.4.4–v0.4.6 were confirmed and tracked in `docs/UI_UX_REDESIGN_PLAN_v0.4.4-v0.4.6.md`. Inspected current main v0.4.3 behavior: staged numeric edits lack direct-entry precision validation; TURN is inert; modal reset currently resets all seven; desktop study pane is narrow and existing breakpoints may clip compact device settings; single caseState is discarded when returning to CASE list. Planned separate UI-presentation/layout/control-mode state, strict pending input validation, pointer long-press cleanup, per-parameter reset, independent CASE resume and 1440–320px regression gates. **No source/runtime feature changed; no v0.4.4/0.4.5/0.4.6 implementation or functional verification has been claimed.**
