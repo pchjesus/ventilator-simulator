@@ -199,7 +199,7 @@ See CLINICAL_REVIEW_HANDOFF_v0.4.3.md.
 
 
 ## CONFIRMED UPCOMING UX RELEASES — approved 2026-10-13; NOT implemented
-**Design baseline:** Private v0.4.3 FINAL \`56e120b6ad4c192cfde7064a4997e42fb582d6e0\`.
+**Design baseline:** Private v0.4.3 FINAL `56e120b6ad4c192cfde7064a4997e42fb582d6e0`.
 Detailed decisions, implementation invariants, risk register, patch sequencing and release-acceptance matrix:
 [UI/UX final redesign plan v0.4.4–v0.4.6](UI_UX_REDESIGN_PLAN_v0.4.4-v0.4.6.md).
 
@@ -214,7 +214,7 @@ Detailed decisions, implementation invariants, risk register, patch sequencing a
 ### v0.4.5 — press/hold, text input and setting-level default
 - [ ] Keep Pending → Accept/Cancel transaction. Add strict direct-entry parsing, educational bounds, per-parameter precision/grid checks; no silent rounding or live waveform change before Accept.
 - [ ] Hold +/- with pointer lifecycle cleanup, no double click on release, keyboard and touch coverage; remove decorative TURN from setting dialog.
-- [ ] Dialog \`이 항목 기본값\` changes only the selected parameter Pending; retain header global \`설정 초기화\`.
+- [ ] Dialog `이 항목 기본값` changes only the selected parameter Pending; retain header global `설정 초기화`.
 - [ ] Preserve stale-edit guard, seven existing parameter settings/ranges, quick mode, keyboard focus and model/monitor separation.
 - [ ] PASS boundary/invalid-input/blur/close/cancel/timer/state-independent regression across UI modes/sizes.
 
