@@ -8,6 +8,12 @@ export const RELEASE_CATEGORIES=Object.freeze([
   {id:"docs",label:"문서·근거"}
 ]);
 export const RELEASE_NOTES=Object.freeze([
+ {version:"0.4.7",date:"2026-10-13",changes:[
+  {category:"ui",text:"7개 고정 모니터 카드의 I:E 긴 숫자 읽기 오류를 보정"},
+  {category:"stability",text:"1440px 장비 컬럼의 모니터 표시 회귀 검사를 추가"},
+  {category:"feature",text:"기존 설정 팝업의 개별 기본값과 전체 초기화 기능은 그대로 유지"},
+  {category:"clinical",text:"고정 모니터 예시를 실제 환자 측정값으로 해석하지 않는 범위 유지"},
+  {category:"docs",text:"설명서의 잘못된 전체 초기화 문구와 직접입력/홀드 안내 수정"}]},
  {version:"0.4.6",date:"2026-10-13",changes:[
   {category:"feature",text:"CASE 01·02의 단계별 목표·진행 경로 표시와 개별 이어 하기/다시 시작"},
   {category:"ui",text:"실습 전 목표·현재 단계 및 사전 상황 자료를 CASE 진행 중 언제든 열람"},

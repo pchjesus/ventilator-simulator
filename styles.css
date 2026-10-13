@@ -726,3 +726,9 @@ body[data-presentation="learning"] .study-panel .side-tabs button{min-height:46p
  }
  body[data-control-mode="device"] .setting-select{padding-right:2px}
 }
+
+/* v0.4.7: long I:E sample remains fully legible in narrow seven-column monitor banners.
+ * Do not alter the independent static data or the seven readout positions. */
+.monitor-data .readout:nth-child(4) strong{font-size:clamp(13px,1.1vw,17px);letter-spacing:-.045em;white-space:nowrap}
+.monitor-data .readout strong{max-width:100%;min-width:0}
+@media(max-width:550px){.monitor-data .readout:nth-child(4) strong{font-size:17px}}

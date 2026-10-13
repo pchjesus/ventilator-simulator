@@ -663,6 +663,21 @@ try {
   await narrow.screenshot({path:"artifacts/browser/narrow-quick-320.png",fullPage:true});
   await narrow.getByRole("button",{name:"PB980 참고형 모드"}).click();
   await narrow.screenshot({path:"artifacts/browser/narrow-320.png",fullPage:true});
+  // v0.4.7: long example values must remain fully visible; no monitor data is recomputed.
+  for(const width of [1440,1280,1100,960,700,360,320]){
+    const probe=await browser.newPage({viewport:{width,height:850}});
+    await probe.goto(ROOT,{waitUntil:"networkidle",timeout:30000});
+    const readout=await probe.locator("#monitor .readout").evaluateAll(cards=>cards.map(card=>{
+      const v=card.querySelector("strong"),r=v.getBoundingClientRect(),box=card.getBoundingClientRect();
+      return {label:card.querySelector(".label")?.textContent,text:v.textContent,
+        fits:r.left>=box.left-1 && r.right<=box.right+1 && v.scrollWidth<=v.clientWidth+1};
+    }));
+    assert.equal(readout.length,7,"seven example monitor readings at "+width+"px");
+    assert.ok(readout.every(x=>x.fits),"cropped monitor at "+width+"px: "+JSON.stringify(readout));
+    await probe.screenshot({path:"artifacts/browser/v047-monitor-"+width+".png",fullPage:false});
+    await probe.close();
+  }
+  pass("v0.4.7 monitor cards display complete values in seven widths");
   const reduced=await browser.newPage({viewport:{width:1000,height:700}});
   reduced.on("pageerror",e=>errors.push("Reduced motion pageerror: "+e.message));
   await reduced.emulateMedia({reducedMotion:"reduce"});
