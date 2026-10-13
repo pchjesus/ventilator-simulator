@@ -1,5 +1,26 @@
 # Architecture — v0.3.0
 
+## v0.5.0 FINAL — 계층과 상태 분리 (2026-10-13)
+
+```text
+UI presentation/layout/deviceExpanded (view only)
+  → original shared DOM sections (device and study moved, never cloned)
+  ├── committed settings state → illustrative waveforms (PEEP/Pi/PS/f/Ti only)
+  ├── fixed monitor reference × 7 (not computed)
+  ├── in-memory core quiz (10 questions; independent from device reset)
+  ├── in-memory CASE 01/02 sessions (6 questions; per-case answer gate)
+  └── independently stored in-page debriefing notes (no network/persistence)
+```
+
+- **반응형:** `matchMedia(max-width:1100px)`는 기본 학습 보기에서 학습 패널을 먼저 렌더 순서로 이동한다. `max-width:700px`의 학습 화면은 장비 전체를 접되 명확한 펼치기/학습 복귀 버튼을 제공한다. 장비 탐색 모드에서는 화면 전체를 유지. 새로운 실질 설정·환자·CASE 상태를 만들지 않음.
+- **교육 설명:** `src/student-learning.js`의 CORE_LESSONS 기존 값과 새 CORE_LESSON_EXTRAS/STUDENT_GLOSSARY; `src/app.js`에서 상세 카드/선택적 심화 렌더. 기존 원문·문항 정답 변경 없음.
+- **CASE 진행:** `caseState`와 `caseSessions`(Map), `chooseCaseAnswer`의 진행 게이트 그대로. 완료된 이전 응답만 펼쳐 보기. CASE done에서 목표별 읽기 복습. 실제 환자 측정/처방/변화 모델은 없음.
+- **형성평가:** `CORE_QUESTIONS` 콘텐츠 버전은 앱 버전과 별개. 문항 `evidenceKind=simulator-contract`는 앱 사용 이해; 나머지는 간호 기초 개념 이해로 명시. 임상 수행 능력 인증 아님.
+- **교수자 자료:** `docs/FACULTY_CLASS_GUIDE_v0.5.0_DRAFT.md`는 별도 인쇄 문서. 정적 `dist/` 브라우저 ZIP에 포함되지 않음. 인증/역할 제어 없음.
+- **보호 범위:** 의료·기기 감수 보류. 화면 표시의 7개 예시값, 파형 생성 데이터, CASE 가상 데이터는 독립이며 한 환자 데이터로 결합/해석하지 않는다.
+
+---
+
 ## Current update flow
 
 ```text
