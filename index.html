@@ -183,13 +183,16 @@
       </div>
       <div class="editor-adjuster" role="group" aria-label="교육용 모의 회전 노브">
         <button type="button" id="editor-decrease" aria-label="선택한 설정값 감소">−</button>
-        <div class="editor-dial" aria-hidden="true"><span>⟳</span><small>TURN</small></div>
+        <label class="editor-direct-entry" for="editor-number">직접 입력
+          <input id="editor-number" type="text" inputmode="decimal" spellcheck="false" autocomplete="off" aria-describedby="editor-entry-error">
+        </label>
         <button type="button" id="editor-increase" aria-label="선택한 설정값 증가">+</button>
       </div>
+      <p id="editor-entry-error" class="editor-entry-error" role="alert" hidden></p>
       <p id="editor-step-description" class="editor-step-description"></p>
       <p id="editor-note" class="editor-note">교육용 PB980 조작 참고 화면이야. 실제 장비의 설정 범위·제약·확인 절차를 완전히 재현하지 않아.</p>
       <div class="editor-actions">
-        <button type="button" id="editor-reset" class="editor-secondary">전체 초기화</button>
+        <button type="button" id="editor-reset" class="editor-secondary">이 항목 기본값</button>
         <button type="button" id="editor-cancel" class="editor-secondary">Cancel</button>
         <button type="submit" id="editor-accept" class="editor-primary">Accept</button>
       </div>
