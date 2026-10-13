@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import {initialSettings,adjustSetting} from "../src/sim-model.js";
-import {beginSettingEdit,preferredEditStep,stepSettingEdit,acceptSettingEdit} from "../src/setting-editor.js";
+import {beginSettingEdit,preferredEditStep,stepSettingEdit,parseSettingEntry,defaultSettingEdit,acceptSettingEdit} from "../src/setting-editor.js";
 
 test("staged edit starts from committed state without mutation",()=>{
  const committed=initialSettings();
@@ -44,4 +44,31 @@ test("unknown setting and malformed payload cannot commit",()=>{
  assert.equal(preferredEditStep("missing"),null);
  assert.strictEqual(acceptSettingEdit(base,{id:"pi",original:10,pending:1000}),base);
  assert.strictEqual(acceptSettingEdit(base,{id:"pi",original:10,pending:NaN}),base);
+});
+
+test("typed input respects seven educational ranges, decimals and rejects invalid forms",()=>{
+ for(const param of [
+   ["fio2","40",40],["peep","5.1",5.1],["rate","15",15],
+   ["pi","10.1",10.1],["ti","1.0",1],["ps","10.2",10.2],["trigger","3.5",3.5]
+ ]){
+   assert.equal(parseSettingEntry(param[0],param[1]).value,param[2]);
+   assert.equal(parseSettingEntry(param[0],param[1]).error,null);
+ }
+ for(const bad of ["","-1","5e1","NaN","Infinity","5.06","  ","+5","5,1"]){
+   assert.ok(parseSettingEntry("peep",bad).error,bad);
+ }
+ assert.ok(parseSettingEntry("fio2","40.5").error);
+ assert.ok(parseSettingEntry("fio2","101").error);
+ assert.ok(parseSettingEntry("fio2","20").error);
+ assert.ok(parseSettingEntry("missing","3").error);
+});
+test("single setting default stages initial value without resetting other committed parameters",()=>{
+ const committed={...initialSettings(),fio2:60,peep:8};
+ const edit=defaultSettingEdit(beginSettingEdit(committed,"fio2"));
+ assert.equal(edit.pending,40);
+ assert.equal(committed.fio2,60);
+ const changed=acceptSettingEdit(committed,edit);
+ assert.equal(changed.fio2,40);
+ assert.equal(changed.peep,8);
+ assert.strictEqual(acceptSettingEdit(committed,{id:"peep",original:8,pending:5.06}),committed);
 });
