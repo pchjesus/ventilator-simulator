@@ -790,6 +790,7 @@ body[data-presentation="learning"] .study-panel .side-tabs button{min-height:46p
 .reading-item h3{font-size:18px;line-height:1.45;color:#174c69;margin:0 0 8px}
 .reading-value{display:block;font-size:clamp(26px,5vw,36px);line-height:1.25;color:#122f43;font-weight:850;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
 .reading-unit{display:inline;font-size:19px;font-weight:650;color:#2b5369}
+.reading-wave-unit{display:block;font-size:21px;line-height:1.4;color:#244e67;overflow-wrap:anywhere}
 .reading-tag{display:block;margin-top:10px;font-size:13px;line-height:1.5;font-weight:750;color:#285c72}
 .reading-explainer{font-size:15px;line-height:1.65;color:#28485b;margin:8px 0 0;overflow-wrap:anywhere}
 .reading-source{font-size:13px;line-height:1.6;color:#4b6473;margin:8px 0 0;padding-top:8px;border-top:1px solid #d6e4eb}
