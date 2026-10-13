@@ -707,3 +707,11 @@ body[data-presentation="learning"] .study-panel .side-tabs button{min-height:46p
 .case-session-status{font-size:12px;color:#285c76;font-weight:750}
 .case-restart{min-height:44px;display:block;width:100%;margin-top:7px;padding:9px 11px;border:1px solid #b5c8d6;color:#2b5570;background:#fff;border-radius:7px;font-size:12px;font-weight:750}
 .case-roadmap-stage:focus-visible,.case-restart:focus-visible{outline:3px solid #74b4d7;outline-offset:2px}
+
+/* v0.4.4 regression: a narrow two-column tile must not place the tier badge
+ * underneath the absolute-positioned ? help button at 320px. */
+@media(max-width:550px){
+ body[data-control-mode="device"] .setting-select{padding-right:35px}
+ body[data-control-mode="device"] .setting-name{overflow-wrap:anywhere}
+ body[data-control-mode="device"] .setting .setting-tier{display:block;float:none;margin:4px 0 0;width:max-content;max-width:100%}
+}
