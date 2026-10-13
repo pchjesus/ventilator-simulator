@@ -1,8 +1,8 @@
-# v0.4.4–v0.4.6 UI/UX redesign — approved plan, PRE-IMPLEMENTATION
+# v0.4.4–v0.4.6 UI/UX redesign — implemented feature plan and release verification
 
 Decision date: 2026-10-13 (KST)
 Base: Private main at 56e120b6ad4c192cfde7064a4997e42fb582d6e0 (v0.4.3 FINAL)
-Status: **DESIGN AND ACCEPTANCE CRITERIA ONLY. NO FEATURE IMPLEMENTED, TESTED, OR RELEASED UNDER THESE VERSIONS.**
+Status: **Implemented on the v0.4.4–v0.4.6 feature branch; clinical educator review remains pending. Final integrated validation and merged-main CI are tracked separately in TEST_REPORT.md.**
 
 ## 1. Product objective and explicit user decisions
 
@@ -168,4 +168,4 @@ Verification statuses must distinguish: planned/not run, automated-pass, visual 
 
 ## 7. Decision trace
 
-2026-10-13 — User explicitly selected all five UX directions above and requested final design/risk analysis before implementation. This document records them as the future roadmap and test gate. v0.4.3 functional baseline must remain unchanged until a later implementation task.
+2026-10-13 — User explicitly selected all five UX directions above and requested final design/risk analysis before implementation. This document records them as the future roadmap and test gate. The v0.4.3 main baseline was kept unchanged until the user explicitly requested implementation. v0.4.4–v0.4.6 code was then developed on a separate feature branch.
