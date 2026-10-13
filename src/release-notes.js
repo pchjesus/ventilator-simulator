@@ -8,6 +8,12 @@ export const RELEASE_CATEGORIES=Object.freeze([
   {id:"docs",label:"문서·근거"}
 ]);
 export const RELEASE_NOTES=Object.freeze([
+ {version:"0.4.8",date:"2026-10-13",changes:[
+ {category:"ui",text:"좁은 화면에서 핵심 학습 우선·장비 펼치기 및 학습 돌아가기"},
+ {category:"feature",text:"핵심 6개 개념의 정의·원리·간호 관찰·오개념·예시·심화 설명"},
+ {category:"clinical",text:"PBW·Pplat·auto-PEEP·ABGA·V-TRIG 입문용 용어 설명"},
+ {category:"stability",text:"단일 장비와 학습 패널 DOM 재배치로 기존 상태 복제 없이 유지"},
+ {category:"docs",text:"모바일 학습과 장비 탐색의 사용 경로·자료 성격을 분리 안내"}]},
  {version:"0.4.7",date:"2026-10-13",changes:[
   {category:"ui",text:"7개 고정 모니터 카드의 I:E 긴 숫자 읽기 오류를 보정"},
   {category:"stability",text:"1440px 장비 컬럼의 모니터 표시 회귀 검사를 추가"},
