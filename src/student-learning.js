@@ -42,6 +42,23 @@ export const CORE_LESSONS=Object.freeze([
   simulator:"앱의 CASE/ALARM은 가상상황이어서 실제 기기나 환자의 변화를 발생시키지 않아.",
   reference:["aarc"]}
 ]);
+/** Optional novice scaffolding; does not change assessment keys or simulator data. */
+export const CORE_LESSON_EXTRAS=Object.freeze({
+ peep:{principle:"호기 말 압력이 유지되면 일부 폐포 허탈을 줄이는 데 도움이 될 수 있지만, 효과와 위험은 환자의 폐·순환 상태에 따라 달라져.",example:"PEEP 5 cmH₂O는 호기 끝 압력을 설정한 예시야. 이 값만으로 SpO₂나 혈압을 예측하지 않아.",advanced:"Auto-PEEP는 충분히 호기하지 못해 폐에 남는 내인성 호기말 압력이야. 설정 PEEP와 같지 않아."},
+ fio2:{principle:"산소 공급 비율을 설정한 것이며, 실제 혈액의 산소화 결과는 가스교환 상태에 따라 달라져.",example:"FiO₂ 40%는 혼합가스 산소 비율 0.40이지, SpO₂ 40%나 PaO₂ 40 mmHg가 아니야.",advanced:"ABGA(동맥혈가스분석)는 pH·PaO₂·PaCO₂ 등을 별도 측정해. FiO₂ 수치만으로 이 검사 결과를 계산할 수 없어."},
+ vte:{principle:"호기에서 나온 용적을 살피는 지표로, 압력 설정만이 아니라 환자 호흡역학·노력·누출에 영향을 받아.",example:"상단 VTE 352 mL는 화면읽기를 위한 독립적인 고정 숫자야. 설정 변경 뒤 측정된 결과가 아니야.",advanced:"PBW(predicted body weight, 예측체중)는 키 등을 토대로 산정해 호흡량의 평가 맥락에 활용해. 이 앱에는 PBW 계산 기능이 없어."},
+ rate:{principle:"SIMV의 설정 f는 강제호흡 빈도를 뜻하고, 총 호흡수 fTOT에는 자발호흡이 포함될 수 있어.",example:"설정 f 15/min과 고정 표시 fTOT 22/min은 다른 개념이야. 이 앱에서는 둘을 실제 환자 데이터로 연결하지 않아.",advanced:"호흡수 단독으로 호흡 깊이·환기 효율·호흡노력을 단정할 수 없어. 다른 지표와 환자 상태를 함께 관찰해."},
+ ppeak:{principle:"Pᵢ는 이 앱에서 PEEP 위의 흡기압 설정을 뜻하고 Ppeak는 관찰하는 최대 기도압을 뜻해.",example:"Pᵢ 10 cmH₂O를 입력해도 상단 PPEAK 15 cmH₂O는 변하지 않아. 실제 측정치를 산출하지 않아.",advanced:"Pplat(plateau pressure, 고원압)은 적절한 조건에서 흡기 말 유량이 멈춘 상황의 압력 개념이야. Ppeak와 같지 않고 이 앱은 측정하지 않아."},
+ patient:{principle:"모니터 숫자와 함께 환자의 호흡 노력, 흉곽 움직임 등 직접 관찰을 통합해야 해.",example:"호흡곤란이 의심되면 상태를 관찰하고 지도자와 담당 의료진에게 신속히 알려야 해.",advanced:"학생의 수행 범위는 기관 지침과 실습 지도에 따라 달라. 이 앱은 독자적 환기 설정 변경을 허용하는 근거가 아니야."}
+});
+export const STUDENT_GLOSSARY=Object.freeze([
+ {term:"PBW",text:"Predicted Body Weight · 예측체중. 키 등을 바탕으로 산정하며 일회호흡량 평가에 활용하는 지표."},
+ {term:"Pplat",text:"Plateau Pressure · 고원압. 특정 조건에서 확인하는 압력으로 Ppeak와 구별해."},
+ {term:"auto-PEEP",text:"내인성 호기말 양압. 호기가 충분하지 않을 때 폐에 남을 수 있는 압력으로 설정 PEEP와 구별해."},
+ {term:"ABGA",text:"Arterial Blood Gas Analysis · 동맥혈가스분석. pH·PaO₂·PaCO₂ 등의 측정 결과를 확인해."},
+ {term:"V-TRIG",text:"Flow Trigger · 유량 트리거. 환자 흡기 노력에 따른 장비 반응과 관련된 설정."},
+ {term:"SpO₂ / PaO₂",text:"SpO₂는 산소포화도 추정치(%), PaO₂는 동맥혈 산소분압(mmHg)으로 측정과 단위가 달라."}
+]);
 export const CORE_SOURCES=Object.freeze({
  aarc:{label:"AARC 환자–인공호흡기 사정 임상진료지침 (2024)",url:"https://pmc.ncbi.nlm.nih.gov/articles/PMC11298231/"},
  merck:{label:"Merck Manual Professional · Overview of Mechanical Ventilation",url:"https://www.merckmanuals.com/professional/critical-care-medicine/respiratory-failure-and-mechanical-ventilation/overview-of-mechanical-ventilation"},
