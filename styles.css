@@ -678,3 +678,16 @@ body[data-presentation="learning"] .study-panel .side-tabs button{min-height:46p
  .view-choice{flex:1;min-width:0;font-size:11px;padding:7px 5px}
  .view-jump-links a{font-size:12px}
 }
+
+
+/* v0.4.5 — direct, exact educational setting edit; the Confirm/Cancel model
+ * remains unchanged and all entered values are validated before commit. */
+.editor-adjuster{gap:12px;justify-content:space-between}
+.editor-adjuster button{flex:0 0 53px;touch-action:none}
+.editor-direct-entry{display:grid;flex:1;min-width:0;gap:5px;font-size:12px;font-weight:800;color:#355a70;text-align:center}
+.editor-direct-entry input{box-sizing:border-box;width:100%;min-width:0;height:50px;padding:8px;border:2px solid #8aafc2;border-radius:8px;font-size:22px;font-weight:800;text-align:center;color:#173a52;background:white;font-variant-numeric:tabular-nums}
+.editor-direct-entry input[aria-invalid="true"]{border-color:#b73c32;background:#fff5f3}
+.editor-entry-error{margin:0;padding:6px 9px;color:#9c3029;background:#fff0ed;border-left:3px solid #c14b37;border-radius:5px;font-size:12px;line-height:1.5}
+.editor-entry-error[hidden]{display:none}
+.editor-actions button:disabled{opacity:.46;cursor:not-allowed}
+@media(max-width:550px){.editor-adjuster{gap:8px}.editor-adjuster button{flex-basis:48px}.editor-direct-entry input{font-size:19px}}
