@@ -1,5 +1,8 @@
 # Development Roadmap (checked against GitHub 2026-10-09)
 
+> **v0.6.0 상세 설계 실행 준비 완료 (2026-10-13, 구현 전):** 기존 [승인 UX 명세](V0.6.0_APPROVED_UX_IMPLEMENTATION_SPEC.md)를 개발 단위로 해체한 [v0.5.1~v0.6.0 구현·테스트 Playbook](V0.5.1_TO_V0.6.0_IMPLEMENTATION_PLAYBOOK.md)과 [새 채팅 시작 프롬프트](NEW_CHAT_START_v0.5.1.md)를 추가했다. 첫 착수는 v0.5.1의 가독성/읽기 확대·접근성 P1~P5. 코드는 아직 **v0.5.0 FINAL** 그대로이며 새 기능 구현/검증 완료로 간주하지 않는다.
+
+
 > **차기 확정 설계(2026-10-13, 구현 전):** v0.5.1–v0.6.0의 D1~D5 A 승인 및 패치·QA 게이트는 [v0.6.0 최종 승인 UX/구현 명세](V0.6.0_APPROVED_UX_IMPLEMENTATION_SPEC.md)를 참조. 현재 배포는 **v0.5.0 FINAL**이며 v0.6.0 구현 완료/테스트 완료 아님. 과거 체크박스는 해당 버전 당시의 역사적 계획이며 현재 상태와 혼동하지 말 것.
 
 
