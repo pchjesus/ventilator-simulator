@@ -37,19 +37,19 @@ let layoutPreset="learning";
 document.body.dataset.presentation=presentationMode;
 document.body.dataset.layout=layoutPreset;
 function syncViewChoices(){
-  document.querySelectorAll("[data-presentation]").forEach(button=>{
+  document.querySelectorAll("button[data-presentation]").forEach(button=>{
     button.setAttribute("aria-pressed",String(button.dataset.presentation===presentationMode));
   });
-  document.querySelectorAll("[data-layout]").forEach(button=>{
+  document.querySelectorAll("button[data-layout]").forEach(button=>{
     button.setAttribute("aria-pressed",String(button.dataset.layout===layoutPreset));
   });
 }
-document.querySelectorAll("[data-presentation]").forEach(button=>button.addEventListener("click",()=>{
+document.querySelectorAll("button[data-presentation]").forEach(button=>button.addEventListener("click",()=>{
   const next=button.dataset.presentation;
   if(!["learning","device"].includes(next))return;
   presentationMode=next;document.body.dataset.presentation=next;syncViewChoices();
 }));
-document.querySelectorAll("[data-layout]").forEach(button=>button.addEventListener("click",()=>{
+document.querySelectorAll("button[data-layout]").forEach(button=>button.addEventListener("click",()=>{
   const next=button.dataset.layout;
   if(!["learning","balanced","device"].includes(next))return;
   layoutPreset=next;document.body.dataset.layout=next;syncViewChoices();
