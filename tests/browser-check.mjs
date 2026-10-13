@@ -740,10 +740,10 @@ try {
   const originalMonitorNumbers=await readingPage.locator("#monitor .readout strong").allTextContents();
   const originalMonitorUnits=await readingPage.locator("#monitor .readout .unit").allTextContents();
   const originalSettings=await readingPage.locator("#settings .setting-value").allTextContents();
-  const originalPaths=await Promise.all(["pressure","flow","volume"].map(name=>
-    readingPage.locator('#graph-'+name+' [data-phase="mandatory"]').getAttribute("d")));
   await readingPage.locator("#waveform-pause").click();
   const originalPaused=await readingPage.locator("#waveform-pause").getAttribute("aria-pressed");
+  const originalPaths=await Promise.all(["pressure","flow","volume"].map(name=>
+    readingPage.locator('#graph-'+name+' [data-phase="mandatory"]').getAttribute("d")));
   await readingPage.locator("#open-reading").focus();
   await readingPage.keyboard.press("Enter");
   assert.equal(await readingPage.locator("#reading-dialog").evaluate(d=>d.open),true);
