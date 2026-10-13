@@ -319,6 +319,8 @@ function makeReadingCard(label,value,unit,tag,description,source){
     const number=makeElement("strong","reading-value",value);
     if(unit)number.append(" ",makeElement("span","reading-unit",unit));
     article.append(number);
+  }else if(unit){
+    article.append(makeElement("strong","reading-wave-unit","단위 · "+unit));
   }
   article.append(makeElement("span","reading-tag",tag));
   if(description)article.append(makeElement("p","reading-explainer",description));
