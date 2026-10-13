@@ -8,6 +8,12 @@ export const RELEASE_CATEGORIES=Object.freeze([
   {id:"docs",label:"문서·근거"}
 ]);
 export const RELEASE_NOTES=Object.freeze([
+  {version:"0.5.1",date:"2026-10-14",changes:[
+    {category:"ui",text:"원래 PB980 참고형 화면을 유지하면서 모니터·설정·파형을 큰 글씨로 읽는 공용 창을 제공"},
+    {category:"feature",text:"독립 고정 모니터 7개, 확정 설정 7개, 교육용 생성 파형 3종의 단위·의미·출처를 읽기 전용으로 표시"},
+    {category:"clinical",text:"고정 모니터 예시·확정 설정·생성 파형·가상 CASE를 실제 환자 측정/치료 반응으로 결합하지 않음"},
+    {category:"stability",text:"키보드 Enter/Escape와 닫기·포커스 복귀, 7개 화면폭·확대 유사 리플로 및 기존 설정·파형·학습 기능 자동 회귀 검사"},
+    {category:"docs",text:"자동화된 Chromium 결과와 수동 스크린샷 비교를 기록하고 실제 환자/장비 검증과 물리적 스마트폰 평가는 미실시로 명시"}]},
  {version:"0.5.0",date:"2026-10-13",changes:[
  {category:"ui",text:"용어 학습에서 개념·퀴즈·CASE·복습까지 이어지는 학생 학습 진입 흐름 통합"},
  {category:"feature",text:"모바일에서 장비 펼치기·접기와 CASE 이전 답 읽기 전용 기능 통합"},

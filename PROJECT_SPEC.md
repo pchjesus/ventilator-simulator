@@ -1,7 +1,14 @@
 # Project Specification
 
-> **미래 버전 UX 승인(2026-10-13, 아직 미구현):** v0.6.0 개발에서는 기존 v0.5.0 안전 경계와 기능을 보존하면서 D1-A 읽기 확대(장비 원형 유지), D2-A 개념 요약/상세, D3-A 동일 축 파형 겹침 비교, D4-A CORE 안의 선택형 LAB, D5-A 예상/결과 문항을 도입한다. 총 3개 선택형 미션(PEEP/f/FiO₂), 고정 기준값 `initialSettings()` 및 별도 실험 RAM 상태. 구현 구조·출시 중단 기준·회귀 테스트는 [docs/V0.6.0_APPROVED_UX_IMPLEMENTATION_SPEC.md](docs/V0.6.0_APPROVED_UX_IMPLEMENTATION_SPEC.md) 우선. 현재 실동작은 **v0.5.0 FINAL**, 새 UX는 설계만 승인되었으며 임상·사용성 검증은 미실시.
+> **미래 버전 UX 승인(2026-10-13; D1-A는 v0.5.1 구현, D2–D5는 미구현):** v0.6.0 개발에서는 기존 v0.5.0 안전 경계와 기능을 보존하면서 D1-A 읽기 확대(장비 원형 유지), D2-A 개념 요약/상세, D3-A 동일 축 파형 겹침 비교, D4-A CORE 안의 선택형 LAB, D5-A 예상/결과 문항을 도입한다. 총 3개 선택형 미션(PEEP/f/FiO₂), 고정 기준값 `initialSettings()` 및 별도 실험 RAM 상태. 구현 구조·출시 중단 기준·회귀 테스트는 [docs/V0.6.0_APPROVED_UX_IMPLEMENTATION_SPEC.md](docs/V0.6.0_APPROVED_UX_IMPLEMENTATION_SPEC.md) 우선. 현재 실동작은 **v0.5.1**(큰 글씨 읽기); 나머지 D2–D5는 설계만 승인되었으며 임상·사용성 검증은 미실시.
 
+
+## v0.5.1 — Readability and focus contract
+
+- 기존 교육용 7개 고정 모니터의 순서·수치·단위 및 7개 설정의 `committed state` 값만 크게 표시한다. Pending 편집값은 읽기창에 넣지 않는다.
+- Pressure/Flow/Volume의 명칭·단위·생성 파형의 비실측 성격을 읽기 전용 콘텐츠로 제공한다. CASE 가상 데이터와도 연결하지 않는다.
+- 독립적인 `readingCategory` UI state, native `dialog`/Escape/포커스 복귀. 장비 DOM 복제·현재 설정 변경·학습 점수 재설정·의료 계산 없음.
+- 실제 Chromium에서 자동화된 신규 UI·7 viewport·유사 확대 reflow·기존 기능 회귀를 확인한다. 실제 디바이스/임상/학생 검증과는 구별한다.
 
 ## v0.5.0 FINAL — 승인된 현재 교육용 제품 범위
 

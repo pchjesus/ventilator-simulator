@@ -1,5 +1,14 @@
 # Architecture — v0.3.0
 
+## v0.5.1 — Read-only reading overlay (2026-10-14)
+
+`#open-reading` → native `#reading-dialog` → `readingCategory` (monitor/settings/waveforms, presentation only).
+- `MONITOR_REFERENCE` 원본 7개를 읽기 전용 렌더링. 환자 측정값 재계산/정렬 금지.
+- `PARAMETERS`+committed `state`만 표시, `editState`(Pending) 접근/변경 없음.
+- 파형 텍스트 메타 정보는 기존 `waveform-model.js` 경계를 설명. `generateWaveform()`과 실제 3 SVG 상태 불변.
+- HTML native modal에 focus trap/기본 Escape, 종료 시 공용 `#open-reading`으로 focus 복귀. 다른 dialog가 열려 있으면 중첩 열기 금지.
+- 추가 네트워크·저장소·백엔드·기계 파라미터 영향 없음. 7 viewport와 reflow/키보드는 `tests/browser-check.mjs`로 회귀 검사.
+
 ## v0.5.0 FINAL — 계층과 상태 분리 (2026-10-13)
 
 ```text

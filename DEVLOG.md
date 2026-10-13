@@ -1,5 +1,20 @@
 # DEVLOG
 
+## v0.5.1 — large print and focus (2026-10-14)
+### Added / Changed
+- 장비 참고형 원본 모니터/설정 타일을 바꾸지 않고 상단 공용 '표시값 큰 글씨로 읽기' 버튼과 native 대화상자 추가.
+- 단일 read-only 대화상자 내 고정 모니터 7개(원 순서/값/단위), 확정 설정 7개(현재 committed state만), Pressure/Flow/Volume 3종(생성 파형·비실측)의 한국어 설명과 자료 출처. CASE 가상환자 정보와 구별.
+- `readingCategory`는 표시용 UI 상태이며 `state`, `editState`, 생성 파형 재생/정지/분석, CORE/CASE 진행 상태를 수정하지 않음.
+- `tests/browser-check.mjs`에 7개 자료의 원본 일치, Enter/Escape/포커스 반환, 원래 설정 팝업 재진입, 1440/1280/1100/960/700/360/320px, 200/400% 상당 CSS viewport reflow 검사 및 스크린샷 추가.
+### Risks / Verification
+- 기존 v0.4.7 I:E·V̇E 표시 잘림 회귀 위험 → 원본 `renderMonitor()` 변경 없음, 모든 7 너비 Chromium 기존 테스트 통과.
+- Pending을 확정값으로 오인할 위험 → modal state를 읽지 않고 committed `state`만 참조.
+- Native dialog focus/inert 충돌 위험 → 다른 모달 열린 경우 확대창 진입 차단, Escape/닫기 뒤 트리거 초점 복귀.
+- 초기 PR CI [#38420856416](https://github.com/pchjesus/ventilator-simulator/actions/runs/38420856416) 3개 job PASS. 해당 Chromium PNG 아티팩트와 v0.5.0 최종 main 기준 이미지를 내려받아 데스크톱/모바일 비교: 신규 상단 진입 영역 외에 원형 장비/학습 화면의 뚜렷한 회귀 미발견.
+- 정적 웹 ZIP Actions 제작 PASS; 자동 Chromium 실행을 실제 물리 기기, 브라우저 UI 자체 200/400% zoom, 화면읽기 도구, 학생 사용성 평가나 임상 전문가 승인으로 오인하지 않음.
+- 최종 버전 커밋과 main CI는 GitHub PR/Actions 결과 별도 확인.
+
+
 ## v0.4.7 → v0.5.0 FINAL — 연속 학생 학습 UX 개선 (2026-10-13)
 
 ### Added / Changed

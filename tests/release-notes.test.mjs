@@ -4,7 +4,8 @@ import {RELEASE_CATEGORIES, RELEASE_NOTES,notesForCategory} from "../src/release
 test("patch-note categories are unique, all entries are categorized",()=>{
  const categories=new Set(RELEASE_CATEGORIES.map(x=>x.id));
  assert.equal(categories.size,5);
- assert.equal(RELEASE_NOTES[0].version,"0.5.0");
+ assert.equal(RELEASE_NOTES[0].version,"0.5.1");
+ assert.equal(RELEASE_NOTES[1].version,"0.5.0");
  for(const version of RELEASE_NOTES){
   assert.ok(version.date);
   assert.ok(version.changes.length);

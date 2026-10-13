@@ -1,4 +1,22 @@
-# TEST_REPORT — v0.5.0 FINAL (교육용 베타)
+# TEST_REPORT — v0.5.1 (교육용 베타)
+
+## v0.5.1 — Readability P1–P5 evidence (2026-10-14)
+
+- 기준: Private `main` SHA `a884a44ba3f4a7d3103013113691bdcae4188bee`, 최종 v0.5.0 CI [38419036280](https://github.com/pchjesus/ventilator-simulator/actions/runs/38419036280) SUCCESS.
+- 개발: `feat/v0.5.1-reading-accessibility`, [PR #19](https://github.com/pchjesus/ventilator-simulator/pull/19).
+- **첫 신규 구현 PR CI [38420856416](https://github.com/pchjesus/ventilator-simulator/actions/runs/38420856416) = test + browser + package 전체 SUCCESS.** 후속 버전·문서 변경은 별도의 최종 CI에서 재검증한다.
+- 신규 Chromium 051-A01: `MONITOR_REFERENCE` 7개 순서/이름/숫자/단위와 확대 대화상자 정확 일치, 원본 그대로.
+- 051-A02: `PARAMETERS` 7개 설정과 `committed state` 화면 일치, 확대창 입력요소 없음. 기존 Accept/Cancel/모달 재진입 기존 테스트 유지.
+- 051-A03: 압력·유량·용적 파형 3개 명칭·단위 및 생성곡선/실측 아님 문구 확인, 원래 일시정지 파형 경로 변형 없음.
+- 051-A04: Enter 열기, Escape·닫기와 trigger focus return, read-only 설정/고정 모니터/파형 상태 불변 확인. Native `dialog`에 의해 배경 상호작용은 비활성.
+- 051-A05: 1440/1280/1100/960/700/360/320px에서 대화상자 표시·가로 넘침·세 범주 접근 확인. 원래 2 보기/3 배치/학습·CASE/팝업/파형 기존 Chromium 검사 모두 보존.
+- 051-A06: 1280 기준 200%≈640px, 400%≈320px **CSS viewport reflow 상당 검증**. *실제 브라우저 UI Zoom 200%/400%, 물리 기기, 키보드/화면읽기 보조기기 전수검증은 미실시.*
+- 비교 이미지: v0.5.0 [기준 browser-screenshots](https://github.com/pchjesus/ventilator-simulator/actions/runs/38419036280/artifacts/11825626770) vs v0.5.1 [첫 PR browser-screenshots](https://github.com/pchjesus/ventilator-simulator/actions/runs/38420856416/artifacts/11826013141). 데스크톱·320px 주요 이미지 및 1280/700/360/320 확대 이미지를 직접 확인; 새 공용 진입 영역으로 desktop full-page 높이 1600→1676px 증가, 원래 고정 모니터와 학습 화면은 보존.
+- [첫 PR 정적 웹 ZIP](https://github.com/pchjesus/ventilator-simulator/actions/runs/38420856416/artifacts/11825679053) 생성·파일 존재/정적 js/css 구조 확인. 로컬 Chromium 추가 실행은 환경의 URL 접근 제한(`ERR_BLOCKED_BY_ADMINISTRATOR`)으로 별도 재실행 불가; CI의 실제 Chromium 실행을 검증 근거로 사용.
+- **미실시:** 실제 환자·PB980 펌웨어 측정/조작 재현, 임상 SME 감수, 간호학생 사용성/교육효과 평가, 물리적 스마트폰, OS 브라우저 자체 zoom/화면읽기 보조공학 QA. 신규 0.5.2 LAB/콘텐츠는 미구현.
+- 병합 후 정확한 최종 `main` SHA와 3개 CI job 성공 여부는 GitHub Actions 및 최종 작업 보고에서 별도 확인한다.
+
+## v0.5.0 FINAL — 최종 기능 브랜치 실행 결과 (2026-10-13)
 
 ## v0.5.0 FINAL — 최종 기능 브랜치 실행 결과 (2026-10-13)
 

@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="#26343f">
-  <title>PB980 Ventilator Simulator v0.5.0 | Guided CASE Learning</title>
+  <title>PB980 Ventilator Simulator v0.5.1 | Large Print Reading</title>
   <link rel="stylesheet" href="./styles.css">
   <script src="./src/app.js" type="module"></script>
 </head>
@@ -35,6 +35,10 @@
     <p class="compact-layout-help">좁은 화면에서는 한 열로 표시돼. 세 가지 배치 선택은 넓은 화면에서 그대로 적용돼.</p>
     <button id="mobile-device-toggle" type="button" aria-controls="device-panel" aria-expanded="false">장비 화면 펼치기</button>
   </section>
+  <div class="reading-entry">
+    <button id="open-reading" class="reading-open" type="button" aria-haspopup="dialog" aria-controls="reading-dialog">⌕ 표시값 큰 글씨로 읽기</button>
+    <span>모니터 7개 · 설정 7개 · 파형 3종 (읽기 전용)</span>
+  </div>
   <main class="workspace">
     <section class="ventilator" id="device-panel" aria-label="PB980 스타일 교육용 인공호흡기 디스플레이">
       <button id="mobile-learning-back" type="button">← 학습으로 돌아가기</button>
@@ -173,6 +177,18 @@
       </section>
     </aside>
   </main>
+  <dialog id="reading-dialog" class="info-dialog reading-dialog" aria-labelledby="reading-dialog-title" aria-describedby="reading-dialog-summary">
+    <div class="info-modal">
+      <header class="info-modal-head"><div><span class="info-kicker">EDUCATIONAL READING · READ ONLY</span><h2 id="reading-dialog-title">표시값 큰 글씨로 읽기</h2></div><button id="reading-close" class="info-close" type="button" aria-label="큰 글씨 읽기 닫기">×</button></header>
+      <p id="reading-dialog-summary" class="reading-summary">원래 장비 화면과 설정을 변경하지 않는 교육용 확대 보기야. 환자 측정·치료 반응을 계산하지 않아.</p>
+      <div class="reading-categories" role="group" aria-label="크게 읽을 자료 종류">
+        <button type="button" data-reading-category="monitor" aria-pressed="true">모니터 7개</button>
+        <button type="button" data-reading-category="settings" aria-pressed="false">설정 7개</button>
+        <button type="button" data-reading-category="waveforms" aria-pressed="false">파형 3종</button>
+      </div>
+      <div id="reading-dialog-body" class="info-dialog-body reading-body" aria-label="큰 글씨 교육용 자료"></div>
+    </div>
+  </dialog>
   <dialog id="manual-dialog" class="info-dialog" aria-labelledby="manual-dialog-title">
     <div class="info-modal">
       <header class="info-modal-head"><div><span class="info-kicker">EDUCATIONAL GUIDE</span><h2 id="manual-dialog-title">사용 설명서</h2></div><button class="info-close" type="button" data-close-dialog="manual-dialog" aria-label="설명서 닫기">×</button></header>
@@ -211,6 +227,6 @@
       </div>
     </form>
   </dialog>
-  <footer class="footer">교육용 베타 v0.5.0 FINAL · 브라우저에서 동작하는 교육용 프런트엔드 · 임상/장비 동작 검증 전</footer>
+  <footer class="footer">교육용 베타 v0.5.1 · 브라우저에서 동작하는 교육용 프런트엔드 · 임상/장비 동작 검증 전</footer>
 </body>
 </html>
