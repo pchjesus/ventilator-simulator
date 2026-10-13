@@ -146,8 +146,8 @@ Vent settings
 - Document real SME-review and anonymized usability pilot as **unperformed future work**. See docs/CLINICAL_REVIEW_HANDOFF_v0.4.3.md.
 
 
-## Planned UX scope v0.4.4–v0.4.6 (user-approved; NOT implemented in v0.4.3)
+## UX implemented v0.4.4–v0.4.6 (user-approved; v0.4.3 remained baseline)
 2026-10-13 design signoff: (+/− press and hold + direct numeric entry; remove decorative modal TURN); reset only current parameter from its dialog, global reset remains separate; three layout presets; basic learning vs device exploration presentations; guided goal-based CASE with independent in-page progress.
 All presentation/layout states must be orthogonal to the existing staged/quick controlMode and to device committed/pending settings, waveform, fixed monitor, CORE quiz, alarm, circuit and CASE state. Pending edits must not mutate waveforms until Accept; typed input requires precise validation before committing.
 CASE objectives/prebrief/question sequence/debrief are reused from the existing v0.3.9 two-case/six-question material. A per-case memory map permits resume after returning to list and switching tabs, but never claims persistence across refresh. Clinical signoff and real PB980 fidelity remain explicitly pending.
-Full acceptance and risk plan: [docs/UI_UX_REDESIGN_PLAN_v0.4.4-v0.4.6.md](docs/UI_UX_REDESIGN_PLAN_v0.4.4-v0.4.6.md). Do not mark these versions as complete before implementation and execution verification.
+Full acceptance and risk plan: [docs/UI_UX_REDESIGN_PLAN_v0.4.4-v0.4.6.md](docs/UI_UX_REDESIGN_PLAN_v0.4.4-v0.4.6.md). The v0.4.4–v0.4.6 implementation is tracked in DEVLOG and TEST_REPORT. Clinical signoff remains separately incomplete.
