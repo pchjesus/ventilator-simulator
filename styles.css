@@ -622,3 +622,107 @@ body[data-control-mode="device"] .setting{min-height:92px}
 .core-quiz-internal-source{display:block;font-size:11px;line-height:1.55;color:#385c6e;overflow-wrap:anywhere}
 .core-quiz-evidence-note,.core-quiz-review-prompt{font-size:11px;line-height:1.65;border-left:3px solid #aac9d8;padding:5px 9px;background:#f2f7fa;color:#37576c}
 .core-quiz-review-prompt{border-left-color:#c7a76d;background:#fff9ed;color:#6b5630}
+
+
+/* v0.4.4 — independent, readable learning-first layout. Never scale the device
+ * with transforms or hide functional setting/waveform controls. */
+.view-toolbar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:9px;padding:11px 12px;background:#fff;border:1px solid #cadbe4;border-radius:11px;margin-bottom:13px}
+.view-toolbar-group{display:flex;flex-wrap:wrap;align-items:center;gap:5px}
+.view-toolbar-label{font-size:13px;font-weight:800;color:#30556d;margin-right:5px}
+.view-choice{min-height:44px;padding:9px 12px;background:#f4f8fa;color:#30516a;border:1px solid #a3bfcd;border-radius:7px;font-size:13px;font-weight:750}
+.view-choice[aria-pressed="true"]{color:#fff;background:#185676;border-color:#185676}
+.view-jump-links{display:flex;gap:10px}
+.view-jump-links a{color:#215777;font-weight:750;font-size:12px;line-height:1.5;padding:10px 0}
+.view-jump-links a:focus-visible{outline:3px solid #47a9e3;outline-offset:2px}
+body[data-presentation="learning"] .bezel-controls,
+body[data-presentation="learning"] .access-icons .inert-control{display:none}
+body[data-presentation="learning"] .access-icons{align-content:start}
+body[data-presentation="learning"] .bezel-brand{padding-bottom:5px}
+body[data-presentation="learning"] .study-panel{font-size:14px}
+body[data-presentation="learning"] .case-intro,
+body[data-presentation="learning"] #panel-case p,
+body[data-presentation="learning"] .core-intro,
+body[data-presentation="learning"] .core-concept-body p{font-size:14px;line-height:1.7}
+body[data-presentation="learning"] .core-concept-header{min-height:48px}
+body[data-presentation="learning"] .core-quiz-answer,
+body[data-presentation="learning"] .case-answer{font-size:14px;min-height:48px}
+body[data-presentation="learning"] .case-primary,
+body[data-presentation="learning"] .core-quiz-primary{font-size:14px;min-height:44px}
+body[data-presentation="learning"] .study-panel .side-tabs button{min-height:46px}
+.ventilator{container-type:inline-size}
+@container (max-width:850px){
+ .vent-bottom{grid-template-columns:minmax(65px,85px) minmax(0,1fr) 68px}
+ .setup-panel{padding:9px 4px}
+ .access-icons{padding:3px}
+ .settings-area{padding:7px}
+ .settings-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .setting{min-height:85px}
+ .graph-row{grid-template-columns:70px minmax(0,1fr)}
+ .graph-disclaimer{padding-left:74px}
+ .setting-value{font-size:clamp(21px,2.4vw,29px)}
+}
+@media(min-width:1101px){
+ body[data-layout="learning"] .workspace{grid-template-columns:minmax(0,44fr) minmax(360px,56fr)}
+ body[data-layout="balanced"] .workspace{grid-template-columns:minmax(0,59fr) minmax(350px,41fr)}
+ body[data-layout="device"] .workspace{grid-template-columns:minmax(0,72fr) minmax(300px,28fr)}
+}
+@media(max-width:1100px){
+ .workspace,body[data-layout] .workspace{grid-template-columns:minmax(0,1fr)}
+ .view-toolbar{align-items:flex-start}
+ .view-jump-links{width:100%;justify-content:space-between}
+}
+@media(max-width:550px){
+ .view-toolbar{padding:8px}
+ .view-toolbar-group{width:100%}
+ .view-toolbar-label{width:43px;font-size:12px}
+ .view-choice{flex:1;min-width:0;font-size:11px;padding:7px 5px}
+ .view-jump-links a{font-size:12px}
+}
+
+
+/* v0.4.5 — direct, exact educational setting edit; the Confirm/Cancel model
+ * remains unchanged and all entered values are validated before commit. */
+.editor-adjuster{gap:12px;justify-content:space-between}
+.editor-adjuster button{flex:0 0 53px;touch-action:none}
+.editor-direct-entry{display:grid;flex:1;min-width:0;gap:5px;font-size:12px;font-weight:800;color:#355a70;text-align:center}
+.editor-direct-entry input{box-sizing:border-box;width:100%;min-width:0;height:50px;padding:8px;border:2px solid #8aafc2;border-radius:8px;font-size:22px;font-weight:800;text-align:center;color:#173a52;background:white;font-variant-numeric:tabular-nums}
+.editor-direct-entry input[aria-invalid="true"]{border-color:#b73c32;background:#fff5f3}
+.editor-entry-error{margin:0;padding:6px 9px;color:#9c3029;background:#fff0ed;border-left:3px solid #c14b37;border-radius:5px;font-size:12px;line-height:1.5}
+.editor-entry-error[hidden]{display:none}
+.editor-actions button:disabled{opacity:.46;cursor:not-allowed}
+@media(max-width:550px){.editor-adjuster{gap:8px}.editor-adjuster button{flex-basis:48px}.editor-direct-entry input{font-size:19px}}
+
+
+/* v0.4.6 — goal-led, non-clinical CASE roadmap and resumable learning. */
+.case-roadmap{background:#eef7fb;border:1px solid #b8d4e3;border-radius:9px;padding:12px;margin:12px 0 15px}
+.case-roadmap h3{font-size:15px;color:#214e68;margin:0 0 6px}
+.case-roadmap-purpose,.case-roadmap-end{font-size:12px;line-height:1.6;color:#3c6174}
+.case-roadmap-goals{padding-left:22px;margin:8px 0;color:#315b6e;font-size:13px;line-height:1.6}
+.case-roadmap-stages{display:grid;gap:6px;padding:0;margin:10px 0;list-style:none;counter-reset:caseStage}
+.case-roadmap-stage{counter-increment:caseStage;display:flex;align-items:baseline;flex-wrap:wrap;gap:4px;border:1px solid #cfdae2;background:#fff;padding:8px 10px;border-radius:6px;color:#2d546b;font-size:13px}
+.case-roadmap-stage::before{content:counter(caseStage) ". ";font-weight:850;color:#1f617b}
+.case-roadmap-stage>span{font-size:11px;color:#55748a}
+.case-roadmap-stage.current{border:2px solid #24749a;background:#e2f3fb;font-weight:850}
+.case-roadmap-stage.done{background:#eef7f2;border-color:#a6cbb4}
+.case-session-status{font-size:12px;color:#285c76;font-weight:750}
+.case-restart{min-height:44px;display:block;width:100%;margin-top:7px;padding:9px 11px;border:1px solid #b5c8d6;color:#2b5570;background:#fff;border-radius:7px;font-size:12px;font-weight:750}
+.case-roadmap-stage:focus-visible,.case-restart:focus-visible{outline:3px solid #74b4d7;outline-offset:2px}
+
+/* v0.4.4 regression: a narrow two-column tile must not place the tier badge
+ * underneath the absolute-positioned ? help button at 320px. */
+@media(max-width:550px){
+ body[data-control-mode="device"] .setting-select{padding-right:35px}
+ body[data-control-mode="device"] .setting-name{overflow-wrap:anywhere}
+ body[data-control-mode="device"] .setting .setting-tier{display:block;float:none;margin:4px 0 0;width:max-content;max-width:100%}
+}
+
+
+/* Root-cause correction: absolute help button overlays wrapped title/badge on
+ * tiny two-column cards. Put it back in normal document flow on narrow screens. */
+@media(max-width:550px){
+ body[data-control-mode="device"] .setting .device-help{
+  position:static;display:block;margin:8px 0 0 auto;float:none;
+  min-width:36px;min-height:36px;
+ }
+ body[data-control-mode="device"] .setting-select{padding-right:2px}
+}

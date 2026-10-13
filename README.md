@@ -1,4 +1,4 @@
-# Ventilator Simulator — v0.4.3 Preview
+# Ventilator Simulator — v0.4.6 Preview
 
 간호학생을 위한 **PB980(Puritan Bennett 980) 참고형 웹 시뮬레이터** 초기 실행본.
 실제 장비의 화면 구성 학습을 목표로 하지만, 임상 사용이나 기계 조작 훈련을 대체하지 않는다.
@@ -9,7 +9,7 @@
 - 테스트: Node.js 18 이상에서 `npm test`, `npm run check`
 - npm 의존성 없음. 브라우저 ES modules 사용. `file://` 직접 실행은 권장하지 않음.
 
-## 현재 구현 (v0.4.3)
+## 현재 구현 (v0.4.6)
 - PB980 스타일의 화면 구획: 상단 monitoring, 중앙 pressure/flow/volume 파형, 하단 SIMV(PC)+PS 설정 영역
 - 화면 안에서 FiO₂, PEEP, f, Pi, Ti, PS, V-TRIG 값 증감 및 기본값 초기화
 - 각 설정 옆 `?` 도움말, 오른쪽 CIRCUIT 개념 학습 탭(부품/조립 개요/완성 개념도)
@@ -158,5 +158,5 @@ v0.2.2 improves keyboard-focus continuity when adjusting settings and adds a 320
 - 문항을 실제 임상 전문가가 감수했다는 뜻은 아니다. [교수자 감수 인계·문항 매트릭스·비식별 사용성 파일럿 계획](docs/CLINICAL_REVIEW_HANDOFF_v0.4.3.md).
 
 
-## 다음 UX 업데이트 (v0.4.4–v0.4.6 예정 · 아직 미구현)
-다섯 가지 개선 방향 확정: (+/− 길게 누르기와 직접 숫자 입력 / 설정별 기본값 / 학습 집중·나란히·장비 집중 프리셋 / 기본 학습·장비 탐색 보기 / 목표 중심 CASE 이어 하기). 버전별 작업 범위와 기능 회귀 검증 기준은 [UI/UX 최종 설계서](docs/UI_UX_REDESIGN_PLAN_v0.4.4-v0.4.6.md)에 기록했다. 현재 웹 실행본은 여전히 **v0.4.3 FINAL**이며, 이 항목들은 아직 작동하지 않는다. 전문가 임상감수는 별도의 미완료 과제다.
+## v0.4.4–v0.4.6 UX 업데이트
+다섯 가지 개선 방향 확정: (+/− 길게 누르기와 직접 숫자 입력 / 설정별 기본값 / 학습 집중·나란히·장비 집중 프리셋 / 기본 학습·장비 탐색 보기 / 목표 중심 CASE 이어 하기). 버전별 작업 범위와 기능 회귀 검증 기준은 [UI/UX 최종 설계서](docs/UI_UX_REDESIGN_PLAN_v0.4.4-v0.4.6.md)에 기록했다. v0.4.6에서는 구현된 조작 및 화면 기능을 제공한다. 실제 기기·임상 정확성 검증이 완료됐다는 뜻은 아니다. 전문가 임상감수는 별도의 미완료 과제다.

@@ -322,3 +322,21 @@ Next: Independent educator review → targeted wording corrections → real stud
 
 ## 2026-10-13 — UX design decision and regression risk review (documentation only)
 Five user decisions for v0.4.4–v0.4.6 were confirmed and tracked in `docs/UI_UX_REDESIGN_PLAN_v0.4.4-v0.4.6.md`. Inspected current main v0.4.3 behavior: staged numeric edits lack direct-entry precision validation; TURN is inert; modal reset currently resets all seven; desktop study pane is narrow and existing breakpoints may clip compact device settings; single caseState is discarded when returning to CASE list. Planned separate UI-presentation/layout/control-mode state, strict pending input validation, pointer long-press cleanup, per-parameter reset, independent CASE resume and 1440–320px regression gates. **No source/runtime feature changed; no v0.4.4/0.4.5/0.4.6 implementation or functional verification has been claimed.**
+
+
+## v0.4.4 → v0.4.5 → v0.4.6 (2026-10-13) — progressive UX implementation
+### v0.4.4 — student-first layout/presentation
+- Added three layout presets (learning-focused default / balanced / device-focused) and two UI views (basic learning default / device exploration).
+- View switches use only body data attributes and CSS; no simulator/model, quiz, CASE or waveform reset. Inactive decorative physical-key graphics are hidden in basic learning and remain visible in exploration.
+- Added simple anchor jump navigation and responsive settings tile design, while retaining the original devices and learning tabs.
+### v0.4.5 — accessible setting manipulation
+- Replaced decorative modal TURN with direct numeric input; strict numeric/precision/range validation rejects invalid drafts rather than rounding silently.
+- Added press-and-hold +/- to modal and existing quick-study controls; pointer/blur/hidden/close cleanup prevents runaway intervals. Keyboard activation remains single-step.
+- The modal "이 항목 기본값" stages only the selected parameter initial value; global reset remains in the main header. Pending adjustments do not affect waveform, CASE, quiz, or fixed monitor.
+### v0.4.6 — guided CASE and resume
+- Added visible objective/step roadmap and re-openable scenario information without changing case source data or correct answers.
+- Separate in-RAM sessions for CASE 01 and CASE 02: list navigation no longer drops progress, each card offers start/resume/result/restart. Per-case reflection notes are independent. Browser refresh intentionally clears them.
+- Kept expert-unreviewed and fictional-case source labels; no live SpO2/VTE/gas-exchange model or clinical approval.
+### Implementation risks and test coverage
+- Biggest risks: arbitrary typed precision, long-press lifecycle, small device width after layout change, CSS collisions, and CASE session preservation. Tests cover bounded numeric entry, no pre-accept device update, focus/Cancel, case stages and independence.
+- Run npm syntax/unit, real Chromium desktop/mobile, inspect screenshots, private PR merge, exact post-merge main CI; record failures and fixes in TEST_REPORT.

@@ -1,6 +1,6 @@
 import {VERSION, PARAMETERS, DEVICE_REFERENCE, MONITOR_REFERENCE, initialSettings, adjustSetting, formatSetting} from "./sim-model.js";
 import {generateWaveform, previewScales} from "./waveform-model.js";
-import {beginSettingEdit, preferredEditStep, stepSettingEdit, acceptSettingEdit} from "./setting-editor.js";
+import {beginSettingEdit, preferredEditStep, stepSettingEdit, parseSettingEntry, defaultSettingEdit, acceptSettingEdit} from "./setting-editor.js";
 import {CLINICAL_TOPICS, TOPIC_GROUPS, EDUCATION_SOURCES, MANUAL_SECTIONS} from "./education-content.js";
 import {RELEASE_CATEGORIES, notesForCategory} from "./release-notes.js";
 import {clampRatio, ratioFromClientX, inspectAt} from "./waveform-inspector.js";
@@ -28,8 +28,41 @@ const circuitContent = document.getElementById("circuit-content");
 let state = initialSettings(); // committed state only: sole input to waveform model
 let controlMode = "device"; // explicit opt-in for legacy quick study controls
 let editState = null; // {id, original, pending}, never feeds waveform engine
+let quickHoldDelay=null,quickHoldInterval=null;
+function stopQuickHold(){
+ if(quickHoldDelay!==null)clearTimeout(quickHoldDelay);
+ if(quickHoldInterval!==null)clearInterval(quickHoldInterval);
+ quickHoldDelay=null;quickHoldInterval=null;
+}
+window.addEventListener("blur",stopQuickHold);
+document.addEventListener("visibilitychange",()=>{if(document.hidden)stopQuickHold();});
 let editorFocusTarget = null;
 document.body.dataset.controlMode = controlMode;
+/* Presentation and layout are read-only projections of the existing DOM.
+ * Never reconstruct settings, waveform SVG, CORE quiz, or CASE state on a view change. */
+let presentationMode="learning";
+let layoutPreset="learning";
+document.body.dataset.presentation=presentationMode;
+document.body.dataset.layout=layoutPreset;
+function syncViewChoices(){
+  document.querySelectorAll("button[data-presentation]").forEach(button=>{
+    button.setAttribute("aria-pressed",String(button.dataset.presentation===presentationMode));
+  });
+  document.querySelectorAll("button[data-layout]").forEach(button=>{
+    button.setAttribute("aria-pressed",String(button.dataset.layout===layoutPreset));
+  });
+}
+document.querySelectorAll("button[data-presentation]").forEach(button=>button.addEventListener("click",()=>{
+  const next=button.dataset.presentation;
+  if(!["learning","device"].includes(next))return;
+  presentationMode=next;document.body.dataset.presentation=next;syncViewChoices();
+}));
+document.querySelectorAll("button[data-layout]").forEach(button=>button.addEventListener("click",()=>{
+  const next=button.dataset.layout;
+  if(!["learning","balanced","device"].includes(next))return;
+  layoutPreset=next;document.body.dataset.layout=next;syncViewChoices();
+}));
+syncViewChoices();
 let circuitView = "parts";
 let assemblyStep = 0;
 document.getElementById("version").textContent = "v" + VERSION;
@@ -235,14 +268,30 @@ function renderSettings() {
       button.textContent=delta>0?"+"+delta:String(delta);
       button.setAttribute("aria-label",param.label+" "+(delta>0?"증가 ":"감소 ")+Math.abs(delta));
       button.disabled = (delta<0 && state[param.id]<=param.min) || (delta>0 && state[param.id]>=param.max);
-      button.addEventListener("click",()=>{
+      const applyQuickStep=()=>{
+        if(controlMode!=="quick")return;
         const next=adjustSetting(state,param.id,delta);
         const changed=next[param.id]!==state[param.id];
         state=next;
         status.textContent=changed ? param.label+": "+formatSetting(param.id,state[param.id])+param.unit+" (학습용 설정만 변경)" : "설정 범위 끝이야.";
         refreshSettings();
-        paintWaveforms();
+        if(changed)paintWaveforms();
+      };
+      button.addEventListener("pointerdown",event=>{
+        if(event.pointerType==="mouse"&&event.button!==0)return;
+        if(controlMode!=="quick"||button.disabled)return;
+        stopQuickHold();
+        applyQuickStep();
+        quickHoldDelay=setTimeout(()=>{
+          quickHoldDelay=null;
+          quickHoldInterval=setInterval(()=>{
+            if(button.disabled||controlMode!=="quick"){stopQuickHold();return;}
+            applyQuickStep();
+          },120);
+        },400);
       });
+      for(const type of ["pointerup","pointercancel","pointerleave","lostpointercapture"])button.addEventListener(type,stopQuickHold);
+      button.addEventListener("click",event=>{if(event.detail===0)applyQuickStep();});
       buttons.append(button);
     }
     const help=document.createElement("button");help.type="button";help.className="help";help.textContent="?";
@@ -277,9 +326,51 @@ const editorDialog=document.getElementById("setting-editor");
 const editorForm=document.getElementById("editor-form");
 const incButton=document.getElementById("editor-increase");
 const decButton=document.getElementById("editor-decrease");
+const editorNumber=document.getElementById("editor-number");
+const editorEntryError=document.getElementById("editor-entry-error");
+let editorRaw="",editorError=null;
+let holdDelay=null,holdInterval=null;
+function stopEditorHold(){
+  if(holdDelay!==null)clearTimeout(holdDelay);
+  if(holdInterval!==null)clearInterval(holdInterval);
+  holdDelay=null;holdInterval=null;
+}
+window.addEventListener("blur",stopEditorHold);
+document.addEventListener("visibilitychange",()=>{if(document.hidden)stopEditorHold();});
+function setEditorRaw(raw){
+  editorRaw=raw;
+  const parsed=parseSettingEntry(editState.id,raw);
+  editorError=parsed.error;
+  if(!editorError)editState={...editState,pending:parsed.value};
+  editorNumber.setAttribute("aria-invalid",String(Boolean(editorError)));
+  editorEntryError.hidden=!editorError;editorEntryError.textContent=editorError||"";
+  document.getElementById("editor-accept").disabled=Boolean(editorError);
+  if(!editorError)updateEditorDisplay(false);
+}
+editorNumber.addEventListener("input",()=>{if(editState)setEditorRaw(editorNumber.value);});
+function startEditorHold(button,direction,event){
+  if(event.pointerType==="mouse"&&event.button!==0)return;
+  if(!editState||button.disabled)return;
+  stopEditorHold();
+  movePending(direction);
+  holdDelay=setTimeout(()=>{
+    holdDelay=null;
+    holdInterval=setInterval(()=>{
+      if(!editState||button.disabled){stopEditorHold();return;}
+      movePending(direction);
+    },120);
+  },400);
+}
+for(const [button,dir] of [[incButton,1],[decButton,-1]]){
+  button.addEventListener("pointerdown",event=>startEditorHold(button,dir,event));
+  for(const type of ["pointerup","pointercancel","pointerleave","lostpointercapture"])button.addEventListener(type,stopEditorHold);
+  // Pointerdown already applied one change. Keyboard-triggered clicks have detail 0.
+  button.addEventListener("click",event=>{if(event.detail===0)movePending(dir);});
+}
 
 function setControlMode(next){
   if(next!=="device"&&next!=="quick")return;
+  stopQuickHold();
   // A pending edit is never allowed to flow silently into quick study.
   if(editorDialog.open) closeSettingEditor();
   controlMode=next;
@@ -291,7 +382,7 @@ function setControlMode(next){
     :"빠른 학습: 기존 ± 버튼을 누르면 교육용 설정과 파형이 즉시 변경돼.";
   refreshSettings(); // update existing nodes; do not replace focused quick controls
 }
-function updateEditorDisplay(){
+function updateEditorDisplay(syncNumber=true){
   if(!editState)return;
   const param=PARAMETERS.find(p=>p.id===editState.id);
   const step=preferredEditStep(editState.id);
@@ -302,6 +393,11 @@ function updateEditorDisplay(){
     "모의 노브 증감: "+step+" "+param.unit+"씩 · 학습용 설정 범위 "+param.min+"–"+param.max;
   decButton.disabled=editState.pending<=param.min;
   incButton.disabled=editState.pending>=param.max;
+  if(syncNumber){editorRaw=formatSetting(param.id,editState.pending);editorNumber.value=editorRaw;
+    editorError=null;editorNumber.setAttribute("aria-invalid","false");
+    editorEntryError.hidden=true;editorEntryError.textContent="";
+    document.getElementById("editor-accept").disabled=false;
+  }
 }
 function openSettingEditor(id,trigger){
   if(controlMode!=="device"||editorDialog.open)return;
@@ -320,6 +416,7 @@ function movePending(direction){
   updateEditorDisplay();
 }
 function closeSettingEditor(){
+  stopEditorHold();
   const focus=editorFocusTarget;
   editState=null;
   editorFocusTarget=null;
@@ -327,7 +424,7 @@ function closeSettingEditor(){
   if(focus&&focus.isConnected&&!focus.disabled)focus.focus();
 }
 function acceptEditor(){
-  if(!editState)return;
+  if(!editState||editorError)return;
   const id=editState.id;
   const before=state;
   state=acceptSettingEdit(state,editState);
@@ -341,18 +438,26 @@ function acceptEditor(){
 }
 document.getElementById("mode-device").addEventListener("click",()=>setControlMode("device"));
 document.getElementById("mode-quick").addEventListener("click",()=>setControlMode("quick"));
-incButton.addEventListener("click",()=>movePending(1));
-decButton.addEventListener("click",()=>movePending(-1));
 document.getElementById("editor-cancel").addEventListener("click",closeSettingEditor);
 document.getElementById("editor-reset").addEventListener("click",()=>{
-  closeSettingEditor();
-  state=initialSettings();
-  refreshSettings();paintWaveforms();
-  status.textContent="전체 설정을 초기화했어.";
+  if(!editState)return;
+  stopEditorHold();
+  editState=defaultSettingEdit(editState);
+  updateEditorDisplay();
+  status.textContent="선택한 항목 기본값이 미확정값에 표시됐어. Accept로 반영해.";
 });
-editorForm.addEventListener("submit",event=>{event.preventDefault();acceptEditor();});
+editorForm.addEventListener("submit",event=>{
+  event.preventDefault();
+  if(!editState)return;
+  // Validate again on submission; avoid applying stale typed drafts.
+  const validated=parseSettingEntry(editState.id,editorNumber.value);
+  if(validated.error){setEditorRaw(editorNumber.value);return;}
+  editState={...editState,pending:validated.value};
+  editorError=null;acceptEditor();
+});
 editorDialog.addEventListener("cancel",event=>{event.preventDefault();closeSettingEditor();});
 editorDialog.addEventListener("keydown",event=>{
+  if(event.target===editorNumber||event.isComposing)return;
   if(event.key==="ArrowUp"||event.key==="ArrowRight"){
     event.preventDefault();movePending(1);
   }else if(event.key==="ArrowDown"||event.key==="ArrowLeft"){
@@ -395,7 +500,40 @@ function renderCircuit() {
 /* Pre-clinical choice-based education is intentionally isolated from settings,
  * waveform calculation and fixed monitor sample values. */
 let caseState=null;
+const caseSessions=new Map(); // each fictional scenario is independently resumable in RAM
 let reviewerCaseId=null;
+function openCaseSession(caseId,restart=false){
+ if(restart||!caseSessions.has(caseId))caseSessions.set(caseId,startCase(caseId));
+ caseState=caseSessions.get(caseId);
+ if(restart)reflectionNotes.delete(caseId);
+ renderCase();
+ document.querySelector("#case-content .case-answer, #case-content .case-back")?.focus();
+}
+function saveCaseSession(){if(caseState)caseSessions.set(caseState.caseId,caseState);}
+const CASE_STEP_LABELS=Object.freeze({
+ orientation:["예시 정보 출처","FiO₂ 설정 이해","환자·기도·회로 확인"],
+ desaturation:["위험 신호 인지","추가 사정 정보","관찰 내용 보고"]
+});
+function appendCaseRoadmap(root,scenario,activeIndex,done){
+ const section=makeElement("section","case-roadmap");
+ section.append(makeElement("h3",null,"이 사례의 학습 경로"));
+ section.append(makeElement("p","case-roadmap-purpose","목표를 먼저 확인하고 순서에 따라 판단해 봐. 이전 답은 다시 볼 수 있지만 진행 중 정답을 변경하지는 않아."));
+ const goals=makeElement("ul","case-roadmap-goals");
+ for(const item of scenario.objectives)goals.append(makeElement("li",null,item.text));
+ section.append(goals);
+ const steps=makeElement("ol","case-roadmap-stages");
+ const labels=CASE_STEP_LABELS[scenario.id]||scenario.steps.map((_,i)=>"문항 "+(i+1));
+ for(const [i,label] of labels.entries()){
+   const item=makeElement("li","case-roadmap-stage",label);
+   if(i<activeIndex||done)item.classList.add("done");
+   if(i===activeIndex&&!done)item.classList.add("current");
+   item.append(makeElement("span",null,done||i<activeIndex?" · 확인함":i===activeIndex?" · 현재 단계":" · 다음 단계"));
+   steps.append(item);
+ }
+ section.append(steps);
+ section.append(makeElement("p","case-roadmap-end","이후: 결과·근거 복습 → 3개 디브리핑 질문"));
+ root.append(section);
+}
 const reflectionNotes=new Map(); // intentionally RAM only, no student identity or storage
 const caseAudit=auditCaseBank(PRECLINICAL_CASES,CASE_SOURCES);
 function caseButton(label,handler,cssClass=""){
@@ -496,7 +634,14 @@ function renderCase(){
       const ul=makeElement("ul","case-objectives");
       for(const goal of scenario.objectives)ul.append(makeElement("li",null,goal.text));
       card.append(ul);
-      card.append(caseButton("이 사례 시작",()=>{reviewerCaseId=null;caseState=startCase(scenario.id);renderCase();root.querySelector(".case-answer")?.focus();},"case-primary"));
+      const saved=caseSessions.get(scenario.id);
+      card.append(makeElement("p","case-session-status",!saved?"진행 상태: 시작 전":saved.done?"진행 상태: 완료 · 결과 확인 가능":"진행 상태: "+(saved.index+1)+"/"+scenario.steps.length+"문항"));
+      card.append(caseButton(!saved?"이 사례 시작":saved.done?"완료 결과 보기":"이어 하기",()=>{
+        reviewerCaseId=null;openCaseSession(scenario.id);
+      },"case-primary"));
+      if(saved)card.append(caseButton("이 사례 처음부터 다시 시작",()=>{
+        reviewerCaseId=null;openCaseSession(scenario.id,true);
+      },"case-restart"));
       const reviewBtn=caseButton(reviewerCaseId===scenario.id?"교수자 미리보기 닫기":"교수자 검토 미리보기 · 정답 공개",()=>{
         reviewerCaseId=reviewerCaseId===scenario.id?null:scenario.id;
         renderCase();
@@ -515,10 +660,11 @@ function renderCase(){
   const score=caseScore(caseState);
   root.append(makeElement("h2","case-heading",scenario.title));
   root.append(makeElement("p","case-meta",scenario.status+" · 별도의 가상 사례 자료"));
-  root.append(caseButton("← 사례 목록",()=>{caseState=null;renderCase();caseTab.focus();},"case-back"));
+  root.append(caseButton("← 사례 목록 (진행 유지)",()=>{saveCaseSession();caseState=null;renderCase();caseTab.focus();},"case-back"));
+  appendCaseRoadmap(root,scenario,caseState.index,caseState.done);
   const context=makeElement("details","case-context");
   context.open=caseState.index===0&&!caseState.done;
-  context.append(makeElement("summary",null,"사전 안내·상황 자료·학습 목표"));
+  context.append(makeElement("summary",null,"가상 상황 자료·사전 안내 다시 보기 (언제든 펼치기)"));
   context.append(makeElement("p",null,scenario.premise));
   context.append(makeElement("p","case-prebrief",scenario.prebrief));
   const readings=makeElement("ul","case-vignette");
@@ -549,12 +695,12 @@ function renderCase(){
     }
     root.append(review);
     renderReflection(root,scenario);
-    root.append(caseButton("처음부터 다시",()=>{reflectionNotes.delete(scenario.id);caseState=startCase(scenario.id);renderCase();root.querySelector(".case-answer")?.focus();},"case-primary"));
+    root.append(caseButton("이 사례 처음부터 다시 풀기",()=>openCaseSession(scenario.id,true),"case-primary"));
     caseSources(root,scenario.sources);
     return;
   }
   const step=scenario.steps[caseState.index];
-  root.append(makeElement("p","case-progress","문항 "+(caseState.index+1)+" / "+score.total));
+  root.append(makeElement("p","case-progress","현재 학습 단계 · 문항 "+(caseState.index+1)+" / "+score.total+" · "+(CASE_STEP_LABELS[scenario.id]?.[caseState.index]||"상황 판단")));
   root.append(makeElement("h3","case-question",step.question));
   const chosen=caseState.answers[caseState.index];
   const choiceRoot=makeElement("div","case-answers");
@@ -562,7 +708,7 @@ function renderCase(){
     const btn=caseButton(option.label,()=>{
       if(caseState.answers.length>caseState.index)return;
       caseState=chooseCaseAnswer(caseState,option.id);
-      renderCase();
+      saveCaseSession();renderCase();
       root.querySelector(".case-next")?.focus();
     },"case-answer");
     btn.disabled=Boolean(chosen);
@@ -583,7 +729,7 @@ function renderCase(){
     root.append(feedback);
     root.append(caseButton(caseState.index===score.total-1?"결과·복습 보기":"다음 문항 →",()=>{
       caseState=advanceCase(caseState);
-      renderCase();
+      saveCaseSession();renderCase();
       (root.querySelector(".case-answer")||root.querySelector(".case-primary"))?.focus();
     },"case-next case-primary"));
   }else{

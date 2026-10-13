@@ -26,7 +26,25 @@ try {
   await desktop.locator('[data-concept-id="peep"] > summary').click();
   assert.match(await desktop.locator('[data-concept-id="peep"]').innerText(),/혈압/);
   assert.match(await desktop.locator('[data-concept-id="vte"] > summary').innerText(),/VTE/);
+  const layoutBaseline=await desktop.locator("#settings").textContent();
+  const fixedBeforeLayouts=await desktop.locator("#monitor").textContent();
+  assert.equal(await desktop.locator('button[data-presentation="learning"]').getAttribute("aria-pressed"),"true");
+  assert.equal(await desktop.locator('button[data-layout="learning"]').getAttribute("aria-pressed"),"true");
+  assert.equal(await desktop.locator(".bezel-controls").isVisible(),false,"basic learning hides nonfunctional bezel keys");
+  for(const layout of ["balanced","device","learning"]){
+    await desktop.locator('button[data-layout="'+layout+'"]').click();
+    assert.equal(await desktop.locator('button[data-layout="'+layout+'"]').getAttribute("aria-pressed"),"true");
+    assert.equal(await desktop.locator("#settings").textContent(),layoutBaseline);
+    assert.equal(await desktop.locator("#monitor").textContent(),fixedBeforeLayouts);
+    assert.equal(await desktop.locator(".setting").count(),7);
+  }
+  await desktop.locator('button[data-presentation="device"]').click();
+  assert.equal(await desktop.locator(".bezel-controls").isVisible(),true);
+  await desktop.screenshot({path:"artifacts/browser/desktop-device-explore.png",fullPage:false});
+  await desktop.locator('button[data-presentation="learning"]').click();
+  assert.equal(await desktop.locator(".bezel-controls").isVisible(),false);
   await desktop.screenshot({path:"artifacts/browser/desktop-core-default.png",fullPage:false});
+  pass("v0.4.4 independent 3 layouts x 2 presentations preserve settings and fixed monitoring");
   await desktop.locator("#extra-learning > summary").click();
   assert.equal(await desktop.locator("#extra-learning").evaluate(e=>e.open),true);
   pass("student-first default core: PEEP education, collapsible supplemental tabs and all 7 settings retained");
@@ -177,6 +195,8 @@ try {
   assert.equal(await desktop.locator(".case-review").count(),0);
   await desktop.locator(".case-card").first().getByRole("button",{name:"이 사례 시작"}).click();
   assert.match(await desktop.locator("#case-content").innerText(),/문항 1 \/ 3/);
+  assert.equal(await desktop.locator(".case-roadmap-stage").count(),3);
+  assert.match(await desktop.locator(".case-roadmap").innerText(),/이 사례의 학습 경로/);
   await desktop.screenshot({path:"artifacts/browser/desktop-case-question.png",fullPage:false});
   await desktop.locator(".case-answer").nth(1).click();
   assert.match(await desktop.locator(".case-feedback").innerText(),/맞아/);
@@ -190,6 +210,10 @@ try {
   await desktop.getByRole("tab",{name:"CASE 학습"}).click();
   assert.match(await desktop.locator(".case-feedback").innerText(),/맞아/,"tab switch retains scenario progress");
   await desktop.locator(".case-next").click();
+  assert.match(await desktop.locator("#case-content").innerText(),/문항 2 \/ 3/);
+  await desktop.locator(".case-back").click();
+  assert.match(await desktop.locator(".case-card").first().innerText(),/진행 상태: 2\/3문항/);
+  await desktop.locator(".case-card").first().getByRole("button",{name:"이어 하기"}).click();
   assert.match(await desktop.locator("#case-content").innerText(),/문항 2 \/ 3/);
   await desktop.locator(".case-answer").nth(1).click();
   await desktop.locator(".case-next").click();
@@ -215,6 +239,14 @@ try {
   assert.match(await desktop.locator("#case-content").innerText(),/97% → 88%/);
   await desktop.locator(".case-answer").first().click();
   assert.equal(await desktop.locator(".case-feedback").count(),1);
+  await desktop.locator(".case-back").click();
+  assert.match(await desktop.locator(".case-card").first().innerText(),/진행 상태: 1\/3문항/);
+  assert.match(await desktop.locator(".case-card").nth(1).innerText(),/진행 상태: 1\/3문항/);
+  await desktop.locator(".case-card").first().getByRole("button",{name:"이어 하기"}).click();
+  assert.match(await desktop.locator("#case-content").innerText(),/기계환기 환자 첫 인수인계/);
+  await desktop.locator(".case-back").click();
+  await desktop.locator(".case-card").nth(1).getByRole("button",{name:"이어 하기"}).click();
+  assert.equal(await desktop.locator(".case-feedback").count(),1,"switching CASE must preserve selected response");
   await desktop.getByRole("button",{name:"설정 초기화"}).click();
   assert.equal(await desktop.locator(".case-feedback").count(),1,"ventilator reset cannot reset scenario");
   assert.equal(await desktop.locator("#monitor").innerText(),monitorBeforeCase);
@@ -323,11 +355,29 @@ try {
   await desktop.getByRole("button",{name:"Accept"}).press("Escape");
   assert.equal(await editor.isVisible(),false);
   assert.equal(await desktop.locator('.setting[data-setting-id="pi"] .setting-value').innerText(),"11.0","Escape must discard changes");
-  // In-modal reset can explicitly discard a pending value and restore full defaults.
+  // Staged single-setting default and validated typing must not reset other settings.
   await desktop.getByRole("button",{name:"Pᵢ 설정 선택"}).click();
   await desktop.getByRole("button",{name:"선택한 설정값 증가"}).click();
-  await desktop.getByRole("button",{name:"전체 초기화"}).click();
+  await desktop.getByRole("button",{name:"이 항목 기본값"}).click();
+  assert.equal(await editor.isVisible(),true);
+  assert.match(await desktop.locator("#editor-pending").innerText(),/10.0/);
+  assert.equal(await desktop.locator('.setting[data-setting-id="pi"] .setting-value').innerText(),"11.0");
+  await desktop.locator("#editor-number").fill("10.06");
+  assert.equal(await desktop.locator("#editor-accept").isDisabled(),true,"invalid decimal must not commit");
+  assert.equal(await desktop.locator("#editor-entry-error").isVisible(),true);
+  await desktop.locator("#editor-number").fill("10.0");
+  assert.equal(await desktop.locator("#editor-accept").isEnabled(),true);
+  await desktop.getByRole("button",{name:"Accept"}).click();
   assert.equal(await editor.isVisible(),false);
+  assert.equal(await desktop.locator('.setting[data-setting-id="pi"] .setting-value').innerText(),initialPi);
+  await desktop.getByRole("button",{name:"Pᵢ 설정 선택"}).click();
+  const holdTarget=desktop.getByRole("button",{name:"선택한 설정값 증가"});
+  await holdTarget.dispatchEvent("pointerdown",{pointerType:"mouse",button:0});
+  await desktop.waitForTimeout(560);
+  await holdTarget.dispatchEvent("pointerup",{pointerType:"mouse",button:0});
+  const heldValue=Number(await desktop.locator("#editor-pending").innerText().then(v=>v.replace(/[^0-9.]/g,"")));
+  assert.ok(heldValue>=12&&heldValue<=30,"holding increases pending with bounded repeats");
+  await desktop.getByRole("button",{name:"Cancel"}).click();
   assert.equal(await desktop.locator('.setting[data-setting-id="pi"] .setting-value').innerText(),initialPi);
   await desktop.getByRole("button",{name:"파형 재생"}).click();
   // User opt-in to legacy immediate study buttons: no conversion of state is allowed.
@@ -342,8 +392,13 @@ try {
   assert.equal(await oxygenUp.evaluate(el=>document.activeElement===el),true,"keyboard focus lost");
   await oxygenUp.press("Enter");
   assert.equal(await desktop.locator(".setting-value").first().innerText(),"60");
+  await oxygenUp.dispatchEvent("pointerdown",{pointerType:"mouse",button:0});
+  await desktop.waitForTimeout(570);
+  await oxygenUp.dispatchEvent("pointerup",{pointerType:"mouse",button:0});
+  const heldQuick=Number(await desktop.locator(".setting-value").first().innerText());
+  assert.ok(heldQuick>=70&&heldQuick<=100,"quick study long hold repeats while respecting range");
   await desktop.getByRole("button",{name:"PB980 참고형 모드"}).click();
-  assert.equal(await desktop.locator(".setting-value").first().innerText(),"60","mode switch must preserve committed values");
+  assert.equal(await desktop.locator(".setting-value").first().innerText(),String(heldQuick),"mode switch must preserve committed values");
   await desktop.getByRole("button",{name:"빠른 학습 모드"}).click();
   assert.equal(await desktop.locator("#monitor").innerText(),monitorBefore);
   pass("FiO₂ mouse/keyboard adjustment preserves focus and does not change example monitor");
