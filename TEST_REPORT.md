@@ -253,3 +253,24 @@ GitHub Actions run: https://github.com/pchjesus/ventilator-simulator/actions/run
 - An initial PR browser check failed due to a faulty **test expectation** that buttons inside all collapsed <details> cards should be visible. The test now checks existence of all six buttons and visibility after explicitly opening a card; no app logic changed for this fix. Subsequent full run succeeded.
 - Expert clinical content signoff / clinical simulation validity / actual student usability pilot: **NOT performed**.
 - Post-merge CI on exact final main SHA must be verified separately before release completion.
+
+
+## v0.4.4–v0.4.6 integrated UX regression plan and PR evidence (2026-10-13)
+
+### Confirmed features implemented on feature branch
+- v0.4.4: layout 3 presets and UI 2 presentations; switching only affects CSS/layout attributes and does not reset model/CASE/quiz/waveform.
+- v0.4.5: modal numeric draft with exact range/precision validation, bounded pointer long-hold +/- in modal and quick-study mode, removed inert TURN, per-item pending default; header reset remains global.
+- v0.4.6: CASE stage goals/roadmap, re-openable fictional context and independent RAM-only session resume/restart for two cases.
+
+### Automated regression coverage
+- tests/setting-editor.test.mjs: existing staged, Cancel, stale-edit, range tests plus strict parsing for all 7 settings, malformed input, per-item default/pending/Accept.
+- tests/browser-check.mjs: three layout presets and two UI presentations, stable settings/monitor values, modal numeric invalid entry/validation and long-hold, quick-mode hold, CASE per-case list/resume and answer persistence; original 7 settings, 7 fixed monitor examples, pressure/flow/volume waveforms, CASE 2×3, CORE 10, Help, CIRCUIT, ALARM and reset/tab/keyboard/breakpoint regressions retained.
+- Screenshots: CI Chromium 1440px desktop plus 360px and 320px emulation; desktop device exploration, modal editor and CASE roadmap images among captures.
+- A v0.4.4 responsive regression revealed narrow card's tier badge overlaying the absolutely positioned ? button. Root-cause fix: at <=550px move the help control into normal card flow rather than adding merely more badge margin. Re-run proved Chromium browser pass on PR head c0c6b0af5e242b757d713aa6b3d21ad2904dd4e3 (CI run 38336931392).
+- Superseded PR runs on earlier commits were failing and **must not** be represented as passing. Final build/main run only establishes release acceptance if its exact SHA reports successful test, browser and package jobs.
+
+### Safety and remaining verification
+- All numbers and setting increments are educational rather than clinically validated PB980 operating constraints. Static patient-readout reference never becomes measured data, no actual alarm, case to device signal, or ABGA/SpO2 calculation was added.
+- No patient/learner identifying data storage, login, analytics or network API.
+- Actual clinical faculty signoff, manufacturer exact firmware match, student usability trial and physical phone testing are **not performed**. Browser emulation and automated correctness tests do not replace these.
+
