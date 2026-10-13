@@ -732,6 +732,91 @@ try {
     await view.close();
   }
   pass("v0.5.0 mobile keyboard navigation, four data sources, 7 breakpoint learning order/overflow");
+  // v0.5.1: same source, larger type, no state side effects or focus loss.
+  const readingPage=await browser.newPage({viewport:{width:1280,height:900}});
+  readingPage.on("pageerror",e=>errors.push("Reading pageerror: "+e.message));
+  await readingPage.goto(ROOT,{waitUntil:"networkidle",timeout:30000});
+  const originalMonitorLabels=await readingPage.locator("#monitor .readout .label").allTextContents();
+  const originalMonitorNumbers=await readingPage.locator("#monitor .readout strong").allTextContents();
+  const originalMonitorUnits=await readingPage.locator("#monitor .readout .unit").allTextContents();
+  const originalSettings=await readingPage.locator("#settings .setting-value").allTextContents();
+  const originalPaths=await Promise.all(["pressure","flow","volume"].map(name=>
+    readingPage.locator('#graph-'+name+' [data-phase="mandatory"]').getAttribute("d")));
+  await readingPage.locator("#waveform-pause").click();
+  const originalPaused=await readingPage.locator("#waveform-pause").getAttribute("aria-pressed");
+  await readingPage.locator("#open-reading").focus();
+  await readingPage.keyboard.press("Enter");
+  assert.equal(await readingPage.locator("#reading-dialog").evaluate(d=>d.open),true);
+  assert.equal(await readingPage.locator("#reading-dialog .reading-item").count(),7);
+  assert.deepEqual(await readingPage.locator("#reading-dialog .reading-value").evaluateAll(nodes=>nodes.map(n=>n.firstChild.textContent)),originalMonitorNumbers);
+  for(let i=0;i<7;i++){
+    const item=readingPage.locator("#reading-dialog .reading-item").nth(i);
+    assert.ok((await item.locator("h3").textContent()).startsWith(originalMonitorLabels[i]));
+    if(originalMonitorUnits[i]!=="참고값")assert.equal(await item.locator(".reading-unit").textContent(),originalMonitorUnits[i]);
+    assert.match(await item.locator(".reading-source").textContent(),/MONITOR_REFERENCE/);
+  }
+  await readingPage.screenshot({path:"artifacts/browser/v051-reading-monitor-1280.png",fullPage:false});
+  await readingPage.locator('[data-reading-category="settings"]').click();
+  assert.equal(await readingPage.locator("#reading-dialog .reading-item").count(),7);
+  assert.deepEqual(await readingPage.locator("#reading-dialog .reading-value").evaluateAll(nodes=>nodes.map(n=>n.firstChild.textContent)),originalSettings);
+  assert.equal(await readingPage.locator("#reading-dialog-body input").count(),0);
+  await readingPage.screenshot({path:"artifacts/browser/v051-reading-settings-1280.png",fullPage:false});
+  await readingPage.locator('[data-reading-category="waveforms"]').click();
+  assert.equal(await readingPage.locator("#reading-dialog .reading-item").count(),3);
+  for(const unit of ["cmH₂O","L/min","mL"])assert.ok((await readingPage.locator("#reading-dialog-body").textContent()).includes(unit));
+  assert.match(await readingPage.locator("#reading-dialog-body").textContent(),/실측 아님/);
+  await readingPage.screenshot({path:"artifacts/browser/v051-reading-waveforms-1280.png",fullPage:false});
+  await readingPage.keyboard.press("Escape");
+  assert.equal(await readingPage.locator("#reading-dialog").evaluate(d=>d.open),false);
+  assert.equal(await readingPage.evaluate(()=>document.activeElement.id),"open-reading");
+  assert.deepEqual(await readingPage.locator("#monitor .readout strong").allTextContents(),originalMonitorNumbers);
+  assert.deepEqual(await readingPage.locator("#settings .setting-value").allTextContents(),originalSettings);
+  assert.equal(await readingPage.locator("#waveform-pause").getAttribute("aria-pressed"),originalPaused);
+  assert.deepEqual(await Promise.all(["pressure","flow","volume"].map(name=>
+    readingPage.locator('#graph-'+name+' [data-phase="mandatory"]').getAttribute("d"))),originalPaths);
+  await readingPage.locator("#open-reading").click();
+  await readingPage.locator("#reading-close").click();
+  assert.equal(await readingPage.evaluate(()=>document.activeElement.id),"open-reading");
+  // Existing modal can still be opened normally after the reading dialog closes.
+  await readingPage.locator("#settings .setting-select").first().click();
+  assert.equal(await readingPage.locator("#setting-editor").evaluate(d=>d.open),true);
+  await readingPage.locator("#editor-cancel").click();
+  await readingPage.close();
+  pass("v0.5.1 seven source-matched monitor and committed settings, three waveform guides, Escape/focus, read-only state");
+  for(const width of [1440,1280,1100,960,700,360,320]){
+    const page=await browser.newPage({viewport:{width,height:850}});
+    page.on("pageerror",e=>errors.push("Reading "+width+"px pageerror: "+e.message));
+    await page.goto(ROOT,{waitUntil:"networkidle",timeout:30000});
+    await page.locator("#open-reading").click();
+    assert.equal(await page.locator("#reading-dialog .reading-item").count(),7);
+    const geometry=await page.locator("#reading-dialog").boundingBox();
+    assert.ok(geometry.x>=-1&&geometry.x+geometry.width<=width+1,"reading dialog fits viewport "+width);
+    const overflow=await page.evaluate(()=>({body:document.documentElement.scrollWidth,client:document.documentElement.clientWidth}));
+    assert.ok(overflow.body<=overflow.client+2,"reading dialog horizontal overflow "+width+": "+JSON.stringify(overflow));
+    await page.screenshot({path:"artifacts/browser/v051-reading-monitor-"+width+".png",fullPage:false});
+    await page.locator('[data-reading-category="settings"]').click();
+    assert.equal(await page.locator("#reading-dialog .reading-item").count(),7);
+    await page.locator('[data-reading-category="waveforms"]').click();
+    assert.equal(await page.locator("#reading-dialog .reading-item").count(),3);
+    await page.keyboard.press("Escape");
+    assert.equal(await page.evaluate(()=>document.activeElement.id),"open-reading");
+    await page.close();
+  }
+  // CSS-viewport reflow approximates 200% and 400% magnification at a 1280px base.
+  // This is NOT a substitute for a physical browser zoom/screen reader user test.
+  for(const [magnification,width] of [[200,640],[400,320]]){
+    const page=await browser.newPage({viewport:{width,height:700}});
+    await page.goto(ROOT,{waitUntil:"networkidle",timeout:30000});
+    await page.locator("#open-reading").click();
+    const box=await page.locator("#reading-dialog").boundingBox();
+    assert.ok(box.x>=-1&&box.x+box.width<=width+1,magnification+"% equivalent reflow fits");
+    assert.equal(await page.locator(".reading-value").count(),7);
+    await page.locator('[data-reading-category="settings"]').click();
+    assert.equal(await page.locator(".reading-item").count(),7);
+    await page.screenshot({path:"artifacts/browser/v051-reading-reflow-"+magnification+".png",fullPage:false});
+    await page.close();
+  }
+  pass("v0.5.1 seven responsive widths and 200/400% equivalent CSS viewport reflow");
   const reduced=await browser.newPage({viewport:{width:1000,height:700}});
   reduced.on("pageerror",e=>errors.push("Reduced motion pageerror: "+e.message));
   await reduced.emulateMedia({reducedMotion:"reduce"});
