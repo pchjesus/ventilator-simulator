@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="#26343f">
-  <title>PB980 Ventilator Simulator v0.4.3 | Clinical Content QA</title>
+  <title>PB980 Ventilator Simulator v0.4.4 | Readable Learning UI</title>
   <link rel="stylesheet" href="./styles.css">
   <script src="./src/app.js" type="module"></script>
 </head>
@@ -19,8 +19,22 @@
     </nav>
   </header>
   <p class="warning" role="note">실제 환자 치료에 사용 불가 · PB980 내부 화면 구성 참고형(실물과 동작 다름) · 상단 monitoring 값은 고정 예시, 아래 움직이는 파형은 단순화된 설명용 모델로 실제 환자 측정값이 아님</p>
+  <section class="view-toolbar" aria-label="화면 보기 및 학습 배치">
+    <div class="view-toolbar-group" role="group" aria-label="UI 보기 방식">
+      <span class="view-toolbar-label">보기</span>
+      <button type="button" class="view-choice" data-presentation="learning" aria-pressed="true">기본 학습</button>
+      <button type="button" class="view-choice" data-presentation="device" aria-pressed="false">장비 탐색</button>
+    </div>
+    <div class="view-toolbar-group" role="group" aria-label="화면 배치">
+      <span class="view-toolbar-label">화면</span>
+      <button type="button" class="view-choice" data-layout="learning" aria-pressed="true">학습 집중</button>
+      <button type="button" class="view-choice" data-layout="balanced" aria-pressed="false">나란히</button>
+      <button type="button" class="view-choice" data-layout="device" aria-pressed="false">장비 집중</button>
+    </div>
+    <div class="view-jump-links"><a href="#learning-panel">학습으로 이동 ↓</a><a href="#device-panel">장비로 이동 ↑</a></div>
+  </section>
   <main class="workspace">
-    <section class="ventilator" aria-label="PB980 스타일 교육용 인공호흡기 디스플레이">
+    <section class="ventilator" id="device-panel" aria-label="PB980 스타일 교육용 인공호흡기 디스플레이">
       <div class="bezel-brand" aria-hidden="true"><span class="bezel-logo">▣</span><strong>COVIDIEN</strong><span>Puritan Bennett</span><span>980 Series Ventilator</span><i class="bezel-led"></i></div>
       <div class="device-display">
         <div class="monitor-wrap"><div class="monitor-caption">VITAL PATIENT DATA <span>고정 예시값 · 실제 측정값 아님</span></div><div class="monitor-data"><span class="breath-example" title="호흡 종류 표시의 고정 예시" aria-label="호흡 표시 C — 고정 예시">C</span><div class="monitor" id="monitor" aria-label="고정 예시 환자 데이터 — 설정과 연동되지 않음"></div></div></div>
@@ -94,7 +108,7 @@
       </div>
       <div class="bezel-controls" aria-hidden="true"><span>☼<small>Display</small></span><span>▣<small>Lock</small></span><span>◈<small>Alarm</small></span><span>◖<small>Manual</small></span><i class="rotary-knob"></i><span>◖<small>Insp</small></span><span>◗<small>Exp</small></span><span>↻<small>Reset</small></span><span>◉<small>Audio Pause</small></span></div>
     </section>
-    <aside class="study-panel" aria-label="학습 보조 영역">
+    <aside class="study-panel" id="learning-panel" aria-label="학습 보조 영역">
       <p class="student-path-label">실습 전 핵심 학습 · 기본부터 시작하기</p>
       <div class="side-tabs core-tabs" role="tablist" aria-label="기본 학습 탭">
         <button type="button" id="tab-core" class="active" role="tab" aria-selected="true" aria-controls="panel-core">핵심 개념</button>
@@ -181,6 +195,6 @@
       </div>
     </form>
   </dialog>
-  <footer class="footer">MVP v0.4.3 · 브라우저에서 동작하는 교육용 프런트엔드 · 임상/장비 동작 검증 전</footer>
+  <footer class="footer">MVP v0.4.4 · 브라우저에서 동작하는 교육용 프런트엔드 · 임상/장비 동작 검증 전</footer>
 </body>
 </html>
