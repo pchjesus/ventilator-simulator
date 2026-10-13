@@ -691,3 +691,19 @@ body[data-presentation="learning"] .study-panel .side-tabs button{min-height:46p
 .editor-entry-error[hidden]{display:none}
 .editor-actions button:disabled{opacity:.46;cursor:not-allowed}
 @media(max-width:550px){.editor-adjuster{gap:8px}.editor-adjuster button{flex-basis:48px}.editor-direct-entry input{font-size:19px}}
+
+
+/* v0.4.6 — goal-led, non-clinical CASE roadmap and resumable learning. */
+.case-roadmap{background:#eef7fb;border:1px solid #b8d4e3;border-radius:9px;padding:12px;margin:12px 0 15px}
+.case-roadmap h3{font-size:15px;color:#214e68;margin:0 0 6px}
+.case-roadmap-purpose,.case-roadmap-end{font-size:12px;line-height:1.6;color:#3c6174}
+.case-roadmap-goals{padding-left:22px;margin:8px 0;color:#315b6e;font-size:13px;line-height:1.6}
+.case-roadmap-stages{display:grid;gap:6px;padding:0;margin:10px 0;list-style:none;counter-reset:caseStage}
+.case-roadmap-stage{counter-increment:caseStage;display:flex;align-items:baseline;flex-wrap:wrap;gap:4px;border:1px solid #cfdae2;background:#fff;padding:8px 10px;border-radius:6px;color:#2d546b;font-size:13px}
+.case-roadmap-stage::before{content:counter(caseStage) ". ";font-weight:850;color:#1f617b}
+.case-roadmap-stage>span{font-size:11px;color:#55748a}
+.case-roadmap-stage.current{border:2px solid #24749a;background:#e2f3fb;font-weight:850}
+.case-roadmap-stage.done{background:#eef7f2;border-color:#a6cbb4}
+.case-session-status{font-size:12px;color:#285c76;font-weight:750}
+.case-restart{min-height:44px;display:block;width:100%;margin-top:7px;padding:9px 11px;border:1px solid #b5c8d6;color:#2b5570;background:#fff;border-radius:7px;font-size:12px;font-weight:750}
+.case-roadmap-stage:focus-visible,.case-restart:focus-visible{outline:3px solid #74b4d7;outline-offset:2px}
