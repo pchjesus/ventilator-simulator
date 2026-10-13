@@ -12,11 +12,12 @@
 - 051-A05: 1440/1280/1100/960/700/360/320px에서 대화상자 표시·가로 넘침·세 범주 접근 확인. 원래 2 보기/3 배치/학습·CASE/팝업/파형 기존 Chromium 검사 모두 보존.
 - 051-A06: 1280 기준 200%≈640px, 400%≈320px **CSS viewport reflow 상당 검증**. *실제 브라우저 UI Zoom 200%/400%, 물리 기기, 키보드/화면읽기 보조기기 전수검증은 미실시.*
 - 비교 이미지: v0.5.0 [기준 browser-screenshots](https://github.com/pchjesus/ventilator-simulator/actions/runs/38419036280/artifacts/11825626770) vs v0.5.1 [첫 PR browser-screenshots](https://github.com/pchjesus/ventilator-simulator/actions/runs/38420856416/artifacts/11826013141). 데스크톱·320px 주요 이미지 및 1280/700/360/320 확대 이미지를 직접 확인; 새 공용 진입 영역으로 desktop full-page 높이 1600→1676px 증가, 원래 고정 모니터와 학습 화면은 보존.
-- [첫 PR 정적 웹 ZIP](https://github.com/pchjesus/ventilator-simulator/actions/runs/38420856416/artifacts/11825679053) 생성·파일 존재/정적 js/css 구조 확인. 로컬 Chromium 추가 실행은 환경의 URL 접근 제한(`ERR_BLOCKED_BY_ADMINISTRATOR`)으로 별도 재실행 불가; CI의 실제 Chromium 실행을 검증 근거로 사용.
+- [첫 PR 정적 웹 ZIP](https://github.com/pchjesus/ventilator-simulator/actions/runs/38420856416/artifacts/11825679053) 생성 성공. 로컬 HTTP localhost는 환경 제한(`ERR_BLOCKED_BY_ADMINISTRATOR`)으로 접근할 수 없어, 최종 main ZIP은 오프라인 data URL 기반 Chromium 재실행도 수행했다. 정적 HTTP 서버에서의 브라우저 테스트는 GitHub CI에 의존한다.
 - **미실시:** 실제 환자·PB980 펌웨어 측정/조작 재현, 임상 SME 감수, 간호학생 사용성/교육효과 평가, 물리적 스마트폰, OS 브라우저 자체 zoom/화면읽기 보조공학 QA. 신규 0.5.2 LAB/콘텐츠는 미구현.
-- 병합 후 정확한 최종 `main` SHA와 3개 CI job 성공 여부는 GitHub Actions 및 최종 작업 보고에서 별도 확인한다.
-
-## v0.5.0 FINAL — 최종 기능 브랜치 실행 결과 (2026-10-13)
+- **실제 PR #19 병합 완료:** 기능 릴리스 main SHA `893476ff19de1db576e87cd5d4e8966c1e3e4e05`. [정확한 main SHA의 Actions #38423564087](https://github.com/pchjesus/ventilator-simulator/actions/runs/38423564087)에서 `test`, `browser`, `package` 3 job **모두 SUCCESS**. 기존 Node 단위 테스트 **68/68 PASS**.
+- **최종 main 산출물:** [Chromium screenshots (#11827916241)](https://github.com/pchjesus/ventilator-simulator/actions/runs/38423564087/artifacts/11827916241) · [학생용 정적 web ZIP (#11827517172)](https://github.com/pchjesus/ventilator-simulator/actions/runs/38423564087/artifacts/11827517172). ZIP은 `index.html`, `styles.css`, 13개 JS ES module, `.nojekyll`로 구성되며 교수자 전용 `docs/` 및 정답 파일은 미포함.
+- **후속 마무리 재검토:** 최종 main ZIP의 13개 JS 모듈을 오프라인 data URL에 연결하여 로컬 Chromium에서 재실행. 7 모니터/7 설정/3 SVG/읽기창/Enter·Escape·focus 동작, 설정 확정 40→55 후 큰 글씨 `55` 반영, Pending `90` 취소 후 `55` 유지, 7개 너비 가로 넘침과 마지막 카드 스크롤, 열린 읽기창 resize, 페이지 JS 오류 0개 확인. 오프라인 data URL 실행은 일반 HTTP 정적 서버 배포를 대체하지 않으며, 서버 호스팅 방식은 GitHub Actions Chromium 테스트로 확인. 후속 `tests/browser-check.mjs`에는 확정값과 Pending 취소 분리를 추가해 재발 방지.
+- 문서/테스트 마무리 작업은 기존 기능 main 릴리스와 분리해 별도 PR로 관리하고 그 PR 및 병합 후 CI 결과를 다시 확인한다.
 
 ## v0.5.0 FINAL — 최종 기능 브랜치 실행 결과 (2026-10-13)
 

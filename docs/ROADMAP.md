@@ -1,6 +1,6 @@
-# Development Roadmap (checked against GitHub 2026-10-09)
+# Development Roadmap (GitHub 릴리스 상태 2026-10-14 확인)
 
-> **2026-10-14 구현 상태:** v0.5.1 D1-A 읽기 확대 기능은 [PR #19](https://github.com/pchjesus/ventilator-simulator/pull/19)에 실제 구현됨. 초기 PR CI의 test/browser/package 3 작업 성공. 최종 main SHA·CI 기록은 별도 확인. v0.5.2–v0.6.0 D2–D5는 아직 미구현이며 기존 [승인 UX 명세](V0.6.0_APPROVED_UX_IMPLEMENTATION_SPEC.md)와 [Playbook](V0.5.1_TO_V0.6.0_IMPLEMENTATION_PLAYBOOK.md)을 기준으로 개발한다.
+> **2026-10-14 릴리스 상태:** v0.5.1 D1-A 읽기 확대 기능은 [PR #19](https://github.com/pchjesus/ventilator-simulator/pull/19)로 main 병합 완료. 코드 main SHA `893476ff19de1db576e87cd5d4e8966c1e3e4e05`; [정확한 해당 main의 CI #38423564087](https://github.com/pchjesus/ventilator-simulator/actions/runs/38423564087) test/browser/package 전부 성공. v0.5.2–v0.6.0 D2–D5는 아직 미구현이며 기존 [승인 UX 명세](V0.6.0_APPROVED_UX_IMPLEMENTATION_SPEC.md)와 [Playbook](V0.5.1_TO_V0.6.0_IMPLEMENTATION_PLAYBOOK.md)을 기준으로 개발한다.
 
 ## v0.5.1 — Readability and Focus Baseline
 - [x] 7개 독립 고정 모니터 확대 읽기(순서·값 보존), 한국어 뜻/단위/출처.
