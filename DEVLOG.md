@@ -12,7 +12,9 @@
 - Native dialog focus/inert 충돌 위험 → 다른 모달 열린 경우 확대창 진입 차단, Escape/닫기 뒤 트리거 초점 복귀.
 - 초기 PR CI [#38420856416](https://github.com/pchjesus/ventilator-simulator/actions/runs/38420856416) 3개 job PASS. 해당 Chromium PNG 아티팩트와 v0.5.0 최종 main 기준 이미지를 내려받아 데스크톱/모바일 비교: 신규 상단 진입 영역 외에 원형 장비/학습 화면의 뚜렷한 회귀 미발견.
 - 정적 웹 ZIP Actions 제작 PASS; 자동 Chromium 실행을 실제 물리 기기, 브라우저 UI 자체 200/400% zoom, 화면읽기 도구, 학생 사용성 평가나 임상 전문가 승인으로 오인하지 않음.
-- 최종 버전 커밋과 main CI는 GitHub PR/Actions 결과 별도 확인.
+- **v0.5.1 릴리스 마감:** [PR #19](https://github.com/pchjesus/ventilator-simulator/pull/19) squash 병합 완료. 코드 main SHA `893476ff19de1db576e87cd5d4e8966c1e3e4e05`; [해당 SHA의 CI #38423564087](https://github.com/pchjesus/ventilator-simulator/actions/runs/38423564087) `test/browser/package` 모두 SUCCESS, Node 단위 테스트 68/68.
+- [최종 main 정적 ZIP](https://github.com/pchjesus/ventilator-simulator/actions/runs/38423564087/artifacts/11827517172) (HTML/CSS/13개 JS 모듈, docs 제외)과 [Chromium screenshots](https://github.com/pchjesus/ventilator-simulator/actions/runs/38423564087/artifacts/11827916241) 제공. localhost 제한 때문에 ZIP 모듈을 data URL로 묶은 오프라인 Chromium 검증을 추가 수행: committed 설정 반영/취소된 Pending 값 불반영, 320–1440px 접근/리사이즈/포커스/모니터 불변 확인.
+- 마무리 후속 패치는 문서 사실 동기화와 committed-vs-Pending 자동 회귀 케이스 추가만 포함. v0.5.2–v0.6.0 미구현 및 사용자/임상/실물 기기 검증 미실시는 유지.
 
 
 ## v0.4.7 → v0.5.0 FINAL — 연속 학생 학습 UX 개선 (2026-10-13)
