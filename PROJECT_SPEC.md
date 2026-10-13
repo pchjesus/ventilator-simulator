@@ -1,5 +1,8 @@
 # Project Specification
 
+> **미래 버전 UX 승인(2026-10-13, 아직 미구현):** v0.6.0 개발에서는 기존 v0.5.0 안전 경계와 기능을 보존하면서 D1-A 읽기 확대(장비 원형 유지), D2-A 개념 요약/상세, D3-A 동일 축 파형 겹침 비교, D4-A CORE 안의 선택형 LAB, D5-A 예상/결과 문항을 도입한다. 총 3개 선택형 미션(PEEP/f/FiO₂), 고정 기준값 `initialSettings()` 및 별도 실험 RAM 상태. 구현 구조·출시 중단 기준·회귀 테스트는 [docs/V0.6.0_APPROVED_UX_IMPLEMENTATION_SPEC.md](docs/V0.6.0_APPROVED_UX_IMPLEMENTATION_SPEC.md) 우선. 현재 실동작은 **v0.5.0 FINAL**, 새 UX는 설계만 승인되었으며 임상·사용성 검증은 미실시.
+
+
 ## v0.5.0 FINAL — 승인된 현재 교육용 제품 범위
 
 - 초급 간호학생의 화면 이해 → 6개 개념 → 10문항 형성평가 → CASE 01/02 각 3문항 → 읽기 전용 이전 응답·목표별 복습의 통합 경로.
