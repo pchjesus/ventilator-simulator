@@ -1,10 +1,12 @@
+> **v0.5.3 (2026-10-14):** ② 학습 → CORE 내부에 독립 파형 비교 LAB을 추가했다. PEEP 5→8, 설정 f 15→18, FiO₂ 40→60% 실험은 항상 `initialSettings()`의 **별도 사본**에서 시작하며 실제 장비의 확정·Pending 설정을 읽거나 수정하지 않는다. Pressure/Flow/Volume 중 한 종류를 선택해 기준 **회색 점선**과 실험 **강조 실선**을 0–16초/320표본의 **공통 축**에서 겹쳐 비교한다. Flow는 음·양/0 기준선 표시. LAB 시작·종료·재진입, 모바일 파형 선택·탭/크기 변경 시 상태 보존을 지원한다. 기존 장비 파형 일시정지/분석, CORE 6카드·10문항, CASE 4개·12문항, 고정 모니터 7개는 독립적으로 유지한다. **LAB 예상/해석 6문항과 활동지는 v0.5.4 이후**다. 실제 환자 생리/산소화·PB980 펌웨어 모델 아님; 임상 전문가·학생 사용성 검증 미완료. [개발 PR #26](https://github.com/pchjesus/ventilator-simulator/pull/26), [승인 명세](docs/V0.6.0_APPROVED_UX_IMPLEMENTATION_SPEC.md).
+
 > **v0.5.2.3 (2026-10-14):** RAAS v5.5.2의 ‘임상 판단 → 간호 행동 → 결과 복습’에서 영감을 얻어 MAS·RSV에 각각 1개의 선택형 **비채점** 간호 행동 연습을 추가. 채점 문항은 여전히 CORE 10 + CASE 12 = 22개이며, ABGA·CBG 기초를 학습 탭에서 복습했다가 같은 CASE 문항·답안으로 복귀할 수 있음. 답안/행동은 페이지 RAM에만 남고 실제 PB980/환자 생리 모델과 연결하지 않음. 임상 전문가 감수 미완료.
 
 > **v0.5.2.2 (2026-10-14):** 가상 CASE 03 MAS에 흉부 X-ray·ABGA, CASE 04 중증 RSV에 임상 관찰·CBG 자료를 별도 검사 패널로 추가. 사례 진행 단계에 따라 확인 가능한 정적 문서이며 검체·시점·FiO₂ 가정·출처와 응답 후 해설을 구분함. 고정 PB980 참고 모니터·설정·파형과 무관하며 4 CASE/12문항, CORE 10문항 유지. 임상 전문가 미감수.
 
 > **v0.5.2.1 (2026-10-14):** 기존 성인 CASE 2종에 신생아 태변흡인증후군(MAS)·영아 중증 RSV 세기관지염을 추가한 **총 4개 CASE, 12개 문항**. 네 사례 모두 전문 의료인 감수 전 교육 초안. 성인 PB980 참고형 모니터·설정·생성 파형과 소아 사례의 데이터는 서로 연결되지 않아.
 
-# Ventilator Simulator — v0.5.1 (교육용 베타)
+# Ventilator Simulator — v0.5.3 (교육용 베타)
 
 > **릴리스 확인 (2026-10-14):** [병합 PR #19](https://github.com/pchjesus/ventilator-simulator/pull/19) · [v0.5.1 실행 코드 main SHA `893476ff19de1db576e87cd5d4e8966c1e3e4e05` 및 최종 CI 성공](https://github.com/pchjesus/ventilator-simulator/actions/runs/38423564087). D1-A 큰 글씨 읽기 구현 완료. D2–D5는 차기 v0.5.2–v0.6.0 범위이며 미구현. 개발 기준은 [승인 UX 명세](docs/V0.6.0_APPROVED_UX_IMPLEMENTATION_SPEC.md)와 [Playbook](docs/V0.5.1_TO_V0.6.0_IMPLEMENTATION_PLAYBOOK.md).
 

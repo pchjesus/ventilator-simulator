@@ -1,3 +1,23 @@
+## v0.5.3 — Pure waveform comparison & CORE-local LAB (2026-10-14)
+
+```text
+initialSettings() ─────┬──> baseline copy ──> generateWaveform(0,16,320) ─┐
+                       └──> trial copy + fixed PEEP/f/FiO₂ ──> generateWaveform(0,16,320) ──┤
+                               src/waveform-compare.js ──> common per-type min/max ────┤
+                               CORE #core-labs static SVG (one selected type) <────────┘
+
+Separate existing device:
+  device committed state / Pending edit → legacy paintWaveforms(waveformTime)
+  fixed MONITOR_REFERENCE → 7 independently fixed sample tiles
+  CORE quiz RAM / CASE RAM → existing isolated learning state machines
+```
+
+- `compareWaveforms()` is a pure fixed-time computation. Input configurations and returned copies do not read the live device state. Pressure/Volume use a nonnegative 0 baseline, Flow a symmetric signed scale and explicit 0 line. Both curves in each plot use identical X/Y transforms.
+- LAB-specific state: `labState.active`, `labState.experiment`, `labState.graph` and cached `labSnapshot` in `src/app.js`. Page-only RAM. Graph selection does not regenerate or reset experiment samples; switching tabs, layouts or viewport does not clear LAB progress. Explicit LAB exit resets LAB only and focuses its start button.
+- The SVG is independent of device SVG paths, animation frame scheduling, Pause/Resume, waveform cursor/inspection or grid. Neither LAB nor generator models oxygenation, SpO₂, PaO₂, actual VTE, fTOT, hemodynamic/clinical alarm reactions, or actual PB980 behavior.
+- Static CI packaging explicitly includes `src/waveform-compare.js` and Node dynamically imports **`dist/src/waveform-compare.js`** as a dependency-loading smoke test, in addition to existing CASE smoke tests.
+- D5 question state and content are deliberately deferred to v0.5.4; no fourth top-level tab, new scoring, persistence, API or backend.
+
 # Architecture — v0.3.0
 
 ## v0.5.1 — Read-only reading overlay (2026-10-14)

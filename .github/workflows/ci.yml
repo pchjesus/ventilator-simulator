@@ -35,6 +35,7 @@ jobs:
           SERVER_PID=$!
           trap 'kill $SERVER_PID || true' EXIT
           node tests/browser-check.mjs
+          node tests/lab-browser-check.mjs
       - name: Upload screenshots
         if: always()
         uses: actions/upload-artifact@v4
@@ -52,13 +53,15 @@ jobs:
         run: |
           mkdir -p dist/src
           cp index.html styles.css dist/
-          cp src/app.js src/sim-model.js src/waveform-model.js src/setting-editor.js src/education-content.js src/release-notes.js src/waveform-inspector.js src/preclinical-cases.js src/case-clinical-data.js src/case-actions.js src/case-engine.js src/case-quality.js src/device-learning.js src/student-learning.js src/core-quiz.js dist/src/
+          cp src/app.js src/sim-model.js src/waveform-model.js src/waveform-compare.js src/setting-editor.js src/education-content.js src/release-notes.js src/waveform-inspector.js src/preclinical-cases.js src/case-clinical-data.js src/case-actions.js src/case-engine.js src/case-quality.js src/device-learning.js src/student-learning.js src/core-quiz.js dist/src/
           touch dist/.nojekyll
           test -s dist/index.html
           test -s dist/styles.css
           test -s dist/src/app.js
           test -s dist/src/sim-model.js
           test -s dist/src/waveform-model.js
+          test -s dist/src/waveform-compare.js
+          node --input-type=module -e 'import("./dist/src/waveform-compare.js").then(({compareWaveforms})=>{const r=compareWaveforms();if(r.count!==320||r.baseline.length!==320||r.trial.length!==320)throw Error("Staged LAB comparison import failed")})'
           test -s dist/src/setting-editor.js
           test -s dist/src/education-content.js
           test -s dist/src/release-notes.js

@@ -870,3 +870,31 @@ body[data-study-area="clinical"]:not([data-clinical-device-expanded="true"]) .wo
 .case-action-optional{font-size:12px!important;color:#526c7b}
 .case-action-summary-entry{background:#fff;border:1px solid #ccdae3;border-radius:7px;padding:10px;margin:8px 0}
 @media(max-width:550px){.case-action-exercise{padding:10px}.case-action-review-links{display:grid}.case-action-review-button{width:100%}}
+
+
+/* v0.5.3: LAB is a CORE subview, not the device waveform or a fourth tab. */
+.core-labs{min-width:0;margin:16px 0;padding:14px;border:1px solid #a9cbdc;border-radius:10px;background:#f5fafc;overflow:hidden}
+.core-labs h3{font-size:17px;color:#174b65;margin:0 0 8px}
+.core-labs p{color:#31566c;font-size:14px;line-height:1.7;overflow-wrap:anywhere}
+.core-labs [hidden]{display:none!important}
+.lab-action{min-height:44px;max-width:100%;padding:10px 14px;border:1px solid #216d92;background:#e1f2fb;color:#144963;border-radius:8px;font-size:14px;font-weight:800;white-space:normal}
+.lab-options,.lab-graph-options{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin:12px 0}
+.lab-options button,.lab-graph-options button{min-width:0;min-height:44px;padding:8px 4px;border:1px solid #94baca;border-radius:7px;background:#fff;color:#20516d;font-weight:750;font-size:13px;overflow-wrap:anywhere}
+.lab-options button[aria-pressed="true"],.lab-graph-options button[aria-pressed="true"]{background:#155a7e;color:#fff;border-color:#155a7e}
+.lab-options button:focus-visible,.lab-graph-options button:focus-visible,.lab-action:focus-visible{outline:3px solid #379fce;outline-offset:2px}
+.lab-summary{font-weight:750;background:#e9f4f9;padding:10px;border-radius:7px}
+.lab-series-legend{display:flex;flex-wrap:wrap;gap:14px;margin:10px 0;font-size:13px;font-weight:750;color:#204e65}
+.lab-series-legend span{display:inline-flex;align-items:center;gap:7px}
+.lab-series-legend i{display:inline-block;width:29px;border-top-width:4px;border-top-style:solid}
+.lab-legend-baseline{border-color:#737f8a;border-top-style:dashed!important}
+.lab-legend-trial{border-color:#096eb2}
+.lab-graph-title{margin:10px 0 3px;font-weight:750;font-size:13px!important}
+#lab-graph{display:block;width:100%;height:auto;min-height:180px;background:#fff;border:1px solid #c0d8e2;border-radius:8px;overflow:visible}
+.lab-grid-line{stroke:#dbe8ee;stroke-width:1}
+.lab-zero-line{stroke:#59778a;stroke-width:2}
+.lab-tick{font-size:13px;fill:#38566b;font-family:Arial,sans-serif}
+.lab-line-baseline{stroke:#737f8a;stroke-width:3.5;stroke-dasharray:9 7;fill:none;stroke-linejoin:round}
+.lab-line-trial{stroke:#096eb2;stroke-width:3;fill:none;stroke-linejoin:round}
+.lab-result-note{font-weight:750;padding:10px;background:#eaf5fa;border-left:4px solid #247ba4}
+.lab-disclaimer{font-size:12px!important;color:#425c6d!important}
+@media(max-width:550px){.core-labs{padding:9px}.lab-options,.lab-graph-options{gap:3px}.lab-options button,.lab-graph-options button{font-size:12px;padding:7px 2px}.lab-tick{font-size:12px}}

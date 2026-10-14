@@ -1,10 +1,10 @@
 {
   "name": "pb980-ventilator-education",
-  "version": "0.5.2.3",
+  "version": "0.5.3",
   "private": true,
   "type": "module",
   "scripts": {
-    "check": "node --check src/sim-model.js && node --check src/waveform-model.js && node --check src/setting-editor.js && node --check src/education-content.js && node --check src/release-notes.js && node --check src/waveform-inspector.js && node --check src/case-clinical-data.js && node --check src/case-actions.js && node --check src/preclinical-cases.js && node --check src/case-engine.js && node --check src/case-quality.js && node --check src/device-learning.js && node --check src/student-learning.js && node --check src/core-quiz.js && node --check src/app.js && node --check tests/browser-check.mjs",
+    "check": "node --check src/sim-model.js && node --check src/waveform-model.js && node --check src/waveform-compare.js && node --check src/setting-editor.js && node --check src/education-content.js && node --check src/release-notes.js && node --check src/waveform-inspector.js && node --check src/case-clinical-data.js && node --check src/case-actions.js && node --check src/preclinical-cases.js && node --check src/case-engine.js && node --check src/case-quality.js && node --check src/device-learning.js && node --check src/student-learning.js && node --check src/core-quiz.js && node --check src/app.js && node --check tests/browser-check.mjs && node --check tests/lab-browser-check.mjs",
     "test": "node --test tests/*.test.mjs"
   }
 }

@@ -1,3 +1,5 @@
+> **현황 2026-10-14 / v0.5.3:** D3-A의 순수 파형 비교 엔진과 기준 점선/실험 실선·동일 수치축 SVG, D4-A의 CORE 독립 LAB 진입/복귀·모바일 그래프 선택을 구현했다. PEEP·설정 f·FiO₂ 3개 시험 설정은 `initialSettings()`의 별도 사본이며 기존 기기/CORE 퀴즈/CASE 답안과 연결되지 않는다. v0.5.4는 D5-A 예상·결과 확인 2문항×3미션과 별도 `lab-engine.js` / `lab-lessons.js` 구현 단계이며 아직 미구현. D5 도입 시에도 CORE 10 + CASE 12 채점은 보존하고 LAB 6문항은 합산하지 않는다. 기술 검증은 [PR #26](https://github.com/pchjesus/ventilator-simulator/pull/26)와 CI/TEST_REPORT에서 상태별 확인한다.
+
 # Development Roadmap (GitHub 릴리스 상태 2026-10-14 확인)
 
 > **2026-10-14 릴리스 상태:** v0.5.1 D1-A 읽기 확대 기능은 [PR #19](https://github.com/pchjesus/ventilator-simulator/pull/19)로 main 병합 완료. 코드 main SHA `893476ff19de1db576e87cd5d4e8966c1e3e4e05`; [정확한 해당 main의 CI #38423564087](https://github.com/pchjesus/ventilator-simulator/actions/runs/38423564087) test/browser/package 전부 성공. v0.5.2–v0.6.0 D2–D5는 아직 미구현이며 기존 [승인 UX 명세](V0.6.0_APPROVED_UX_IMPLEMENTATION_SPEC.md)와 [Playbook](V0.5.1_TO_V0.6.0_IMPLEMENTATION_PLAYBOOK.md)을 기준으로 개발한다.
