@@ -693,6 +693,7 @@ try {
   await narrow.locator("#tab-core").click();
   assert.equal(await narrow.locator(".core-quiz-feedback").count(),1);
   await narrow.locator("#extra-learning > summary").click();
+  await narrow.locator("#mobile-tools > summary").click();
   await narrow.locator("#open-manual").click();
   assert.equal(await narrow.locator("#manual-dialog").isVisible(),true);
   const narrowManual=await narrow.locator("#manual-dialog").boundingBox();
