@@ -331,3 +331,7 @@ GitHub Actions run: https://github.com/pchjesus/ventilator-simulator/actions/run
 - Case bank 4 fictional scenarios/12 questions; four pending clinical-review warnings, original adult CASE content and answer IDs unchanged.
 - New individual MAS/RSV browser launch, answer, list return and resume; preserve existing 7 static readouts, 7 settings, 3 waveforms and CORE 10 answers.
 - Code QA and CI are NOT clinical review, physical PB980, infant physiology or actual student usability validation.
+
+
+### v0.5.2.1 final UI regression
+- Device presentation toggled while clinical CASE is active reveals the original reference equipment; reverting learning presentation closes it without changing CASE session.

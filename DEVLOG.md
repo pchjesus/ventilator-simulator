@@ -390,3 +390,8 @@ Five user decisions for v0.4.4–v0.4.6 were confirmed and tracked in `docs/UI_U
 - AHA/AAP 2025 newborn delivery suction vs AARC 2022 intubated neonatal/pediatric indication-based suction carefully separated; source-linked MAS (Merck) and severe bronchiolitis (NICE) cognition-only education.
 - Original CASE progress RAM, CORE quiz, committed/Pending ventilator settings, fixed readouts and illustrative waveforms not connected to pediatric scenarios.
 - Clinical expert review, student pilot and actual PB980/pediatric ventilation model not done.
+
+
+### v0.5.2.1 stabilization: presentation and clinical reference equipment
+- Repair conflict between existing device/learning presentation buttons and clinical CASE default-closed equipment: device presentation opens optional independent equipment; learning presentation closes it.
+- No change to case content, device values, waveform state, quiz answers or CASE sessions. Add explicit Chromium regression.

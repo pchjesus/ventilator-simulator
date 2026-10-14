@@ -21,6 +21,10 @@ try {
   await desktop.locator('[data-study-target="clinical"]').click();
   assert.equal(await desktop.locator("#panel-case").isVisible(),true);
   assert.equal(await desktop.locator("#device-panel").isVisible(),false);
+  await desktop.locator('button[data-presentation="device"]').click();
+  assert.equal(await desktop.locator("#device-panel").isVisible(),true,"existing device presentation opens clinical reference equipment");
+  await desktop.locator('button[data-presentation="learning"]').click();
+  assert.equal(await desktop.locator("#device-panel").isVisible(),false,"learning presentation folds optional clinical device");
   await desktop.locator("#clinical-device-toggle").click();
   assert.equal(await desktop.locator("#device-panel").isVisible(),true);
   await desktop.locator("#clinical-device-toggle").click();

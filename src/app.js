@@ -84,7 +84,11 @@ function syncViewChoices(){
 document.querySelectorAll("button[data-presentation]").forEach(button=>button.addEventListener("click",()=>{
   const next=button.dataset.presentation;
   if(!["learning","device"].includes(next))return;
-  presentationMode=next;document.body.dataset.presentation=next;syncViewChoices();syncResponsiveSections();
+  presentationMode=next;document.body.dataset.presentation=next;
+  // When clinical study is focused, the existing device/learning presentation
+  // buttons must also control the explicitly optional reference-device view.
+  if(studyArea==="clinical"){clinicalDeviceExpanded=(next==="device");setStudyArea("clinical");}
+  syncViewChoices();syncResponsiveSections();
 }));
 document.querySelectorAll("button[data-layout]").forEach(button=>button.addEventListener("click",()=>{
   const next=button.dataset.layout;
