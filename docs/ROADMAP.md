@@ -261,3 +261,9 @@ Detailed decisions, implementation invariants, risk register, patch sequencing a
 ### v0.5.2.1 delivery (2026-10-14)
 - Four independent fictional CASEs: adult handoff and oxygenation decline unchanged + newborn MAS + severe infant RSV. 12 CASE questions, clinical signoff pending; no pediatric physiology simulation.
 - v0.5.3+ original approved LAB plan still to be implemented separately.
+
+
+### v0.5.2.2 complete scope (2026-10-14)
+- Original v0.5.2.1 stable CASE/CORE/ventilator behavior remains; new fictional static result documents for MAS (X-ray + ABGA) and severe RSV (observations + CBG) only, stage-gated and with sample/collection time/conditions.
+- Introduce content gate for gas value sanity and CBG PO₂ prohibition, source tracking, and interpretive rationale after relevant choice. No physiologic linkage to PB980 adult fixed monitor, no new CORE or case questions; clinical expert review remains pending.
+- v0.5.2.3 optional unscored action exercise and concept review link planned separately from D3 waveform/LAB v0.5.3.
