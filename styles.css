@@ -951,3 +951,53 @@ body[data-study-area="clinical"]:not([data-clinical-device-expanded="true"]) .wo
  .study-panel .lab-tick{font-size:16px}
  .study-panel .core-quiz,.study-panel .core-labs{padding:12px}
 }
+
+/* v0.5.3.2 / Patch 2: optional learning-only reading surface.
+ * Narrow-screen device disclosure continues to use its original controls. */
+#study-only-toggle{display:none}
+@media(min-width:701px){
+ body[data-study-area="learning"][data-presentation="learning"] #study-only-toggle{display:inline-flex;justify-content:center;align-items:center;font-weight:800;border-color:#145a75}
+ #study-only-toggle[aria-pressed="true"]{background:#145a75;color:#fff}
+ body[data-study-area="learning"][data-presentation="learning"][data-study-only="true"] .workspace{
+  grid-template-columns:minmax(0,1fr);
+ }
+ body[data-study-area="learning"][data-presentation="learning"][data-study-only="true"] #device-panel{display:none}
+ body[data-study-area="learning"][data-presentation="learning"][data-study-only="true"] #learning-panel{
+  width:100%;max-width:none;position:static;max-height:none;overflow:visible;overscroll-behavior:auto;
+ }
+ /* A1: maintain a comfortable reading line length but give the LAB graph room. */
+ body[data-study-only="true"] #learning-panel > :not(#panel-core):not(#panel-case):not(#panel-help):not(#panel-circuit):not(#panel-alarm){max-width:900px;margin-left:auto;margin-right:auto}
+ body[data-study-only="true"] #panel-core > :not(#core-labs){max-width:900px;margin-left:auto;margin-right:auto}
+ body[data-study-only="true"] #panel-core #core-labs{max-width:1120px;margin-left:auto;margin-right:auto}
+ body[data-study-only="true"] #panel-case,body[data-study-only="true"] #panel-help,
+ body[data-study-only="true"] #panel-circuit,body[data-study-only="true"] #panel-alarm{max-width:900px;margin-left:auto;margin-right:auto}
+}
+/* v0.5.3.3 / Patch 3: non-blocking navigation and one mobile tools disclosure. */
+.header-tools{position:relative;min-width:0}
+.header-tools>summary{display:none}
+.header-tools .header-actions{display:flex;gap:7px;align-items:center}
+.learning-quick-nav{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;margin:13px 0 16px}
+.learning-quick-nav>span{grid-column:1/-1;font-size:13px;color:#31556c;font-weight:800}
+.learning-quick-nav>a{display:flex;justify-content:center;align-items:center;min-width:0;min-height:44px;padding:8px 5px;text-align:center;border:1px solid #b6cbd5;border-radius:8px;background:#fff;color:#145a75;font-size:14px;line-height:1.45;font-weight:750;text-decoration:none}
+.learning-quick-nav>a:hover{background:#edf5f8;border-color:#145a75}
+.learning-quick-nav>a:focus-visible{outline:3px solid #127aa6;outline-offset:3px}
+.study-panel :is(#core-learning-content,#core-quiz-root,#core-labs,#panel-case):focus{outline:2px solid #247ba4;outline-offset:3px}
+.lab-overlap-note{font-size:14px!important;line-height:1.7!important;font-weight:750;color:#21465b!important;background:#f1f7f9;border-left:4px solid #145a75;margin:9px 0;padding:10px 12px}
+.lab-graph-options button{line-height:1.45}
+@media(max-width:700px){
+ .site-header{align-items:flex-start;position:relative}
+ .header-tools>summary{display:flex;align-items:center;justify-content:center;min-height:44px;padding:9px 11px;border:1px solid #8aabbc;border-radius:8px;background:#fff;color:#145a75;font-size:13px;font-weight:800;cursor:pointer;list-style:none;text-align:center}
+ .header-tools>summary::-webkit-details-marker{display:none}
+ .header-tools>summary:focus-visible{outline:3px solid #127aa6;outline-offset:3px}
+ .header-tools[open]>summary{background:#edf5f8;border-color:#145a75}
+ .header-tools .header-actions{position:absolute;right:0;top:calc(100% + 5px);z-index:20;width:min(290px,calc(100vw - 18px));padding:12px;border:1px solid #9bb5c4;border-radius:11px;background:#fff;box-shadow:0 12px 28px #17304228;display:grid;gap:8px}
+ .header-tools .header-actions button{min-height:44px;font-size:14px;width:100%;text-align:left;padding:11px 13px}
+ .learning-quick-nav{grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+ .learning-quick-nav>a{font-size:13px}
+ .view-toolbar .view-jump-links{gap:12px}
+ .lab-graph-options button{font-size:12px;overflow-wrap:normal}
+ #lab-graph{min-height:220px}
+}
+@media(min-width:701px){
+ .header-tools[open] .header-actions{display:flex}
+}
