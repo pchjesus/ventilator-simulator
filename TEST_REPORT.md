@@ -1,4 +1,10 @@
-# TEST_REPORT — v0.5.3 (교육용 베타)
+# TEST_REPORT — v0.5.3.3 (교육용 베타)
+
+## v0.5.3.3 — A1/B1 학습 집중형 화면 회귀 (2026-10-15)
+- v0.5.3 `main` 기준 SHA `3356ff938c2a4842689271313ab39ced40266d8c`. A1 900px 본문/1120px LAB, B1 모바일 기존 도구 접기 및 3단계 패치.
+- 신규 Chromium `tests/study-focus-browser-check.mjs`: 1440px 기본 레이아웃/장비+학습 전환, 기존 3배치 설정 보존, CORE 퀴즈 답안/CASE 4개/LAB 실험·그래프/7설정·7고정 모니터 및 읽기창 Escape, FiO₂ 생성곡선 일치 안내; 1100/700/360/320px 접힘 도구/학습 바로가기/가로 넘침/스크린샷.
+- 기존 Node 모델/원형 장비/CORE/CASE/`lab-browser-check.mjs` 테스트 삭제 없이 사용. 최종 PASS/FAIL은 실행된 GitHub Actions `test`·`browser`·`package` 결과로 확인해야 하며 **이 문서는 통과를 사전 선언하지 않음**.
+- 실제 200%/400% OS 확대·실물 모바일·사용자 학습 효율·의료 전문가 감수는 별도 미실시.
 
 ## v0.5.3 — D3/D4 LAB verification (2026-10-14)
 
