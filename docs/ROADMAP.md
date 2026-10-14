@@ -267,3 +267,9 @@ Detailed decisions, implementation invariants, risk register, patch sequencing a
 - Original v0.5.2.1 stable CASE/CORE/ventilator behavior remains; new fictional static result documents for MAS (X-ray + ABGA) and severe RSV (observations + CBG) only, stage-gated and with sample/collection time/conditions.
 - Introduce content gate for gas value sanity and CBG PO₂ prohibition, source tracking, and interpretive rationale after relevant choice. No physiologic linkage to PB980 adult fixed monitor, no new CORE or case questions; clinical expert review remains pending.
 - v0.5.2.3 optional unscored action exercise and concept review link planned separately from D3 waveform/LAB v0.5.3.
+
+
+### v0.5.2.3 approved scope (2026-10-14)
+- Implemented RAAS-inspired judgement → optional unscored nursing action → rationales and learning return on MAS/RSV; 2 optional actions not added to the 22 existing scored CORE/CASE questions.
+- CORE contains a new optional ABGA/CBG primer, not a seventh required concept or extra top-level tab. Returning to the same CASE preserves all page-local answer/action state.
+- Planned waveform comparison and independent CORE LAB remain v0.5.3 scope (not implemented as part of v0.5.2.3).
