@@ -1,3 +1,4 @@
+import {auditClinicalData} from "./case-clinical-data.js";
 /**
  * Static content integrity gate, not medical validation or clinical approval.
  * Deliberately pure: may validate fixtures without mutating the shipped bank.
@@ -50,6 +51,7 @@ export function auditCaseBank(cases,sources){
       if(!EVIDENCE_KINDS.has(step.evidenceKind)||!isText(step.evidenceNote,20))error(ref+".evidence","근거 성격 또는 해설 추적 메모 누락");
       items.push({caseId:scenario.id,stepId:step.id,objectiveIds:step.objectiveIds||[],sourceIds:step.sourceIds||[],evidenceKind:step.evidenceKind});
     }
+    for(const issue of auditClinicalData(scenario,sources))error(path+"."+issue.path,issue.reason);
     if(scenario.review?.status==="pending")warnings.push({path:path+".review",reason:"임상 전문가 감수 전 초안: 배포 승인 아님"});
   }
   return {errors,warnings,items,caseCount:cases.length,itemCount:items.length};

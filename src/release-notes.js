@@ -8,6 +8,12 @@ export const RELEASE_CATEGORIES=Object.freeze([
   {id:"docs",label:"문서·근거"}
 ]);
 export const RELEASE_NOTES=Object.freeze([
+ {version:"0.5.2.2",date:"2026-10-14",changes:[
+  {category:"feature",text:"MAS의 X-ray·ABGA와 중증 RSV 영아의 호흡 관찰·CBG를 독립된 가상 CASE 자료로 추가"},
+  {category:"clinical",text:"검체 종류·채혈 시점·산소 공급 조건 및 CBG PO₂ 해석 제한을 제공하며 임상 전문가 검토 전임을 명시"},
+  {category:"ui",text:"단계별 사례 차트 공개 및 검사 수치 펼치기·답변 후 해설을 별도 상태로 보존"},
+  {category:"stability",text:"가상 검사 데이터의 출처·검체·산염기 수치·자료 공개 단계 검사와 기존 기능 회귀"},
+  {category:"docs",text:"NICE·Merck·AARC 원문 근거 연결, 가상 환자와 PB980 독립 모니터 비연동 보존"}]},
  {version:"0.5.2.1",date:"2026-10-14",changes:[
   {category:"feature",text:"기존 성인 2개에 신생아 MAS와 중증 영아 RSV 학습 CASE 각 3단계씩 추가해 총 4개 사례 제공"},
   {category:"clinical",text:"MAS 출생 직후 일률적 흡인 비권고와 삽관 후 필요 기반 흡인, RSV 악화 징후 및 인공기도 사정 교육"},

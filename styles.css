@@ -828,3 +828,22 @@ body[data-study-area="clinical"]:not([data-clinical-device-expanded="true"]) .wo
 }
 
 .case-group-heading{margin:18px 0 8px;padding:8px 11px;border-left:4px solid #3b88a8;background:#eaf5f9;color:#24536d;font-size:15px;font-weight:800}
+
+
+/* v0.5.2.2: fictional patient clinical records; never device-derived. */
+.case-clinical-data{margin:14px 0;padding:13px;border:1px solid #b6d4e1;border-radius:10px;background:#f6fbfd}
+.case-clinical-data h3{font-size:15px;color:#20546c;margin:2px 0 7px}
+.case-clinical-policy{font-size:12px!important;line-height:1.7!important;color:#425c70}
+.case-clinical-card{margin:10px 0;background:#fff;border:1px solid #c2d9e5;padding:12px;border-radius:8px;overflow-wrap:anywhere}
+.case-clinical-card>strong{font-size:13px;color:#1e526c}
+.case-clinical-preview{font-size:13px!important;line-height:1.6!important;font-weight:750;color:#285269}
+.case-clinical-details>summary{cursor:pointer;min-height:44px;display:flex;align-items:center;font-weight:800;font-size:12px;color:#245775}
+.case-clinical-details>summary:focus-visible{outline:3px solid #52aaca;outline-offset:2px}
+.case-clinical-body p,.case-clinical-body li{font-size:12px!important;line-height:1.75!important}
+.case-lab-table{border-collapse:collapse;width:100%;font-size:13px}
+.case-lab-table th,.case-lab-table td{padding:8px 5px;border-bottom:1px solid #d2e3ea;text-align:left}
+.case-lab-table th{font-weight:800;color:#21536e}
+.case-clinical-interpretation{background:#f0f8f3;border-left:3px solid #407e63;padding:9px!important}
+.case-clinical-gate{background:#f3f6f8;border-left:3px solid #94a6b5;padding:9px!important}
+.case-clinical-pending{font-size:13px;color:#31576d}
+@media(max-width:550px){.case-clinical-data{padding:9px}.case-clinical-card{padding:10px}.case-lab-table th,.case-lab-table td{padding:7px 3px}}

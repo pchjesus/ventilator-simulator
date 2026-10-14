@@ -3,12 +3,14 @@
  * These are NOT patient records, live ventilator readings, validated cases, or bedside orders.
  * Expert clinical review and educator piloting are pending.
  */
+import {CASE_CLINICAL_DATA} from "./case-clinical-data.js";
 export const CASE_SOURCES=Object.freeze({
   aarc:{label:"AARC Clinical Practice Guideline: Patient-Ventilator Assessment (2024)",url:"https://pmc.ncbi.nlm.nih.gov/articles/PMC11298231/"},
   inacsl:{label:"INACSL Healthcare Simulation Standards of Best Practice (2025 개정 사항 포함)",url:"https://www.inacsl.org/healthcare-simulation-standards"},
   merck_mas:{label:"Merck Manual Professional · Meconium Aspiration Syndrome (2025)",url:"https://www.merckmanuals.com/professional/pediatrics/respiratory-problems-in-neonates/meconium-aspiration-syndrome"},
  aha2025:{label:"AHA/AAP 2025 · Neonatal Resuscitation, airway clearing",url:"https://cpr.heart.org/en/resuscitation-science/cpr-and-ecc-guidelines/neonatal-resuscitation"},
  nice:{label:"NICE NG9 · Bronchiolitis in children",url:"https://www.nice.org.uk/guidance/ng9/chapter/Recommendations"},
+ aarc_cbg:{label:"AARC 2022 · Capillary Blood Gas Sampling in Neonates and Children",url:"https://pubmed.ncbi.nlm.nih.gov/36002161/"},
  suction:{label:"AARC 2022 · Artificial Airway Suctioning",url:"https://pubmed.ncbi.nlm.nih.gov/35078900/"}
 });
 export const PRECLINICAL_CASES=Object.freeze([
@@ -118,6 +120,7 @@ export const PRECLINICAL_CASES=Object.freeze([
   },
   {
     "id": "mas-neonate",
+    "clinicalData":CASE_CLINICAL_DATA["mas-neonate"],
     "population": "newborn",
     "level": "신생아 · NICU",
     "minutes": 8,
@@ -261,6 +264,7 @@ export const PRECLINICAL_CASES=Object.freeze([
   },
   {
     "id": "rsv-infant",
+    "clinicalData":CASE_CLINICAL_DATA["rsv-infant"],
     "population": "infant",
     "level": "영아 · PICU",
     "minutes": 8,
@@ -301,7 +305,8 @@ export const PRECLINICAL_CASES=Object.freeze([
     "sources": [
       "nice",
       "suction",
-      "aarc"
+      "aarc",
+      "aarc_cbg"
     ],
     "steps": [
       {
