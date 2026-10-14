@@ -1,4 +1,15 @@
-# TEST_REPORT — v0.5.1 (교육용 베타)
+# TEST_REPORT — v0.5.3 (교육용 베타)
+
+## v0.5.3 — D3/D4 LAB verification (2026-10-14)
+
+- 기준: `main` SHA `92737e197c1cb8fd1fee16b3c9161b32930c89cc` (v0.5.2.3 / Node 75/75, Chromium & package PASS). 기능 브랜치 `feat/v0.5.3-core-waveform-compare-lab`, [PR #26](https://github.com/pchjesus/ventilator-simulator/pull/26).
+- 순수 엔진 7개 Node 테스트: 0→16초/320표본, 동일 X축·유형별 동일 Y축/finite/Flow 0, 설정 동일 파형 완전 일치, PEEP 5→8 기준압 변화, f 15→18 생성 간격 변화, FiO₂ 40→60 및 V-TRIG 변화에도 생성 파형 무변화, 기준/시험 사본의 원본 불변, 무효한 값 예외 처리.
+- 별도 Chromium `tests/lab-browser-check.mjs`: 3개 최상위 탭/6개 CORE 카드, 랩 진입·실험/파형 전환·겹침 path 2개·Flow 0·LAB 종료/재진입 포커스, 기존 장비 설정/모니터/일시정지 경로, Pending Cancel, CORE 응답, CASE 4개, 학습↔임상 적용 전환에서 LAB 상태 유지. 700/360/320px 그래프 선택/resize/가로 넘침 및 4개 스크린샷. 기존 `tests/browser-check.mjs`의 7설정·7모니터·3파형/격자/커서/미리보기/퀴즈/CASE/보기 모드 회귀 테스트를 그대로 유지.
+- CI package: whitelist에 `src/waveform-compare.js` 명시, `test -s` + **실제 dist 모듈 import 후 비교 데이터 수 검사**, 기존 4 CASE 의존성 동적 import 검사 유지. ZIP에 Node 테스트/임상 검토 자료를 넣지 않음.
+- [최초 PR CI #38554643099](https://github.com/pchjesus/ventilator-simulator/actions/runs/38554643099): **Node 81/82 PASS · 1 FAIL**(기존 `tests/release-notes.test.mjs`의 고정 최신 릴리스 기대치가 0.5.2.3이던 문제). Chromium **PASS**, package **SKIPPED**. 버전 기대값 패치 후 다음 CI에서 재확인해야 함. 이 첫 CI는 릴리스 승인 결과가 아님.
+- 임상 감수, 사용자 파일럿, 물리 모바일/스크린리더/실제 PB980 검증, 산소화·VTE·fTOT 예측은 미실시/비구현. PASS인 자동 검사만 완료로 표현할 것.
+
+
 
 ## v0.5.1 — Readability P1–P5 evidence (2026-10-14)
 
