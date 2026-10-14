@@ -7,6 +7,7 @@
 - 별도 Chromium `tests/lab-browser-check.mjs`: 3개 최상위 탭/6개 CORE 카드, 랩 진입·실험/파형 전환·겹침 path 2개·Flow 0·LAB 종료/재진입 포커스, 기존 장비 설정/모니터/일시정지 경로, Pending Cancel, CORE 응답, CASE 4개, 학습↔임상 적용 전환에서 LAB 상태 유지. 700/360/320px 그래프 선택/resize/가로 넘침 및 4개 스크린샷. 기존 `tests/browser-check.mjs`의 7설정·7모니터·3파형/격자/커서/미리보기/퀴즈/CASE/보기 모드 회귀 테스트를 그대로 유지.
 - CI package: whitelist에 `src/waveform-compare.js` 명시, `test -s` + **실제 dist 모듈 import 후 비교 데이터 수 검사**, 기존 4 CASE 의존성 동적 import 검사 유지. ZIP에 Node 테스트/임상 검토 자료를 넣지 않음.
 - [최초 PR CI #38554643099](https://github.com/pchjesus/ventilator-simulator/actions/runs/38554643099): **Node 81/82 PASS · 1 FAIL**(기존 `tests/release-notes.test.mjs`의 고정 최신 릴리스 기대치가 0.5.2.3이던 문제). Chromium **PASS**, package **SKIPPED**. 버전 기대값 패치 후 다음 CI에서 재확인해야 함. 이 첫 CI는 릴리스 승인 결과가 아님.
+- **스크린샷 수동 검토:** 초기 320px 실습 파형이 종횡비 letterbox로 과도하게 작아 보이는 문제 확인(자동 기능 검사는 기존 PASS). 550px 이하 SVG viewBox/축 좌표를 모바일에 맞추고 resize 시 순수 투영만 갱신하도록 개선. 새 Chromium 테스트는 320px 실제 curve bounding height가 75px 이상인지 검사하고, 비교 그래프가 보이는 focused desktop PNG를 별도 저장.
 - 임상 감수, 사용자 파일럿, 물리 모바일/스크린리더/실제 PB980 검증, 산소화·VTE·fTOT 예측은 미실시/비구현. PASS인 자동 검사만 완료로 표현할 것.
 
 
