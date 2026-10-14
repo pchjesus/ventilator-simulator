@@ -11,6 +11,7 @@
 ### Risks / Verified scope
 - 첫 CI [#38554643099](https://github.com/pchjesus/ventilator-simulator/actions/runs/38554643099): 기존 릴리스 노트 테스트가 앞 버전을 하드코딩한 탓에 **Node 81/82 통과, 1개 실패**. 신규 엔진 테스트와 Chromium은 통과. 테스트의 버전 인덱스를 수정하여 재검증 진행. 당시 package는 Node 실패에 따라 미실행.
 - 미션 중 FiO₂의 무변화는 생성 모델에 대한 설명일 뿐 환자의 실제 산소화/혈역학 반응 부재를 뜻하지 않음. 교사용 문항·LAB 6 신규 문항/상태 머신·교육용 활동지는 **v0.5.4 이후**로 연기한 승인 범위 유지.
+- 실제 Chromium 320px 스크린샷 육안 확인에서 처음 LAB SVG는 고정 760 단위 viewBox와 최소 180px 높이 때문에 세로 여백이 커지고 곡선이 지나치게 작게 보이는 문제를 확인. 550px 이하에서 전용 380 단위 좌표를 쓰고 viewport resize 시 **그래프 투영만** 다시 그리도록 수정; 캐시 표본/실험/기기/퀴즈 상태는 불변. 320px에서 실제 곡선 높이 75px 이상을 검증하는 브라우저 회귀 테스트 추가.
 - 실제 사용성 파일럿, 임상 전문가 검토, 물리적 모바일·실물 PB980 검증은 수행하지 않음.
 - 개발 PR: [#26](https://github.com/pchjesus/ventilator-simulator/pull/26). 병합 후 main SHA 및 정확한 CI gate는 후속 릴리스 기록에서 확정.
 
