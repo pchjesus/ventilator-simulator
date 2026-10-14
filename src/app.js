@@ -1,3 +1,4 @@
+import {compareWaveforms,COMPARE_TYPES,COMPARE_DURATION} from "./waveform-compare.js";
 import {VERSION, PARAMETERS, DEVICE_REFERENCE, MONITOR_REFERENCE, initialSettings, adjustSetting, formatSetting} from "./sim-model.js";
 import {generateWaveform, previewScales} from "./waveform-model.js";
 import {beginSettingEdit, preferredEditStep, stepSettingEdit, parseSettingEntry, defaultSettingEdit, acceptSettingEdit} from "./setting-editor.js";
@@ -1186,6 +1187,78 @@ function renderCoreLearning(){
   src.append(link);gas.append(src);root.append(gas);
 }
 
+
+/* Independent CORE LAB: never reads or changes device state, Pending, waveformTime,
+ * fixed monitor data, CORE answers, or CASE sessions. No patient response model. */
+const LAB_EXPERIMENTS=Object.freeze({
+ peep:{id:"peep",baseline:5,trial:8,label:"PEEP",unit:"cmH₂O",note:"생성 Pressure 파형의 호기말 기준선이 이동해. 산소화·폐포 모집·순환 반응의 예측은 아니야."},
+ rate:{id:"rate",baseline:15,trial:18,label:"설정 f",unit:"/min",note:"교육용 강제호흡 파형의 간격이 달라져. 실제 총호흡수나 자발호흡 빈도의 예측은 아니야."},
+ fio2:{id:"fio2",baseline:40,trial:60,label:"FiO₂",unit:"%",note:"현재 생성 모델은 FiO₂를 파형 계산에 사용하지 않아서 두 곡선이 겹쳐. 실제 환자에서 산소화 반응이 없다는 뜻은 아니야."}
+});
+const LAB_NS="http://www.w3.org/2000/svg";
+const labStart=document.getElementById("lab-start");
+const labWorkspace=document.getElementById("lab-workspace");
+const labSvg=document.getElementById("lab-graph");
+let labState={active:false,experiment:"peep",graph:"pressure"},labSnapshot=null;
+function labSvgElement(tag,attrs={},label=null){
+ const element=document.createElementNS(LAB_NS,tag);
+ for(const [key,value]of Object.entries(attrs))element.setAttribute(key,String(value));
+ if(label!==null)element.textContent=label;
+ return element;
+}
+function renderLabGraph(){
+ if(!labSnapshot)return;
+ const name=labState.graph,axis=labSnapshot.axes[name],meta=COMPARE_TYPES[name];
+ const left=61,right=738,top=22,bottom=192,width=right-left,height=bottom-top;
+ const x=i=>left+width*i/(labSnapshot.count-1);
+ const y=v=>bottom-(v-axis.min)/(axis.max-axis.min)*height;
+ labSvg.replaceChildren(
+  labSvgElement("title",{},"교육용 "+meta.label+" · 기준/실험 겹침"),
+  labSvgElement("desc",{},document.getElementById("lab-result-note").textContent)
+ );
+ for(let i=0;i<=4;i++){
+  const value=axis.min+(axis.max-axis.min)*i/4,yy=y(value);
+  labSvg.append(labSvgElement("line",{x1:left,y1:yy,x2:right,y2:yy,class:"lab-grid-line"}));
+  labSvg.append(labSvgElement("text",{x:52,y:yy+4,"text-anchor":"end",class:"lab-tick"},String(Number(value.toFixed(1)))));
+ }
+ if(name==="flow")labSvg.append(labSvgElement("line",{x1:left,y1:y(0),x2:right,y2:y(0),class:"lab-zero-line"}));
+ for(const t of [0,8,16])labSvg.append(labSvgElement("text",{x:left+width*t/COMPARE_DURATION,y:211,"text-anchor":"middle",class:"lab-tick"},t+" s"));
+ const path=part=>labSnapshot[part].map((point,i)=>(i?"L":"M")+x(i).toFixed(2)+" "+y(point[name]).toFixed(2)).join(" ");
+ labSvg.append(labSvgElement("path",{d:path("baseline"),class:"lab-line-baseline","data-lab-series":"baseline"}));
+ labSvg.append(labSvgElement("path",{d:path("trial"),class:"lab-line-trial","data-lab-series":"trial"}));
+ document.getElementById("lab-graph-title").textContent=meta.label+" · "+meta.unit+" · 공통 Y축 "+axis.min.toFixed(1)+" ~ "+axis.max.toFixed(1)+" "+meta.unit;
+ labSvg.setAttribute("aria-label",meta.label+" · 기준 회색 점선과 실험 강조 실선 · "+meta.unit+" · 0–16초");
+}
+function renderWaveLab(){
+ labStart.hidden=labState.active;labStart.setAttribute("aria-expanded",String(labState.active));
+ labWorkspace.hidden=!labState.active;
+ if(!labState.active)return;
+ const exp=LAB_EXPERIMENTS[labState.experiment];
+ if(!labSnapshot){
+  const baseline=initialSettings();
+  const trial={...initialSettings(),[exp.id]:exp.trial};
+  labSnapshot=compareWaveforms(baseline,trial);
+ }
+ document.querySelectorAll("[data-lab-experiment]").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.labExperiment===labState.experiment)));
+ document.querySelectorAll("[data-lab-graph]").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.labGraph===labState.graph)));
+ document.getElementById("lab-comparison-summary").textContent=exp.label+" · 기준 "+exp.baseline+" → 실험 "+exp.trial+" "+exp.unit+" | 다른 초기 설정 동일 · 현재 장비 설정과 무관";
+ document.getElementById("lab-result-note").textContent=exp.note;
+ renderLabGraph();
+}
+labStart.addEventListener("click",()=>{
+ labState={active:true,experiment:"peep",graph:"pressure"};labSnapshot=null;renderWaveLab();
+ document.querySelector('[data-lab-experiment="peep"]').focus();
+});
+document.querySelectorAll("[data-lab-experiment]").forEach(b=>b.addEventListener("click",()=>{
+ labState.experiment=b.dataset.labExperiment;labSnapshot=null;renderWaveLab();
+}));
+document.querySelectorAll("[data-lab-graph]").forEach(b=>b.addEventListener("click",()=>{
+ labState.graph=b.dataset.labGraph;renderWaveLab();
+}));
+document.getElementById("lab-exit").addEventListener("click",()=>{
+ labState={active:false,experiment:"peep",graph:"pressure"};labSnapshot=null;renderWaveLab();labStart.focus();
+});
+
 /* v0.4.2: isolated knowledge-check state; resetting device values or revisiting CASE
  * must never mutate this assessment or any waveform/fixed-monitor content. */
 const coreQuizAudit=auditCoreQuiz();
@@ -1665,5 +1738,5 @@ function animationFrame(now){
   }
   requestAnimationFrame(animationFrame);
 }
-initEducationUI();renderMonitor();renderSettings();initReadingUI();renderCircuit();renderCoreLearning();renderCoreQuiz();showSideTab("core");paintWaveforms();
+initEducationUI();renderMonitor();renderSettings();initReadingUI();renderCircuit();renderCoreLearning();renderCoreQuiz();renderWaveLab();showSideTab("core");paintWaveforms();
 requestAnimationFrame(animationFrame);
