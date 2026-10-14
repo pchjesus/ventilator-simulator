@@ -8,6 +8,12 @@ export const RELEASE_CATEGORIES=Object.freeze([
   {id:"docs",label:"문서·근거"}
 ]);
 export const RELEASE_NOTES=Object.freeze([
+ {version:"0.5.2.1",date:"2026-10-14",changes:[
+  {category:"feature",text:"기존 성인 2개에 신생아 MAS와 중증 영아 RSV 학습 CASE 각 3단계씩 추가해 총 4개 사례 제공"},
+  {category:"clinical",text:"MAS 출생 직후 일률적 흡인 비권고와 삽관 후 필요 기반 흡인, RSV 악화 징후 및 인공기도 사정 교육"},
+  {category:"ui",text:"성인·신생아·영아 사례 범주 표시와 각각 독립적인 이어 하기·문항별 피드백·디브리핑"},
+  {category:"stability",text:"총 4개 CASE 12문항의 감사 및 기존 성인 CASE·장비·CORE 회귀를 함께 검사"},
+  {category:"docs",text:"AHA/AAP 2025, AARC 2022, NICE, Merck 근거와 임상 전문가 미감수 상태를 명시"}]},
  {version:"0.5.2",date:"2026-10-14",changes:[
   {category:"ui",text:"RAAS에서 착안한 시뮬레이터·학습·임상 적용 3영역을 기존 장비와 함께 제공"},
   {category:"feature",text:"6개 핵심 개념 카드에 기존 핵심 문구·간호 관찰을 접지 않아도 읽도록 표시"},

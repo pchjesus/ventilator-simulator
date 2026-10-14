@@ -1,3 +1,5 @@
+> **v0.5.2.1 (2026-10-14):** 기존 성인 CASE 2종에 신생아 태변흡인증후군(MAS)·영아 중증 RSV 세기관지염을 추가한 **총 4개 CASE, 12개 문항**. 네 사례 모두 전문 의료인 감수 전 교육 초안. 성인 PB980 참고형 모니터·설정·생성 파형과 소아 사례의 데이터는 서로 연결되지 않아.
+
 # Ventilator Simulator — v0.5.1 (교육용 베타)
 
 > **릴리스 확인 (2026-10-14):** [병합 PR #19](https://github.com/pchjesus/ventilator-simulator/pull/19) · [v0.5.1 실행 코드 main SHA `893476ff19de1db576e87cd5d4e8966c1e3e4e05` 및 최종 CI 성공](https://github.com/pchjesus/ventilator-simulator/actions/runs/38423564087). D1-A 큰 글씨 읽기 구현 완료. D2–D5는 차기 v0.5.2–v0.6.0 범위이며 미구현. 개발 기준은 [승인 UX 명세](docs/V0.6.0_APPROVED_UX_IMPLEMENTATION_SPEC.md)와 [Playbook](docs/V0.5.1_TO_V0.6.0_IMPLEMENTATION_PLAYBOOK.md).

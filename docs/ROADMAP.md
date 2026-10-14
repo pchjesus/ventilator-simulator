@@ -256,3 +256,8 @@ Detailed decisions, implementation invariants, risk register, patch sequencing a
 - [ ] PASS switching CASE 01 ↔ CASE 02, tabs, view/layout, device reset, retry, student/faculty preview and responsive regression.
 
 **Release gates:** assess impact before each patch; run unit, feature, integration, actual Chromium/browser visual, and affected old-feature regressions; inspect screenshots; merge only after successful PR CI; verify final exact main SHA CI. Real expert content signoff and physical student pilot remain **separate, incomplete activities**.
+
+
+### v0.5.2.1 delivery (2026-10-14)
+- Four independent fictional CASEs: adult handoff and oxygenation decline unchanged + newborn MAS + severe infant RSV. 12 CASE questions, clinical signoff pending; no pediatric physiology simulation.
+- v0.5.3+ original approved LAB plan still to be implemented separately.

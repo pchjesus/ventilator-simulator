@@ -5,9 +5,8 @@
  */
 export const CASE_SOURCES=Object.freeze({
   aarc:{label:"AARC Clinical Practice Guideline: Patient-Ventilator Assessment (2024)",url:"https://pmc.ncbi.nlm.nih.gov/articles/PMC11298231/"},
-  inacsl:{label:"INACSL Healthcare Simulation Standards of Best Practice (2025 개정 사항 포함)",url:"https://www.inacsl.org/healthcare-simulation-standards"}
-
- merck_mas:{label:"Merck Manual Professional · Meconium Aspiration Syndrome (2025)",url:"https://www.merckmanuals.com/professional/pediatrics/respiratory-problems-in-neonates/meconium-aspiration-syndrome"},
+  inacsl:{label:"INACSL Healthcare Simulation Standards of Best Practice (2025 개정 사항 포함)",url:"https://www.inacsl.org/healthcare-simulation-standards"},
+  merck_mas:{label:"Merck Manual Professional · Meconium Aspiration Syndrome (2025)",url:"https://www.merckmanuals.com/professional/pediatrics/respiratory-problems-in-neonates/meconium-aspiration-syndrome"},
  aha2025:{label:"AHA/AAP 2025 · Neonatal Resuscitation, airway clearing",url:"https://cpr.heart.org/en/resuscitation-science/cpr-and-ecc-guidelines/neonatal-resuscitation"},
  nice:{label:"NICE NG9 · Bronchiolitis in children",url:"https://www.nice.org.uk/guidance/ng9/chapter/Recommendations"},
  suction:{label:"AARC 2022 · Artificial Airway Suctioning",url:"https://pubmed.ncbi.nlm.nih.gov/35078900/"}

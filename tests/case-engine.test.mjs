@@ -65,3 +65,5 @@ test("invalid scenario and choices are rejected without side effects",()=>{
  assert.throws(()=>caseScore({caseId:"bad",index:0,answers:[],done:false}),RangeError);
  assert.throws(()=>advanceCase({caseId:fresh.caseId,index:-1,answers:[],done:false}),RangeError);
 });
+
+test("new MAS and RSV cases maintain separate three-step RAM states and pending review",()=>{for(const id of ["mas-neonate","rsv-infant"]){const c=findCase(id);assert.equal(c.review.approved,false);assert.equal(c.steps.length,3);let s=startCase(id);let n=chooseCaseAnswer(s,c.steps[0].answer);assert.equal(s.answers.length,0);assert.deepEqual(caseScore(n),{correct:1,answered:1,total:3});assert.throws(()=>chooseCaseAnswer(n,c.steps[0].answer),RangeError);}});

@@ -691,7 +691,9 @@ function openCaseSession(caseId,restart=false){
 function saveCaseSession(){if(caseState)caseSessions.set(caseState.caseId,caseState);}
 const CASE_STEP_LABELS=Object.freeze({
  orientation:["예시 정보 출처","FiO₂ 설정 이해","환자·기도·회로 확인"],
- desaturation:["위험 신호 인지","추가 사정 정보","관찰 내용 보고"]
+ desaturation:["위험 신호 인지","추가 사정 정보","관찰 내용 보고"],
+ "mas-neonate":["질환 이해","환자 악화 사정","흡인 원칙 구분"],
+ "rsv-infant":["악화 신호 인지","분비물·기도 사정","출처 구분"]
 });
 function appendCaseRoadmap(root,scenario,activeIndex,done){
  const section=makeElement("section","case-roadmap");
@@ -840,7 +842,10 @@ function renderCase(){
     root.append(makeElement("h2","case-heading","실습 전 CASE 학습"));
     root.append(makeElement("p","case-intro","관찰 우선순위와 정보 구분을 연습하는 입문 사례야. 정답률은 형성 피드백이며 임상 역량 인증이나 평가 점수가 아니야."));
     root.append(makeElement("p","case-audit-summary","콘텐츠 연결 구조 검사 통과 · "+caseAudit.caseCount+"개 사례 / "+caseAudit.itemCount+"문항 · 단, 의료 내용은 미감수"));
+    let lastGroup=null;
     for(const scenario of PRECLINICAL_CASES){
+      const group=scenario.population||"adult";
+      if(group!==lastGroup){root.append(makeElement("h3","case-group-heading",({adult:"성인 CASE",newborn:"신생아 CASE",infant:"영아 CASE"})[group]||"CASE"));lastGroup=group;}
       const card=makeElement("section","case-card");
       card.append(makeElement("h3",null,scenario.title));
       card.append(makeElement("p","case-meta",scenario.level+" · 약 "+scenario.minutes+"분 · "+scenario.status));
@@ -1115,7 +1120,7 @@ function renderCoreQuiz(){
      }
      root.append(review);
    }else root.append(quizButton("6개 핵심 개념 다시 읽기",()=>openCoreConcept("peep"),"core-quiz-secondary"));
-   root.append(quizButton("CASE 01·02에 적용하기 →",()=>{renderCase();showSideTab("case");caseTab.focus();},"core-quiz-primary"));
+   root.append(quizButton("CASE 01~04에 적용하기 →",()=>{renderCase();showSideTab("case");caseTab.focus();},"core-quiz-primary"));
    root.append(quizButton("학습 확인 다시 풀기",()=>{coreQuizState=startCoreQuiz();renderCoreQuiz();root.querySelector(".core-quiz-answer")?.focus();},"core-quiz-secondary"));
    const preview=makeElement("details","core-quiz-instructor");
    preview.append(makeElement("summary",null,"교수자·개발자 검토 미리보기 · 정답 공개"));
