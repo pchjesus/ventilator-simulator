@@ -8,6 +8,12 @@ export const RELEASE_CATEGORIES=Object.freeze([
   {id:"docs",label:"문서·근거"}
 ]);
 export const RELEASE_NOTES=Object.freeze([
+ {version:"0.5.3",date:"2026-10-14",changes:[
+  {category:"feature",text:"CORE 내부 선택형 LAB과 고정된 시간·수치 축에 겹친 두 교육용 파형 제공"},
+  {category:"ui",text:"Pressure/Flow/Volume 선택과 회색 점선 기준·강조 실선 실험 구분"},
+  {category:"clinical",text:"PEEP/f/FiO₂는 생성 파형만 비교; 실제 환자·장비·고정 모니터·CASE 자료와 독립"},
+  {category:"stability",text:"LAB 페이지 RAM 분리, 결정적 생성 함수 재사용, 정적 배포 import 검증"},
+  {category:"docs",text:"CORE 10·CASE 12 채점 불변; LAB 6문항은 다음 버전, 임상 감수·사용성 실증 미완료"}]},
  {version:"0.5.2.3",date:"2026-10-14",changes:[
   {category:"feature",text:"RAAS 참고형 임상 판단→간호 행동 연습을 MAS·중증 RSV에 각각 한 개의 선택형 비채점 활동으로 제공"},
   {category:"clinical",text:"검사와 환자 상태 해석을 간호 사정·보고에 연결하며 무감독 흡인·기기 설정 변경을 정답으로 유도하지 않음"},
