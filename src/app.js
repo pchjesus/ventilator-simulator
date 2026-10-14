@@ -725,6 +725,7 @@ function appendCaseRoadmap(root,scenario,activeIndex,done){
  root.append(section);
 }
 const reflectionNotes=new Map(); // intentionally RAM only, no student identity or storage
+const clinicalDisclosureState=new Map(); // independent read-only panel state keyed by case/panel ID
 const caseAudit=auditCaseBank(PRECLINICAL_CASES,CASE_SOURCES);
 function caseButton(label,handler,cssClass=""){
   const button=makeElement("button",cssClass,label);
@@ -833,6 +834,56 @@ function renderReflection(root,scenario){
   root.append(block);
 }
 
+/** Read-only CASE records, separate from static adult reference device and waveform. */
+function appendCaseClinicalPanels(root,scenario,stepIndex,answeredCount,done){
+ const data=scenario.clinicalData;
+ if(!data)return;
+ const section=makeElement("section","case-clinical-data");
+ section.append(makeElement("h3",null,"가상 임상자료 · 검사와 관찰"));
+ section.append(makeElement("p","case-clinical-policy",data.note));
+ const available=data.panels.filter(panel=>done||stepIndex>=panel.availableFromStep);
+ for(const panel of available){
+  const card=makeElement("section","case-clinical-card");
+  card.dataset.clinicalPanel=panel.id;
+  card.append(makeElement("strong",null,panel.title));
+  card.append(makeElement("p","case-clinical-preview",panel.preview));
+  const details=makeElement("details","case-clinical-details");
+  const key=scenario.id+":"+panel.id;
+  details.open=clinicalDisclosureState.get(key)??false;
+  details.addEventListener("toggle",()=>clinicalDisclosureState.set(key,details.open));
+  details.append(makeElement("summary",null,"검체·채혈 시점·상세 자료 펼치기"));
+  const body=makeElement("div","case-clinical-body");
+  body.append(makeElement("p",null,"자료 확인 시점: "+panel.collectedAt));
+  body.append(makeElement("p",null,"검체/종류: "+panel.sampleType+" · 측정 조건: "+panel.oxygenContext));
+  if(panel.values){
+   const table=makeElement("table","case-lab-table");
+   const head=makeElement("tr");
+   for(const text of ["항목","가상 값","단위"])head.append(makeElement("th",null,text));
+   table.append(head);
+   for(const value of panel.values){
+    const line=makeElement("tr");
+    for(const text of [value.label,String(value.value),value.unit||"—"])line.append(makeElement("td",null,text));
+    table.append(line);
+   }
+   body.append(table);
+  }
+  if(panel.findings){
+   const list=makeElement("ul","case-clinical-findings");
+   for(const text of panel.findings)list.append(makeElement("li",null,text));
+   body.append(list);
+  }
+  if(done||answeredCount>panel.availableFromStep){
+   body.append(makeElement("p","case-clinical-interpretation","선택 후 자료 해석 · "+panel.interpretation));
+  }else{
+   body.append(makeElement("p","case-clinical-gate","검사 및 관찰 정보를 먼저 해석해 봐. 권장 해석은 현재 관련 문항 응답 후에 제공해."));
+  }
+  caseSources(body,panel.sourceIds);
+  details.append(body);card.append(details);section.append(card);
+ }
+ if(!available.length)section.append(makeElement("p","case-clinical-pending","현재는 환자 직접 사정이 우선이야. 다음 학습 단계에서 별도로 이미 채혈된 검사자료를 확인할 수 있어."));
+ root.append(section);
+}
+
 function renderCase(){
   const root=document.getElementById("case-content");
   root.replaceChildren();
@@ -894,6 +945,7 @@ function renderCase(){
   for(const item of scenario.vignette)readings.append(makeElement("li",null,item));
   context.append(readings);
   root.append(context); // Objectives are in the roadmap disclosure, not duplicated here.
+  appendCaseClinicalPanels(root,scenario,caseState.index,caseState.answers.length,caseState.done);
 
   if(caseState.done){
     root.append(makeElement("h3","case-result","사례 학습 완료"));
