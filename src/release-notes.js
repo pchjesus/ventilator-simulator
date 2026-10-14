@@ -8,6 +8,12 @@ export const RELEASE_CATEGORIES=Object.freeze([
   {id:"docs",label:"문서·근거"}
 ]);
 export const RELEASE_NOTES=Object.freeze([
+ {version:"0.5.3.3",date:"2026-10-15",changes:[
+  {category:"ui",text:"A1 중앙 900px 읽기 폭과 넓은 LAB, 기존 나란히 배치/학습만 크게 보기 전환"},
+  {category:"ui",text:"학습 글씨·색상·그룹 경계 정돈, 모바일 원래 설명서·패치 내역·초기화 도구 접기"},
+  {category:"feature",text:"CORE 개념/퀴즈/LAB/CASE 빠른 이동과 압력·유량·용적 한영 병기"},
+  {category:"clinical",text:"FiO₂ 파형 일치 때 겹침을 텍스트로 설명하고 실제 산소화 반응과 구분"},
+  {category:"stability",text:"표시 상태만 변경하고 설정·Pending·CORE/CASE/LAB 유지, 반응형 Chromium 회귀 보호"}]},
  {version:"0.5.3",date:"2026-10-14",changes:[
   {category:"feature",text:"CORE 내부 선택형 LAB과 고정된 시간·수치 축에 겹친 두 교육용 파형 제공"},
   {category:"ui",text:"Pressure/Flow/Volume 선택과 회색 점선 기준·강조 실선 실험 구분"},
