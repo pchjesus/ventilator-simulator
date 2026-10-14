@@ -214,7 +214,7 @@ try {
   assert.equal(await desktop.locator("#monitor .readout").count(),7);
   pass("new independent MAS and RSV cases and per-case resume");
   // v0.5.2.2: data unlocked by stage, never from the adult monitor or waveform.
-  await desktop.locator(".case-card").nth(2).getByRole("button",{name:"이 사례 시작"}).click();
+  await desktop.locator(".case-card").nth(2).locator(".case-restart").click();
   assert.equal(await desktop.locator('[data-clinical-panel="mas-xray"]').count(),1);
   assert.equal(await desktop.locator('[data-clinical-panel="mas-abga"]').count(),0);
   await desktop.locator('[data-clinical-panel="mas-xray"] summary').click();
@@ -229,7 +229,7 @@ try {
   await desktop.locator(".case-answer").nth(1).click();
   assert.equal(await desktop.locator('[data-clinical-panel="mas-abga"] .case-clinical-interpretation').count(),1);
   await desktop.locator(".case-back").click();
-  await desktop.locator(".case-card").nth(3).getByRole("button",{name:"이 사례 시작"}).click();
+  await desktop.locator(".case-card").nth(3).locator(".case-restart").click();
   assert.equal(await desktop.locator('[data-clinical-panel="rsv-observation"]').count(),1);
   assert.equal(await desktop.locator('[data-clinical-panel="rsv-cbg"]').count(),0,"clinical emergency stage does not wait for CBG");
   await desktop.locator(".case-answer").first().click();
