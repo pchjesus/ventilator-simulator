@@ -341,3 +341,9 @@ GitHub Actions run: https://github.com/pchjesus/ventilator-simulator/actions/run
 - Static data: 2 pediatric clinical chart examples with four total panels; check sample type, lab units, time context, source trace, non-patient-model policy, pH/CO₂/HCO₃⁻ coherence, no capillary PO₂ surrogate.
 - Chromium checks MAS stage-gated X-ray→ABGA, RSV assessment→CBG, answer-gated interpretations, disclosure on rerender, original adult case answers, original CORE, fixed seven adult references and waveforms.
 - Browser automation and static calculations do NOT certify clinical appropriateness or real pediatric physiology. No data storage or identity tracking.
+
+
+## v0.5.2.3 acceptance and regression
+- Node: optional action fields and source trace, valid choice, linked CORE review concepts and unchanged 3-question scoring per CASE.
+- Chromium: both pediatric action exercises, answer/recommended feedback, case→blood-gas learning→CASE round-trip, stage/answer preservation, 7 readouts, original adult CASE, CORE 10, waveform/settings/edit/circuit/alarm and accessible mobile tests.
+- Clinical content remains pending expert review, not equivalent to protocol-level validation. No identities, patient data or remote score persistence.
