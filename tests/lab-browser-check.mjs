@@ -59,6 +59,8 @@ try{
  assert.equal(await p.locator("#monitor").textContent(),monitorText);
  assert.equal(await p.locator('#graph-pressure [data-phase="mandatory"]').first().getAttribute("d"),originalGraph);
  await p.screenshot({path:"artifacts/browser/v053-lab-desktop.png",fullPage:false});
+ await p.locator("#lab-graph").scrollIntoViewIfNeeded();
+ await p.screenshot({path:"artifacts/browser/v053-lab-compare-focused.png",fullPage:false});
  await p.locator("#lab-exit").click();
  assert.equal(await p.locator("#lab-workspace").isVisible(),false);
  assert.equal(await p.evaluate(()=>document.activeElement.id),"lab-start");
