@@ -1,3 +1,5 @@
+> **v0.5.2.3:** 4 CASE / 12 scored CASE questions and CORE 10 unchanged; MAS & RSV each have 1 optional unscored evidence-traceable nursing-action exercise. The 3-tab layout includes a short ABGA/CBG primer in CORE and a return-to-CASE pathway. Pediatric static gas values/observations remain independent of PB980 settings, 7 fixed monitor samples and generated waveforms. Clinical review remains pending.
+
 > **v0.5.2.1 current implemented scope:** 3 main learning destinations and novice summary hierarchy; 6 CORE lessons / 10 CORE questions; 4 separate fictional CASEs (original adult 2 + newborn MAS + infant severe RSV), 12 CASE questions. Clinical signoff pending. Pediatric data are not linked to adult PB980 reference monitor or generated waveforms.
 
 # Project Specification

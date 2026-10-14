@@ -8,6 +8,12 @@ export const RELEASE_CATEGORIES=Object.freeze([
   {id:"docs",label:"문서·근거"}
 ]);
 export const RELEASE_NOTES=Object.freeze([
+ {version:"0.5.2.3",date:"2026-10-14",changes:[
+  {category:"feature",text:"RAAS 참고형 임상 판단→간호 행동 연습을 MAS·중증 RSV에 각각 한 개의 선택형 비채점 활동으로 제공"},
+  {category:"clinical",text:"검사와 환자 상태 해석을 간호 사정·보고에 연결하며 무감독 흡인·기기 설정 변경을 정답으로 유도하지 않음"},
+  {category:"ui",text:"선택한 간호 행동·권장 답안 비교와 간단한 ABGA·CBG 학습 복습, CASE로 돌아가기 기능 추가"},
+  {category:"stability",text:"행동 답안은 기존 4개 CASE·12문항 채점·코어 10문항·장비·파형 상태와 독립되며 새로고침 시 소거"},
+  {category:"docs",text:"임상 감수와 학생 사용성 평가는 미완료, 원문 근거 및 임상/앱 자료의 비연동 원칙 유지"}]},
  {version:"0.5.2.2",date:"2026-10-14",changes:[
   {category:"feature",text:"MAS의 X-ray·ABGA와 중증 RSV 영아의 호흡 관찰·CBG를 독립된 가상 CASE 자료로 추가"},
   {category:"clinical",text:"검체 종류·채혈 시점·산소 공급 조건 및 CBG PO₂ 해석 제한을 제공하며 임상 전문가 검토 전임을 명시"},

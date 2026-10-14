@@ -4,6 +4,7 @@
  * Expert clinical review and educator piloting are pending.
  */
 import {CASE_CLINICAL_DATA} from "./case-clinical-data.js";
+import {CASE_ACTION_EXERCISES} from "./case-actions.js";
 export const CASE_SOURCES=Object.freeze({
   aarc:{label:"AARC Clinical Practice Guideline: Patient-Ventilator Assessment (2024)",url:"https://pmc.ncbi.nlm.nih.gov/articles/PMC11298231/"},
   inacsl:{label:"INACSL Healthcare Simulation Standards of Best Practice (2025 개정 사항 포함)",url:"https://www.inacsl.org/healthcare-simulation-standards"},
@@ -198,6 +199,7 @@ export const PRECLINICAL_CASES=Object.freeze([
       },
       {
         "id": "observe",
+        "actionExercise": CASE_ACTION_EXERCISES["mas-neonate"],
         "objectiveIds": [
           "o2"
         ],
@@ -342,6 +344,7 @@ export const PRECLINICAL_CASES=Object.freeze([
       },
       {
         "id": "airway",
+        "actionExercise": CASE_ACTION_EXERCISES["rsv-infant"],
         "objectiveIds": [
           "o2"
         ],

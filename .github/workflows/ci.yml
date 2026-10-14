@@ -52,7 +52,7 @@ jobs:
         run: |
           mkdir -p dist/src
           cp index.html styles.css dist/
-          cp src/app.js src/sim-model.js src/waveform-model.js src/setting-editor.js src/education-content.js src/release-notes.js src/waveform-inspector.js src/preclinical-cases.js src/case-engine.js src/case-quality.js src/device-learning.js src/student-learning.js src/core-quiz.js dist/src/
+          cp src/app.js src/sim-model.js src/waveform-model.js src/setting-editor.js src/education-content.js src/release-notes.js src/waveform-inspector.js src/preclinical-cases.js src/case-clinical-data.js src/case-actions.js src/case-engine.js src/case-quality.js src/device-learning.js src/student-learning.js src/core-quiz.js dist/src/
           touch dist/.nojekyll
           test -s dist/index.html
           test -s dist/styles.css
@@ -66,6 +66,9 @@ jobs:
           test -s dist/src/preclinical-cases.js
           test -s dist/src/case-engine.js
           test -s dist/src/case-quality.js
+          test -s dist/src/case-clinical-data.js
+          test -s dist/src/case-actions.js
+          node --input-type=module -e 'import("./dist/src/preclinical-cases.js").then(({PRECLINICAL_CASES})=>{if(PRECLINICAL_CASES.length!==4||PRECLINICAL_CASES.slice(2).some(x=>!x.clinicalData||!x.steps.some(s=>s.actionExercise)))throw new Error("Staged web CASE dependencies or content missing")})'
           test -s dist/src/device-learning.js
           test -s dist/src/core-quiz.js
           test -s dist/src/student-learning.js

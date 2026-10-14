@@ -684,11 +684,18 @@ function renderCircuit() {
  * waveform calculation and fixed monitor sample values. */
 let caseState=null;
 const caseSessions=new Map(); // each fictional scenario is independently resumable in RAM
+const caseActionAnswers=new Map(); // optional, unscored, independent of graded CASE state
+let caseLearningReturnAvailable=false;
 let reviewerCaseId=null;
 function openCaseSession(caseId,restart=false){
  if(restart||!caseSessions.has(caseId))caseSessions.set(caseId,startCase(caseId));
  caseState=caseSessions.get(caseId);
- if(restart)reflectionNotes.delete(caseId);
+ if(restart){
+  reflectionNotes.delete(caseId);
+  for(const key of caseActionAnswers.keys())if(key.startsWith(caseId+":"))caseActionAnswers.delete(key);
+}
+caseLearningReturnAvailable=false;
+document.getElementById("case-study-return")?.setAttribute("hidden","");
  renderCase();
  document.querySelector("#case-content .case-answer, #case-content .case-back")?.focus();
 }
@@ -884,6 +891,92 @@ function appendCaseClinicalPanels(root,scenario,stepIndex,answeredCount,done){
  root.append(section);
 }
 
+/** Optional non-scored RAAS-inspired nursing action: one choice per scenario. */
+function renderCaseAction(root,scenario,step){
+ const task=step.actionExercise;
+ if(!task)return;
+ const key=scenario.id+":"+step.id;
+ const selectedId=caseActionAnswers.get(key);
+ const panel=makeElement("section","case-action-exercise");
+ panel.dataset.actionStep=step.id;
+ panel.append(makeElement("h4",null,"간호 행동 확인 · 비채점 선택학습"));
+ panel.append(makeElement("p","case-action-question",task.prompt));
+ const buttons=makeElement("div","case-action-options");
+ for(const option of task.options){
+  const btn=caseButton(option.label,()=>{
+   if(caseActionAnswers.has(key))return;
+   caseActionAnswers.set(key,option.id);
+   renderCase();
+   document.querySelector(".case-action-result")?.focus();
+  },"case-action-option");
+  btn.disabled=Boolean(selectedId);
+  if(selectedId===option.id){btn.classList.add("selected");btn.setAttribute("aria-pressed","true");}
+  buttons.append(btn);
+ }
+ panel.append(buttons);
+ if(selectedId){
+  const selected=task.options.find(x=>x.id===selectedId);
+  const recommended=task.options.find(x=>x.id===task.answer);
+  const result=makeElement("section","case-action-result");
+  result.tabIndex=-1;
+  result.append(makeElement("h5",null,selectedId===task.answer?"간호 행동 판단 확인":"추가 복습이 필요한 행동"));
+  result.append(makeElement("p",null,"내 선택 · "+selected.label));
+  result.append(makeElement("p",null,"권장 행동 · "+recommended.label));
+  result.append(makeElement("p",null,"내 선택의 이유 · "+selected.feedback));
+  result.append(makeElement("p",null,"판단 근거 · "+task.rationale));
+  result.append(makeElement("p",null,"사정 · "+task.assessment));
+  result.append(makeElement("p",null,"보고 · "+task.escalation));
+  result.append(makeElement("p",null,"추가 학습 · "+task.learning));
+  const review=makeElement("div","case-action-review-links");
+  for(const id of task.reviewConceptIds){
+   review.append(caseButton(id==="blood-gas"?"혈액가스검사 기초 학습 →":"환자 우선 사정 핵심 학습 →",()=>openCaseRelatedLearning(id),"case-action-review-button"));
+  }
+  result.append(review);
+  caseSources(result,task.sourceIds);
+  panel.append(result);
+ }else panel.append(makeElement("p","case-action-optional","선택하지 않아도 다음 문항으로 진행 가능해. 이 활동은 CASE 정답률에 포함되지 않아."));
+ root.append(panel);
+}
+function appendCaseActionReview(root,scenario){
+ const tasks=scenario.steps.filter(step=>step.actionExercise);
+ if(!tasks.length)return;
+ const section=makeElement("section","case-action-summary");
+ section.append(makeElement("h4",null,"비채점 간호 행동 복습"));
+ for(const step of tasks){
+  const task=step.actionExercise;
+  const chosen=caseActionAnswers.get(scenario.id+":"+step.id);
+  const entry=makeElement("div","case-action-summary-entry");
+  entry.append(makeElement("strong",null,task.prompt));
+  if(chosen){
+   const selected=task.options.find(x=>x.id===chosen);
+   entry.append(makeElement("p",null,"내 선택: "+selected.label));
+   entry.append(makeElement("p",null,"권장 행동: "+task.options.find(x=>x.id===task.answer).label));
+   entry.append(makeElement("p",null,selected.feedback));
+  }else entry.append(makeElement("p",null,"선택하지 않은 학습 활동이야. CASE 점수에는 영향을 주지 않았어."));
+  entry.append(makeElement("p",null,task.rationale));
+  section.append(entry);
+ }
+ root.append(section);
+}
+function openCaseRelatedLearning(id){
+ if(!caseState)return;
+ caseLearningReturnAvailable=true;
+ showSideTab("core");
+ const back=document.getElementById("case-study-return");
+ back.hidden=false;
+ if(id==="blood-gas"){
+  const lesson=document.getElementById("blood-gas-basics");
+  lesson.open=true;lesson.scrollIntoView({block:"nearest",behavior:"auto"});
+  lesson.querySelector("summary")?.focus();
+ }else openCoreConcept(id);
+}
+function returnToCaseFromLearning(){
+ caseLearningReturnAvailable=false;
+ document.getElementById("case-study-return").hidden=true;
+ renderCase();showSideTab("case");
+ (document.querySelector(".case-action-result")||document.querySelector(".case-next")||document.querySelector(".case-back"))?.focus();
+}
+
 function renderCase(){
   const root=document.getElementById("case-content");
   root.replaceChildren();
@@ -967,6 +1060,7 @@ function renderCase(){
     }
     root.append(review);
     appendCaseObjectiveReview(root,scenario,caseState);
+    appendCaseActionReview(root,scenario);
     renderReflection(root,scenario);
     root.append(caseButton("이 사례 처음부터 다시 풀기",()=>openCaseSession(scenario.id,true),"case-primary"));
     caseSources(root,scenario.sources);
@@ -1001,6 +1095,7 @@ function renderCase(){
     feedback.append(makeElement("p","case-why","판단 이유 · "+step.explanation));
     appendCaseEvidence(feedback,step,scenario);
     root.append(feedback);
+    renderCaseAction(root,scenario,step);
     root.append(caseButton(caseState.index===score.total-1?"결과·복습 보기":"다음 문항 →",()=>{
       caseState=advanceCase(caseState);
       saveCaseSession();renderCase();
@@ -1018,6 +1113,9 @@ const coreAudit=auditCoreLearning();
 function renderCoreLearning(){
   const root=document.getElementById("core-learning-content");
   root.replaceChildren();
+  const caseReturn=caseButton("← 진행하던 CASE로 돌아가기",returnToCaseFromLearning,"case-study-return");
+  caseReturn.id="case-study-return";caseReturn.hidden=!caseLearningReturnAvailable;
+  root.append(caseReturn);
   if(coreAudit.problems.length){
     root.append(makeElement("p","core-audit-error","학습 콘텐츠 검사 실패: "+coreAudit.problems.join(", ")));
     return;
@@ -1072,6 +1170,20 @@ function renderCoreLearning(){
     glossary.append(term);
   }
   root.append(glossary);
+  const gas=makeElement("details","case-blood-gas-basics");gas.id="blood-gas-basics";
+  gas.append(makeElement("summary",null,"혈액가스검사 기초 · ABGA와 CBG 구분"));
+  const content=[
+   "pH는 산-염기 상태를, PaCO₂/PCO₂는 CO₂ 배출과 환기 상태를 이해할 때 활용해. HCO₃⁻는 산-염기 평가의 중요한 구성요소야.",
+   "ABGA는 동맥혈 채혈로 PaO₂를 평가할 수 있지만 채혈 시점과 당시 FiO₂·환자 상태를 같이 확인해야 해.",
+   "CBG는 신생아·소아에서 pH와 PCO₂ 평가에 도움이 될 수 있으나, CBG의 PO₂를 동맥혈 PaO₂와 같은 산소화 지표로 해석하면 안 돼.",
+   "SpO₂는 맥박산소측정기의 비침습 산소포화도 추정치로, PaO₂와 다른 검사야. 환자 상태와 측정 신호도 함께 확인해.",
+   "이 CASE의 검사 결과는 미리 정한 가상 기록이며 시뮬레이터의 PB980 고정 모니터·생성 파형 또는 실제 환자 수치로 계산되지 않아."
+  ];
+  for(const value of content)gas.append(makeElement("p",null,value));
+  const src=makeElement("p","case-blood-gas-source");
+  const link=makeElement("a",null,"AARC 2022 · 소아 모세혈 혈액가스검사 지침");
+  link.href="https://pubmed.ncbi.nlm.nih.gov/36002161/";link.target="_blank";link.rel="noopener noreferrer";
+  src.append(link);gas.append(src);root.append(gas);
 }
 
 /* v0.4.2: isolated knowledge-check state; resetting device values or revisiting CASE
