@@ -402,3 +402,11 @@ Five user decisions for v0.4.4–v0.4.6 were confirmed and tracked in `docs/UI_U
 - Clinical information has sample type, timing, oxygen context, units, source IDs and post-answer gated rationale. Static values are not patient-model calculations; CBG PO₂ is not displayed as an arterial PaO₂.
 - Pure audit checks source availability, valid stage, capillary sampling constraints and Henderson-Hasselbalch educational example consistency. Source review does not imply bedside validation.
 - Disclosure state is separate from quiz, adult monitor, waveform, committed/Pending settings and independent CASE sessions. Experts and real users have not reviewed.
+
+
+## v0.5.2.3 — RAAS-informed nursing action & study return (2026-10-14)
+- New optional one-per-pediatric-case action choices follow the existing MAS stage 2 and RSV stage 2 clinical judgement; do not add to the existing 4 CASE × 3 scored answers.
+- After selection: selected/recommended actions side-by-side in text, immediate rationale, nursing observation/report points, evidence links and mapped foundational concepts.
+- A new short core-page blood gas reference clarifies arterial PaO₂ vs capillary pH/PCO₂ and patient observations; navigation from a CASE and back preserves quiz/case state and optional action choices.
+- Existing clinical readouts remain static, waveform/device states unchanged; independent RAM action selection resets only with explicit CASE restart or page refresh.
+- Medical faculty signoff, pediatric physiology model, and real student/physical phone usability review not performed.
