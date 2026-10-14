@@ -19,6 +19,13 @@
     </nav>
   </header>
   <p class="warning" role="note">실제 환자 치료에 사용 불가 · PB980 내부 화면 구성 참고형(실물과 동작 다름) · 상단 monitoring 값은 고정 예시, 아래 움직이는 파형은 단순화된 설명용 모델로 실제 환자 측정값이 아님</p>
+  <nav class="study-area-nav" aria-label="학습 영역 선택">
+    <button type="button" data-study-target="simulator" aria-pressed="false">① 시뮬레이터</button>
+    <button type="button" data-study-target="learning" aria-pressed="true">② 학습</button>
+    <button type="button" data-study-target="clinical" aria-pressed="false">③ 임상 적용</button>
+  </nav>
+  <p id="study-area-note" class="study-area-note" aria-live="polite">핵심 개념을 공부하면서 원래 장비 화면을 함께 볼 수 있어.</p>
+  <button type="button" id="clinical-device-toggle" hidden aria-controls="device-panel" aria-expanded="false">참고용 장비 화면 펼치기 (CASE와 독립)</button>
   <section class="view-toolbar" aria-label="화면 보기 및 학습 배치">
     <div class="view-toolbar-group" role="group" aria-label="UI 보기 방식">
       <span class="view-toolbar-label">보기</span>
@@ -118,7 +125,10 @@
     <aside class="study-panel" id="learning-panel" aria-label="학습 보조 영역">
       <p class="student-path-label">실습 전 핵심 학습 · 기본부터 시작하기</p>
       <p class="learning-onboarding">용어와 화면 구분 → 개념 카드 6개 → 형성평가 10문항 → CASE 01·02 → 피드백 복습. 장비 화면의 값은 실제 측정값이 아니야.</p>
-      <details class="data-source-guide">
+      <div class="data-source-legend" aria-label="네 종류의 교육 자료">
+        <span>설정값: 확정된 학습 입력</span><span>모니터: 독립 고정 예시</span>
+        <span>파형: 생성 곡선·실측 아님</span><span>CASE: 별도 가상 환자</span>
+      </div><details class="data-source-guide">
         <summary>이 앱에 표시되는 4가지 자료의 차이</summary>
         <dl>
           <div><dt>교육용 설정값</dt><dd>학습자가 바꾸는 7개 설정. Accept 후 일부 예시 파형이 달라져.</dd></div>

@@ -40,6 +40,35 @@ let editorFocusTarget = null;
 document.body.dataset.controlMode = controlMode;
 /* Presentation and layout are read-only projections of the existing DOM.
  * Never reconstruct settings, waveform SVG, CORE quiz, or CASE state on a view change. */
+let studyArea="learning",clinicalDeviceExpanded=false;
+const areaNote={
+ simulator:"PB980 참고형 장비와 설정·파형을 관찰해. ALARM·CIRCUIT도 기존 메뉴에서 확인할 수 있어.",
+ learning:"핵심 개념을 공부하면서 원래 장비 화면을 함께 볼 수 있어.",
+ clinical:"가상 CASE의 환자 자료는 이 앱의 독립 고정 모니터·생성 파형과 연결되지 않아."
+};
+function setStudyArea(area){
+ studyArea=area;document.body.dataset.studyArea=area;
+ if(area!=="clinical")clinicalDeviceExpanded=false;
+ document.body.dataset.clinicalDeviceExpanded=String(clinicalDeviceExpanded);
+ document.querySelectorAll("[data-study-target]").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.studyTarget===area)));
+ document.getElementById("study-area-note").textContent=areaNote[area];
+ const btn=document.getElementById("clinical-device-toggle");
+ btn.hidden=area!=="clinical";btn.setAttribute("aria-expanded",String(clinicalDeviceExpanded));
+ btn.textContent=clinicalDeviceExpanded?"참고용 장비 화면 접기 (CASE와 독립)":"참고용 장비 화면 펼치기 (CASE와 독립)";
+}
+function selectStudyArea(area){
+ if(!["simulator","learning","clinical"].includes(area))return;
+ presentationMode=area==="simulator"?"device":"learning";
+ document.body.dataset.presentation=presentationMode;deviceExpanded=false;
+ if(area==="clinical"){renderCase();showSideTab("case");}
+ else showSideTab(area==="learning"?"core":"help");
+ setStudyArea(area);syncViewChoices();syncResponsiveSections();
+}
+document.querySelectorAll("[data-study-target]").forEach(b=>b.addEventListener("click",()=>selectStudyArea(b.dataset.studyTarget)));
+document.getElementById("clinical-device-toggle").addEventListener("click",()=>{
+ clinicalDeviceExpanded=!clinicalDeviceExpanded;setStudyArea("clinical");syncResponsiveSections();
+});
+setStudyArea("learning");
 let presentationMode="learning";
 let layoutPreset="learning";
 document.body.dataset.presentation=presentationMode;
@@ -257,6 +286,7 @@ function showSideTab(tab) {
     button.classList.toggle("active",active);
     button.setAttribute("aria-selected",String(active));
   }
+  setStudyArea(tab==="core"?"learning":tab==="case"?"clinical":"simulator");
   syncCoreQuizPanel();
 }
 function explain(title, description, reference = null, explicitTopicId = null) {
@@ -937,7 +967,7 @@ function renderCoreLearning(){
     const header=makeElement("summary","core-concept-header");
     const title=makeElement("span","core-concept-title");
     title.append(makeElement("strong",null,item.title),makeElement("span",null,item.label));
-    header.append(title,makeElement("span","core-concept-short",item.key));
+    header.append(title,makeElement("span","core-concept-short",item.key),makeElement("span","core-observation","간호 관찰 · "+item.observe));
     card.append(header);
     const body=makeElement("div","core-concept-body");
     const extras=CORE_LESSON_EXTRAS[item.id];

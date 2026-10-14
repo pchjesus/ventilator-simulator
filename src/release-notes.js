@@ -8,6 +8,12 @@ export const RELEASE_CATEGORIES=Object.freeze([
   {id:"docs",label:"문서·근거"}
 ]);
 export const RELEASE_NOTES=Object.freeze([
+ {version:"0.5.2",date:"2026-10-14",changes:[
+  {category:"ui",text:"RAAS에서 착안한 시뮬레이터·학습·임상 적용 3영역을 기존 장비와 함께 제공"},
+  {category:"feature",text:"6개 핵심 개념 카드에 기존 핵심 문구·간호 관찰을 접지 않아도 읽도록 표시"},
+  {category:"clinical",text:"확정 설정·독립 고정 모니터·생성 파형·별도 가상 CASE 네 자료를 상시 구분"},
+  {category:"stability",text:"임상 적용에서 장비 기본 접기·독립 참고 장비 열기를 추가하고 기존 데이터와 세션 보존"},
+  {category:"docs",text:"실제 의료 장비 재현과 임상 감수 및 사용자 연구가 완료된 상태가 아님을 명시"}]},
   {version:"0.5.1",date:"2026-10-14",changes:[
     {category:"ui",text:"원래 PB980 참고형 화면을 유지하면서 모니터·설정·파형을 큰 글씨로 읽는 공용 창을 제공"},
     {category:"feature",text:"독립 고정 모니터 7개, 확정 설정 7개, 교육용 생성 파형 3종의 단위·의미·출처를 읽기 전용으로 표시"},

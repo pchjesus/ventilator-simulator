@@ -15,6 +15,20 @@ try {
   const response=await desktop.goto(ROOT,{waitUntil:"networkidle",timeout:30000});
   assert.equal(response.status(),200);
   await desktop.locator(".setting").first().waitFor({state:"visible"});
+  assert.equal(await desktop.locator(".study-area-nav button").count(),3);
+  assert.equal(await desktop.locator(".data-source-legend span").count(),4);
+  assert.equal(await desktop.locator(".core-observation").count(),6);
+  await desktop.locator('[data-study-target="clinical"]').click();
+  assert.equal(await desktop.locator("#panel-case").isVisible(),true);
+  assert.equal(await desktop.locator("#device-panel").isVisible(),false);
+  await desktop.locator("#clinical-device-toggle").click();
+  assert.equal(await desktop.locator("#device-panel").isVisible(),true);
+  await desktop.locator("#clinical-device-toggle").click();
+  await desktop.locator('[data-study-target="simulator"]').click();
+  assert.equal(await desktop.locator("#device-panel").isVisible(),true);
+  await desktop.locator('[data-study-target="learning"]').click();
+  assert.equal(await desktop.locator("#panel-core").isVisible(),true);
+  pass("v0.5.2 three learning areas, source legend, observation and clinical equipment isolation");
   assert.equal(await desktop.locator(".setting").count(),7);
   assert.equal(await desktop.locator(".readout").count(),7);
   assert.equal(await desktop.locator("#panel-core").isVisible(),true);
@@ -177,8 +191,8 @@ try {
   await desktop.locator("#extra-learning > summary").click();
   pass("PB980 alarm teaching: 4 lessons, quiz, replay, glossary, safe links and isolated simulator state");
   // v0.3.8: case-learning data must be isolated from all existing LCD and setting state.
-  const settingsBeforeCase=await desktop.locator("#settings").innerText();
-  const monitorBeforeCase=await desktop.locator("#monitor").innerText();
+  const settingsBeforeCase=await desktop.locator("#settings").textContent();
+  const monitorBeforeCase=await desktop.locator("#monitor").textContent();
   await desktop.getByRole("tab",{name:"CASE 학습"}).click();
   assert.equal(await desktop.locator("#panel-case").isVisible(),true);
   assert.equal(await desktop.locator("#panel-circuit").isVisible(),false);
@@ -204,8 +218,8 @@ try {
   await desktop.locator(".case-evidence summary").click();
   assert.match(await desktop.locator(".case-evidence").innerText(),/학습목표/);
   assert.match(await desktop.locator(".case-evidence").innerText(),/AARC/);
-  assert.equal(await desktop.locator("#settings").innerText(),settingsBeforeCase);
-  assert.equal(await desktop.locator("#monitor").innerText(),monitorBeforeCase);
+  assert.equal(await desktop.locator("#settings").textContent(),settingsBeforeCase);
+  assert.equal(await desktop.locator("#monitor").textContent(),monitorBeforeCase);
   await desktop.getByRole("tab",{name:"CIRCUIT"}).click();
   assert.equal(await desktop.locator("#panel-case").isVisible(),false);
   await desktop.getByRole("tab",{name:"CASE 학습"}).click();
