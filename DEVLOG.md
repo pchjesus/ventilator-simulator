@@ -1,5 +1,20 @@
 # DEVLOG
 
+## v0.5.3 — D3-A pure comparison & D4-A CORE LAB (2026-10-14)
+
+### Added
+- `src/waveform-compare.js`: 기준/실험 각각 `initialSettings()` 분리 사본에 대해 기존 `generateWaveform(settings,0,16,320)` 재사용. Pressure·Flow·Volume 각 파형 유형마다 두 곡선의 전체 표본에서 동일한 축 계산. Flow는 양/음·0 중앙선, Pressure/Volume은 0 시작 축.
+- CORE 내부 `#core-labs` 선택형 LAB: 시작/종료/재진입, PEEP(5→8), 설정 f(15→18), FiO₂(40→60%) 고정 연습, 한 화면 그래프 유형 선택(Pressure/Flow/Volume), 회색 점선 기준/강조 실선 실험 및 텍스트 범례. 데스크톱·모바일 공용 큰 그래프.
+- Lab RAM 상태와 캐시 스냅샷은 장비 committed/Pending, 기존 3개 기기 SVG 애니메이션/분석, 고정 monitor 7개, CORE 10문항, 4 CASE/12문항 및 비채점 행동 2개와 분리. 화면 모드/탭/크기 변경은 LAB을 초기화하지 않고 LAB 종료만 전용 상태를 재설정.
+- 배포 패키지 명시 복사 목록에 새 모듈을 포함하고 실제 `dist/src/waveform-compare.js`의 ESM 동적 import 검사 추가. 신규 Node 단위 테스트 7개 및 별도 Chromium LAB/모바일 회귀·스크린샷.
+
+### Risks / Verified scope
+- 첫 CI [#38554643099](https://github.com/pchjesus/ventilator-simulator/actions/runs/38554643099): 기존 릴리스 노트 테스트가 앞 버전을 하드코딩한 탓에 **Node 81/82 통과, 1개 실패**. 신규 엔진 테스트와 Chromium은 통과. 테스트의 버전 인덱스를 수정하여 재검증 진행. 당시 package는 Node 실패에 따라 미실행.
+- 미션 중 FiO₂의 무변화는 생성 모델에 대한 설명일 뿐 환자의 실제 산소화/혈역학 반응 부재를 뜻하지 않음. 교사용 문항·LAB 6 신규 문항/상태 머신·교육용 활동지는 **v0.5.4 이후**로 연기한 승인 범위 유지.
+- 실제 사용성 파일럿, 임상 전문가 검토, 물리적 모바일·실물 PB980 검증은 수행하지 않음.
+- 개발 PR: [#26](https://github.com/pchjesus/ventilator-simulator/pull/26). 병합 후 main SHA 및 정확한 CI gate는 후속 릴리스 기록에서 확정.
+
+
 ## v0.5.1 — large print and focus (2026-10-14)
 ### Added / Changed
 - 장비 참고형 원본 모니터/설정 타일을 바꾸지 않고 상단 공용 '표시값 큰 글씨로 읽기' 버튼과 native 대화상자 추가.
