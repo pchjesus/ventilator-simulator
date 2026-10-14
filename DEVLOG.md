@@ -410,3 +410,9 @@ Five user decisions for v0.4.4–v0.4.6 were confirmed and tracked in `docs/UI_U
 - A new short core-page blood gas reference clarifies arterial PaO₂ vs capillary pH/PCO₂ and patient observations; navigation from a CASE and back preserves quiz/case state and optional action choices.
 - Existing clinical readouts remain static, waveform/device states unchanged; independent RAM action selection resets only with explicit CASE restart or page refresh.
 - Medical faculty signoff, pediatric physiology model, and real student/physical phone usability review not performed.
+
+
+### v0.5.2.3 release-packaging regression prevention
+- Confirmed v0.5.2.2 packaged ZIP could omit newly imported `case-clinical-data.js` because CI copied an explicit historical whitelist; branch/full-repository Chromium was unaffected and could misleadingly report success.
+- Added both `case-clinical-data.js` and `case-actions.js` to dist copy and non-empty checks, plus an actual import/sanity smoke test executed against **dist** (four cases; both pediatric data/action assets loaded).
+- Release acceptance requires new exact main SHA's test/browser/package jobs all pass; do not treat the earlier v0.5.2.2 ZIP as a complete independently launchable package.
