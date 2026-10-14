@@ -395,3 +395,10 @@ Five user decisions for v0.4.4–v0.4.6 were confirmed and tracked in `docs/UI_U
 ### v0.5.2.1 stabilization: presentation and clinical reference equipment
 - Repair conflict between existing device/learning presentation buttons and clinical CASE default-closed equipment: device presentation opens optional independent equipment; learning presentation closes it.
 - No change to case content, device values, waveform state, quiz answers or CASE sessions. Add explicit Chromium regression.
+
+
+## v0.5.2.2 — Stage-aware fictional clinical documents (2026-10-14)
+- MAS X-ray from the first stage, previously drawn ABGA from the second; severe RSV current clinical observations from the first, previously drawn capillary gas from the second. No instruction to delay a patient's assessment pending investigations.
+- Clinical information has sample type, timing, oxygen context, units, source IDs and post-answer gated rationale. Static values are not patient-model calculations; CBG PO₂ is not displayed as an arterial PaO₂.
+- Pure audit checks source availability, valid stage, capillary sampling constraints and Henderson-Hasselbalch educational example consistency. Source review does not imply bedside validation.
+- Disclosure state is separate from quiz, adult monitor, waveform, committed/Pending settings and independent CASE sessions. Experts and real users have not reviewed.
