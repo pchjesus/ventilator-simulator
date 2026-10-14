@@ -1209,7 +1209,9 @@ function labSvgElement(tag,attrs={},label=null){
 function renderLabGraph(){
  if(!labSnapshot)return;
  const name=labState.graph,axis=labSnapshot.axes[name],meta=COMPARE_TYPES[name];
- const left=61,right=738,top=22,bottom=192,width=right-left,height=bottom-top;
+ const compact=window.matchMedia("(max-width:550px)").matches;
+ labSvg.setAttribute("viewBox",compact?"0 0 380 235":"0 0 760 235");
+ const left=compact?47:61,right=compact?365:738,top=22,bottom=192,width=right-left,height=bottom-top;
  const x=i=>left+width*i/(labSnapshot.count-1);
  const y=v=>bottom-(v-axis.min)/(axis.max-axis.min)*height;
  labSvg.replaceChildren(
@@ -1219,7 +1221,7 @@ function renderLabGraph(){
  for(let i=0;i<=4;i++){
   const value=axis.min+(axis.max-axis.min)*i/4,yy=y(value);
   labSvg.append(labSvgElement("line",{x1:left,y1:yy,x2:right,y2:yy,class:"lab-grid-line"}));
-  labSvg.append(labSvgElement("text",{x:52,y:yy+4,"text-anchor":"end",class:"lab-tick"},String(Number(value.toFixed(1)))));
+  labSvg.append(labSvgElement("text",{x:left-9,y:yy+4,"text-anchor":"end",class:"lab-tick"},String(Number(value.toFixed(1)))));
  }
  if(name==="flow")labSvg.append(labSvgElement("line",{x1:left,y1:y(0),x2:right,y2:y(0),class:"lab-zero-line"}));
  for(const t of [0,8,16])labSvg.append(labSvgElement("text",{x:left+width*t/COMPARE_DURATION,y:211,"text-anchor":"middle",class:"lab-tick"},t+" s"));
@@ -1258,6 +1260,8 @@ document.querySelectorAll("[data-lab-graph]").forEach(b=>b.addEventListener("cli
 document.getElementById("lab-exit").addEventListener("click",()=>{
  labState={active:false,experiment:"peep",graph:"pressure"};labSnapshot=null;renderWaveLab();labStart.focus();
 });
+// Resize changes SVG projection only: retain the LAB experiment and its cached samples.
+window.addEventListener("resize",()=>{if(labState.active)renderLabGraph();});
 
 /* v0.4.2: isolated knowledge-check state; resetting device values or revisiting CASE
  * must never mutate this assessment or any waveform/fixed-monitor content. */
