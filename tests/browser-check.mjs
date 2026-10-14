@@ -609,6 +609,8 @@ try {
   assert.match(await mobile.locator("#editor-pending").innerText(),/5.1/);
   await mobile.getByRole("button",{name:"Accept"}).click();
   assert.equal(await mobile.locator('.setting[data-setting-id="peep"] .setting-value').innerText(),"5.1");
+  // B1: the original Reset/Manual/Changelog buttons now live in one mobile disclosure.
+  await mobile.locator("#mobile-tools > summary").click();
   await mobile.getByRole("button",{name:"설정 초기화"}).click();
   await mobile.getByRole("button",{name:"빠른 학습 모드"}).click();
   await mobile.locator("#open-manual").click();
