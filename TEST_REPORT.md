@@ -347,3 +347,8 @@ GitHub Actions run: https://github.com/pchjesus/ventilator-simulator/actions/run
 - Node: optional action fields and source trace, valid choice, linked CORE review concepts and unchanged 3-question scoring per CASE.
 - Chromium: both pediatric action exercises, answer/recommended feedback, case→blood-gas learning→CASE round-trip, stage/answer preservation, 7 readouts, original adult CASE, CORE 10, waveform/settings/edit/circuit/alarm and accessible mobile tests.
 - Clinical content remains pending expert review, not equivalent to protocol-level validation. No identities, patient data or remote score persistence.
+
+
+### Additional release artifact gate (v0.5.2.3)
+- CI packaging copies both new JS dependencies and imports the staged `dist/src/preclinical-cases.js`, asserting both pediatric clinical-data/action objects are present.
+- The previous v0.5.2.2 ZIP packaging job lacked new module files; its passing CI did not establish offline artifact completeness. Final v0.5.2.3 artifact must replace it.
