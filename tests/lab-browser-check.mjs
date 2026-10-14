@@ -73,9 +73,15 @@ try{
   await mobile.locator('[data-lab-experiment="rate"]').click();
   const graph=await mobile.locator("#lab-graph").boundingBox();
   assert.ok(graph.x>=-1&&graph.x+graph.width<=width+1,"SVG viewport "+width);
+  if(width===320){
+   const trace=await mobile.locator('#lab-graph [data-lab-series="trial"]').boundingBox();
+   assert.ok(trace.height>=75,"mobile LAB trace too compressed for study: "+trace.height);
+   assert.equal(await mobile.locator("#lab-graph").getAttribute("viewBox"),"0 0 380 235");
+  }
   const bounds=await mobile.evaluate(()=>({scroll:document.documentElement.scrollWidth,client:document.documentElement.clientWidth}));
   assert.ok(bounds.scroll<=bounds.client+2,"horizontal page overflow at "+width+": "+JSON.stringify(bounds));
   await mobile.setViewportSize({width:Math.max(320,width-40),height:780});
+  if(width===700)assert.equal(await mobile.locator("#lab-graph").getAttribute("viewBox"),"0 0 760 235");
   assert.equal(await mobile.locator('[data-lab-graph="volume"]').getAttribute("aria-pressed"),"true");
   assert.equal(await mobile.locator('[data-lab-experiment="rate"]').getAttribute("aria-pressed"),"true");
   await mobile.screenshot({path:"artifacts/browser/v053-lab-"+width+".png",fullPage:false});
