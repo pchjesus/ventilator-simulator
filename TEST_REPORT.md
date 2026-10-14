@@ -335,3 +335,9 @@ GitHub Actions run: https://github.com/pchjesus/ventilator-simulator/actions/run
 
 ### v0.5.2.1 final UI regression
 - Device presentation toggled while clinical CASE is active reveals the original reference equipment; reverting learning presentation closes it without changing CASE session.
+
+
+## v0.5.2.2 test plan and boundaries
+- Static data: 2 pediatric clinical chart examples with four total panels; check sample type, lab units, time context, source trace, non-patient-model policy, pH/CO₂/HCO₃⁻ coherence, no capillary PO₂ surrogate.
+- Chromium checks MAS stage-gated X-ray→ABGA, RSV assessment→CBG, answer-gated interpretations, disclosure on rerender, original adult case answers, original CORE, fixed seven adult references and waveforms.
+- Browser automation and static calculations do NOT certify clinical appropriateness or real pediatric physiology. No data storage or identity tracking.
