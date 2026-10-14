@@ -1,3 +1,5 @@
+> **현재 v0.5.3 구현:** D3-A 동일 시간(0–16초)·표본(320개)·유형별 공통 수치축을 가진 교육용 기준/실험 겹침 파형, D4-A ② 학습 CORE 내 선택형 독립 LAB 화면 구현. LAB은 `initialSettings()`의 기준 사본 및 PEEP/f/FiO₂ 시험 사본을 사용하며 장비 committed/Pending 설정·기존 애니메이션·고정 모니터·CORE/CASE 상태와 불연동. Flow 0 기준선 및 양/음 단위, 모바일 1종 대형 그래프, LAB 종료/재진입. 기존 CORE 6/10 + CASE 4/12 = 22개 채점 문항 그대로. D5 LAB 미니문항 3×2는 v0.5.4 범위. 임상 감수·실사용성 평가 미실시. 하단의 v0.5.1 '미구현' 상태 문구는 당시 이력이며 승인 계약의 우선순위는 변함없다.
+
 > **v0.5.2.3:** 4 CASE / 12 scored CASE questions and CORE 10 unchanged; MAS & RSV each have 1 optional unscored evidence-traceable nursing-action exercise. The 3-tab layout includes a short ABGA/CBG primer in CORE and a return-to-CASE pathway. Pediatric static gas values/observations remain independent of PB980 settings, 7 fixed monitor samples and generated waveforms. Clinical review remains pending.
 
 > **v0.5.2.1 current implemented scope:** 3 main learning destinations and novice summary hierarchy; 6 CORE lessons / 10 CORE questions; 4 separate fictional CASEs (original adult 2 + newborn MAS + infant severe RSV), 12 CASE questions. Clinical signoff pending. Pediatric data are not linked to adult PB980 reference monitor or generated waveforms.
