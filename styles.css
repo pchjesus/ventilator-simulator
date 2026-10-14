@@ -898,3 +898,56 @@ body[data-study-area="clinical"]:not([data-clinical-device-expanded="true"]) .wo
 .lab-result-note{font-weight:750;padding:10px;background:#eaf5fa;border-left:4px solid #247ba4}
 .lab-disclaimer{font-size:12px!important;color:#425c6d!important}
 @media(max-width:550px){.core-labs{padding:9px}.lab-options,.lab-graph-options{gap:3px}.lab-options button,.lab-graph-options button{font-size:12px;padding:7px 2px}.lab-tick{font-size:12px}}
+
+/* v0.5.3.1 / Patch 1: A1/C1/B2 student reading hierarchy.
+ * Device bezel, waveform colors, committed settings and medical content untouched. */
+:root{
+ --study-ink:#173042;
+ --study-secondary:#31556c;
+ --study-action:#145a75;
+ --study-surface:#fff;
+ --study-canvas:#f5f7fa;
+ --study-stroke:#cad5df;
+ --study-soft:#edf5f8;
+}
+.study-panel{color:var(--study-ink);background:var(--study-surface);border:1px solid var(--study-stroke);padding:clamp(14px,1.6vw,23px);box-shadow:0 3px 14px #1730420a}
+.study-panel .learning-onboarding{background:var(--study-canvas);color:var(--study-secondary);font-size:15px;line-height:1.75;padding:12px 14px}
+.study-panel .student-path-label{font-size:13px;color:var(--study-secondary)}
+.study-panel .core-intro,body[data-presentation="learning"] .study-panel .core-intro{font-size:15px;line-height:1.75;padding:14px 15px}
+.study-panel .core-observation{font-size:14px;line-height:1.7}
+.study-panel .core-concept{border:1px solid var(--study-stroke);border-radius:10px}
+.study-panel .core-concept-header{padding:14px;gap:8px}
+.study-panel .core-concept-title{font-size:13px}
+.study-panel .core-concept-title strong{font-size:19px;color:var(--study-ink)}
+.study-panel .core-concept-short{font-size:14px;line-height:1.65;color:var(--study-secondary)}
+.study-panel .core-concept-body{padding:12px 17px 16px}
+.study-panel .core-concept-body p,body[data-presentation="learning"] .study-panel .core-concept-body p{font-size:15px;line-height:1.75;color:var(--study-secondary)}
+.study-panel .core-concept-sources a,.study-panel .core-quiz-sources a{font-size:13px;line-height:1.65}
+.study-panel .core-learning-steps span{font-size:12px;background:var(--study-soft);border-color:var(--study-stroke);line-height:1.5}
+.study-panel .core-quiz,.study-panel .core-labs{border:1px solid var(--study-stroke);background:var(--study-canvas);padding:clamp(13px,1.4vw,19px)}
+.study-panel .core-quiz-heading{font-size:19px}
+.study-panel .core-quiz-question{font-size:16px;line-height:1.75}
+.study-panel .core-quiz-answer,body[data-presentation="learning"] .study-panel .core-quiz-answer,
+.study-panel .case-answer,body[data-presentation="learning"] .study-panel .case-answer{font-size:15px;line-height:1.65;min-height:48px;padding:12px}
+.study-panel .core-quiz-instruction,.study-panel .core-quiz-progress,.study-panel .core-quiz-feedback,
+.study-panel .case-roadmap-purpose,.study-panel .case-roadmap-end{font-size:14px;line-height:1.7}
+.study-panel .core-tabs button{font-size:14px!important;min-height:48px}
+.study-panel .side-tabs button.active,.study-panel .lab-options button[aria-pressed="true"],.study-panel .lab-graph-options button[aria-pressed="true"]{background:var(--study-action);border-color:var(--study-action);color:#fff}
+.study-panel .core-quiz-primary,.study-panel .case-primary{background:var(--study-action)}
+.study-panel .case-clinical-data,.study-panel .case-action-exercise{background:var(--study-canvas);border-color:var(--study-stroke)}
+.study-panel .case-clinical-card{border-color:var(--study-stroke)}
+.study-panel .lab-disclaimer{font-size:13px!important;line-height:1.7!important}
+.study-panel .core-labs h3{font-size:19px}
+.study-panel .lab-graph-title{font-size:14px!important}
+.study-panel .lab-tick{font-size:15px;fill:#31556c}
+.study-panel .data-source-legend span{font-size:12px;line-height:1.6;background:var(--study-soft);border-color:var(--study-stroke)}
+.study-panel .core-quiz-review-entry{font-size:14px;line-height:1.6}
+.study-panel button:focus-visible,.study-panel a:focus-visible,.study-panel summary:focus-visible{outline:3px solid #127aa6;outline-offset:3px}
+@media(max-width:550px){
+ .study-panel .core-concept-title strong{font-size:18px}
+ .study-panel .core-concept-short{font-size:14px}
+ .study-panel .core-learning-steps span{font-size:11px}
+ .study-panel .core-tabs button{font-size:13px!important}
+ .study-panel .lab-tick{font-size:16px}
+ .study-panel .core-quiz,.study-panel .core-labs{padding:12px}
+}
