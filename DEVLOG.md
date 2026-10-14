@@ -1,5 +1,12 @@
 # DEVLOG
 
+## v0.5.3.1–0.5.3.3 — approved A1/B1 student readability (2026-10-15)
+- Patch 1: 학습 패널 중심으로 색상, 글자 대비, 카드 테두리 및 핵심 개념·퀴즈·LAB 글자 크기 조정. 장비 디스플레이 규칙은 유지.
+- Patch 2: 701px 이상 ② 학습에서 기존 44:56·59:41·72:28 레이아웃 프리셋과 별도인 학습 전용 넓은 화면. 장비를 CSS로만 숨기며 DOM/기기 값/퀴즈 상태를 재생성하지 않음. A1 본문 최대 900px, LAB 최대 1120px. 기존 퀴즈 sticky 내부 스크롤을 전용 화면에서는 자연 스크롤로 전환.
+- Patch 3: 기존 도구 버튼 3개를 모바일 `details` 내로 이동(B1; 새로 복제하지 않음), 네 곳 빠른 이동, 한영 파형 이름과 완전 중첩 안내. 두 선 일치는 생성 모델의 표현이며 실제 환자 산소화 결과가 아님.
+- 새 Chromium `tests/study-focus-browser-check.mjs`로 배치/도구/모달/가로 넘침/CORE/CASE/LAB 상태를 확인하도록 CI gate 확장. v0.5.4 D5 문항은 별도 단계.
+- [실행 명세](docs/V0.5.3X_STUDY_FOCUS_IMPLEMENTATION.md). 브라우저/Node/패키지 최종 CI 결과는 PR 완료 후 확인하여 기록; 실제 사용성·임상 감수 미실시.
+
 ## v0.5.3 — D3-A pure comparison & D4-A CORE LAB (2026-10-14)
 
 ### Added

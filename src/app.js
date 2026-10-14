@@ -97,9 +97,27 @@ document.querySelectorAll("button[data-layout]").forEach(button=>button.addEvent
   layoutPreset=next;document.body.dataset.layout=next;syncViewChoices();
 }));
 syncViewChoices();
+// v0.5.3.2: isolated visual focus state, never mutates device/editor/quiz/case/LAB.
+let studyOnly=false;
+const studyOnlyToggle=document.getElementById("study-only-toggle");
+function syncStudyOnly(){
+ document.body.dataset.studyOnly=String(studyOnly);
+ studyOnlyToggle.setAttribute("aria-pressed",String(studyOnly));
+ studyOnlyToggle.textContent=studyOnly?"장비 함께 보기":"학습만 크게 보기";
+}
+studyOnlyToggle.addEventListener("click",()=>{
+ studyOnly=!studyOnly;
+ syncStudyOnly();
+});
+syncStudyOnly();
 // Reorder existing DOM nodes only. Device, editor, quiz and CASE data remain unchanged.
 const compactWorkspace=window.matchMedia("(max-width:1100px)");
 const narrowDevice=window.matchMedia("(max-width:700px)");
+// One responsive disclosure owns the SAME three header controls; never clone Reset/dialog buttons.
+const mobileTools=document.getElementById("mobile-tools");
+function syncMobileTools(){mobileTools.open=!narrowDevice.matches;}
+narrowDevice.addEventListener("change",syncMobileTools);
+syncMobileTools();
 const workspace=document.querySelector(".workspace");
 const devicePanel=document.getElementById("device-panel");
 const learningPanel=document.getElementById("learning-panel");
@@ -281,6 +299,18 @@ function initEducationUI(){
   configureInfoDialog("changelog-dialog","open-changelog");
 }
 
+// Quick links only change active visible panel/scroll; they never mark completion.
+document.querySelectorAll("[data-learning-jump]").forEach(link=>link.addEventListener("click",event=>{
+ event.preventDefault();
+ const type=link.dataset.learningJump;
+ if(type==="case"){selectStudyArea("clinical");}
+ else{selectStudyArea("learning");}
+ const target=document.getElementById(({concepts:"core-learning-content",quiz:"core-quiz-root",lab:"core-labs",case:"panel-case"})[type]);
+ if(target){
+  target.scrollIntoView({block:"start",behavior:"auto"});
+  target.focus({preventScroll:true});
+ }
+}));
 function showSideTab(tab) {
   if(tab==="circuit"||tab==="alarm")extraLearning.open=true;
   for (const [id,button,panel] of [
@@ -1245,6 +1275,11 @@ function renderWaveLab(){
  document.querySelectorAll("[data-lab-graph]").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.labGraph===labState.graph)));
  document.getElementById("lab-comparison-summary").textContent=exp.label+" · 기준 "+exp.baseline+" → 실험 "+exp.trial+" "+exp.unit+" | 다른 초기 설정 동일 · 현재 장비 설정과 무관";
  document.getElementById("lab-result-note").textContent=exp.note;
+ // If two deterministic curves are identical, the blue stroke covers the dashed
+ // stroke; make this explicit in text instead of implying a physiological finding.
+ const coincident=labSnapshot.baseline.every((point,i)=>
+  Object.keys(COMPARE_TYPES).every(key=>point[key]===labSnapshot.trial[i][key]));
+ document.getElementById("lab-overlap-note").hidden=!coincident;
  renderLabGraph();
 }
 labStart.addEventListener("click",()=>{

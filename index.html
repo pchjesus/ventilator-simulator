@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="#26343f">
-  <title>PB980 Ventilator Simulator v0.5.3 | CORE Waveform LAB</title>
+  <title>PB980 Ventilator Simulator v0.5.3.3 | Student Focus</title>
   <link rel="stylesheet" href="./styles.css">
   <script src="./src/app.js" type="module"></script>
 </head>
@@ -12,11 +12,14 @@
   <header class="site-header">
     <div><p class="eyebrow">VENTILATOR SIMULATOR <span id="version"></span></p>
       <h1>Puritan Bennett 980 <small>교육용 화면</small></h1></div>
-    <nav class="header-actions" aria-label="학습 도구">
+    <details id="mobile-tools" class="header-tools" open>
+      <summary>도구 · 설명서 / 기록 / 초기화</summary>
+      <nav class="header-actions" aria-label="학습 도구">
       <button id="open-manual" type="button" class="top-action" aria-haspopup="dialog" aria-controls="manual-dialog"><span aria-hidden="true">▤</span> 설명서</button>
       <button id="open-changelog" type="button" class="top-action" aria-haspopup="dialog" aria-controls="changelog-dialog"><span aria-hidden="true">◷</span> 패치 내역</button>
       <button id="reset" type="button" class="reset">설정 초기화</button>
-    </nav>
+      </nav>
+    </details>
   </header>
   <p class="warning" role="note">실제 환자 치료에 사용 불가 · PB980 내부 화면 구성 참고형(실물과 동작 다름) · 상단 monitoring 값은 고정 예시, 아래 움직이는 파형은 단순화된 설명용 모델로 실제 환자 측정값이 아님</p>
   <nav class="study-area-nav" aria-label="학습 영역 선택">
@@ -38,6 +41,7 @@
       <button type="button" class="view-choice" data-layout="balanced" aria-pressed="false">나란히</button>
       <button type="button" class="view-choice" data-layout="device" aria-pressed="false">장비 집중</button>
     </div>
+    <button type="button" id="study-only-toggle" class="view-choice study-only-toggle" aria-pressed="false" aria-controls="device-panel">학습만 크게 보기</button>
     <div class="view-jump-links"><a href="#learning-panel">학습으로 이동 ↓</a><a href="#device-panel">장비로 이동 ↑</a></div>
     <p class="compact-layout-help">좁은 화면에서는 한 열로 표시돼. 세 가지 배치 선택은 넓은 화면에서 그대로 적용돼.</p>
     <button id="mobile-device-toggle" type="button" aria-controls="device-panel" aria-expanded="false">장비 화면 펼치기</button>
@@ -137,6 +141,13 @@
           <div><dt>CASE의 가상 상황 자료</dt><dd>사례별 별도 가상 환자 정보야. 실제 기기 설정·고정 모니터·파형을 변경하지 않아.</dd></div>
         </dl>
       </details>
+      <nav class="learning-quick-nav" aria-label="학습 빠른 이동">
+        <span>바로 이동</span>
+        <a href="#core-learning-content" data-learning-jump="concepts">핵심 개념</a>
+        <a href="#core-quiz-root" data-learning-jump="quiz">형성평가</a>
+        <a href="#core-labs" data-learning-jump="lab">파형 LAB</a>
+        <a href="#panel-case" data-learning-jump="case">CASE</a>
+      </nav>
       <div class="side-tabs core-tabs" role="tablist" aria-label="기본 학습 탭">
         <button type="button" id="tab-core" class="active" role="tab" aria-selected="true" aria-controls="panel-core">핵심 개념</button>
         <button type="button" id="tab-case" role="tab" aria-selected="false" aria-controls="panel-case">CASE 학습</button>
@@ -155,10 +166,10 @@
         <div class="core-learning-steps">
           <span>1. 핵심 개념</span><span>2. 학습 확인·복습</span><span>3. CASE 적용</span>
         </div>
-        <div id="core-learning-content" aria-label="실습 전 필수 개념"></div>
-        <section id="core-quiz-root" class="core-quiz" aria-label="핵심 개념 학습 확인"></section>
+        <div id="core-learning-content" tabindex="-1" aria-label="실습 전 필수 개념"></div>
+        <section id="core-quiz-root" class="core-quiz" tabindex="-1" aria-label="핵심 개념 학습 확인"></section>
 
-        <section id="core-labs" class="core-labs" aria-labelledby="core-lab-heading">
+        <section id="core-labs" class="core-labs" tabindex="-1" aria-labelledby="core-lab-heading">
           <h3 id="core-lab-heading">선택 학습 · 파형 비교 LAB</h3>
           <p>초기 설정과 실험 설정으로 만든 두 <strong>교육용 생성 파형</strong>을 동일한 축에 겹쳐 비교해. 현재 장비·퀴즈·CASE와 독립적인 학습이야.</p>
           <button type="button" id="lab-start" class="lab-action" aria-controls="lab-workspace" aria-expanded="false">파형 비교 LAB 시작</button>
@@ -174,11 +185,12 @@
               <span><i class="lab-legend-trial" aria-hidden="true"></i>실험 · 강조 실선</span>
             </div>
             <div class="lab-graph-options" role="group" aria-label="파형 그래프 선택">
-              <button type="button" data-lab-graph="pressure" aria-pressed="true">Pressure</button>
-              <button type="button" data-lab-graph="flow" aria-pressed="false">Flow</button>
-              <button type="button" data-lab-graph="volume" aria-pressed="false">Volume</button>
+              <button type="button" data-lab-graph="pressure" aria-pressed="true">압력 (Pressure)</button>
+              <button type="button" data-lab-graph="flow" aria-pressed="false">유량 (Flow)</button>
+              <button type="button" data-lab-graph="volume" aria-pressed="false">용적 (Volume)</button>
             </div>
             <p id="lab-graph-title" class="lab-graph-title"></p>
+            <p id="lab-overlap-note" class="lab-overlap-note" role="status" hidden>두 교육용 생성 파형이 완전히 겹쳐 하나의 선처럼 보여. 이것이 실제 환자에서 산소화 반응이 없다는 의미는 아니야.</p>
             <svg id="lab-graph" viewBox="0 0 760 235" preserveAspectRatio="xMidYMid meet" role="img" aria-label="교육용 기준과 실험 파형 겹침 비교"></svg>
             <p id="lab-result-note" class="lab-result-note" aria-live="polite"></p>
             <p class="lab-disclaimer">현재 장비에 미반영 · 정적 교육용 생성 곡선(0–16초, 320표본) · 실제 환자의 SpO₂, PaO₂, VTE, fTOT 또는 혈역학 반응을 예측하지 않아. 임상 전문가 감수 전 교육 자료야.</p>
@@ -204,7 +216,7 @@
         <div id="clinical-detail" class="clinical-detail" aria-label="근거 기반 간호·의학 상세 설명"></div>
         <p class="fine-print">교육용 기본 설명이므로 세부 조작 및 실제 적용은 해당 장비 매뉴얼과 담당 의료진의 지침을 따라야 해.</p>
       </section>
-      <section id="panel-case" role="tabpanel" aria-labelledby="tab-case" hidden>
+      <section id="panel-case" tabindex="-1" role="tabpanel" aria-labelledby="tab-case" hidden>
         <p class="case-disclaimer">가상 사례 · 전문가 미감수 형성학습 · 이 패널은 현재 기기 설정·모니터·파형과 독립적이야.</p>
         <div id="case-content" aria-live="off"></div>
       </section>

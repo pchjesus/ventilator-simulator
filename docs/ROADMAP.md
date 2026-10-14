@@ -1,3 +1,5 @@
+> **v0.5.3.3 UX 패치 (2026-10-15):** 승인된 A1 콘텐츠 폭(학습 전체 너비 + 900px 읽기 본문, LAB 1120px) 및 B1 모바일 보조 도구 접기를 v0.5.3.1 시각 정돈 → v0.5.3.2 학습만 보기 → v0.5.3.3 학습 이동·LAB 가독성 순서로 구현. 핵심 기능/독립 상태 유지 및 [전용 구현·테스트 계약](V0.5.3X_STUDY_FOCUS_IMPLEMENTATION.md) 적용. v0.5.4는 여전히 D5 LAB 예상/이해 확인 6문항으로 예정되어 있으며 본 패치에 포함되지 않음.
+
 > **현황 2026-10-14 / v0.5.3:** D3-A의 순수 파형 비교 엔진과 기준 점선/실험 실선·동일 수치축 SVG, D4-A의 CORE 독립 LAB 진입/복귀·모바일 그래프 선택을 구현했다. PEEP·설정 f·FiO₂ 3개 시험 설정은 `initialSettings()`의 별도 사본이며 기존 기기/CORE 퀴즈/CASE 답안과 연결되지 않는다. v0.5.4는 D5-A 예상·결과 확인 2문항×3미션과 별도 `lab-engine.js` / `lab-lessons.js` 구현 단계이며 아직 미구현. D5 도입 시에도 CORE 10 + CASE 12 채점은 보존하고 LAB 6문항은 합산하지 않는다. 기술 검증은 [PR #26](https://github.com/pchjesus/ventilator-simulator/pull/26)와 CI/TEST_REPORT에서 상태별 확인한다.
 
 # Development Roadmap (GitHub 릴리스 상태 2026-10-14 확인)
