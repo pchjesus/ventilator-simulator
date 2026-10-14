@@ -36,6 +36,7 @@ jobs:
           trap 'kill $SERVER_PID || true' EXIT
           node tests/browser-check.mjs
           node tests/lab-browser-check.mjs
+          node tests/study-focus-browser-check.mjs
       - name: Upload screenshots
         if: always()
         uses: actions/upload-artifact@v4
