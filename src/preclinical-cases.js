@@ -5,7 +5,11 @@
  */
 export const CASE_SOURCES=Object.freeze({
   aarc:{label:"AARC Clinical Practice Guideline: Patient-Ventilator Assessment (2024)",url:"https://pmc.ncbi.nlm.nih.gov/articles/PMC11298231/"},
-  inacsl:{label:"INACSL Healthcare Simulation Standards of Best Practice (2025 개정 사항 포함)",url:"https://www.inacsl.org/healthcare-simulation-standards"}
+  inacsl:{label:"INACSL Healthcare Simulation Standards of Best Practice (2025 개정 사항 포함)",url:"https://www.inacsl.org/healthcare-simulation-standards"},
+  merck_mas:{label:"Merck Manual Professional · Meconium Aspiration Syndrome (2025)",url:"https://www.merckmanuals.com/professional/pediatrics/respiratory-problems-in-neonates/meconium-aspiration-syndrome"},
+ aha2025:{label:"AHA/AAP 2025 · Neonatal Resuscitation, airway clearing",url:"https://cpr.heart.org/en/resuscitation-science/cpr-and-ecc-guidelines/neonatal-resuscitation"},
+ nice:{label:"NICE NG9 · Bronchiolitis in children",url:"https://www.nice.org.uk/guidance/ng9/chapter/Recommendations"},
+ suction:{label:"AARC 2022 · Artificial Airway Suctioning",url:"https://pubmed.ncbi.nlm.nih.gov/35078900/"}
 });
 export const PRECLINICAL_CASES=Object.freeze([
   {
@@ -111,6 +115,291 @@ export const PRECLINICAL_CASES=Object.freeze([
         answer:"c",explanation:"보고 시 객관적 변화와 사정 내용을 구분해 알리고, 실제 응급 대응은 병원 프로토콜과 의료진의 지시를 따라야 해."
       }
     ],sources:["aarc","inacsl"]
+  },
+  {
+    "id": "mas-neonate",
+    "population": "newborn",
+    "level": "신생아 · NICU",
+    "minutes": 8,
+    "contentVersion": "0.5.2",
+    "review": {
+      "status": "pending",
+      "approved": false,
+      "note": "NICU 의료진·간호교수의 임상 감수 전 교육용 초안"
+    },
+    "title": "CASE 03 · 태변흡인증후군(MAS) 신생아",
+    "status": "전문가 미감수 · 형성평가 초안",
+    "premise": "39주 신생아가 태변 착색 양수 출생 후 호흡곤란으로 NICU에서 기관삽관·기계환기 중이야. 지도간호사와 함께 SpO₂ 감소 및 흉곽 움직임 변화를 관찰하고 있어.",
+    "vignette": [
+      "가상 신생아: 재태연령 39주 · 출생체중 3.1 kg · 생후 3시간 · 태변 착색 양수",
+      "가상 상황: SpO₂ 96%→89%로 감소, 흉곽 움직임 변화 · NICU 침습적 환기 중",
+      "원본 PB980 참고 화면의 성인 고정 수치·파형과 이 신생아의 가상 수치는 서로 관련 없음"
+    ],
+    "objectives": [
+      {
+        "id": "o1",
+        "text": "MAS에서 기도 폐쇄·폐 염증·폐표면활성제 손상의 의미를 설명한다"
+      },
+      {
+        "id": "o2",
+        "text": "신생아 상태·산소화 추세·기도 및 회로를 사정하고 즉시 보고한다"
+      },
+      {
+        "id": "o3",
+        "text": "출생 직후 일률적 흡인 비권고와 삽관 후 필요 기반 기도흡인을 구별한다"
+      }
+    ],
+    "prebrief": "실제 신생아 치료나 기관삽관 술기가 아니라 관찰·판단·보고 연습이야. 출생 직후 소생술과 현재 NICU 삽관 후 기도관리는 서로 다른 상황이며 학생 단독 기기 설정 변경·흡인은 하지 않아.",
+    "debrief": [
+      "태변 흡인으로 기도 폐쇄나 화학적 폐 손상이 나타나면 어떤 문제가 발생할 수 있을까?",
+      "현재 SpO₂ 감소와 함께 환아의 직접 상태·기도·회로에서 확인할 것은 무엇일까?",
+      "출생 직후의 일률적 흡인과 삽관 환아의 적응증 기반 흡인은 왜 구별해야 할까?"
+    ],
+    "sources": [
+      "aarc",
+      "merck_mas",
+      "aha2025",
+      "suction"
+    ],
+    "steps": [
+      {
+        "id": "mechanism",
+        "objectiveIds": [
+          "o1"
+        ],
+        "sourceIds": [
+          "merck_mas"
+        ],
+        "evidenceKind": "guideline-principle",
+        "question": "MAS가 신생아의 호흡 기능에 영향을 주는 주요 기전은 무엇일까?",
+        "options": [
+          {
+            "id": "a",
+            "label": "태변으로 인한 기도 폐쇄·화학적 폐 손상·표면활성제 기능 장애",
+            "feedback": "맞아. 다양한 폐 손상 기전으로 환기와 산소화에 문제가 발생할 수 있어."
+          },
+          {
+            "id": "b",
+            "label": "태변 착색이 있으면 폐 기능이 반드시 정상이라는 뜻",
+            "feedback": "태변 착색만으로 환자의 폐 기능과 상태를 단정할 수 없어."
+          },
+          {
+            "id": "c",
+            "label": "FiO₂ 설정만으로 모든 폐 손상을 확정할 수 있다는 뜻",
+            "feedback": "산소 농도 설정 하나만으로 실제 폐 손상이나 환자 반응을 확정할 수 없어."
+          }
+        ],
+        "answer": "a",
+        "explanation": "MAS에서는 기도 폐쇄, 화학적 폐손상 및 표면활성제 기능 장애가 나타날 수 있어. 폐고혈압 등도 고려할 수 있지만 앱은 이를 계산하지 않아.",
+        "evidenceNote": "Merck Manual에 제시된 MAS 병태생리 원칙을 간호학생 입문용으로 간추린 설명"
+      },
+      {
+        "id": "observe",
+        "objectiveIds": [
+          "o2"
+        ],
+        "sourceIds": [
+          "aarc",
+          "merck_mas"
+        ],
+        "evidenceKind": "educational-inference",
+        "question": "SpO₂가 떨어지고 흉곽 움직임이 변화하는 신생아를 발견했다면?",
+        "options": [
+          {
+            "id": "a",
+            "label": "학생이 단독으로 PEEP를 변경해 치료 반응을 확인한다.",
+            "feedback": "무감독 환기 설정 변경은 실습학생의 적절한 우선 행동이 아니야."
+          },
+          {
+            "id": "b",
+            "label": "환아 상태·측정 신호·인공기도·회로를 확인하고 지도자에게 신속히 알린다.",
+            "feedback": "맞아. 환아 사정과 측정 신뢰성 확인, 의료진 도움 요청이 우선이야."
+          },
+          {
+            "id": "c",
+            "label": "앱의 고정 VTE 352 mL를 신생아 실측값으로 간주한다.",
+            "feedback": "성인 참고용 고정 숫자는 이 가상 신생아의 VTE가 아니야."
+          }
+        ],
+        "answer": "b",
+        "explanation": "가상 환아의 산소화 악화 징후는 직접 사정하고 지도자에게 신속히 보고해야 해. 원래 장비의 독립 고정 모니터나 생성 파형을 신생아의 실측 정보로 사용하지 않아.",
+        "evidenceNote": "AARC 환자-인공호흡기 사정 원칙을 NICU 학생 역할에 맞춘 교육적 추론"
+      },
+      {
+        "id": "suction",
+        "objectiveIds": [
+          "o3"
+        ],
+        "sourceIds": [
+          "aha2025",
+          "suction"
+        ],
+        "evidenceKind": "guideline-principle",
+        "question": "태변 착색 출생과 이후 삽관 신생아의 흡인 원칙을 가장 잘 구별한 것은?",
+        "options": [
+          {
+            "id": "a",
+            "label": "태변 착색 출생이면 기도 폐쇄 여부와 무관하게 항상 정시 흡인한다.",
+            "feedback": "출생 직후 일률적 흡인은 권고되지 않으며 삽관 후에도 필요 기반이 원칙이야."
+          },
+          {
+            "id": "b",
+            "label": "일률적 흡인을 피해야 하므로 실제 기도 폐쇄도 확인하지 않는다.",
+            "feedback": "일률적 흡인 비권고가 실제 기도 폐쇄나 분비물 관찰 금지를 의미하지 않아."
+          },
+          {
+            "id": "c",
+            "label": "출생 직후 일률적 흡인은 피하고, 삽관 후에는 임상 징후에 따라 필요성을 평가한다.",
+            "feedback": "맞아. 출생 직후 소생술과 이후 인공기도 유지의 지침을 구별해."
+          }
+        ],
+        "answer": "c",
+        "explanation": "AHA/AAP 2025는 태변 여부에 따른 출생 직후 일률적 흡인을 권고하지 않아. AARC 2022는 신생아·소아 인공기도 흡인을 필요에 따라 시행하도록 제시해. 학생의 독자적 흡인을 뜻하지 않아.",
+        "evidenceNote": "2025 출생 직후 흡인 원칙과 2022 삽관 신생아 필요 기반 흡인 권고의 상황을 명시적으로 구별"
+      }
+    ]
+  },
+  {
+    "id": "rsv-infant",
+    "population": "infant",
+    "level": "영아 · PICU",
+    "minutes": 8,
+    "contentVersion": "0.5.2",
+    "review": {
+      "status": "pending",
+      "approved": false,
+      "note": "PICU 전문가 및 간호교수의 소아 임상 감수·기관지침 대조 전 초안"
+    },
+    "title": "CASE 04 · 중증 RSV 세기관지염 영아",
+    "status": "전문가 미감수 · 형성평가 초안",
+    "premise": "생후 4개월 영아가 중증 RSV 세기관지염으로 PICU에서 기관삽관·기계환기를 받고 있어. 환아의 SpO₂ 추세가 떨어지고 흉곽 움직임과 분비물에 변화가 있어.",
+    "vignette": [
+      "가상 영아: 생후 4개월 · RSV 세기관지염으로 PICU 치료 중인 일부 중증 상황",
+      "가상 징후: SpO₂ 하락 추세와 흉곽 움직임 변화, 분비물 증가 · 원인 미확정",
+      "성인형 PB980 참고 화면과 고정 모니터·파형은 이 영아의 환기 자료가 아님"
+    ],
+    "objectives": [
+      {
+        "id": "o1",
+        "text": "중증 세기관지염 환아의 호흡 상태 악화를 인지하고 신속히 보고한다"
+      },
+      {
+        "id": "o2",
+        "text": "삽관 영아의 분비물·인공기도 개방성 및 필요 기반 흡인 개념을 구분한다"
+      },
+      {
+        "id": "o3",
+        "text": "가상 소아 사례와 독립 고정 성인형 모니터 표시 예시를 구별한다"
+      }
+    ],
+    "prebrief": "일반적인 세기관지염에서 침습적 환기는 흔한 과정이 아니며 이 사례는 일부 중증 상황을 가정해. 이 앱은 환자 치료 지침이 아니고 실제 기기 설정 조정·흡인을 학생 단독으로 수행하지 않아.",
+    "debrief": [
+      "환아의 산소화 변화 이외에 임상적 호흡곤란과 호흡부전 가능성을 나타내는 소견은?",
+      "분비물 증가 시 환아 상태·인공기도·회로를 어떤 순서로 확인할 필요가 있을까?",
+      "의료진에게 보고할 때 직접 관찰과 아직 확인되지 않은 원인을 어떻게 구분할까?"
+    ],
+    "sources": [
+      "nice",
+      "suction",
+      "aarc"
+    ],
+    "steps": [
+      {
+        "id": "deterioration",
+        "objectiveIds": [
+          "o1"
+        ],
+        "sourceIds": [
+          "nice"
+        ],
+        "evidenceKind": "guideline-principle",
+        "question": "이 영아의 SpO₂가 하락하고 흉곽 움직임이 달라지면 학생의 우선 행동은?",
+        "options": [
+          {
+            "id": "a",
+            "label": "환아 상태·측정 신호를 확인하며 지도자 및 의료진에게 즉시 알린다.",
+            "feedback": "맞아. 환자의 실제 상태와 악화 징후를 확인하고 즉시 도움을 요청해야 해."
+          },
+          {
+            "id": "b",
+            "label": "정기 관찰 시간까지 기다리며 추가 사정을 하지 않는다.",
+            "feedback": "악화 징후를 보고하는 것을 지연해서는 안 돼."
+          },
+          {
+            "id": "c",
+            "label": "학생 스스로 환기 모드나 압력 설정을 변경한다.",
+            "feedback": "실습학생의 무감독 기기 설정 조작은 적절하지 않아."
+          }
+        ],
+        "answer": "a",
+        "explanation": "NICE 세기관지염 지침은 호흡부전이 의심되거나 중증 호흡곤란이 있을 때 신속한 평가가 중요하다는 원칙을 제시해. 앱의 SpO₂는 독립 가상 사례값이지 실제 기기 계산값이 아니야.",
+        "evidenceNote": "NICE NG9 심각한 호흡곤란·호흡부전 위험 신호를 가상 PICU 학습에 적용한 판단"
+      },
+      {
+        "id": "airway",
+        "objectiveIds": [
+          "o2"
+        ],
+        "sourceIds": [
+          "suction",
+          "aarc"
+        ],
+        "evidenceKind": "guideline-principle",
+        "question": "기관삽관 영아에서 분비물 증가를 보았다면 가장 적절한 사정은?",
+        "options": [
+          {
+            "id": "a",
+            "label": "증상과 상관없이 매시간 기관흡인을 반드시 시행한다.",
+            "feedback": "AARC는 정기 흡인보다 임상적 필요에 따른 흡인을 권고해."
+          },
+          {
+            "id": "b",
+            "label": "호흡음·분비물·인공기도 위치·개방성과 실제 회로 상태를 종합한다.",
+            "feedback": "맞아. 환아와 기도·회로를 함께 사정하고 지도자와 흡인 필요성을 판단해."
+          },
+          {
+            "id": "c",
+            "label": "RSV 진단만으로 분비물과 모든 악화의 원인을 확정한다.",
+            "feedback": "진단명이 있어도 환아 상태와 인공기도·회로 문제를 함께 확인해야 해."
+          }
+        ],
+        "answer": "b",
+        "explanation": "AARC 2022는 삽관 소아·신생아에게 필요한 경우에만 흡인하는 것을 권고해. 학생은 직접 확인한 상태를 바탕으로 지도자에게 보고하고 독단적으로 기도흡인을 수행하지 않아.",
+        "evidenceNote": "AARC 2022 필요 기반 흡인과 2024 포괄적 환자-인공호흡기 사정의 일반 원칙"
+      },
+      {
+        "id": "source",
+        "objectiveIds": [
+          "o3"
+        ],
+        "sourceIds": [
+          "aarc"
+        ],
+        "evidenceKind": "simulator-contract",
+        "question": "이 사례 중 원본 장비에 표시된 VTE 352 mL의 의미는?",
+        "options": [
+          {
+            "id": "a",
+            "label": "해당 영아의 실제 호기 일회호흡량이므로 정상임을 뜻한다.",
+            "feedback": "앱의 고정 예시 숫자는 가상 소아 환자의 실측값이 아니야."
+          },
+          {
+            "id": "b",
+            "label": "이 영아에게 권고되는 목표 환기량이므로 그대로 입력한다.",
+            "feedback": "성인형 화면 예시로 환아의 목표 설정이나 처방을 할 수 없어."
+          },
+          {
+            "id": "c",
+            "label": "원본 장비 화면 읽기용 독립 고정값이며 영아 사례와 무관하다.",
+            "feedback": "맞아. 가상 환아의 별도 자료와 원본의 고정 모니터를 구별해."
+          }
+        ],
+        "answer": "c",
+        "explanation": "VTE 352 mL는 시뮬레이터에 고정된 화면 읽기 숫자이며 영아의 실제 환기량도 권장 수치도 아니야. 현재 케이스의 측정·치료 반응으로 해석하거나 기록해서는 안 돼.",
+        "evidenceNote": "이 앱의 MONITOR_REFERENCE가 성인형 기기 참고 독립 고정값이라는 구현 규약"
+      }
+    ]
   }
+
 ]);
 export function findCase(caseId){return PRECLINICAL_CASES.find(x=>x.id===caseId)||null;}

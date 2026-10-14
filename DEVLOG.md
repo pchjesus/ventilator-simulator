@@ -383,3 +383,10 @@ Five user decisions for v0.4.4–v0.4.6 were confirmed and tracked in `docs/UI_U
 ### Implementation risks and test coverage
 - Biggest risks: arbitrary typed precision, long-press lifecycle, small device width after layout change, CSS collisions, and CASE session preservation. Tests cover bounded numeric entry, no pre-accept device update, focus/Cancel, case stages and independence.
 - Run npm syntax/unit, real Chromium desktop/mobile, inspect screenshots, private PR merge, exact post-merge main CI; record failures and fixes in TEST_REPORT.
+
+
+## v0.5.2.1 — neonatal MAS and severe infant RSV (2026-10-14)
+- Original 2 adult CASEs unchanged; appended two independent fictional cases (3 objective-linked questions and 3 debrief prompts each).
+- AHA/AAP 2025 newborn delivery suction vs AARC 2022 intubated neonatal/pediatric indication-based suction carefully separated; source-linked MAS (Merck) and severe bronchiolitis (NICE) cognition-only education.
+- Original CASE progress RAM, CORE quiz, committed/Pending ventilator settings, fixed readouts and illustrative waveforms not connected to pediatric scenarios.
+- Clinical expert review, student pilot and actual PB980/pediatric ventilation model not done.

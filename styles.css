@@ -826,3 +826,5 @@ body[data-study-area="clinical"]:not([data-clinical-device-expanded="true"]) .wo
  body[data-study-area="clinical"] #mobile-device-toggle{display:none}
  body[data-study-area="clinical"][data-clinical-device-expanded="true"] #device-panel{display:block}
 }
+
+.case-group-heading{margin:18px 0 8px;padding:8px 11px;border-left:4px solid #3b88a8;background:#eaf5f9;color:#24536d;font-size:15px;font-weight:800}

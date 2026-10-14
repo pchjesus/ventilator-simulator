@@ -6,9 +6,9 @@ const copy=()=>structuredClone(PRECLINICAL_CASES);
 test("shipped case bank has six traceable items, pending review and no missing links",()=>{
  const report=auditCaseBank(PRECLINICAL_CASES,CASE_SOURCES);
  assert.deepEqual(report.errors,[]);
- assert.equal(report.caseCount,2);assert.equal(report.itemCount,6);
- assert.equal(report.warnings.length,2,"the cases must remain marked as not clinically reviewed");
- assert.equal(new Set(report.items.map(x=>x.caseId+":"+x.stepId)).size,6);
+ assert.equal(report.caseCount,4);assert.equal(report.itemCount,12);
+ assert.equal(report.warnings.length,4,"the cases must remain marked as not clinically reviewed");
+ assert.equal(new Set(report.items.map(x=>x.caseId+":"+x.stepId)).size,12);
  assert.ok(report.items.every(x=>x.objectiveIds.length>=1&&x.sourceIds.length>=1));
 });
 test("duplicated objectives and missing per-question objective IDs fail closed",()=>{
