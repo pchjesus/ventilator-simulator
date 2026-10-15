@@ -65,6 +65,7 @@ jobs:
           node tests/lab-guided-browser-check.mjs
           node tests/study-focus-browser-check.mjs
           node tests/learning-path-browser-check.mjs
+          node tests/learning-room-browser-check.mjs
       - name: Upload screenshots
         if: always()
         uses: actions/upload-artifact@v4
