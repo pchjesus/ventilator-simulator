@@ -59,6 +59,8 @@ try{
  // Full-page return does not falsely share A/B/C states with the main app.
  await page.locator("a.legacy-link").first().click();
  assert.match(page.url(),/\/index\.html$/);
+ // Cross-document navigation can commit before the independent main ESM boot completes.
+ await page.waitForFunction(()=>document.getElementById("learning-progress-status")?.textContent?.includes("CORE: 시작 전"));
  assert.match(await page.locator("#learning-progress-status").innerText(),/CORE: 시작 전.*LAB: 시작 전.*CASE: 시작 전/);
  assert.ok((await page.locator("#settings").innerText()).includes("PEEP"));
  assert.deepEqual(errors,[]);
