@@ -301,6 +301,18 @@ function initEducationUI(){
   configureInfoDialog("changelog-dialog","open-changelog");
 }
 
+// v0.6.0 read-only progress: the original three session stores retain ownership.
+let learningProgressReady=false;
+function updateLearningProgress(){
+ if(!learningProgressReady)return; // CASE boot renders before LAB/CORE declarations.
+ const labs=[...labSessions.values()],cases=[...caseSessions.values()];
+ const lDone=labs.filter(x=>x.phase==="completed").length;
+ const cDone=cases.filter(x=>x.done).length;
+ const core=!coreQuizState?"시작 전":coreQuizState.done?"완료":"학습 중";
+ const lab=!labs.length?"시작 전":lDone===3?"3/3 완료":"완료 "+lDone+"/3 · 진행 "+(labs.length-lDone);
+ const ca=!cases.length?"시작 전":cDone===4?"4/4 완료":"완료 "+cDone+"/4 · 진행 "+(cases.length-cDone);
+ document.getElementById("learning-progress-status").textContent="CORE: "+core+" · LAB: "+lab+" · CASE: "+ca+" · 개념 열람은 완료로 계산하지 않아.";
+}
 // Quick links only change active visible panel/scroll; they never mark completion.
 document.querySelectorAll("[data-learning-jump]").forEach(link=>link.addEventListener("click",event=>{
  event.preventDefault();
@@ -1011,6 +1023,7 @@ function returnToCaseFromLearning(){
 }
 
 function renderCase(){
+  updateLearningProgress();
   const root=document.getElementById("case-content");
   root.replaceChildren();
   if(caseAudit.errors.length){
@@ -1343,6 +1356,7 @@ function renderLabQuestion(root,question,session){
  renderLabSources(root,question.sourceIds);
 }
 function renderWaveLab(){
+ updateLearningProgress();
  labStart.hidden=labState.active;labStart.setAttribute("aria-expanded",String(labState.active));
  labWorkspace.hidden=!labState.active;
  if(!labState.active)return;
@@ -1493,6 +1507,7 @@ function quizSources(root,ids){
  root.append(sources);
 }
 function renderCoreQuiz(){
+ updateLearningProgress();
  const root=document.getElementById("core-quiz-root");
  syncCoreQuizPanel();
  document.querySelectorAll(".core-return-button").forEach(button=>button.hidden=!coreQuizState);
@@ -1922,4 +1937,5 @@ function animationFrame(now){
   requestAnimationFrame(animationFrame);
 }
 initEducationUI();renderMonitor();renderSettings();initReadingUI();renderCircuit();renderCoreLearning();renderCoreQuiz();renderWaveLab();showSideTab("core");paintWaveforms();
+learningProgressReady=true;updateLearningProgress();
 requestAnimationFrame(animationFrame);
