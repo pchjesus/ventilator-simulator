@@ -1,3 +1,17 @@
+## v0.5.4 — D5-A guided CORE LAB (2026-10-15)
+
+### Added
+- Pure `src/lab-engine.js` gates prediction → explicit observation → interpretation → completion. Immutable answers and no re-submit or skip.
+- Versioned `src/lab-lessons.js` with 3 missions × 2 unscored questions, all-choice feedback, source/evidence classification, pending clinical review and content audit.
+- Existing `#core-labs` UI reuses its graph/axis, comparison summary, source/clinical-warning text and A1/B1 reading width. Graph/title/desc/result/overlap withheld until observation, no answer leakage from previous selected mission.
+- Per-LAB RAM sessions preserve answers on mode/CASE/viewport changes and experiment switches; LAB-only restart clears selected lesson, closing/reopening preserves other lessons.
+- New engine/content Node tests and Chromium state-gating, 1440/700/360/320 responsive screenshots; original LAB/focus/browser checks retained and adapted only to the gated reveal. CI static package imports new modules.
+
+### Risk / verification
+- Browser source code is inspectable: this is a **learner UI disclosure gate, not a secure exam service**. No authenticated or private answer key mechanism.
+- The FiO₂ overlap only reflects the current waveform generator omitting FiO₂. No statement of real patient response or PB980 firmware behavior is implied. Clinical expert/real device, physical phone and accessibility user testing still pending.
+- [PR #28](https://github.com/pchjesus/ventilator-simulator/pull/28); exact test counts, run URLs and merged SHA must be filled from actual CI, not inferred. [D5 contract](docs/V0.5.4_D5_IMPLEMENTATION.md).
+
 # DEVLOG
 
 ## v0.5.3.1–0.5.3.3 — approved A1/B1 student readability (2026-10-15)
