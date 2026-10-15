@@ -1,3 +1,10 @@
+## Documentation policy — Educational UI/UX Design Standard v1.1 (2026-10-15)
+
+- **Scope: documentation only; risk L.** User conditionally requested adopting v1.1 after compatibility evaluation across Ventilator, RAAS, and Cardiac projects. The approved future-design standard is now [v1.1](docs/EDUCATIONAL_UI_DESIGN_STANDARD_v1.1.md); [v1.0](docs/EDUCATIONAL_UI_DESIGN_STANDARD_v1.0.md) remains intact as prior approved history.
+- Updated AGENTS.md and README.md active references. The new standard adds Braun product examples, MUST/SHOULD/MAY distinctions, model-vs-UI state boundaries, accessibility (200% text resize vs 320 CSS px reflow), risk-weighted verification, legacy-state migration checks and evidence classification.
+- **Precedence:** latest project-specific approved UI, model, state, safety, clinical and QA contracts remain authoritative. This adoption does not approve visual redesign, new persistent storage, scenarios, model change, or deployment. Ventilator v0.6.0 worksheet/navigation UX decisions remain unresolved.
+- **Validation:** existing original document and active references checked against main, replacement scope inspected as Markdown only. No executable or test changes. Runtime CI, devices, learners and clinical experts: NOT RUN for this documentation-only change.
+
 ## v0.5.4 — D5-A guided CORE LAB (2026-10-15)
 
 ### Added
