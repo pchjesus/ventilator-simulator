@@ -1,3 +1,18 @@
+## v0.6.0 B+ 보호 검사 확대 (RC)
+- 신규 `tests/content-source-lock-v060.test.mjs`: v0.5.4 기준 원본 source-of-truth 20개 Git blob SHA 검사. 간단한 문항 ID/정답 검사를 넘어 파형 엔진·임상 문구·선지 해설·Boyacto 원본을 감시.
+- 신규 `tests/learning-room-browser-check.mjs`: A/B/C 전환, PEEP 취소/적용, 설정·고정 모니터 분리, 별도 index 복귀 및 320/360/390/700/960/1100/1440px.
+- 별도 복습 이동: 안내 5단계 중 복습으로 이동하는 실제 경로, CORE/LAB/CASE 독립 상태 복귀와 초점 검사.
+- **이 기록은 다음 CI 실행을 통과했다고 주장하지 않는다.** 해당 PR HEAD test/browser/package 결과 확인 후 기록.
+
+## v0.6.0 B+ 통합 RC — QA 추적 (2026-10-15)
+
+- **Baseline main:** `704e6401eb35aad9aabdbb726d8d8d5f1455f8c5` / 기능 `v0.5.4`, [Draft PR #35](https://github.com/pchjesus/ventilator-simulator/pull/35).
+- 신규 `tests/content-integrity-v060.test.mjs`: 교육 설정 7·독립 고정 모니터 7·CORE 6/10·LAB 3/6·CASE 4/12·간호 행동 2 ID/정답/검토 보류 감사. 콘텐츠 변경 없이 검증만 추가.
+- 신규 `tests/learning-path-browser-check.mjs`: 320·360·390·700·960·1100·1440px 안내 UI/가로 스크롤과 CORE/LAB/CASE 독립 RAM/이동 회귀. 원래 네 개 Chromium 스크립트 및 Node 테스트 유지.
+- **증거 (정확한 SHA):** 최초 PR head `22a5606f13087298313fcf8cbdb352c6fcf0fc35`의 [Actions #38731422389](https://github.com/pchjesus/ventilator-simulator/actions/runs/38731422389) = scope/test/browser/package **ALL SUCCESS**. 통합 UI+신규 브라우저 테스트 head `d71ab8a1f667ccfe495cd2da48a713a2c0c029ec`의 [Actions #38732129347](https://github.com/pchjesus/ventilator-simulator/actions/runs/38732129347) = **ALL SUCCESS**. **후속 커밋의 PASS는 각 해당 커밋 Actions에서 별도 확인**.
+- 학생 출력 형식과 학습실 이동 UX는 미승인; 답안 없는 활동지 형식 중립 문서만 개발 브랜치에서 보관. 최종 학생 ZIP에 정답 포함 `docs/` 파일이 없어야 하고 실제 패키지 HTTP 실행 검사 필요.
+- **남은 게이트:** 최신 PR HEAD FULL CI · 최종 산출물 압축/HTTP 읽기 검증 · UX 결정 · 리뷰 및 main 병합 · 병합된 정확한 main SHA FULL CI · 실제 화면/실물 모바일/스크린리더/임상 전문가/학습자 평가 구분. **RC, FINAL 아님**.
+
 ## v0.5.4 D5-A — verification scope (2026-10-15)
 
 **Implementation:** Branch `feat/v0.5.4-d5-guided-labs`, [PR #28](https://github.com/pchjesus/ventilator-simulator/pull/28). Starts from v0.5.3.3 verified main `a1ef752cf7ded86436c0b071032585a27cd5322d`.

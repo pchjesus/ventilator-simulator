@@ -5,6 +5,14 @@
 - **Precedence:** latest project-specific approved UI, model, state, safety, clinical and QA contracts remain authoritative. This adoption does not approve visual redesign, new persistent storage, scenarios, model change, or deployment. Ventilator v0.6.0 worksheet/navigation UX decisions remain unresolved.
 - **Validation:** existing original document and active references checked against main, replacement scope inspected as Markdown only. No executable or test changes. Runtime CI, devices, learners and clinical experts: NOT RUN for this documentation-only change.
 
+## v0.6.0 B+ 통합 RC (개발 진행 중 · 2026-10-15)
+
+- **Base main:** `704e6401eb35aad9aabdbb726d8d8d5f1455f8c5`, 실제 기능 v0.5.4. 단일 기능 브랜치 `feat/v0.6.0-bplus-integrated-learning`, [Draft PR #35](https://github.com/pchjesus/ventilator-simulator/pull/35).
+- **Added (개발 브랜치):** 교수자 LAB 해설 DRAFT, CORE/LAB/CASE 콘텐츠 감사표, 기존 ID/정답/설정/모니터 불변성 단위 테스트; 5단계 **권장** 학습 안내, 완료 화면의 CORE→LAB/ LAB→CORE·CASE 링크, 기존 독립 RAM 상태를 읽는 진행 요약, 7개 너비 Chromium 회귀 검사; 답안 없는 학생 활동지 **형식 중립 초안**.
+- **Unchanged:** PB980 참고 화면/설정·모니터·파형 및 의학적 모델링 경계, LAB D5 단계와 정답 노출 게이트, 4 CASE/12문항 및 2개 비채점 행동, 별도 Boyacto A/B/C learn.html, 영구 저장·로그인·서버 없음.
+- **UX 결정 대기:** 학생 활동지 A 인쇄 HTML/B 별도 Markdown·PDF; 학습실 이동 A 조건부 확인/B 기존 이동 + 상태 초기화 안내. 본 개발은 이 선택을 임의 확정하지 않는다.
+- **Status:** PR의 초기 QA 검증은 통과했으나 이후 모든 변경에 대한 최종 RC 확인·사용자 결정·병합 main SHA 검증 전. v0.6.0 FINAL 아님. 임상 전문가 감수·실제 학생 사용성 및 물리 장비 검증 미실시.
+
 ## v0.5.4 — D5-A guided CORE LAB (2026-10-15)
 
 ### Added

@@ -148,6 +148,7 @@
         <a href="#core-quiz-root" data-learning-jump="quiz">형성평가</a>
         <a href="#core-labs" data-learning-jump="lab">파형 LAB</a>
         <a href="#panel-case" data-learning-jump="case">CASE</a>
+        <a href="#learning-review" data-learning-jump="review">복습</a>
       </nav>
       <div class="side-tabs core-tabs" role="tablist" aria-label="기본 학습 탭">
         <button type="button" id="tab-core" class="active" role="tab" aria-selected="true" aria-controls="panel-core">핵심 개념</button>
@@ -164,9 +165,11 @@
       </details>
       <section id="panel-core" role="tabpanel" aria-labelledby="tab-core">
         <p class="core-intro">PEEP · FiO₂ · VTE · 호흡수 · Ppeak부터 익혀. <strong>설정값과 환자 측정값의 차이</strong>를 구분하는 게 목표야.</p>
-        <div class="core-learning-steps">
-          <span>1. 핵심 개념</span><span>2. 학습 확인·복습</span><span>3. CASE 적용</span>
+        <div class="core-learning-steps" role="list" aria-label="권장 학습 순서, 강제하지 않음">
+          <span role="listitem">1. 개념 읽기</span><span role="listitem">2. CORE 형성평가</span><span role="listitem">3. 선택 LAB</span><span role="listitem">4. 선택 CASE</span><span role="listitem">5. 복습</span>
         </div>
+        <p class="learning-route-note">학습 순서는 권장일 뿐이야. CORE·LAB·CASE는 자유롭게 이동할 수 있어. 새로고침이나 별도 학습실 이동 시 이 페이지 답안이 초기화될 수 있어.</p>
+        <p id="learning-progress-status" class="learning-progress-status" role="status" aria-live="polite">학습 진도 확인 중</p>
         <div id="core-learning-content" tabindex="-1" aria-label="실습 전 필수 개념"></div>
         <section id="core-quiz-root" class="core-quiz" tabindex="-1" aria-label="핵심 개념 학습 확인"></section>
 
@@ -208,6 +211,16 @@
             <p class="lab-disclaimer">현재 장비에 미반영 · 정적 교육용 생성 곡선(0–16초, 320표본) · 실제 환자의 SpO₂, PaO₂, VTE, fTOT 또는 혈역학 반응을 예측하지 않아. 임상 전문가 감수 전 교육 자료야.</p>
             <div class="lab-bottom-actions"><button type="button" id="lab-restart" class="lab-action">현재 LAB만 다시 시작</button>
             <button type="button" id="lab-exit" class="lab-action">LAB 닫기 · 학습으로 복귀 (답안 유지)</button></div>
+          </div>
+        </section>
+        <section id="learning-review" class="learning-review" tabindex="-1" aria-labelledby="learning-review-heading">
+          <h3 id="learning-review-heading">5단계 · 내 학습 복습</h3>
+          <p>CORE에서 틀린 개념, LAB에서 관찰한 생성 파형, CASE에서 아직 모르는 환자 정보를 돌아봐. 이것은 별도 채점이나 진도 완료 버튼이 아니야.</p>
+          <p class="learning-review-warning">정답·해설은 각 문항에 답한 후 기존 결과 화면에서 확인해. 새로고침하거나 별도 학습실로 이동하면 이 페이지 기록은 유지되지 않아.</p>
+          <div class="learning-review-actions" role="group" aria-label="복습 영역 이동">
+            <button type="button" data-review-target="quiz">CORE 답안·오개념 다시 보기</button>
+            <button type="button" data-review-target="lab">파형 LAB 결과 다시 보기</button>
+            <button type="button" data-review-target="case">CASE 판단·보고 복습</button>
           </div>
         </section>
         <p class="core-scope-warning">이 프로그램 상단 모니터는 실제 측정값이 아닌 고정 예시야. 환자 상태와 치료 반응을 계산하거나 예측하지 않아.</p>

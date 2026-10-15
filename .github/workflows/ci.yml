@@ -64,6 +64,8 @@ jobs:
           node tests/lab-browser-check.mjs
           node tests/lab-guided-browser-check.mjs
           node tests/study-focus-browser-check.mjs
+          node tests/learning-path-browser-check.mjs
+          node tests/learning-room-browser-check.mjs
       - name: Upload screenshots
         if: always()
         uses: actions/upload-artifact@v4
@@ -112,6 +114,22 @@ jobs:
           test -s dist/src/device-learning.js
           test -s dist/src/core-quiz.js
           test -s dist/src/student-learning.js
+          # Student ZIP is an intentionally minimal public static bundle.
+          # Faculty answer guides and development/clinical review documents stay outside dist.
+          test ! -e dist/docs
+          test ! -e dist/tests
+          test ! -e dist/AGENTS.md
+          test ! -e dist/docs/FACULTY_LAB_GUIDE_v0.6.0_DRAFT.md
+          test ! -e dist/docs/CONTENT_REVIEW_MATRIX_v0.6.0.md
+          test ! -e dist/docs/STUDENT_WORKSHEET_SOURCE_v0.6.0_DRAFT.md
+      - name: Smoke-test staged static site over HTTP
+        run: |
+          python3 -m http.server 8091 --bind 127.0.0.1 --directory dist >/tmp/ventilator-v060-http.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill $SERVER_PID || true' EXIT
+          for path in index.html learn.html styles.css learning-room.css src/app.js src/learning-room.js src/lab-lessons.js src/core-quiz.js src/preclinical-cases.js; do
+            curl --fail --silent --show-error --retry 5 --retry-delay 1 --retry-connrefused "http://127.0.0.1:8091/$path" -o /dev/null
+          done
       - uses: actions/upload-artifact@v4
         with:
           name: pb980-web-only

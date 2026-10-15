@@ -530,7 +530,7 @@ body[data-control-mode="device"] .setting{min-height:92px}
 .extra-tabs button{min-width:0;padding:8px 6px!important;min-height:44px;background:#fff;border:1px solid #b2cbd7;color:#315974;border-radius:6px}
 .extra-tabs button.active{background:#1e617f;border-color:#1e617f;color:#fff}
 .core-intro{font-size:13px;line-height:1.65;padding:12px;margin:12px 0 8px;color:#214960;border-left:4px solid #4b9dba;background:#eef7fa;border-radius:7px}
-.core-learning-steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;margin:9px 0 13px}
+.core-learning-steps{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:4px;margin:9px 0 13px}
 .core-learning-steps span{background:#e6f1f7;border:1px solid #c0d7e5;border-radius:6px;text-align:center;padding:9px 4px;color:#28556e;font-size:10px;font-weight:700;line-height:1.4}
 #core-learning-content{display:grid;gap:8px}
 .core-concept{background:#fff;border:1px solid #c0d5e1;border-radius:9px;overflow:hidden}
@@ -978,7 +978,7 @@ body[data-study-area="clinical"]:not([data-clinical-device-expanded="true"]) .wo
 .header-tools{position:relative;min-width:0}
 .header-tools>summary{display:none}
 .header-tools .header-actions{display:flex;gap:7px;align-items:center}
-.learning-quick-nav{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;margin:13px 0 16px}
+.learning-quick-nav{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:7px;margin:13px 0 16px}
 .learning-quick-nav>span{grid-column:1/-1;font-size:13px;color:#31556c;font-weight:800}
 .learning-quick-nav>a{display:flex;justify-content:center;align-items:center;min-width:0;min-height:44px;padding:8px 5px;text-align:center;border:1px solid #b6cbd5;border-radius:8px;background:#fff;color:#145a75;font-size:14px;line-height:1.45;font-weight:750;text-decoration:none}
 .learning-quick-nav>a:hover{background:#edf5f8;border-color:#145a75}
@@ -1029,3 +1029,24 @@ body[data-study-area="clinical"]:not([data-clinical-device-expanded="true"]) .wo
 .lab-bottom-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
 #lab-to-observation,#lab-to-interpret,#lab-to-review{margin:8px 0}
 @media(max-width:360px){.lab-question-panel{padding:10px}.lab-question-choice{padding:10px 7px}.lab-bottom-actions{display:grid;grid-template-columns:1fr}.lab-bottom-actions button{width:100%}}
+
+/* v0.6.0 B+ learning-guide reflow */
+.learning-route-note{font-size:12px;line-height:1.65;margin:8px 0 13px;color:#33586b}
+@media(max-width:700px){.core-learning-steps{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* v0.6.0: live read-only session summary, never indicates concept visits as completion */
+.learning-progress-status{font-size:12px;line-height:1.65;margin:8px 0 14px;padding:8px 11px;border-left:3px solid #628ca5;background:#f0f6f8;color:#315369}
+.learning-next-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:13px}
+.learning-next-actions button{min-height:44px}
+@media(max-width:700px){.learning-next-actions{display:grid;grid-template-columns:1fr}}
+
+/* v0.6.0 B+ non-graded review destination, distinct from graded answer screens. */
+.learning-review{margin:16px 0;padding:clamp(12px,2vw,20px);background:#fff;border:1px solid #c0d5e1;border-radius:10px;line-height:1.65;scroll-margin-top:18px}
+.learning-review h3{margin:0 0 8px;font-size:clamp(17px,2vw,21px)}
+.learning-review p{font-size:14px;line-height:1.7}
+.learning-review-warning{color:#475f6c;font-size:13px!important}
+.learning-review-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.learning-review-actions button,.learning-review-return{min-height:44px;line-height:1.5;border:1px solid #88aebf;background:#f6fafc;color:#144e68;padding:9px 12px;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer}
+.learning-review :is(button):focus-visible,.learning-review-return:focus-visible{outline:3px solid #247ba4;outline-offset:2px}
+.learning-review-return{margin:9px 0}
+@media(max-width:700px){.learning-quick-nav{grid-template-columns:repeat(2,minmax(0,1fr))}.learning-review-actions{display:grid;grid-template-columns:1fr}.learning-review-actions button{width:100%}}

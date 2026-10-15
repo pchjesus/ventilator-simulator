@@ -301,17 +301,35 @@ function initEducationUI(){
   configureInfoDialog("changelog-dialog","open-changelog");
 }
 
-// Quick links only change active visible panel/scroll; they never mark completion.
-document.querySelectorAll("[data-learning-jump]").forEach(link=>link.addEventListener("click",event=>{
- event.preventDefault();
- const type=link.dataset.learningJump;
- if(type==="case"){selectStudyArea("clinical");}
- else{selectStudyArea("learning");}
- const target=document.getElementById(({concepts:"core-learning-content",quiz:"core-quiz-root",lab:"core-labs",case:"panel-case"})[type]);
+// v0.6.0 read-only progress: the original three session stores retain ownership.
+let learningProgressReady=false;
+function updateLearningProgress(){
+ if(!learningProgressReady)return; // CASE boot renders before LAB/CORE declarations.
+ const labs=[...labSessions.values()],cases=[...caseSessions.values()];
+ const lDone=labs.filter(x=>x.phase==="completed").length;
+ const cDone=cases.filter(x=>x.done).length;
+ const core=!coreQuizState?"시작 전":coreQuizState.done?"완료":"학습 중";
+ const lab=!labs.length?"시작 전":lDone===3?"3/3 완료":"완료 "+lDone+"/3 · 진행 "+(labs.length-lDone);
+ const ca=!cases.length?"시작 전":cDone===4?"4/4 완료":"완료 "+cDone+"/4 · 진행 "+(cases.length-cDone);
+ document.getElementById("learning-progress-status").textContent="CORE: "+core+" · LAB: "+lab+" · CASE: "+ca+" · 개념 열람은 완료로 계산하지 않아.";
+}
+// Navigation is projection only; never marks progress or resets the three engines.
+function navigateLearning(type){
+ const id=({concepts:"core-learning-content",quiz:"core-quiz-root",lab:"core-labs",case:"panel-case",review:"learning-review"})[type];
+ if(!id)return;
+ selectStudyArea(type==="case"?"clinical":"learning");
+ const target=document.getElementById(id);
  if(target){
   target.scrollIntoView({block:"start",behavior:"auto"});
   target.focus({preventScroll:true});
  }
+}
+document.querySelectorAll("[data-learning-jump]").forEach(link=>link.addEventListener("click",event=>{
+ event.preventDefault();
+ navigateLearning(link.dataset.learningJump);
+}));
+document.querySelectorAll("[data-review-target]").forEach(button=>button.addEventListener("click",()=>{
+ navigateLearning(button.dataset.reviewTarget);
 }));
 function showSideTab(tab) {
   if(tab==="circuit"||tab==="alarm")extraLearning.open=true;
@@ -1011,6 +1029,7 @@ function returnToCaseFromLearning(){
 }
 
 function renderCase(){
+  updateLearningProgress();
   const root=document.getElementById("case-content");
   root.replaceChildren();
   if(caseAudit.errors.length){
@@ -1095,6 +1114,7 @@ function renderCase(){
     appendCaseObjectiveReview(root,scenario,caseState);
     appendCaseActionReview(root,scenario);
     renderReflection(root,scenario);
+    root.append(caseButton("학습 전체 복습 가이드 →",()=>navigateLearning("review"),"learning-review-return"));
     root.append(caseButton("이 사례 처음부터 다시 풀기",()=>openCaseSession(scenario.id,true),"case-primary"));
     caseSources(root,scenario.sources);
     return;
@@ -1348,6 +1368,7 @@ function renderWaveLab(){
  if(!labState.active)return;
  const exp=LAB_EXPERIMENTS[labState.experiment],lesson=labLesson(labState.experiment);
  const session=activeLabSession(),visible=labHasObservation(session);
+ updateLearningProgress();
  document.querySelectorAll("[data-lab-experiment]").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.labExperiment===labState.experiment)));
  document.querySelectorAll("[data-lab-graph]").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.labGraph===labState.graph)));
  document.getElementById("lab-comparison-summary").textContent=exp.label+" · 기준 "+exp.baseline+" → 실험 "+exp.trial+" "+exp.unit+" | 다른 초기 설정 동일 · 현재 장비 설정과 무관";
@@ -1375,6 +1396,14 @@ function renderWaveLab(){
   review.replaceChildren(makeElement("h4",null,"4단계 · 실습 요약"),makeElement("p",null,lesson.summary),
    makeElement("p",null,"이 LAB은 교육용 생성 파형만 비교하고, 실제 환자 산소화·호흡노력·혈역학 반응 또는 PB980 펌웨어를 예측하지 않아. 임상 전문가 검토 전 자료야."));
   renderLabSources(review,["generator","aarc"]);
+  const next=makeElement("div","learning-next-actions");
+  const concept=quizButton("핵심 개념 복습",()=>{
+   navigateLearning("concepts");
+  },"core-quiz-secondary");
+  const caseLink=quizButton("CASE 학습으로 이동 →",()=>{
+   renderCase();showSideTab("case");caseTab.focus();
+  },"core-quiz-primary");
+  next.append(concept,caseLink);review.append(next);
  }
  labObservationView.hidden=!visible;
  if(!visible){
@@ -1485,6 +1514,7 @@ function quizSources(root,ids){
  root.append(sources);
 }
 function renderCoreQuiz(){
+ updateLearningProgress();
  const root=document.getElementById("core-quiz-root");
  syncCoreQuizPanel();
  document.querySelectorAll(".core-return-button").forEach(button=>button.hidden=!coreQuizState);
@@ -1535,6 +1565,7 @@ function renderCoreQuiz(){
      }
      root.append(review);
    }else root.append(quizButton("6개 핵심 개념 다시 읽기",()=>openCoreConcept("peep"),"core-quiz-secondary"));
+   root.append(quizButton("선택 파형 LAB으로 이동 →",()=>{navigateLearning("lab");},"core-quiz-secondary"));
    root.append(quizButton("CASE 01~04에 적용하기 →",()=>{renderCase();showSideTab("case");caseTab.focus();},"core-quiz-primary"));
    root.append(quizButton("학습 확인 다시 풀기",()=>{coreQuizState=startCoreQuiz();renderCoreQuiz();root.querySelector(".core-quiz-answer")?.focus();},"core-quiz-secondary"));
    const preview=makeElement("details","core-quiz-instructor");
@@ -1913,4 +1944,5 @@ function animationFrame(now){
   requestAnimationFrame(animationFrame);
 }
 initEducationUI();renderMonitor();renderSettings();initReadingUI();renderCircuit();renderCoreLearning();renderCoreQuiz();renderWaveLab();showSideTab("core");paintWaveforms();
+learningProgressReady=true;updateLearningProgress();
 requestAnimationFrame(animationFrame);
