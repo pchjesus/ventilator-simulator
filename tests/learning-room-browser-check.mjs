@@ -39,21 +39,21 @@ try{
  await page.locator('[data-setting=peep]').click();
  await page.locator('[data-action=plus]').click();
  await page.locator('[data-action=cancel-edit]').click();
- assert.match(await page.locator(".success").innerText(),/변경을 취소/);
+ assert.match(await page.locator(".success").innerText(),/변경 중인 값은 적용되지 않았습니다/);
  assert.match(await page.locator(".success").innerText(),/5\.0 cmH₂O/);
  assert.equal(await page.locator(".monitor-strip").first().innerText(),monitor);
  // B/C navigation must not destroy the original C lesson completion.
  await page.locator(".learning-toggle [data-mode=b]").click();
  assert.equal(await page.locator(".b-shell").count(),1);
  await page.locator(".learning-toggle [data-mode=c]").click();
- assert.match(await page.locator(".success").innerText(),/변경을 취소/);
+ assert.match(await page.locator(".success").innerText(),/변경 중인 값은 적용되지 않았습니다/);
  await page.locator("[data-action=start]").first().click();
  await page.locator('[data-lesson=apply]').click();
  await page.locator(".mission-card [data-action=learn]").click();
  await page.locator('[data-setting=peep]').click();
  await page.locator('[data-action=plus]').click();
  await page.locator('[data-action=apply-edit]').click();
- assert.match(await page.locator(".success").innerText(),/적용/);
+ assert.match(await page.locator(".success").innerText(),/설정값이 6\.0 cmH₂O로 바뀌었습니다/);
  assert.equal(await page.locator(".monitor-strip").first().innerText(),monitor);
  // Full-page return does not falsely share A/B/C states with the main app.
  await page.locator("a.legacy-link").first().click();
