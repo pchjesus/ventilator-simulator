@@ -35,7 +35,7 @@ try{
  await p.locator("#lab-interpret-root input[type=radio]").first().check();
  await p.locator("#lab-interpret-submit").click();
  await p.locator("#lab-to-review").click();
- assert.match(await p.locator("#learning-progress-status").textContent(),/LAB: 완료 1\\/3/);
+ assert.match(await p.locator("#learning-progress-status").textContent(),/LAB: 완료 1\/3/);
  assert.equal(await p.locator("#lab-final-review .learning-next-actions button").count(),2);
  assert.equal(await p.locator("#lab-predict-submit").count(),0,"finished LAB cannot resubmit prediction");
  await p.locator("#lab-final-review .learning-next-actions button").last().click();
