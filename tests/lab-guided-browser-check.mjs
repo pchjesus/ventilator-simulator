@@ -21,7 +21,7 @@ try{
  for(const width of [1440,700,360,320]){
   const p=await open(width);
   const device=await p.locator("#settings").textContent(),fixed=await p.locator("#monitor").textContent();
-  await p.locator("#waveform-pause").click();
+  if(width>700)await p.locator("#waveform-pause").click();
   const graphBefore=await p.locator('#graph-pressure [data-phase="mandatory"]').first().getAttribute("d");
   await p.locator("#core-quiz-root .core-quiz-primary").click();
   await p.locator(".core-quiz-answer").first().click();
@@ -36,6 +36,7 @@ try{
   assert.equal(await p.locator("#lab-interpret-root").isVisible(),false);
   assert.equal(await p.locator("#lab-to-observation").isVisible(),false);
   assert.equal(await p.locator("#lab-phase-status").textContent(),"예상 답안 선택·제출 전 · 관찰 파형 비공개");
+  await p.locator("#lab-predict-root").scrollIntoViewIfNeeded();
   await p.screenshot({path:"artifacts/browser/v054-predict-"+width+".png",fullPage:false});
   // Exercise a wrong answer to make sure specific remediation is visible after submission only.
   await answer(p,"predict",2);
@@ -47,6 +48,7 @@ try{
   assert.equal(await p.locator("#lab-graph path[data-lab-series]").count(),2);
   assert.notEqual(await p.locator('[data-lab-series="baseline"]').getAttribute("d"),await p.locator('[data-lab-series="trial"]').getAttribute("d"));
   assert.equal(await p.locator("#lab-interpret-root").isVisible(),false);
+  await p.locator("#lab-graph").scrollIntoViewIfNeeded();
   await p.screenshot({path:"artifacts/browser/v054-observe-"+width+".png",fullPage:false});
   await p.locator("#lab-to-interpret").click();
   assert.equal(await p.locator("#lab-interpret-root").isVisible(),true);
@@ -68,6 +70,7 @@ try{
   assert.equal(await p.locator('[data-lab-series="baseline"]').getAttribute("d"),await p.locator('[data-lab-series="trial"]').getAttribute("d"));
   await p.locator('[data-lab-graph="flow"]').click();
   assert.equal(await p.locator(".lab-zero-line").count(),1);
+  await p.locator("#lab-graph").scrollIntoViewIfNeeded();
   await p.screenshot({path:"artifacts/browser/v054-fio2-"+width+".png",fullPage:false});
   await p.locator('[data-lab-experiment="rate"]').click();
   assert.equal(await p.locator("#lab-observation-view").isVisible(),false);
