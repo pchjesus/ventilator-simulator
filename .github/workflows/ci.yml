@@ -4,6 +4,11 @@ on:
   push:
     branches: [main]
   pull_request:
+# B+ CI: cancel only superseded PR checks. Preserve every main and manual release/QA run.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
 jobs:
   test:
     runs-on: ubuntu-latest

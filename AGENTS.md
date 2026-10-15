@@ -1,3 +1,7 @@
+## Development B+ / CI operating policy (approved 2026-10-15)
+
+Before planning a release-size change, read [docs/AI_ASSISTED_DEVELOPMENT_BPLUS_v1.0.md](docs/AI_ASSISTED_DEVELOPMENT_BPLUS_v1.0.md). Prefer one coherent version-level design and PR over repeated user-facing micro-releases; keep small reversible internal commits and repeated targeted verification. Use FAST + risk-selected FOCUSED PR validation and FULL on high-impact changes/release; retain all project-specific safety, simulation, persistence, clinical and historical regression contracts. No user-visible feature or CI PASS is implied by policy-only changes. This section is subordinate to previously user-approved project-specific technical protections.
+
 ## 공통 교육용 UI/UX 설계 지침 (2026-10-15, 앞으로의 설계에 적용)
 
 **새 학습자 대상 UI/UX 기획 및 변경 전에 [Educational UI Design Standard v1.0](docs/EDUCATIONAL_UI_DESIGN_STANDARD_v1.0.md)을 읽는다.** Boyacto 별도 학습실의 A 시작/B 탐색/C 조작 흐름을 새로운 학습 화면의 기본 참조로 삼되, **기존 PB980 참고 장비 화면 원형**에는 본 AGENTS의 장비 충실도/엔진 분리 규칙을 적용한다. 기존 `index.html`과 `learn.html`은 비교를 위해 보존하며 사용자의 별도 승인 없이는 강제 병합·대체하지 않는다. 이번 등록은 문서만 변경하며 즉시 UI 구현을 지시하지 않는다.
