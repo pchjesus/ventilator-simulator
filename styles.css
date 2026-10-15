@@ -530,7 +530,7 @@ body[data-control-mode="device"] .setting{min-height:92px}
 .extra-tabs button{min-width:0;padding:8px 6px!important;min-height:44px;background:#fff;border:1px solid #b2cbd7;color:#315974;border-radius:6px}
 .extra-tabs button.active{background:#1e617f;border-color:#1e617f;color:#fff}
 .core-intro{font-size:13px;line-height:1.65;padding:12px;margin:12px 0 8px;color:#214960;border-left:4px solid #4b9dba;background:#eef7fa;border-radius:7px}
-.core-learning-steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;margin:9px 0 13px}
+.core-learning-steps{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:4px;margin:9px 0 13px}
 .core-learning-steps span{background:#e6f1f7;border:1px solid #c0d7e5;border-radius:6px;text-align:center;padding:9px 4px;color:#28556e;font-size:10px;font-weight:700;line-height:1.4}
 #core-learning-content{display:grid;gap:8px}
 .core-concept{background:#fff;border:1px solid #c0d5e1;border-radius:9px;overflow:hidden}
@@ -1029,3 +1029,7 @@ body[data-study-area="clinical"]:not([data-clinical-device-expanded="true"]) .wo
 .lab-bottom-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
 #lab-to-observation,#lab-to-interpret,#lab-to-review{margin:8px 0}
 @media(max-width:360px){.lab-question-panel{padding:10px}.lab-question-choice{padding:10px 7px}.lab-bottom-actions{display:grid;grid-template-columns:1fr}.lab-bottom-actions button{width:100%}}
+
+/* v0.6.0 B+ learning-guide reflow */
+.learning-route-note{font-size:12px;line-height:1.65;margin:8px 0 13px;color:#33586b}
+@media(max-width:700px){.core-learning-steps{grid-template-columns:repeat(2,minmax(0,1fr))}}
