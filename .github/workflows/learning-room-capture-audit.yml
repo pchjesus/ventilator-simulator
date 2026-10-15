@@ -1,0 +1,32 @@
+name: One-off learning room capture audit
+on:
+  pull_request:
+    paths:
+      - tests/learning-room-capture-audit.mjs
+      - .github/workflows/learning-room-capture-audit.yml
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install browser
+        run: |
+          npm install --no-save --no-package-lock playwright@1.55.0
+          npx playwright install --with-deps chromium
+      - name: Capture original learning room
+        run: |
+          python3 -m http.server 8077 --bind 127.0.0.1 &
+          SERVER_PID=$!
+          trap 'kill $SERVER_PID || true' EXIT
+          node tests/learning-room-capture-audit.mjs
+      - name: Upload audit screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: learning-room-review-screenshots
+          path: artifacts/learning-room/
+          if-no-files-found: error
