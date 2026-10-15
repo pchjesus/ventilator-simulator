@@ -1,3 +1,11 @@
+## v0.5.4 D5-A — verification scope (2026-10-15)
+
+**Implementation:** Branch `feat/v0.5.4-d5-guided-labs`, [PR #28](https://github.com/pchjesus/ventilator-simulator/pull/28). Starts from v0.5.3.3 verified main `a1ef752cf7ded86436c0b071032585a27cd5322d`.
+
+**Added gates:** `tests/lab-engine.test.mjs` validates question schema/count, source/evidence/review pending, stage transitions, invalid answers and re-submission. `tests/lab-guided-browser-check.mjs` checks blank graph/result/ARIA before prediction, staged observation and interpretation, per-LAB RAM and only-selected restart, CORE/CASE/device isolation and 1440/700/360/320 mobile viewports. Previous unit tests, `browser-check.mjs`, `lab-browser-check.mjs` and `study-focus-browser-check.mjs` remain (older LAB tests adapted for explicit observation phase). Packaging verifies both new modules in dist and imports them.
+
+**Validation status:** Mark actual CI Node pass count, browser pass, staged ZIP import, screenshot inspection, PR merge and final main SHA only after those actions succeed. No clinical, physical smartphone, screen reader or participant study validation has been performed. Original 82/82 Node + Chromium + package refers to **v0.5.3.3**, not this new version.
+
 # TEST_REPORT — v0.5.3.3 (교육용 베타)
 
 ## v0.5.3.3 — A1/B1 학습 집중형 화면 회귀 (2026-10-15)
