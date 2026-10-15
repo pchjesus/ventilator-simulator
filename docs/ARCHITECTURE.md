@@ -1,3 +1,5 @@
+> **v0.6.0 통합 RC 설계 기록 (개발 중):** CORE(`coreQuizState`), LAB(`labSessions` Map), CASE(`caseSessions` Map), 장비(`state`/`editState`)는 각각 원 소유권을 유지하며, 권장 5단계 학습 길잡이와 진행 상태는 기존 RAM의 **읽기 전용 UI 투영**이다. `learn.html`은 독립된 별도 문서/학습실 RAM이며 상태 저장·교차 동기화가 없다. 인쇄/이동 UX는 미승인. 모델 및 콘텐츠 계약은 v0.5.4 그대로이고 새 서버·저장소를 도입하지 않는다.
+
 ## v0.5.4 — D5-A guided learning state (2026-10-15)
 
 ```text
