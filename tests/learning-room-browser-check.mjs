@@ -31,7 +31,8 @@ try{
  await page.locator('[data-region=monitor]').first().click();
  assert.equal(await page.locator(".panel-detail").count(),1);
  assert.match(await page.locator(".panel-detail").innerText(),/고정 표시 예시/);
- const monitor=await page.locator(".monitor-strip").first().innerText();
+ const monitor=await page.locator(".monitor-cell").allInnerTexts();
+ assert.equal(monitor.length,7);
  await page.locator(".learning-toggle [data-mode=c]").click();
  // C cancellation applies nothing to the committed teaching setting.
  await page.locator('[data-lesson=cancel]').click();
@@ -41,7 +42,7 @@ try{
  await page.locator('[data-action=cancel-edit]').click();
  assert.match(await page.locator(".success").innerText(),/변경 중인 값은 적용되지 않았습니다/);
  assert.match(await page.locator(".success").innerText(),/5\.0 cmH₂O/);
- assert.equal(await page.locator(".monitor-strip").first().innerText(),monitor);
+ assert.deepEqual(await page.locator(".monitor-cell").allInnerTexts(),monitor);
  // B/C navigation must not destroy the original C lesson completion.
  await page.locator(".learning-toggle [data-mode=b]").click();
  assert.equal(await page.locator(".b-shell").count(),1);
@@ -54,7 +55,7 @@ try{
  await page.locator('[data-action=plus]').click();
  await page.locator('[data-action=apply-edit]').click();
  assert.match(await page.locator(".success").innerText(),/설정값이 6\.0 cmH₂O로 바뀌었습니다/);
- assert.equal(await page.locator(".monitor-strip").first().innerText(),monitor);
+ assert.deepEqual(await page.locator(".monitor-cell").allInnerTexts(),monitor);
  // Full-page return does not falsely share A/B/C states with the main app.
  await page.locator("a.legacy-link").first().click();
  assert.match(page.url(),/\/index\.html$/);
