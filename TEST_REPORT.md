@@ -1,3 +1,9 @@
+## v0.6.0 B+ 보호 검사 확대 (RC)
+- 신규 `tests/content-source-lock-v060.test.mjs`: v0.5.4 기준 원본 source-of-truth 20개 Git blob SHA 검사. 간단한 문항 ID/정답 검사를 넘어 파형 엔진·임상 문구·선지 해설·Boyacto 원본을 감시.
+- 신규 `tests/learning-room-browser-check.mjs`: A/B/C 전환, PEEP 취소/적용, 설정·고정 모니터 분리, 별도 index 복귀 및 320/360/390/700/960/1100/1440px.
+- 별도 복습 이동: 안내 5단계 중 복습으로 이동하는 실제 경로, CORE/LAB/CASE 독립 상태 복귀와 초점 검사.
+- **이 기록은 다음 CI 실행을 통과했다고 주장하지 않는다.** 해당 PR HEAD test/browser/package 결과 확인 후 기록.
+
 ## v0.6.0 B+ 통합 RC — QA 추적 (2026-10-15)
 
 - **Baseline main:** `704e6401eb35aad9aabdbb726d8d8d5f1455f8c5` / 기능 `v0.5.4`, [Draft PR #35](https://github.com/pchjesus/ventilator-simulator/pull/35).

@@ -57,3 +57,6 @@
 ## 참고문헌 (APA 7th)
 
 Goodfellow, L. T., Miller, A. G., Varekojis, S. M., LaVita, C. J., Glogowski, J. T., & Hess, D. R. (2024). AARC clinical practice guideline: Patient-ventilator assessment. *Respiratory Care, 69*(8), 1042–1054. https://doi.org/10.4187/respcare.12007
+
+## 원본 소스 변조 방지 감사 (v0.6.0 추가)
+`tests/content-source-lock-v060.test.mjs`는 기준 `704e6401...`에 등록된 **20개 고유 Git blob SHA**를 직접 확인한다. 엔진 코드, 6개 개념/10개 CORE, 3개 LAB/6문항, CASE 4개/12문항, 선택 행동 2개, Boyacto A/B/C의 원본 파일이 코드·문장·해설 차원에서 바뀌면 실패한다. `src/sim-model.js`는 단순 버전 문자열만 검사 시 `0.5.4`로 정규화하여 v0.6.0으로 정상 버전 변경을 허용하지만, 설정·모니터·모델의 그 밖의 변경은 차단한다. 새 동선의 `src/app.js`, `index.html`, `styles.css`는 브라우저 회귀로 검증한다. SHA 검사는 임상적 정확성이나 의료진 감수 완료를 뜻하지 않는다.
