@@ -36,6 +36,7 @@ jobs:
           trap 'kill $SERVER_PID || true' EXIT
           node tests/browser-check.mjs
           node tests/lab-browser-check.mjs
+          node tests/lab-guided-browser-check.mjs
           node tests/study-focus-browser-check.mjs
       - name: Upload screenshots
         if: always()
@@ -54,7 +55,7 @@ jobs:
         run: |
           mkdir -p dist/src
           cp index.html styles.css dist/
-          cp src/app.js src/sim-model.js src/waveform-model.js src/waveform-compare.js src/setting-editor.js src/education-content.js src/release-notes.js src/waveform-inspector.js src/preclinical-cases.js src/case-clinical-data.js src/case-actions.js src/case-engine.js src/case-quality.js src/device-learning.js src/student-learning.js src/core-quiz.js dist/src/
+          cp src/app.js src/sim-model.js src/waveform-model.js src/waveform-compare.js src/lab-engine.js src/lab-lessons.js src/setting-editor.js src/education-content.js src/release-notes.js src/waveform-inspector.js src/preclinical-cases.js src/case-clinical-data.js src/case-actions.js src/case-engine.js src/case-quality.js src/device-learning.js src/student-learning.js src/core-quiz.js dist/src/
           touch dist/.nojekyll
           test -s dist/index.html
           test -s dist/styles.css
@@ -62,6 +63,10 @@ jobs:
           test -s dist/src/sim-model.js
           test -s dist/src/waveform-model.js
           test -s dist/src/waveform-compare.js
+          test -s dist/src/lab-engine.js
+          test -s dist/src/lab-lessons.js
+          node --input-type=module -e 'import("./dist/src/lab-lessons.js").then(({auditLabLessons})=>{const r=auditLabLessons();if(!r.valid||r.count!==6)throw Error("Staged LAB lesson audit failed")})'
+          node --input-type=module -e 'import("./dist/src/lab-engine.js").then(({createLabSession})=>{if(createLabSession("fio2").phase!=="predict-unanswered")throw Error("Staged LAB engine import failed")})'
           node --input-type=module -e 'import("./dist/src/waveform-compare.js").then(({compareWaveforms})=>{const r=compareWaveforms();if(r.count!==320||r.baseline.length!==320||r.trial.length!==320)throw Error("Staged LAB comparison import failed")})'
           test -s dist/src/setting-editor.js
           test -s dist/src/education-content.js
