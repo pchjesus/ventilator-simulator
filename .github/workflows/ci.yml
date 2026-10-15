@@ -10,7 +10,26 @@ concurrency:
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
+  scope:
+    name: B+ change scope
+    runs-on: ubuntu-latest
+    outputs:
+      tier: ${{ steps.detector.outputs.tier }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - name: Self-test and classify changed files
+        id: detector
+        env:
+          CI_BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
+        run: |
+          bash scripts/ci-scope.sh --self-test
+          bash scripts/ci-scope.sh
+
   test:
+    needs: scope
+    if: needs.scope.outputs.tier != 'docs'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -23,6 +42,8 @@ jobs:
         run: npm test
 
   browser:
+    needs: scope
+    if: needs.scope.outputs.tier != 'docs'
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -52,7 +73,8 @@ jobs:
           if-no-files-found: ignore
 
   package:
-    needs: [test, browser]
+    needs: [scope, test, browser]
+    if: needs.scope.outputs.tier == 'full'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
