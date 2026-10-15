@@ -1,4 +1,4 @@
-> **공통 UI/UX 디자인 설계 기준 (2026-10-15):** 향후 학습 화면은 [Educational UI Design Standard v1.0](docs/EDUCATIONAL_UI_DESIGN_STANDARD_v1.0.md)을 참고한다. Boyacto 독립 PB980 학습실을 학생용 디자인 레퍼런스로 사용하되, 기존 장비 UI·모델·학습 상태는 별도 승인 없이 변경하지 않는다. **이 커밋은 문서 등록이며 UI 기능 변경이 아니다.**
+> **공통 UI/UX 디자인 설계 기준 (2026-10-15):** 향후 학습 화면은 [Educational UI Design Standard v1.1](docs/EDUCATIONAL_UI_DESIGN_STANDARD_v1.1.md)을 참고한다. Boyacto 독립 PB980 학습실을 학생용 디자인 레퍼런스로 사용하되, 기존 장비 UI·모델·학습 상태는 별도 승인 없이 변경하지 않는다. **이 커밋은 문서 등록이며 UI 기능 변경이 아니다.**
 
 > **v0.5.4 (2026-10-15 · D5-A):** CORE 안의 3 LAB(PEEP/f/FiO₂)에 각각 **예상 1 + 관찰 후 결과 확인 1**, 총 **6개 별도 비채점 문항**을 추가했다. 예측 답안 제출 전에는 기존 파형·결과·겹침 설명과 SVG title/desc가 표시되지 않으며, 예측 피드백 후 사용자가 관찰을 시작할 때 기존 공통 축 비교 그래프를 보여준다. LAB별 독립 RAM 세션, 읽기 전용 제출 답안, LAB별 재시작과 자유 전환을 지원한다. CORE 10 + CASE 4개/12문항 채점·실제 장비 설정과 Pending·독립 고정 모니터·A1/B1 UX는 변경하지 않았다. [D5 구현/위험·검증 계약](docs/V0.5.4_D5_IMPLEMENTATION.md) · [PR #28](https://github.com/pchjesus/ventilator-simulator/pull/28). 새 LAB 문항은 **임상 감수 전 초안**이며 환자의 산소화/실제 PB980 반응을 재현하지 않는다. CI 통과 및 최종 main SHA는 TEST_REPORT에서 확인할 것.
 
