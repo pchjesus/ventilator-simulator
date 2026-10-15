@@ -13,6 +13,11 @@ async function open(width,height=900){
  assert.equal(res.status(),200);
  return p;
 }
+async function observeNewLab(page){
+ await page.locator("#lab-predict-root input[type=radio]").first().check();
+ await page.locator("#lab-predict-submit").click();
+ await page.locator("#lab-to-observation").click();
+}
 try{
  const p=await open(1440);
  assert.equal(await p.locator("#mobile-tools").getAttribute("open"),"");
@@ -26,6 +31,7 @@ try{
  const feedback=await p.locator(".core-quiz-feedback").textContent();
  await p.locator("#lab-start").click();
  await p.locator('[data-lab-experiment="fio2"]').click();
+ await observeNewLab(p);
  await p.locator('[data-lab-graph="flow"]').click();
  assert.equal(await p.locator("#lab-overlap-note").isVisible(),true);
  assert.match(await p.locator("#lab-overlap-note").textContent(),/실제 환자/);
