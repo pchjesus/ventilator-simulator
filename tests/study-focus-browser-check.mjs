@@ -95,6 +95,7 @@ try{
   assert.equal(await page.locator("#panel-core").isVisible(),true);
   await page.locator("#lab-start").click();
   await page.locator('[data-lab-experiment="fio2"]').click();
+  await observeNewLab(page);
   assert.equal(await page.locator("#lab-overlap-note").isVisible(),true);
   await page.locator('[data-lab-graph="volume"]').click();
   const r=await page.evaluate(()=>({scroll:document.documentElement.scrollWidth,client:document.documentElement.clientWidth}));
