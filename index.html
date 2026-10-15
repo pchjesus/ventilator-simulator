@@ -180,6 +180,12 @@
               <button type="button" data-lab-experiment="fio2" aria-pressed="false">FiO₂ · 40 → 60%</button>
             </div>
             <p id="lab-comparison-summary" class="lab-summary" aria-live="polite"></p>
+            <p id="lab-objective" class="lab-objective"></p>
+            <p id="lab-phase-status" class="lab-phase-status" role="status" aria-live="polite"></p>
+            <section id="lab-predict-root" class="lab-question-panel" aria-label="변화 예상 문제"></section>
+            <button type="button" id="lab-to-observation" class="lab-action" hidden>예상 확인 완료 · 파형 관찰하기</button>
+            <div id="lab-observation-view" hidden>
+            <h4 class="lab-observation-title">2단계 · 기준/실험 생성 파형 관찰</h4>
             <div class="lab-series-legend" aria-label="기준/실험 선 종류">
               <span><i class="lab-legend-baseline" aria-hidden="true"></i>기준 · 회색 점선</span>
               <span><i class="lab-legend-trial" aria-hidden="true"></i>실험 · 강조 실선</span>
@@ -190,11 +196,17 @@
               <button type="button" data-lab-graph="volume" aria-pressed="false">용적 (Volume)</button>
             </div>
             <p id="lab-graph-title" class="lab-graph-title"></p>
-            <p id="lab-overlap-note" class="lab-overlap-note" role="status" hidden>두 교육용 생성 파형이 완전히 겹쳐 하나의 선처럼 보여. 이것이 실제 환자에서 산소화 반응이 없다는 의미는 아니야.</p>
-            <svg id="lab-graph" viewBox="0 0 760 235" preserveAspectRatio="xMidYMid meet" role="img" aria-label="교육용 기준과 실험 파형 겹침 비교"></svg>
+            <p id="lab-overlap-note" class="lab-overlap-note" role="status" hidden></p>
+            <svg id="lab-graph" viewBox="0 0 760 235" preserveAspectRatio="xMidYMid meet" tabindex="-1" role="img" aria-label="교육용 기준과 실험 파형 겹침 비교"></svg>
             <p id="lab-result-note" class="lab-result-note" aria-live="polite"></p>
+            </div>
+            <button type="button" id="lab-to-interpret" class="lab-action" hidden>관찰 완료 · 결과 이해 확인하기</button>
+            <section id="lab-interpret-root" class="lab-question-panel" aria-label="결과 이해 확인 문제" hidden></section>
+            <button type="button" id="lab-to-review" class="lab-action" hidden>결과 확인 완료 · 실습 요약 보기</button>
+            <section id="lab-final-review" class="lab-review" tabindex="-1" aria-label="LAB 실습 요약" hidden></section>
             <p class="lab-disclaimer">현재 장비에 미반영 · 정적 교육용 생성 곡선(0–16초, 320표본) · 실제 환자의 SpO₂, PaO₂, VTE, fTOT 또는 혈역학 반응을 예측하지 않아. 임상 전문가 감수 전 교육 자료야.</p>
-            <button type="button" id="lab-exit" class="lab-action">LAB 종료 · 기존 학습으로 복귀</button>
+            <div class="lab-bottom-actions"><button type="button" id="lab-restart" class="lab-action">현재 LAB만 다시 시작</button>
+            <button type="button" id="lab-exit" class="lab-action">LAB 닫기 · 학습으로 복귀 (답안 유지)</button></div>
           </div>
         </section>
         <p class="core-scope-warning">이 프로그램 상단 모니터는 실제 측정값이 아닌 고정 예시야. 환자 상태와 치료 반응을 계산하거나 예측하지 않아.</p>
