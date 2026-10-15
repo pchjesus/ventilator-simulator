@@ -1356,12 +1356,12 @@ function renderLabQuestion(root,question,session){
  renderLabSources(root,question.sourceIds);
 }
 function renderWaveLab(){
- updateLearningProgress();
  labStart.hidden=labState.active;labStart.setAttribute("aria-expanded",String(labState.active));
  labWorkspace.hidden=!labState.active;
  if(!labState.active)return;
  const exp=LAB_EXPERIMENTS[labState.experiment],lesson=labLesson(labState.experiment);
  const session=activeLabSession(),visible=labHasObservation(session);
+ updateLearningProgress();
  document.querySelectorAll("[data-lab-experiment]").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.labExperiment===labState.experiment)));
  document.querySelectorAll("[data-lab-graph]").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.labGraph===labState.graph)));
  document.getElementById("lab-comparison-summary").textContent=exp.label+" · 기준 "+exp.baseline+" → 실험 "+exp.trial+" "+exp.unit+" | 다른 초기 설정 동일 · 현재 장비 설정과 무관";
