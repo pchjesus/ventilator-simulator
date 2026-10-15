@@ -1,3 +1,5 @@
+> **v0.5.4 (2026-10-15 · D5-A):** CORE 안의 3 LAB(PEEP/f/FiO₂)에 각각 **예상 1 + 관찰 후 결과 확인 1**, 총 **6개 별도 비채점 문항**을 추가했다. 예측 답안 제출 전에는 기존 파형·결과·겹침 설명과 SVG title/desc가 표시되지 않으며, 예측 피드백 후 사용자가 관찰을 시작할 때 기존 공통 축 비교 그래프를 보여준다. LAB별 독립 RAM 세션, 읽기 전용 제출 답안, LAB별 재시작과 자유 전환을 지원한다. CORE 10 + CASE 4개/12문항 채점·실제 장비 설정과 Pending·독립 고정 모니터·A1/B1 UX는 변경하지 않았다. [D5 구현/위험·검증 계약](docs/V0.5.4_D5_IMPLEMENTATION.md) · [PR #28](https://github.com/pchjesus/ventilator-simulator/pull/28). 새 LAB 문항은 **임상 감수 전 초안**이며 환자의 산소화/실제 PB980 반응을 재현하지 않는다. CI 통과 및 최종 main SHA는 TEST_REPORT에서 확인할 것.
+
 > **v0.5.3.3 (2026-10-15):** 사용자가 선택한 학습 집중형 UX **A1/B1**을 v0.5.3.x 소규모 3패치로 적용: 학습 글씨/대비/테두리 정리, 701px 이상 ② 학습의 선택형 **학습만 크게 보기 ↔ 장비 함께 보기**(본문 약 900px, LAB 최대 1120px), 700px 이하 기존 버튼을 복제하지 않는 **도구 접기**, CORE 개념/형성평가/LAB/CASE 빠른 이동, 한영 파형 이름과 두 생성 파형 일치 안내. 원형 장비, 7설정/7독립 고정 모니터, CORE 6/10, CASE 4/12, LAB 데이터 및 미구현 D5(신규 6문항)는 불변. 근거: [UX 패치 명세](docs/V0.5.3X_STUDY_FOCUS_IMPLEMENTATION.md). 실제 사용자/임상 검증은 미실시. CI 최종 상태는 해당 PR과 Actions 참조.
 
 > **v0.5.3 (2026-10-14):** ② 학습 → CORE 내부에 독립 파형 비교 LAB을 추가했다. PEEP 5→8, 설정 f 15→18, FiO₂ 40→60% 실험은 항상 `initialSettings()`의 **별도 사본**에서 시작하며 실제 장비의 확정·Pending 설정을 읽거나 수정하지 않는다. Pressure/Flow/Volume 중 한 종류를 선택해 기준 **회색 점선**과 실험 **강조 실선**을 0–16초/320표본의 **공통 축**에서 겹쳐 비교한다. Flow는 음·양/0 기준선 표시. LAB 시작·종료·재진입, 모바일 파형 선택·탭/크기 변경 시 상태 보존을 지원한다. 기존 장비 파형 일시정지/분석, CORE 6카드·10문항, CASE 4개·12문항, 고정 모니터 7개는 독립적으로 유지한다. **LAB 예상/해석 6문항과 활동지는 v0.5.4 이후**다. 실제 환자 생리/산소화·PB980 펌웨어 모델 아님; 임상 전문가·학생 사용성 검증 미완료. [개발 PR #26](https://github.com/pchjesus/ventilator-simulator/pull/26), [승인 명세](docs/V0.6.0_APPROVED_UX_IMPLEMENTATION_SPEC.md).
@@ -8,7 +10,7 @@
 
 > **v0.5.2.1 (2026-10-14):** 기존 성인 CASE 2종에 신생아 태변흡인증후군(MAS)·영아 중증 RSV 세기관지염을 추가한 **총 4개 CASE, 12개 문항**. 네 사례 모두 전문 의료인 감수 전 교육 초안. 성인 PB980 참고형 모니터·설정·생성 파형과 소아 사례의 데이터는 서로 연결되지 않아.
 
-# Ventilator Simulator — v0.5.3 (교육용 베타)
+# Ventilator Simulator — v0.5.4 (교육용 베타)
 
 > **릴리스 확인 (2026-10-14):** [병합 PR #19](https://github.com/pchjesus/ventilator-simulator/pull/19) · [v0.5.1 실행 코드 main SHA `893476ff19de1db576e87cd5d4e8966c1e3e4e05` 및 최종 CI 성공](https://github.com/pchjesus/ventilator-simulator/actions/runs/38423564087). D1-A 큰 글씨 읽기 구현 완료. D2–D5는 차기 v0.5.2–v0.6.0 범위이며 미구현. 개발 기준은 [승인 UX 명세](docs/V0.6.0_APPROVED_UX_IMPLEMENTATION_SPEC.md)와 [Playbook](docs/V0.5.1_TO_V0.6.0_IMPLEMENTATION_PLAYBOOK.md).
 

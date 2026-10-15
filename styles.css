@@ -1001,3 +1001,29 @@ body[data-study-area="clinical"]:not([data-clinical-device-expanded="true"]) .wo
 @media(min-width:701px){
  .header-tools[open] .header-actions{display:flex}
 }
+
+/* v0.5.4 D5-A guided micro-LAB. Preserve v0.5.3.3's full-width LAB / mobile tools. */
+.lab-objective{font-weight:750;padding:5px 2px;margin:4px 0}
+.lab-phase-status{background:#e7f3f8;border-left:3px solid #176784;padding:10px 12px;font-weight:750}
+.lab-question-panel{padding:15px;margin:13px 0;border:1px solid #a9c8d9;border-radius:9px;background:#fff}
+.lab-question-title,.lab-observation-title,.lab-review h4{margin:4px 0 10px;font-size:17px;color:#174b65}
+.lab-question-prompt{font-size:15px!important;font-weight:750}
+.lab-question-choices{border:0;margin:0;padding:0;min-width:0}
+.lab-question-choices legend{font-size:13px;font-weight:750;color:#325468;margin-bottom:8px}
+.lab-question-choice{display:flex;align-items:flex-start;gap:9px;min-height:44px;border:1px solid #b3ccd8;padding:12px 10px;margin:7px 0;border-radius:8px;background:#f7fafc;font-size:14px;line-height:1.55;cursor:pointer}
+.lab-question-choice:focus-within{outline:3px solid #2082ad;outline-offset:2px}
+.lab-question-choice input{accent-color:#155a7e;width:17px;height:17px;flex:none;margin-top:2px}
+.lab-question-form .lab-submit{margin:10px 0}
+.lab-question-outcome{font-weight:800;color:#154d69}
+.lab-readonly{font-size:13px!important;color:#4b6070}
+.lab-answer-explanation{padding:10px 12px;margin:8px 0;border:1px solid #c3d6df;border-radius:7px;background:#f7fafc;font-size:14px;line-height:1.65}
+.lab-answer-selected{border-color:#216f97;background:#ecf7fc}
+.lab-answer-explanation p{margin:4px 0 0}
+.lab-question-explanation{padding:10px 12px;background:#edf5f9;border-left:3px solid #236d8f}
+.lab-evidence{margin:12px 0;padding:10px;border:1px solid #d0e0e7;border-radius:7px;background:#f9fcfd;font-size:13px;line-height:1.55;overflow-wrap:anywhere}
+.lab-evidence p{font-size:12px!important;margin:7px 0}
+.lab-evidence a{color:#135c86}
+.lab-review{padding:14px;margin:14px 0;border:1px solid #b4cfdb;border-radius:9px;background:#fff}
+.lab-bottom-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+#lab-to-observation,#lab-to-interpret,#lab-to-review{margin:8px 0}
+@media(max-width:360px){.lab-question-panel{padding:10px}.lab-question-choice{padding:10px 7px}.lab-bottom-actions{display:grid;grid-template-columns:1fr}.lab-bottom-actions button{width:100%}}

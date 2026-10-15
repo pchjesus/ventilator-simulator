@@ -1,4 +1,6 @@
 import {compareWaveforms,COMPARE_TYPES,COMPARE_DURATION} from "./waveform-compare.js";
+import {createLabSession,submitLabPrediction,beginLabObservation,beginLabInterpretation,submitLabInterpretation,completeLab,labHasObservation,labHasPredictionFeedback,labHasInterpretationFeedback} from "./lab-engine.js";
+import {LAB_LESSONS,LAB_SOURCES,labLesson,labQuestion,auditLabLessons} from "./lab-lessons.js";
 import {VERSION, PARAMETERS, DEVICE_REFERENCE, MONITOR_REFERENCE, initialSettings, adjustSetting, formatSetting} from "./sim-model.js";
 import {generateWaveform, previewScales} from "./waveform-model.js";
 import {beginSettingEdit, preferredEditStep, stepSettingEdit, parseSettingEntry, defaultSettingEdit, acceptSettingEdit} from "./setting-editor.js";
@@ -1218,26 +1220,38 @@ function renderCoreLearning(){
 }
 
 
-/* Independent CORE LAB: never reads or changes device state, Pending, waveformTime,
- * fixed monitor data, CORE answers, or CASE sessions. No patient response model. */
+/* D5-A guided, optional CORE LAB. All answers belong to per-LAB RAM sessions.
+ * Device committed/Pending, live waveforms, fixed monitors, CORE/CASE are untouched. */
 const LAB_EXPERIMENTS=Object.freeze({
  peep:{id:"peep",baseline:5,trial:8,label:"PEEP",unit:"cmH₂O",note:"생성 Pressure 파형의 호기말 기준선이 이동해. 산소화·폐포 모집·순환 반응의 예측은 아니야."},
  rate:{id:"rate",baseline:15,trial:18,label:"설정 f",unit:"/min",note:"교육용 강제호흡 파형의 간격이 달라져. 실제 총호흡수나 자발호흡 빈도의 예측은 아니야."},
  fio2:{id:"fio2",baseline:40,trial:60,label:"FiO₂",unit:"%",note:"현재 생성 모델은 FiO₂를 파형 계산에 사용하지 않아서 두 곡선이 겹쳐. 실제 환자에서 산소화 반응이 없다는 뜻은 아니야."}
 });
+const labContentAudit=auditLabLessons();
+if(!labContentAudit.valid)throw new Error("LAB lesson data failed validation: "+labContentAudit.errors.join("; "));
 const LAB_NS="http://www.w3.org/2000/svg";
 const labStart=document.getElementById("lab-start");
 const labWorkspace=document.getElementById("lab-workspace");
 const labSvg=document.getElementById("lab-graph");
+const labObservationView=document.getElementById("lab-observation-view");
+const labSessions=new Map(),labDrafts=new Map();
 let labState={active:false,experiment:"peep",graph:"pressure"},labSnapshot=null;
+function activeLabSession(){
+ if(!labSessions.has(labState.experiment))labSessions.set(labState.experiment,createLabSession(labState.experiment));
+ return labSessions.get(labState.experiment);
+}
+function storeLabSession(session){
+ if(session.labId!==labState.experiment)throw new Error("LAB session identity mismatch");
+ labSessions.set(session.labId,session);
+}
 function labSvgElement(tag,attrs={},label=null){
  const element=document.createElementNS(LAB_NS,tag);
- for(const [key,value]of Object.entries(attrs))element.setAttribute(key,String(value));
+ for(const [key,value] of Object.entries(attrs))element.setAttribute(key,String(value));
  if(label!==null)element.textContent=label;
  return element;
 }
 function renderLabGraph(){
- if(!labSnapshot)return;
+ if(!labSnapshot||!labHasObservation(activeLabSession()))return;
  const name=labState.graph,axis=labSnapshot.axes[name],meta=COMPARE_TYPES[name];
  const compact=window.matchMedia("(max-width:550px)").matches;
  labSvg.setAttribute("viewBox",compact?"0 0 380 235":"0 0 760 235");
@@ -1261,42 +1275,163 @@ function renderLabGraph(){
  document.getElementById("lab-graph-title").textContent=meta.label+" · "+meta.unit+" · 공통 Y축 "+axis.min.toFixed(1)+" ~ "+axis.max.toFixed(1)+" "+meta.unit;
  labSvg.setAttribute("aria-label",meta.label+" · 기준 회색 점선과 실험 강조 실선 · "+meta.unit+" · 0–16초");
 }
+function renderLabSources(target,sourceIds){
+ const refs=makeElement("div","lab-evidence");
+ refs.append(makeElement("strong",null,"근거 및 자료 성격 (임상 감수 전)"));
+ for(const id of sourceIds){
+  const source=LAB_SOURCES[id];
+  const entry=makeElement("p",null,source.title+" · "+source.note);
+  if(source.url){
+   const link=makeElement("a",null,"원문 확인");link.href=source.url;link.target="_blank";link.rel="noopener noreferrer";
+   entry.append(" ",link);
+  }
+  refs.append(entry);
+ }
+ target.append(refs);
+}
+function renderLabQuestion(root,question,session){
+ root.replaceChildren();
+ const predict=question.phase==="predict",answered=predict?labHasPredictionFeedback(session):labHasInterpretationFeedback(session);
+ const selected=predict?session.predictedChoice:session.interpretedChoice;
+ const heading=makeElement("h4","lab-question-title",predict?"1단계 · 변화 예상":"3단계 · 결과 이해 확인");
+ root.append(heading);
+ const questionNumber=makeElement("p","lab-question-prompt",question.prompt);
+ root.append(questionNumber);
+ if(!answered){
+  const form=makeElement("form","lab-question-form");
+  const choices=makeElement("fieldset","lab-question-choices");
+  const legend=makeElement("legend",null,"답안을 고른 다음 제출해.");
+  choices.append(legend);
+  const key=session.labId+":"+question.phase;
+  for(const option of question.options){
+   const label=makeElement("label","lab-question-choice");
+   const input=makeElement("input");
+   input.type="radio";input.name="lab-"+question.phase+"-"+session.labId;input.value=option.id;
+   input.checked=labDrafts.get(key)===option.id;
+   input.addEventListener("change",()=>labDrafts.set(key,option.id));
+   label.append(input,makeElement("span",null,option.text));choices.append(label);
+  }
+  const submit=makeElement("button","lab-action lab-submit",predict?"예상 답안 제출":"결과 확인 답안 제출");
+  submit.type="submit";submit.id=predict?"lab-predict-submit":"lab-interpret-submit";
+  form.addEventListener("submit",event=>{
+   event.preventDefault();
+   const choice=labDrafts.get(key);
+   if(!question.options.some(option=>option.id===choice)){
+    root.querySelector("input")?.focus();return;
+   }
+   const allowed=question.options.map(option=>option.id);
+   const next=predict?submitLabPrediction(activeLabSession(),choice,allowed):submitLabInterpretation(activeLabSession(),choice,allowed);
+   storeLabSession(next);labDrafts.delete(key);renderWaveLab();
+   document.getElementById(predict?"lab-to-observation":"lab-to-review").focus();
+  });
+  form.append(choices,submit);root.append(form);
+  return;
+ }
+ const answer=question.options.find(option=>option.id===selected);
+ const correct=selected===question.answer;
+ const outcome=makeElement("p","lab-question-outcome",correct?"선택한 답안 · 이 앱 모델과 일치":"선택한 답안 · 다시 생각해 볼 지점");
+ root.append(outcome,makeElement("p","lab-readonly","제출한 답안은 수정할 수 없어. 다시 풀려면 이 LAB만 재시작해."));
+ for(const option of question.options){
+  const entry=makeElement("div","lab-answer-explanation");
+  if(option.id===selected)entry.classList.add("lab-answer-selected");
+  const prefix=option.id===selected?"내가 선택함 · ":"";
+  const isAnswer=option.id===question.answer?" · 모델 기준 정답":"";
+  entry.append(makeElement("strong",null,prefix+option.text+isAnswer),makeElement("p",null,option.feedback));
+  root.append(entry);
+ }
+ root.append(makeElement("p","lab-question-explanation",question.explanation));
+ renderLabSources(root,question.sourceIds);
+}
 function renderWaveLab(){
  labStart.hidden=labState.active;labStart.setAttribute("aria-expanded",String(labState.active));
  labWorkspace.hidden=!labState.active;
  if(!labState.active)return;
- const exp=LAB_EXPERIMENTS[labState.experiment];
- if(!labSnapshot){
-  const baseline=initialSettings();
-  const trial={...initialSettings(),[exp.id]:exp.trial};
-  labSnapshot=compareWaveforms(baseline,trial);
- }
+ const exp=LAB_EXPERIMENTS[labState.experiment],lesson=labLesson(labState.experiment);
+ const session=activeLabSession(),visible=labHasObservation(session);
  document.querySelectorAll("[data-lab-experiment]").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.labExperiment===labState.experiment)));
  document.querySelectorAll("[data-lab-graph]").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.labGraph===labState.graph)));
  document.getElementById("lab-comparison-summary").textContent=exp.label+" · 기준 "+exp.baseline+" → 실험 "+exp.trial+" "+exp.unit+" | 다른 초기 설정 동일 · 현재 장비 설정과 무관";
+ document.getElementById("lab-objective").textContent="학습 목표 · "+lesson.objective;
+ document.getElementById("lab-phase-status").textContent=({
+  "predict-unanswered":"예상 답안 선택·제출 전 · 관찰 파형 비공개",
+  "predict-answered":"예상 피드백 확인 · 관찰 시작 가능",
+  observation:"기준/실험 생성 파형 관찰",
+  "interpret-unanswered":"관찰 후 결과 이해 문제",
+  "interpret-answered":"결과 이해 피드백 확인",
+  completed:"실습 요약 완료 · 재시작이나 다른 LAB 선택 가능"
+ })[session.phase];
+ renderLabQuestion(document.getElementById("lab-predict-root"),labQuestion(session.labId,"predict"),session);
+ const interpretRoot=document.getElementById("lab-interpret-root");
+ const showInterpret=["interpret-unanswered","interpret-answered","completed"].includes(session.phase);
+ interpretRoot.hidden=!showInterpret;
+ if(showInterpret)renderLabQuestion(interpretRoot,labQuestion(session.labId,"interpret"),session);
+ else interpretRoot.replaceChildren();
+ document.getElementById("lab-to-observation").hidden=session.phase!=="predict-answered";
+ document.getElementById("lab-to-interpret").hidden=session.phase!=="observation";
+ document.getElementById("lab-to-review").hidden=session.phase!=="interpret-answered";
+ const review=document.getElementById("lab-final-review");
+ review.hidden=session.phase!=="completed";
+ if(!review.hidden){
+  review.replaceChildren(makeElement("h4",null,"4단계 · 실습 요약"),makeElement("p",null,lesson.summary),
+   makeElement("p",null,"이 LAB은 교육용 생성 파형만 비교하고, 실제 환자 산소화·호흡노력·혈역학 반응 또는 PB980 펌웨어를 예측하지 않아. 임상 전문가 검토 전 자료야."));
+  renderLabSources(review,["generator","aarc"]);
+ }
+ labObservationView.hidden=!visible;
+ if(!visible){
+  // Clearing the entire SVG and result nodes also prevents stale SVG title/desc,
+  // hidden keyboard focus or screen-reader announcements from leaking answers.
+  labSnapshot=null;labSvg.replaceChildren();
+  labSvg.setAttribute("aria-label","예상 답안 제출 후 관찰 단계에서 그래프가 표시돼.");
+  document.getElementById("lab-graph-title").textContent="";
+  document.getElementById("lab-result-note").textContent="";
+  document.getElementById("lab-overlap-note").textContent="";
+  document.getElementById("lab-overlap-note").hidden=true;
+  return;
+ }
+ if(!labSnapshot){
+  const baseline=initialSettings(),trial={...initialSettings(),[exp.id]:exp.trial};
+  labSnapshot=compareWaveforms(baseline,trial);
+ }
  document.getElementById("lab-result-note").textContent=exp.note;
- // If two deterministic curves are identical, the blue stroke covers the dashed
- // stroke; make this explicit in text instead of implying a physiological finding.
- const coincident=labSnapshot.baseline.every((point,i)=>
-  Object.keys(COMPARE_TYPES).every(key=>point[key]===labSnapshot.trial[i][key]));
- document.getElementById("lab-overlap-note").hidden=!coincident;
+ const coincident=labSnapshot.baseline.every((point,i)=>Object.keys(COMPARE_TYPES).every(key=>point[key]===labSnapshot.trial[i][key]));
+ const overlap=document.getElementById("lab-overlap-note");
+ overlap.textContent=coincident?"두 교육용 생성 파형이 완전히 겹쳐 하나의 선처럼 보여. 이것이 실제 환자에서 산소화 반응이 없다는 의미는 아니야.":"";
+ overlap.hidden=!coincident;
  renderLabGraph();
 }
 labStart.addEventListener("click",()=>{
- labState={active:true,experiment:"peep",graph:"pressure"};labSnapshot=null;renderWaveLab();
+ labState.active=true;labState.experiment="peep";labState.graph="pressure";labSnapshot=null;renderWaveLab();
  document.querySelector('[data-lab-experiment="peep"]').focus();
 });
 document.querySelectorAll("[data-lab-experiment]").forEach(b=>b.addEventListener("click",()=>{
+ if(labState.experiment===b.dataset.labExperiment)return;
  labState.experiment=b.dataset.labExperiment;labSnapshot=null;renderWaveLab();
 }));
 document.querySelectorAll("[data-lab-graph]").forEach(b=>b.addEventListener("click",()=>{
  labState.graph=b.dataset.labGraph;renderWaveLab();
 }));
-document.getElementById("lab-exit").addEventListener("click",()=>{
- labState={active:false,experiment:"peep",graph:"pressure"};labSnapshot=null;renderWaveLab();labStart.focus();
+document.getElementById("lab-to-observation").addEventListener("click",()=>{
+ storeLabSession(beginLabObservation(activeLabSession()));labSnapshot=null;renderWaveLab();
+ document.getElementById("lab-graph").focus();
 });
-// Resize changes SVG projection only: retain the LAB experiment and its cached samples.
-window.addEventListener("resize",()=>{if(labState.active)renderLabGraph();});
+document.getElementById("lab-to-interpret").addEventListener("click",()=>{
+ storeLabSession(beginLabInterpretation(activeLabSession()));renderWaveLab();
+ document.getElementById("lab-interpret-root").querySelector("input")?.focus();
+});
+document.getElementById("lab-to-review").addEventListener("click",()=>{
+ storeLabSession(completeLab(activeLabSession()));renderWaveLab();document.getElementById("lab-final-review").focus();
+});
+document.getElementById("lab-restart").addEventListener("click",()=>{
+ labSessions.set(labState.experiment,createLabSession(labState.experiment));
+ labDrafts.delete(labState.experiment+":predict");labDrafts.delete(labState.experiment+":interpret");
+ labSnapshot=null;renderWaveLab();document.getElementById("lab-predict-root").querySelector("input")?.focus();
+});
+document.getElementById("lab-exit").addEventListener("click",()=>{
+ // Closing the surface is not restarting: each session stays in page RAM.
+ labState.active=false;labState.experiment="peep";labState.graph="pressure";labSnapshot=null;
+ labSvg.replaceChildren();renderWaveLab();labStart.focus();
+});
+window.addEventListener("resize",()=>{if(labState.active&&labHasObservation(activeLabSession()))renderLabGraph();});
 
 /* v0.4.2: isolated knowledge-check state; resetting device values or revisiting CASE
  * must never mutate this assessment or any waveform/fixed-monitor content. */

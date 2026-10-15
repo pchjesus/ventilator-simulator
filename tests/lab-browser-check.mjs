@@ -13,6 +13,11 @@ async function open(width=1440,height=900){
  assert.equal(response.status(),200);
  return page;
 }
+async function observeNewLab(page){
+ await page.locator("#lab-predict-root input[type=radio]").first().check();
+ await page.locator("#lab-predict-submit").click();
+ await page.locator("#lab-to-observation").click();
+}
 try{
  const p=await open();
  assert.equal(await p.locator(".study-area-nav button").count(),3);
@@ -32,15 +37,19 @@ try{
  // Pending must not affect fixed-baseline LAB; close existing modal before entering.
  await p.locator("#editor-cancel").click();
  await p.locator("#lab-start").click();
+ assert.equal(await p.locator("#lab-observation-view").isVisible(),false);
+ await observeNewLab(p);
  assert.equal(await p.locator("#lab-workspace").isVisible(),true);
  assert.match(await p.locator("#lab-comparison-summary").textContent(),/기준 5 → 실험 8/);
  const base=p.locator('[data-lab-series="baseline"]'),trial=p.locator('[data-lab-series="trial"]');
  assert.notEqual(await base.getAttribute("d"),await trial.getAttribute("d"));
  assert.equal(await p.locator("#lab-graph path").count(),2);
  await p.locator('[data-lab-experiment="rate"]').click();
+ await observeNewLab(p);
  assert.match(await p.locator("#lab-comparison-summary").textContent(),/기준 15 → 실험 18/);
  assert.notEqual(await base.getAttribute("d"),await trial.getAttribute("d"));
  await p.locator('[data-lab-experiment="fio2"]').click();
+ await observeNewLab(p);
  assert.equal(await base.getAttribute("d"),await trial.getAttribute("d"));
  assert.match(await p.locator("#lab-result-note").textContent(),/산소화 반응이 없다는 뜻은 아니야/);
  await p.locator('[data-lab-graph="flow"]').click();
@@ -71,8 +80,9 @@ try{
  for(const width of [700,360,320]){
   const mobile=await open(width,780);
   await mobile.locator("#lab-start").click();
-  await mobile.locator('[data-lab-graph="volume"]').click();
   await mobile.locator('[data-lab-experiment="rate"]').click();
+  await observeNewLab(mobile);
+  await mobile.locator('[data-lab-graph="volume"]').click();
   const graph=await mobile.locator("#lab-graph").boundingBox();
   assert.ok(graph.x>=-1&&graph.x+graph.width<=width+1,"SVG viewport "+width);
   if(width===320){

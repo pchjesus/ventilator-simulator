@@ -1,3 +1,11 @@
+## v0.5.4 D5-A — verification scope (2026-10-15)
+
+**Implementation:** Branch `feat/v0.5.4-d5-guided-labs`, [PR #28](https://github.com/pchjesus/ventilator-simulator/pull/28). Starts from v0.5.3.3 verified main `a1ef752cf7ded86436c0b071032585a27cd5322d`.
+
+**Added gates:** `tests/lab-engine.test.mjs` validates question schema/count, source/evidence/review pending, stage transitions, invalid answers and re-submission. `tests/lab-guided-browser-check.mjs` checks blank graph/result/ARIA before prediction, staged observation and interpretation, per-LAB RAM and only-selected restart, CORE/CASE/device isolation and 1440/700/360/320 mobile viewports. Previous unit tests, `browser-check.mjs`, `lab-browser-check.mjs` and `study-focus-browser-check.mjs` remain (older LAB tests adapted for explicit observation phase). Packaging verifies both new modules in dist and imports them.
+
+**Verified PR HEAD `f037a0424fa4b8ba46e1a25499fff17699c81a33`:** [PR CI #38673809032](https://github.com/pchjesus/ventilator-simulator/actions/runs/38673809032) **test PASS (88/88 Node), browser PASS (original Chromium + LAB + A1/B1 + D5 at 1440/700/360/320), package PASS**. New `dist/src/lab-engine.js` and `dist/src/lab-lessons.js` loaded by actual Node ESM import; module audit returned `valid=true, count=6`. The downloaded student ZIP was independently extracted and smoke-imported. Chromium screenshots were downloaded and visually reviewed at 1440/700/320px for prediction gated view, PEEP observation and FiO₂ overlapping waveforms; no horizontal clipping detected by automated tests at the stated viewport sizes. [PR screenshot artifact](https://github.com/pchjesus/ventilator-simulator/actions/runs/38673809032/artifacts/11945870277), [PR web ZIP artifact](https://github.com/pchjesus/ventilator-simulator/actions/runs/38673809032/artifacts/11945690382). **Merged main SHA/its separate CI run pending at PR time**. No clinical, physical smartphone, screen reader or participant study validation has been performed. Original 82/82 PASS applies only to v0.5.3.3.
+
 # TEST_REPORT — v0.5.3.3 (교육용 베타)
 
 ## v0.5.3.3 — A1/B1 학습 집중형 화면 회귀 (2026-10-15)

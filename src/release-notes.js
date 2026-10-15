@@ -8,6 +8,12 @@ export const RELEASE_CATEGORIES=Object.freeze([
   {id:"docs",label:"문서·근거"}
 ]);
 export const RELEASE_NOTES=Object.freeze([
+  {version:"0.5.4",date:"2026-10-15",changes:[
+   {category:"feature",text:"CORE LAB 3종에 예상/결과 이해 확인 2문항씩 총 6문항의 선택형 학습 흐름을 추가"},
+   {category:"ui",text:"예상 답안 제출 후에만 생성 파형/결과 설명/SVG 접근성 문구를 공개하고, 관찰 뒤 해석 질문으로 이동"},
+   {category:"clinical",text:"선택지별 오개념 피드백, 앱 생성 모델의 한계와 독립 자료 출처를 구분하여 제시, 임상 전문가 검토 대기"},
+   {category:"stability",text:"LAB별 독립 RAM 답안·이전 응답 읽기 전용·LAB별 재시작, CORE 10/CASE 12 기존 점수와 분리"},
+   {category:"docs",text:"D5-A 학습 엔진 및 문항 콘텐츠 감사, Node·Chromium·정적 ZIP import 회귀 검사 추가"}]},
  {version:"0.5.3.3",date:"2026-10-15",changes:[
   {category:"ui",text:"A1 중앙 900px 읽기 폭과 넓은 LAB, 기존 나란히 배치/학습만 크게 보기 전환"},
   {category:"ui",text:"학습 글씨·색상·그룹 경계 정돈, 모바일 원래 설명서·패치 내역·초기화 도구 접기"},
