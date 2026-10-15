@@ -31,8 +31,8 @@ try{
  await page.locator('[data-region=monitor]').first().click();
  assert.equal(await page.locator(".panel-detail").count(),1);
  assert.match(await page.locator(".panel-detail").innerText(),/고정 표시 예시/);
- await page.locator(".learning-toggle [data-mode=c]").click();
  const monitor=await page.locator(".monitor-strip").first().innerText();
+ await page.locator(".learning-toggle [data-mode=c]").click();
  // C cancellation applies nothing to the committed teaching setting.
  await page.locator('[data-lesson=cancel]').click();
  await page.locator(".mission-card [data-action=learn]").click();
