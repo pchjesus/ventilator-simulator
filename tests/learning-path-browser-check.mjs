@@ -11,6 +11,8 @@ try{
  for(const w of [320,360,390,700,960,1100,1440]){
   const p=await open(w);
   assert.equal(await p.locator(".core-learning-steps [role=listitem]").count(),5);
+  assert.equal(await p.locator(".learning-quick-nav [data-learning-jump]").count(),5);
+  assert.equal(await p.locator("[data-review-target]").count(),3);
   assert.match(await p.locator("#learning-progress-status").textContent(),/CORE: 시작 전.*LAB: 시작 전.*CASE: 시작 전/);
   const overflow=await p.evaluate(()=>document.documentElement.scrollWidth-innerWidth);
   assert.ok(overflow<=4,"viewport "+w+" overflow "+overflow);
@@ -46,6 +48,16 @@ try{
  assert.equal(await p.locator(".core-quiz-feedback").textContent(),feedback);
  assert.equal(await p.locator("#settings").textContent(),settings);
  assert.equal(await p.locator("#monitor").textContent(),monitor);
+ // Review must never replace a partially answered CORE/LAB/CASE session.
+ await p.locator('.learning-quick-nav [data-learning-jump="review"]').click();
+ assert.equal(await p.locator("#learning-review").isVisible(),true);
+ assert.equal(await p.locator("#learning-review").evaluate(el=>el===document.activeElement),true);
+ await p.locator('[data-review-target="quiz"]').click();
+ assert.equal(await p.locator(".core-quiz-feedback").textContent(),feedback);
+ await p.locator('[data-review-target="lab"]').click();
+ assert.equal(await p.locator("#panel-core").isVisible(),true);
+ await p.locator('[data-review-target="case"]').click();
+ assert.match(await p.locator(".case-progress").textContent(),/문항 1 \/ 3/);
  assert.deepEqual(errors,[]);
  await p.close();
  console.log("v0.6.0 guided path and seven responsive widths passed");

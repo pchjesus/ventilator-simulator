@@ -313,17 +313,23 @@ function updateLearningProgress(){
  const ca=!cases.length?"시작 전":cDone===4?"4/4 완료":"완료 "+cDone+"/4 · 진행 "+(cases.length-cDone);
  document.getElementById("learning-progress-status").textContent="CORE: "+core+" · LAB: "+lab+" · CASE: "+ca+" · 개념 열람은 완료로 계산하지 않아.";
 }
-// Quick links only change active visible panel/scroll; they never mark completion.
-document.querySelectorAll("[data-learning-jump]").forEach(link=>link.addEventListener("click",event=>{
- event.preventDefault();
- const type=link.dataset.learningJump;
- if(type==="case"){selectStudyArea("clinical");}
- else{selectStudyArea("learning");}
- const target=document.getElementById(({concepts:"core-learning-content",quiz:"core-quiz-root",lab:"core-labs",case:"panel-case"})[type]);
+// Navigation is projection only; never marks progress or resets the three engines.
+function navigateLearning(type){
+ const id=({concepts:"core-learning-content",quiz:"core-quiz-root",lab:"core-labs",case:"panel-case",review:"learning-review"})[type];
+ if(!id)return;
+ selectStudyArea(type==="case"?"clinical":"learning");
+ const target=document.getElementById(id);
  if(target){
   target.scrollIntoView({block:"start",behavior:"auto"});
   target.focus({preventScroll:true});
  }
+}
+document.querySelectorAll("[data-learning-jump]").forEach(link=>link.addEventListener("click",event=>{
+ event.preventDefault();
+ navigateLearning(link.dataset.learningJump);
+}));
+document.querySelectorAll("[data-review-target]").forEach(button=>button.addEventListener("click",()=>{
+ navigateLearning(button.dataset.reviewTarget);
 }));
 function showSideTab(tab) {
   if(tab==="circuit"||tab==="alarm")extraLearning.open=true;
@@ -1108,6 +1114,7 @@ function renderCase(){
     appendCaseObjectiveReview(root,scenario,caseState);
     appendCaseActionReview(root,scenario);
     renderReflection(root,scenario);
+    root.append(caseButton("학습 전체 복습 가이드 →",()=>navigateLearning("review"),"learning-review-return"));
     root.append(caseButton("이 사례 처음부터 다시 풀기",()=>openCaseSession(scenario.id,true),"case-primary"));
     caseSources(root,scenario.sources);
     return;
@@ -1391,7 +1398,7 @@ function renderWaveLab(){
   renderLabSources(review,["generator","aarc"]);
   const next=makeElement("div","learning-next-actions");
   const concept=quizButton("핵심 개념 복습",()=>{
-   showSideTab("core");document.getElementById("core-learning-content").focus();
+   navigateLearning("concepts");
   },"core-quiz-secondary");
   const caseLink=quizButton("CASE 학습으로 이동 →",()=>{
    renderCase();showSideTab("case");caseTab.focus();
@@ -1558,7 +1565,7 @@ function renderCoreQuiz(){
      }
      root.append(review);
    }else root.append(quizButton("6개 핵심 개념 다시 읽기",()=>openCoreConcept("peep"),"core-quiz-secondary"));
-   root.append(quizButton("선택 파형 LAB으로 이동 →",()=>{showSideTab("core");document.getElementById("core-labs").focus();},"core-quiz-secondary"));
+   root.append(quizButton("선택 파형 LAB으로 이동 →",()=>{navigateLearning("lab");},"core-quiz-secondary"));
    root.append(quizButton("CASE 01~04에 적용하기 →",()=>{renderCase();showSideTab("case");caseTab.focus();},"core-quiz-primary"));
    root.append(quizButton("학습 확인 다시 풀기",()=>{coreQuizState=startCoreQuiz();renderCoreQuiz();root.querySelector(".core-quiz-answer")?.focus();},"core-quiz-secondary"));
    const preview=makeElement("details","core-quiz-instructor");

@@ -978,7 +978,7 @@ body[data-study-area="clinical"]:not([data-clinical-device-expanded="true"]) .wo
 .header-tools{position:relative;min-width:0}
 .header-tools>summary{display:none}
 .header-tools .header-actions{display:flex;gap:7px;align-items:center}
-.learning-quick-nav{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;margin:13px 0 16px}
+.learning-quick-nav{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:7px;margin:13px 0 16px}
 .learning-quick-nav>span{grid-column:1/-1;font-size:13px;color:#31556c;font-weight:800}
 .learning-quick-nav>a{display:flex;justify-content:center;align-items:center;min-width:0;min-height:44px;padding:8px 5px;text-align:center;border:1px solid #b6cbd5;border-radius:8px;background:#fff;color:#145a75;font-size:14px;line-height:1.45;font-weight:750;text-decoration:none}
 .learning-quick-nav>a:hover{background:#edf5f8;border-color:#145a75}
@@ -1039,3 +1039,14 @@ body[data-study-area="clinical"]:not([data-clinical-device-expanded="true"]) .wo
 .learning-next-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:13px}
 .learning-next-actions button{min-height:44px}
 @media(max-width:700px){.learning-next-actions{display:grid;grid-template-columns:1fr}}
+
+/* v0.6.0 B+ non-graded review destination, distinct from graded answer screens. */
+.learning-review{margin:16px 0;padding:clamp(12px,2vw,20px);background:#fff;border:1px solid #c0d5e1;border-radius:10px;line-height:1.65;scroll-margin-top:18px}
+.learning-review h3{margin:0 0 8px;font-size:clamp(17px,2vw,21px)}
+.learning-review p{font-size:14px;line-height:1.7}
+.learning-review-warning{color:#475f6c;font-size:13px!important}
+.learning-review-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.learning-review-actions button,.learning-review-return{min-height:44px;line-height:1.5;border:1px solid #88aebf;background:#f6fafc;color:#144e68;padding:9px 12px;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer}
+.learning-review :is(button):focus-visible,.learning-review-return:focus-visible{outline:3px solid #247ba4;outline-offset:2px}
+.learning-review-return{margin:9px 0}
+@media(max-width:700px){.learning-quick-nav{grid-template-columns:repeat(2,minmax(0,1fr))}.learning-review-actions{display:grid;grid-template-columns:1fr}.learning-review-actions button{width:100%}}
