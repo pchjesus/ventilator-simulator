@@ -1375,6 +1375,14 @@ function renderWaveLab(){
   review.replaceChildren(makeElement("h4",null,"4단계 · 실습 요약"),makeElement("p",null,lesson.summary),
    makeElement("p",null,"이 LAB은 교육용 생성 파형만 비교하고, 실제 환자 산소화·호흡노력·혈역학 반응 또는 PB980 펌웨어를 예측하지 않아. 임상 전문가 검토 전 자료야."));
   renderLabSources(review,["generator","aarc"]);
+  const next=makeElement("div","learning-next-actions");
+  const concept=quizButton("핵심 개념 복습",()=>{
+   showSideTab("core");document.getElementById("core-learning-content").focus();
+  },"core-quiz-secondary");
+  const caseLink=quizButton("CASE 학습으로 이동 →",()=>{
+   renderCase();showSideTab("case");caseTab.focus();
+  },"core-quiz-primary");
+  next.append(concept,caseLink);review.append(next);
  }
  labObservationView.hidden=!visible;
  if(!visible){
@@ -1535,6 +1543,7 @@ function renderCoreQuiz(){
      }
      root.append(review);
    }else root.append(quizButton("6개 핵심 개념 다시 읽기",()=>openCoreConcept("peep"),"core-quiz-secondary"));
+   root.append(quizButton("선택 파형 LAB으로 이동 →",()=>{showSideTab("core");document.getElementById("core-labs").focus();},"core-quiz-secondary"));
    root.append(quizButton("CASE 01~04에 적용하기 →",()=>{renderCase();showSideTab("case");caseTab.focus();},"core-quiz-primary"));
    root.append(quizButton("학습 확인 다시 풀기",()=>{coreQuizState=startCoreQuiz();renderCoreQuiz();root.querySelector(".core-quiz-answer")?.focus();},"core-quiz-secondary"));
    const preview=makeElement("details","core-quiz-instructor");
