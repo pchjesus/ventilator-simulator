@@ -80,9 +80,9 @@ try{
  for(const width of [700,360,320]){
   const mobile=await open(width,780);
   await mobile.locator("#lab-start").click();
-  await mobile.locator('[data-lab-graph="volume"]').click();
   await mobile.locator('[data-lab-experiment="rate"]').click();
   await observeNewLab(mobile);
+  await mobile.locator('[data-lab-graph="volume"]').click();
   const graph=await mobile.locator("#lab-graph").boundingBox();
   assert.ok(graph.x>=-1&&graph.x+graph.width<=width+1,"SVG viewport "+width);
   if(width===320){
