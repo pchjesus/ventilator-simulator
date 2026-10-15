@@ -54,11 +54,15 @@ jobs:
       - name: Stage public-safe static web files only
         run: |
           mkdir -p dist/src
-          cp index.html styles.css dist/
-          cp src/app.js src/sim-model.js src/waveform-model.js src/waveform-compare.js src/lab-engine.js src/lab-lessons.js src/setting-editor.js src/education-content.js src/release-notes.js src/waveform-inspector.js src/preclinical-cases.js src/case-clinical-data.js src/case-actions.js src/case-engine.js src/case-quality.js src/device-learning.js src/student-learning.js src/core-quiz.js dist/src/
+          cp index.html styles.css learn.html learning-room.css dist/
+          cp src/app.js src/sim-model.js src/waveform-model.js src/waveform-compare.js src/lab-engine.js src/lab-lessons.js src/setting-editor.js src/education-content.js src/release-notes.js src/waveform-inspector.js src/preclinical-cases.js src/case-clinical-data.js src/case-actions.js src/case-engine.js src/case-quality.js src/device-learning.js src/student-learning.js src/core-quiz.js src/learning-room.js src/learning-room-state.js dist/src/
           touch dist/.nojekyll
           test -s dist/index.html
           test -s dist/styles.css
+          test -s dist/learn.html
+          test -s dist/learning-room.css
+          test -s dist/src/learning-room.js
+          test -s dist/src/learning-room-state.js
           test -s dist/src/app.js
           test -s dist/src/sim-model.js
           test -s dist/src/waveform-model.js

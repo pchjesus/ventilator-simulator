@@ -1,0 +1,15 @@
+<!doctype html>
+<html lang="ko">
+<head><meta charset="utf-8"><title>학습실 반응형 확인</title></head>
+<body style="margin:0;background:#ddd">
+  <iframe id="viewport" title="학습실 모바일 화면" style="display:block;border:0;margin:auto;width:390px;height:844px" src="../learn.html"></iframe>
+  <script>
+    const query = new URLSearchParams(location.search);
+    const width = Number(query.get('width'));
+    const frame = document.getElementById('viewport');
+    if ([320, 390, 768, 1024].includes(width)) frame.style.width = width + 'px';
+    const screen = query.get('screen');
+    if (['home', 'explore', 'practice', 'practice-task'].includes(screen)) frame.src = '../learn.html#' + screen;
+  </script>
+</body>
+</html>
