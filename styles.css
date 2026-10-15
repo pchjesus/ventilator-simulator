@@ -1033,3 +1033,9 @@ body[data-study-area="clinical"]:not([data-clinical-device-expanded="true"]) .wo
 /* v0.6.0 B+ learning-guide reflow */
 .learning-route-note{font-size:12px;line-height:1.65;margin:8px 0 13px;color:#33586b}
 @media(max-width:700px){.core-learning-steps{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* v0.6.0: live read-only session summary, never indicates concept visits as completion */
+.learning-progress-status{font-size:12px;line-height:1.65;margin:8px 0 14px;padding:8px 11px;border-left:3px solid #628ca5;background:#f0f6f8;color:#315369}
+.learning-next-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:13px}
+.learning-next-actions button{min-height:44px}
+@media(max-width:700px){.learning-next-actions{display:grid;grid-template-columns:1fr}}
