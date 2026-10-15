@@ -1,3 +1,22 @@
+## v0.5.4 — D5-A guided learning state (2026-10-15)
+
+```text
+CORE #core-labs (existing UI / A1-B1 unchanged)
+  └─ src/app.js labSessions Map (one independent page-RAM session per peep/rate/fio2)
+      ├─ src/lab-engine.js pure immutable stage transitions + answer gate
+      ├─ src/lab-lessons.js 3 lesson records / 6 draft questions + schema audit
+      └─ observation permission (predict submitted + learner observation action)
+           └─ initialSettings() snapshots -> existing compareWaveforms()
+                └─ original 0–16 sec / 320 point common-axis SVG + note + SVG title/desc
+
+Separate and unchanged: committed/Pending state -> device waveforms; fixed monitors 7;
+ CORE quiz 10; CASE 4/12; original responsive single DOM; RAM reset on page reload.
+```
+
+- Phase gate: predict-unanswered → predict-answered → observation → interpret-unanswered → interpret-answered → completed. Submitted answers readonly; switching missions reuses that mission's state. Closing LAB preserves state; explicit restart only resets the selected LAB.
+- Before observation, `#lab-observation-view` is hidden, SVG children are cleared (including title/desc), and result/overlap text is erased rather than merely visually masked. The source code of this static educational application does contain the answers and is not a secure exam substrate.
+- Clinical expert validation stays pending; no FiO₂ gas exchange, BP, real fTOT, patient physiology or PB980 firmware simulation is introduced.
+
 ## v0.5.3 — Pure waveform comparison & CORE-local LAB (2026-10-14)
 
 ```text
