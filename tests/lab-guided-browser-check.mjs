@@ -21,7 +21,8 @@ try{
  for(const width of [1440,700,360,320]){
   const p=await open(width);
   const device=await p.locator("#settings").textContent(),fixed=await p.locator("#monitor").textContent();
-  if(width>700)await p.locator("#waveform-pause").click();
+  // Freeze the independently generated device clock even when its original control is hidden on mobile.
+  await p.locator("#waveform-pause").evaluate(button=>button.click());
   const graphBefore=await p.locator('#graph-pressure [data-phase="mandatory"]').first().getAttribute("d");
   await p.locator("#core-quiz-root .core-quiz-primary").click();
   await p.locator(".core-quiz-answer").first().click();
